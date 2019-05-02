@@ -2,14 +2,14 @@
 
 from __future__ import unicode_literals, absolute_import, division, print_function
 
-from sopel import module
+import sopel.module
 from sopel.tools import stderr
 
 from .BotEvents import set_bot_event, check_bot_startup
 
 
-@module.event('001')
-@module.rule('.*')
+@sopel.module.event('001')
+@sopel.module.rule('.*')
 def bot_startup_complete(bot, trigger):
 
     while not check_bot_startup(bot):

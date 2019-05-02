@@ -3,7 +3,7 @@
 from __future__ import unicode_literals, absolute_import, division, print_function
 
 import sopel
-from sopel import module
+import sopel.module
 from sopel.tools import stderr
 
 import os
@@ -150,7 +150,7 @@ def setup_thread(bot):
     set_bot_event(bot, "Sopel-CommandsQuery")
 
 
-@module.rule('^\?(.*)')
+@sopel.module.rule('^\?(.*)')
 def query_detection(bot, trigger):
 
     while "Sopel-CommandsQuery" not in bot.memory:

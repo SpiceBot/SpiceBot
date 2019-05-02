@@ -2,15 +2,15 @@
 
 from __future__ import unicode_literals, absolute_import, division, print_function
 
-from sopel import module
+import sopel.module
 from sopel.tools import stderr
 from .BotEvents import check_bot_events, startup_bot_event, set_bot_event
 
 import time
 
 
-@module.event('001')
-@module.rule('.*')
+@sopel.module.event('001')
+@sopel.module.rule('.*')
 def bot_startup_connection(bot, trigger):
 
     if check_bot_events(bot, ["startup_complete"]):
