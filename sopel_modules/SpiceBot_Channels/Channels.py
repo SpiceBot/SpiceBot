@@ -6,17 +6,17 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 from sopel.tools import stderr
 from sopel.config.types import StaticSection, ValidatedAttribute, ListAttribute
-from sopel.module import OP, ADMIN, VOICE, OWNER, HALFOP
-HOP = HALFOP
 
 import time
-import re
 
 import spicemanip
 
 import sopel_modules.osd
 
-from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, inlist
+from sopel_modules.SpiceBot_SBTools import (
+                                            sopel_triggerargs, inlist, topic_compile, channel_privs,
+                                            join_all_channels, chanadmin_all_channels, channel_list_current
+                                            )
 
 
 class SpiceBot_Channels_MainSection(StaticSection):
@@ -70,23 +70,8 @@ def trigger_channel_list_initial(bot, trigger):
     foundchannelcount = len(bot.memory['SpiceBot_Channels']['channels'].keys())
     stderr("[SpiceBot_Channels] Channel listing finished! " + str(foundchannelcount) + " channel(s) found.")
 
-    # JOIN
-    if bot.config.SpiceBot_Channels.joinall:
-        for channel in bot.memory['SpiceBot_Channels']['channels'].keys():
-            if channel not in bot.channels.keys() and channel not in bot.config.SpiceBot_Channels.chanignore:
-                bot.write(('JOIN', bot.nick, bot.memory['SpiceBot_Channels']['channels'][channel]['name']))
-                if channel not in bot.channels.keys():
-                    bot.write(('SAJOIN', bot.nick, bot.memory['SpiceBot_Channels']['channels'][channel]['name']))
-
-    # Chan ADMIN +a
-    for channel in bot.channels.keys():
-        if channel not in bot.config.SpiceBot_Channels.chanignore:
-            if bot.config.SpiceBot_Channels.operadmin:
-                if not bot.channels[channel].privileges[bot.nick] < ADMIN:
-                    bot.write(('SAMODE', channel, "+a", bot.nick))
-            channel_privs(bot, channel)
-        else:
-            bot.part(channel)
+    join_all_channels(bot)
+    chanadmin_all_channels(bot)
 
     if "*" in bot.memory['SpiceBot_Channels']['channels']:
         del bot.memory['SpiceBot_Channels']['channels']["*"]
@@ -106,23 +91,9 @@ def trigger_channel_list_initial(bot, trigger):
         if len(newlist) and bot.config.SpiceBot_Channels.announcenew:
             bot.osd(["The Following channel(s) are new:", spicemanip.main(newlist, 'andlist')], bot.channels.keys())
 
-        # JOIN
-        if bot.config.SpiceBot_Channels.joinall:
-            for channel in bot.memory['SpiceBot_Channels']['channels'].keys():
-                if channel not in bot.channels.keys() and channel not in bot.config.SpiceBot_Channels.chanignore:
-                    bot.write(('JOIN', bot.nick, bot.memory['SpiceBot_Channels']['channels'][channel]['name']))
-                    if channel not in bot.channels.keys():
-                        bot.write(('SAJOIN', bot.nick, bot.memory['SpiceBot_Channels']['channels'][channel]['name']))
+        join_all_channels(bot)
 
-        # Chan ADMIN +a
-        for channel in bot.channels.keys():
-            if channel not in bot.config.SpiceBot_Channels.chanignore:
-                if bot.config.SpiceBot_Channels.operadmin:
-                    if not bot.channels[channel].privileges[bot.nick] < ADMIN:
-                        bot.write(('SAMODE', channel, "+a", bot.nick))
-                channel_privs(bot, channel)
-            else:
-                bot.part(channel)
+        chanadmin_all_channels(bot)
 
         if "*" in bot.memory['SpiceBot_Channels']['channels']:
             del bot.memory['SpiceBot_Channels']['channels']["*"]
@@ -326,50 +297,3 @@ def nickname_comand_chanstats(bot, trigger):
             dispmsg.append("Channel users for " + str(channel) + " are: " + userslist)
         bot.osd(dispmsg, trigger.nick, 'notice')
         return
-
-
-def channel_list_current(bot):
-    newlist = [item for item in bot.channels.keys() if item.lower() not in bot.memory['SpiceBot_Channels']['channels']]
-    for channel in newlist:
-        topic = bot.channels[channel].topic
-        bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()] = dict()
-        bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()]['name'] = str(channel)
-        bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()]['topic'] = topic_compile(topic)
-        channel_privs(bot, channel)
-
-    if "*" in bot.memory['SpiceBot_Channels']:
-        bot.memory['SpiceBot_Channels'].remove("*")
-
-
-def topic_compile(topic):
-    actual_topic = re.compile(r'^\[\+[a-zA-Z]+\] (.*)')
-    topic = re.sub(actual_topic, r'\1', topic)
-    return topic
-
-
-def channel_privs(bot, channel):
-
-    if channel not in bot.memory['SpiceBot_Channels']['channels'].keys():
-        topic = bot.channels[channel].topic
-        bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()] = dict()
-        bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()]['name'] = str(channel)
-        bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()]['topic'] = topic_compile(topic)
-
-    for chan in bot.memory['SpiceBot_Channels']['channels'].keys():
-        for privtype in ['VOICE', 'HOP', 'OP', 'ADMIN', 'OWNER']:
-            if privtype not in bot.memory['SpiceBot_Channels']['channels'][str(chan).lower()].keys():
-                bot.memory['SpiceBot_Channels']['channels'][str(chan).lower()][privtype] = []
-
-    for user in bot.channels[channel].privileges.keys():
-        try:
-            privnum = bot.channels[channel].privileges[user] or 0
-        except KeyError:
-            privnum = 0
-
-        for privtype in ['VOICE', 'HOP', 'OP', 'ADMIN', 'OWNER']:
-            if privnum == eval(privtype) or (privnum >= eval(privtype) and privtype == 'OWNER'):
-                if user not in bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()][privtype]:
-                    bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()][privtype].append(user)
-            else:
-                if user in bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()][privtype]:
-                    bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()][privtype].remove(user)
