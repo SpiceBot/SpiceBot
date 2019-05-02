@@ -194,12 +194,12 @@ def nickname_comand_chanstats(bot, trigger):
         if not inlist(bot, channel.lower(), bot.channels.keys()):
             bot.osd("I need to be in {} to see nick privileges.".format(channel))
             return
-        channel_privs(bot, channel)
+        privlist = channel_privs(bot, channel, commandused.upper())
         dispmsg = []
-        if not len(bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()][commandused.upper()]):
+        if not len(privlist):
             dispmsg.append("There are no Channel " + commandused.upper() + "s for " + str(channel))
         else:
-            oplist = spicemanip.main(bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()][commandused.upper()], 'andlist')
+            oplist = spicemanip.main(privlist, 'andlist')
             dispmsg.append("Channel " + commandused.upper() + "s for " + str(channel) + "  are: " + oplist)
         bot.osd(dispmsg, trigger.nick, 'notice')
         return
@@ -213,12 +213,12 @@ def nickname_comand_chanstats(bot, trigger):
         if not inlist(bot, channel.lower(), bot.channels.keys()):
             bot.osd("I need to be in {} to see nick privileges.".format(channel))
             return
-        channel_privs(bot, channel)
+        privlist = channel_privs(bot, channel, commandused.upper())
         dispmsg = []
-        if not len(bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()][commandused.upper()]):
+        if not len(privlist):
             dispmsg.append("There are no Channel " + commandused.upper() + "s for " + str(channel))
         else:
-            oplist = spicemanip.main(bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()][commandused.upper()], 'andlist')
+            oplist = spicemanip.main(privlist, 'andlist')
             dispmsg.append("Channel " + commandused.upper() + "s for " + str(channel) + "  are: " + oplist)
         bot.osd(dispmsg, trigger.nick, 'notice')
         return
@@ -232,12 +232,12 @@ def nickname_comand_chanstats(bot, trigger):
         if not inlist(bot, channel.lower(), bot.channels.keys()):
             bot.osd("I need to be in {} to see nick privileges.".format(channel))
             return
-        channel_privs(bot, channel)
+        privlist = channel_privs(bot, channel, commandused.upper())
         dispmsg = []
-        if not len(bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()][commandused.upper()]):
+        if not len(privlist):
             dispmsg.append("There are no Channel " + commandused.upper() + "s for " + str(channel))
         else:
-            oplist = spicemanip.main(bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()][commandused.upper()], 'andlist')
+            oplist = spicemanip.main(privlist, 'andlist')
             dispmsg.append("Channel " + commandused.upper() + "s for " + str(channel) + "  are: " + oplist)
         bot.osd(dispmsg, trigger.nick, 'notice')
         return
@@ -251,12 +251,12 @@ def nickname_comand_chanstats(bot, trigger):
         if not inlist(bot, channel.lower(), bot.channels.keys()):
             bot.osd("I need to be in {} to see nick privileges.".format(channel))
             return
-        channel_privs(bot, channel)
+        privlist = channel_privs(bot, channel, commandused.upper())
         dispmsg = []
-        if not len(bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()][commandused.upper()]):
+        if not len(privlist):
             dispmsg.append("There are no Channel " + commandused.upper() + "s for " + str(channel))
         else:
-            oplist = spicemanip.main(bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()][commandused.upper()], 'andlist')
+            oplist = spicemanip.main(privlist, 'andlist')
             dispmsg.append("Channel " + commandused.upper() + "s for " + str(channel) + "  are: " + oplist)
         bot.osd(dispmsg, trigger.nick, 'notice')
         return
@@ -270,12 +270,12 @@ def nickname_comand_chanstats(bot, trigger):
         if not inlist(bot, channel.lower(), bot.channels.keys()):
             bot.osd("I need to be in {} to see nick privileges.".format(channel))
             return
-        channel_privs(bot, channel)
+        privlist = channel_privs(bot, channel, commandused.upper())
         dispmsg = []
-        if not len(bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()][commandused.upper()]):
+        if not len(privlist):
             dispmsg.append("There are no Channel " + commandused.upper() + "s for " + str(channel))
         else:
-            oplist = spicemanip.main(bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()][commandused.upper()], 'andlist')
+            oplist = spicemanip.main(privlist, 'andlist')
             dispmsg.append("Channel " + commandused.upper() + "s for " + str(channel) + "  are: " + oplist)
         bot.osd(dispmsg, trigger.nick, 'notice')
         return

@@ -9,12 +9,14 @@ from sopel.config.types import StaticSection, ValidatedAttribute
 
 import sopel_modules.osd
 
-from sopel_modules.SpiceBot_SBTools import service_manip, spicebot_update
+import spicemanip
+
+from sopel_modules.SpiceBot_SBTools import service_manip, spicebot_update, sopel_triggerargs
 
 
 class SpiceBot_Update_MainSection(StaticSection):
     gitrepo = ValidatedAttribute('gitrepo', default="https://github.com/SpiceBot/SpiceBot")
-    gitbranch = ValidatedAttribute('gitrepo', default="master")
+    gitbranch = ValidatedAttribute('gitbranch', default="master")
 
 
 def configure(config):
@@ -31,12 +33,28 @@ def setup(bot):
 @sopel.module.nickname_commands('update')
 def nickname_comand_chanstats(bot, trigger):
 
+    triggerargs = sopel_triggerargs(bot, trigger, 'nickname_command')
+
+    if not len(triggerargs):
+        commandused = 'nodeps'
+    else:
+        commandused = spicemanip.main(triggerargs, 1).lower()
+
+    if commandused not in ['deps', 'nodeps']:
+        bot.say("Please specify deps or nodeps")
+        return
+
+    triggerargs = spicemanip.main(triggerargs, '2+', 'list')
+
     if not trigger.admin:
         bot.say("You are not authorized to perform this function.")
 
     stderr("Recieved Command to update.")
     bot.osd("Received command from " + trigger.nick + " to update from Github and restart. Be Back Soon!", bot.channels.keys())
 
-    spicebot_update(bot)
+    if commandused == 'nodeps':
+        spicebot_update(bot, "False")
+    if commandused == 'deps':
+        spicebot_update(bot, "True")
 
     service_manip(bot, bot.nick, 'restart')
