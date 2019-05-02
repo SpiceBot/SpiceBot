@@ -143,7 +143,7 @@ def service_manip(bot, servicename, dowhat):
 def spicebot_update(bot):
     try:
         stderr("Updating " + bot.nick + " from Github.")
-        for line in os.popen("pip3 install --upgrade --no-deps --force-reinstall git+" +
+        for line in os.popen("pip3 install --upgrade --force-reinstall git+" +
                     str(bot.config.SpiceBot_Update.gitrepo) +
                     "@" + str(bot.config.SpiceBot_Update.gitbranch)).read().split('\n'):
             stderr(line)
