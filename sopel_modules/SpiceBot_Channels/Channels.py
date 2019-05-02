@@ -5,7 +5,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 # sopel imports
 import sopel.module
 from sopel.tools import stderr
-from sopel.config.types import StaticSection, ValidatedAttribute
+from sopel.config.types import StaticSection, ValidatedAttribute, ListAttribute
 from sopel.module import OP, ADMIN, VOICE, OWNER, HALFOP
 HOP = HALFOP
 
@@ -23,6 +23,7 @@ class SpiceBot_Channels_MainSection(StaticSection):
     announcenew = ValidatedAttribute('announcenew', default=False)
     joinall = ValidatedAttribute('joinall', default=False)
     operadmin = ValidatedAttribute('operadmin', default=False)
+    chanignore = ListAttribute('chanignore')
 
 
 def configure(config):
@@ -30,6 +31,7 @@ def configure(config):
     config.SpiceBot_Channels.configure_setting('announcenew', 'SpiceBot_Channels Announce New Channels')
     config.SpiceBot_Channels.configure_setting('announcenew', 'SpiceBot_Channels JOIN New Channels')
     config.SpiceBot_Channels.configure_setting('announcenew', 'SpiceBot_Channels OPER ADMIN MODE')
+    config.SpiceBot_Channels.configure_setting('chanignore', 'SpiceBot_Channels Ignore JOIN for channels')
 
 
 def setup(bot):
@@ -71,17 +73,20 @@ def trigger_channel_list_initial(bot, trigger):
     # JOIN
     if bot.config.SpiceBot_Channels.joinall:
         for channel in bot.memory['SpiceBot_Channels']['channels'].keys():
-            if channel not in bot.channels.keys():
+            if channel not in bot.channels.keys() and channel not in bot.config.SpiceBot_Channels.chanignore:
                 bot.write(('JOIN', bot.nick, bot.memory['SpiceBot_Channels']['channels'][channel]['name']))
                 if channel not in bot.channels.keys():
                     bot.write(('SAJOIN', bot.nick, bot.memory['SpiceBot_Channels']['channels'][channel]['name']))
 
     # Chan ADMIN +a
     for channel in bot.channels.keys():
-        if bot.config.SpiceBot_Channels.operadmin:
-            if not bot.channels[channel].privileges[bot.nick] < ADMIN:
-                bot.write(('SAMODE', channel, "+a", bot.nick))
-        channel_privs(bot, channel)
+        if channel not in bot.config.SpiceBot_Channels.chanignore:
+            if bot.config.SpiceBot_Channels.operadmin:
+                if not bot.channels[channel].privileges[bot.nick] < ADMIN:
+                    bot.write(('SAMODE', channel, "+a", bot.nick))
+            channel_privs(bot, channel)
+        else:
+            bot.part(channel)
 
     if "*" in bot.memory['SpiceBot_Channels']['channels']:
         del bot.memory['SpiceBot_Channels']['channels']["*"]
@@ -104,17 +109,20 @@ def trigger_channel_list_initial(bot, trigger):
         # JOIN
         if bot.config.SpiceBot_Channels.joinall:
             for channel in bot.memory['SpiceBot_Channels']['channels'].keys():
-                if channel not in bot.channels.keys():
+                if channel not in bot.channels.keys() and channel not in bot.config.SpiceBot_Channels.chanignore:
                     bot.write(('JOIN', bot.nick, bot.memory['SpiceBot_Channels']['channels'][channel]['name']))
                     if channel not in bot.channels.keys():
                         bot.write(('SAJOIN', bot.nick, bot.memory['SpiceBot_Channels']['channels'][channel]['name']))
 
         # Chan ADMIN +a
         for channel in bot.channels.keys():
-            if bot.config.SpiceBot_Channels.operadmin:
-                if not bot.channels[channel].privileges[bot.nick] < ADMIN:
-                    bot.write(('SAMODE', channel, "+a", bot.nick))
-            channel_privs(bot, channel)
+            if channel not in bot.config.SpiceBot_Channels.chanignore:
+                if bot.config.SpiceBot_Channels.operadmin:
+                    if not bot.channels[channel].privileges[bot.nick] < ADMIN:
+                        bot.write(('SAMODE', channel, "+a", bot.nick))
+                channel_privs(bot, channel)
+            else:
+                bot.part(channel)
 
         if "*" in bot.memory['SpiceBot_Channels']['channels']:
             del bot.memory['SpiceBot_Channels']['channels']["*"]
