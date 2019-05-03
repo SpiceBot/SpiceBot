@@ -3,7 +3,6 @@
 from __future__ import unicode_literals, absolute_import, division, print_function
 
 import sopel.module
-from sopel.tools import stderr
 
 import sopel_modules.osd
 import spicemanip
