@@ -6,3 +6,4 @@ include *requirements.txt
 recursive-include tests *
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
+recursive-include sopel_modules/SpiceBot_GifSearch/gifapi *
