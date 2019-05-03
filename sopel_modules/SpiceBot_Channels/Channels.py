@@ -184,7 +184,7 @@ def nickname_comand_chanstats(bot, trigger):
         bot.osd("Topic for {}: {}".format(channel, topic))
         return
 
-    if commandused.upper() == ['OP', 'HOP', 'VOICE', 'OWNER', 'ADMIN']:
+    if commandused.upper() in ['OP', 'HOP', 'VOICE', 'OWNER', 'ADMIN']:
         if not len(triggerargs):
             if trigger.is_privmsg:
                 bot.osd("Channel name required.")
