@@ -28,24 +28,28 @@ def bot_command_hub(bot, trigger):
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
 
     if not len(triggerargs):
-        bot.say("You must specify a channel.")
+        bot.say("You must specify a channel or nick.")
         return
 
-    channel = spicemanip.main(triggerargs, 1)
-    if not inlist(bot, channel.lower(), bot.memory['SpiceBot_Channels']['channels'].keys()) and channel != 'all':
-        bot.osd("Channel name {} not valid.".format(channel))
+    target = spicemanip.main(triggerargs, 1)
+    if (target not in ['allchans', 'allnicks']
+            and not inlist(bot, target.lower(), bot.memory['SpiceBot_Channels']['channels'].keys())
+            and not inlist(bot, target.lower(), bot.users)):
+        bot.osd("Channel/nick name {} not valid.".format(target))
         return
 
     triggerargs = spicemanip.main(triggerargs, '2+')
 
-    if channel == 'all':
-        channelsendlist = bot.channels.keys()
+    if target == 'allchans':
+        targetsendlist = bot.channels.keys()
+    elif target == 'allnicks':
+        targetsendlist = bot.users
     else:
-        channelsendlist = [channel]
+        targetsendlist = [target]
 
     botmessage = spicemanip.main(triggerargs, 0)
     if not botmessage:
         bot.say("You must specify a message to send.")
         return
 
-    bot.osd(botmessage, channelsendlist, triggercommand.upper())
+    bot.osd(botmessage, targetsendlist, triggercommand.upper())
