@@ -1,0 +1,12 @@
+{
+"url": "https://api.gfycat.com/v1/gfycats/search?",
+"query": 'search_text=',
+"limit": '&count=',
+"id": None,
+"api_id": None,
+"key": None,
+"nsfw": '&nsfw=3',
+"sfw": '&nsfw=1',
+"results": 'gfycats',
+"cururl": 'gifUrl',
+}
