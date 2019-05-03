@@ -19,7 +19,7 @@ import spicemanip
 """Sopel Wrapping Tools"""
 
 
-def sopel_triggerargs(bot, trigger, command_type):
+def sopel_triggerargs(bot, trigger, command_type='module_command'):
     triggerargs = []
 
     if len(trigger.args) > 1:
