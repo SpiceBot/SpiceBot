@@ -16,12 +16,12 @@ from sopel_modules.SpiceBot_SBTools import sopel_triggerargs
 @sopel.module.commands('(.*)')
 def gifapi_triggers(bot, trigger):
 
-    while "Sopel-GifSearch" not in bot.memory:
+    while "SpiceBot_GifSearch" not in bot.memory:
         pass
 
     triggerargs, prefixcommand = sopel_triggerargs(bot, trigger, 'prefix_command')
 
-    if prefixcommand not in bot.memory["Sopel-GifSearch"]['valid_gif_api_dict'].keys():
+    if prefixcommand not in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
         return
 
     if triggerargs == []:

@@ -16,7 +16,7 @@ import spicemanip
 @module.commands('gif')
 def gif_trigger(bot, trigger):
 
-    while "Sopel-GifSearch" not in bot.memory:
+    while "SpiceBot_GifSearch" not in bot.memory:
         pass
 
     triggerargs = sopel_triggerargs(bot, trigger)
@@ -24,7 +24,7 @@ def gif_trigger(bot, trigger):
         return bot.osd("Please present a query to search.")
 
     query = spicemanip.main(triggerargs, 0)
-    searchapis = bot.memory["Sopel-GifSearch"]['valid_gif_api_dict'].keys()
+    searchapis = bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys()
     searchdict = {"query": query, "gifsearch": searchapis}
 
     gifdict = getGif(bot, searchdict)
