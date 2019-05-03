@@ -5,4 +5,4 @@ from .Messaging import *
 
 __author__ = 'Sam Zick'
 __email__ = 'sam@deathbybandaid.net'
-__version__ = '0.1.0'
+__version__ = '0.1.1'
