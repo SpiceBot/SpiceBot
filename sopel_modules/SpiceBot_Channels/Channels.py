@@ -11,8 +11,6 @@ import time
 
 import spicemanip
 
-import sopel_modules.osd
-
 from sopel_modules.SpiceBot_SBTools import (
                                             sopel_triggerargs, inlist, topic_compile, channel_privs,
                                             join_all_channels, chanadmin_all_channels, channel_list_current

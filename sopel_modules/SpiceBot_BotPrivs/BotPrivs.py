@@ -4,7 +4,6 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.module
 
-import sopel_modules.osd
 import spicemanip
 
 from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, bot_privs

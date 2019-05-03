@@ -6,8 +6,6 @@ from sopel import module
 
 from .gifsearch import getGif
 
-import sopel_modules.osd
-
 from sopel_modules.SpiceBot_SBTools import sopel_triggerargs
 
 import spicemanip

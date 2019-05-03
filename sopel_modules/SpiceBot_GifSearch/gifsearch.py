@@ -6,8 +6,6 @@ import sopel.module
 from sopel.tools import stderr
 from sopel.config.types import StaticSection, ValidatedAttribute
 
-import sopel_modules.osd
-
 from sopel_modules.SpiceBot_Botevents.BotEvents import set_bot_event, check_bot_events, startup_bot_event
 
 from sopel_modules.SpiceBot_CommandsQuery.CommandsQuery import commandsquery_register, commandsquery_register_type
