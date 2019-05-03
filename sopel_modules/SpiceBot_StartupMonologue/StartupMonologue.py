@@ -8,7 +8,7 @@ from sopel.tools import stderr
 import sopel_modules.osd
 
 
-from sopel_modules.SpiceBot_Botevents.BotEvents import set_bot_event, bot_startup_requirements_met, check_bot_events
+from sopel_modules.SpiceBot_Botevents.BotEvents import set_bot_event, check_bot_events
 
 from sopel_modules.SpiceBot_CommandsQuery.CommandsQuery import commandsquery_register
 
@@ -29,7 +29,7 @@ def bot_startup_monologue(bot, trigger):
     while not check_bot_events(bot, ["connected"]):
         pass
 
-    if bot_startup_requirements_met(bot, ["SpiceBot_StartupMonologue"]):
+    if check_bot_events(bot, ["SpiceBot_StartupMonologue"]):
         startup_reconnect(bot, trigger)
     else:
         startup_fresh(bot, trigger)
