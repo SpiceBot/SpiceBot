@@ -11,6 +11,7 @@ HOP = HALFOP
 import collections
 import re
 import os
+import codecs
 
 import spicemanip
 
@@ -18,7 +19,7 @@ import spicemanip
 """Sopel Wrapping Tools"""
 
 
-def sopel_triggerargs(bot, trigger, command_type):
+def sopel_triggerargs(bot, trigger, command_type='module_command'):
     triggerargs = []
 
     if len(trigger.args) > 1:
@@ -29,6 +30,10 @@ def sopel_triggerargs(bot, trigger, command_type):
         triggerargs = spicemanip.main(triggerargs, '2+', 'list')
     elif command_type in ['nickname_command']:
         triggerargs = spicemanip.main(triggerargs, '3+', 'list')
+    elif command_type in ['prefix_command']:
+        prefixcommand = spicemanip.main(triggerargs, 1).lower()[1:]
+        triggerargs = spicemanip.main(triggerargs, '2+', 'list')
+        return triggerargs, prefixcommand
 
     return triggerargs
 
@@ -148,3 +153,55 @@ def spicebot_update(bot, deps="False"):
         path = os.path.join(modules_dir, pathname)
         if (os.path.isfile(path) and path.endswith('.py') and not path.startswith('_')):
             os.system("sudo mv " + path + " " + stockdir)
+
+
+"""Config Reading Functions"""
+
+
+def read_directory_json_to_dict(directories, configtypename="Config File", stderrname=''):
+
+    if not isinstance(directories, list):
+        directories = [directories]
+
+    configs_dict = {}
+    filesprocess, fileopenfail, filecount = [], 0, 0
+    for directory in directories:
+        if os.path.exists(directory) and os.path.isdir(directory):
+            if len(os.listdir(directory)) > 0:
+                for file in os.listdir(directory):
+                    filepath = os.path.join(directory, file)
+                    if os.path.isfile(filepath):
+                        filesprocess.append(filepath)
+        else:
+            stderr(stderrname + directory)
+
+    for filepath in filesprocess:
+
+        # Read dictionary from file, if not, enable an empty dict
+        filereadgood = True
+        inf = codecs.open(filepath, "r", encoding='utf-8')
+        infread = inf.read()
+        try:
+            dict_from_file = eval(infread)
+        except Exception as e:
+            filereadgood = False
+            stderr(stderrname + "Error loading %s: %s (%s)" % (configtypename, e, filepath))
+            dict_from_file = dict()
+        # Close File
+        inf.close()
+
+        if filereadgood and isinstance(dict_from_file, dict):
+            filecount += 1
+            slashsplit = str(filepath).split("/")
+            filename = slashsplit[-1]
+            configs_dict[filename] = dict_from_file
+        else:
+            fileopenfail += 1
+
+    if filecount:
+        stderr(stderrname + 'Registered %d %s files,' % (filecount, configtypename))
+        stderr(stderrname + '%d %s files failed to load' % (fileopenfail, configtypename))
+    else:
+        stderr(stderrname + "Warning: Couldn't load any %s files" % (configtypename))
+
+    return configs_dict

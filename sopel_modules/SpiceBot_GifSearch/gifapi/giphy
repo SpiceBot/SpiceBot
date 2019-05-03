@@ -1,0 +1,12 @@
+{
+"url": "http://api.giphy.com/v1/gifs/search?",
+"query": 'q=',
+"limit": '&limit=',
+"id": None,
+"api_id": None,
+"key": "&api_key=",
+"nsfw": None,
+"sfw": 'rating=R',
+"results": 'data',
+"cururl": 'url',
+}

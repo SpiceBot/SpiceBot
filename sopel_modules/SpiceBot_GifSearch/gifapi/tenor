@@ -1,0 +1,12 @@
+{
+"url": "https://api.tenor.com/v1/search?",
+"query": 'q=',
+"limit": '&limit=',
+"id": None,
+"api_id": None,
+"key": "&key=",
+"nsfw": '&contentfilter=off',
+"sfw": '&contentfilter=low',
+"results": 'results',
+"cururl": 'url',
+}
