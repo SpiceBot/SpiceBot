@@ -27,15 +27,48 @@ def sopel_triggerargs(bot, trigger, command_type='module_command'):
     triggerargs = spicemanip.main(triggerargs, 'create')
 
     if command_type in ['module_command']:
+        command = spicemanip.main(triggerargs, 1).lower()
         triggerargs = spicemanip.main(triggerargs, '2+', 'list')
     elif command_type in ['nickname_command']:
+        command = spicemanip.main(triggerargs, 1).lower()[1:]
         triggerargs = spicemanip.main(triggerargs, '3+', 'list')
     elif command_type in ['prefix_command']:
-        prefixcommand = spicemanip.main(triggerargs, 1).lower()[1:]
+        command = spicemanip.main(triggerargs, 1).lower()[1:]
         triggerargs = spicemanip.main(triggerargs, '2+', 'list')
-        return triggerargs, prefixcommand
 
-    return triggerargs
+    return triggerargs, command
+
+
+def command_permissions_check(bot, trigger, privslist):
+
+    commandrunconsensus = []
+
+    for botpriv in ["admins", "owner"]:
+        if botpriv in privslist:
+            botpriveval = eval("bot.config.core." + botpriv)
+            if not isinstance(botpriveval, list):
+                botpriveval = [botpriv]
+            if not inlist(bot, trigger.nick, botpriveval):
+                commandrunconsensus.append('False')
+            else:
+                commandrunconsensus.append('True')
+
+    if not trigger.is_privmsg:
+        for chanpriv in ['OP', 'HOP', 'VOICE', 'OWNER', 'ADMIN']:
+            if chanpriv in privslist:
+                chanpriveval = channel_privs(bot, trigger.sender, chanpriv)
+                if not inlist(bot, trigger.nick, chanpriveval):
+                    commandrunconsensus.append('False')
+                else:
+                    commandrunconsensus.append('True')
+
+    if privslist == []:
+        commandrunconsensus.append('True')
+
+    if 'True' not in commandrunconsensus:
+        return False
+
+    return True
 
 
 """List Manipulation Functions"""

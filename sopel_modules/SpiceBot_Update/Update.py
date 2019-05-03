@@ -11,7 +11,7 @@ import sopel_modules.osd
 
 import spicemanip
 
-from sopel_modules.SpiceBot_SBTools import service_manip, spicebot_update, sopel_triggerargs
+from sopel_modules.SpiceBot_SBTools import service_manip, spicebot_update, sopel_triggerargs, command_permissions_check
 
 
 class SpiceBot_Update_MainSection(StaticSection):
@@ -33,7 +33,11 @@ def setup(bot):
 @sopel.module.nickname_commands('update')
 def nickname_comand_chanstats(bot, trigger):
 
-    triggerargs = sopel_triggerargs(bot, trigger, 'nickname_command')
+    if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
+        bot.say("I was unable to process this Bot Nick command due to privilege issues.")
+        return
+
+    triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
 
     if not len(triggerargs):
         commandused = 'nodeps'
@@ -45,9 +49,6 @@ def nickname_comand_chanstats(bot, trigger):
         return
 
     triggerargs = spicemanip.main(triggerargs, '2+', 'list')
-
-    if not trigger.admin:
-        bot.say("You are not authorized to perform this function.")
 
     stderr("Recieved Command to update.")
     bot.osd("Received command from " + trigger.nick + " to update from Github and restart. Be Back Soon!", bot.channels.keys())

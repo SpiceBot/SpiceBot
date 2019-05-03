@@ -101,7 +101,7 @@ def setup_thread(bot):
 
 @sopel.module.commands('gif')
 def gif_trigger(bot, trigger):
-    triggerargs = sopel_triggerargs(bot, trigger)
+    triggerargs, triggercommand = sopel_triggerargs(bot, trigger)
     if triggerargs == []:
         return bot.osd("Please present a query to search.")
 

@@ -126,7 +126,8 @@ def watch_chanlist_complete(bot, trigger):
 
 @sopel.module.nickname_commands('channels', 'channel')
 def nickname_comand_chanstats(bot, trigger):
-    triggerargs = sopel_triggerargs(bot, trigger, 'nickname_command')
+
+    triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
 
     if not len(triggerargs):
         commandused = 'list'

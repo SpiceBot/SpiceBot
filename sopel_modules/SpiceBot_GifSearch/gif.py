@@ -19,7 +19,7 @@ def gif_trigger(bot, trigger):
     while "SpiceBot_GifSearch" not in bot.memory:
         pass
 
-    triggerargs = sopel_triggerargs(bot, trigger)
+    triggerargs, triggercommand = sopel_triggerargs(bot, trigger)
     if triggerargs == []:
         return bot.osd("Please present a query to search.")
 
