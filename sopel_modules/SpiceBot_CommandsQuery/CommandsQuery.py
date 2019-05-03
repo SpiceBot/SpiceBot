@@ -14,7 +14,6 @@ import threading
 
 from sopel_modules.SpiceBot_Botevents.BotEvents import set_bot_event
 
-
 import spicemanip
 
 
