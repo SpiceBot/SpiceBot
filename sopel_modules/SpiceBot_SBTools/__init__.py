@@ -111,6 +111,26 @@ def inlist(bot, searchterm, searchlist):
         return False
 
 
+def inlist_match(bot, searchterm, searchlist):
+    # verify we are searching a list
+    if isinstance(searchlist, collections.abc.KeysView) or isinstance(searchlist, dict):
+        searchlist = [x for x in searchlist]
+    if not isinstance(searchlist, list):
+        searchlist = [searchlist]
+    rebuildlist = []
+    for searchitem in searchlist:
+        rebuildlist.append(str(searchitem))
+
+    searchterm = str(searchterm)
+    if searchterm in rebuildlist:
+        return searchterm
+    else:
+        for searching in rebuildlist:
+            if searching.lower() == searchterm.lower():
+                return searching
+    return searchterm
+
+
 """Channel Functions"""
 
 
