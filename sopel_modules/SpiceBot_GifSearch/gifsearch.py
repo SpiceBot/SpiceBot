@@ -10,7 +10,7 @@ import sopel_modules.osd
 
 from sopel_modules.SpiceBot_Botevents.BotEvents import set_bot_event, check_bot_events, startup_bot_event
 
-from sopel_modules.SpiceBot_CommandsQuery.CommandsQuery import commandsquery_register
+from sopel_modules.SpiceBot_CommandsQuery.CommandsQuery import commandsquery_register, commandsquery_register_type
 
 from sopel_modules.SpiceBot_SBTools import read_directory_json_to_dict, sopel_triggerargs
 
@@ -90,6 +90,7 @@ def setup_thread(bot):
     while not check_bot_events(bot, ["SpiceBot_CommandsQuery"]):
         pass
 
+    commandsquery_register_type(bot, "prefix_command")
     for prefix_command in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
         commandsquery_register(bot, "prefix_command", prefix_command)
 

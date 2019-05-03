@@ -232,6 +232,16 @@ def query_detection(bot, trigger):
             return
 
 
+def commandsquery_register_type(bot, command_type):
+    if 'SpiceBot_CommandsQuery' not in bot.memory:
+        bot.memory['SpiceBot_CommandsQuery'] = dict()
+
+    if command_type not in bot.memory['SpiceBot_CommandsQuery'].keys():
+        bot.memory['SpiceBot_CommandsQuery'][command_type] = dict()
+        bot.memory['SpiceBot_CommandsQuery'][command_type + "_count"] = 0
+    bot.memory['SpiceBot_CommandsQuery'][command_type + "_count"] += 1
+
+
 def commandsquery_register(bot, command_type, validcoms, aliasfor=None):
 
     if not isinstance(validcoms, list):
