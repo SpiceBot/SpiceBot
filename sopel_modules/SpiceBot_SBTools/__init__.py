@@ -30,6 +30,10 @@ def sopel_triggerargs(bot, trigger, command_type):
         triggerargs = spicemanip.main(triggerargs, '2+', 'list')
     elif command_type in ['nickname_command']:
         triggerargs = spicemanip.main(triggerargs, '3+', 'list')
+    elif command_type in ['prefix_command']:
+        prefixcommand = spicemanip.main(triggerargs, 1).lower()[1:]
+        triggerargs = spicemanip.main(triggerargs, '2+', 'list')
+        return triggerargs, prefixcommand
 
     return triggerargs
 

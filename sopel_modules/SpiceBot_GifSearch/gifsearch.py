@@ -8,11 +8,11 @@ from sopel.config.types import StaticSection, ValidatedAttribute
 
 import sopel_modules.osd
 
-from sopel_modules.SpiceBot_Botevents.BotEvents import set_bot_event
+from sopel_modules.SpiceBot_Botevents.BotEvents import set_bot_event, check_bot_events, startup_bot_event
 
 from sopel_modules.SpiceBot_CommandsQuery.CommandsQuery import commandsquery_register
 
-from sopel_modules.SpiceBot_SBTools import read_directory_json_to_dict
+from sopel_modules.SpiceBot_SBTools import read_directory_json_to_dict, sopel_triggerargs
 
 import spicemanip
 
@@ -62,6 +62,8 @@ def setup(bot):
 
 def setup_thread(bot):
 
+    startup_bot_event(bot, "SpiceBot_GifSearch")
+
     bot.memory["SpiceBot_GifSearch"] = {"cache": {}, "badgiflinks": [], 'valid_gif_api_dict': {}}
 
     dir_to_scan = []
@@ -85,15 +87,15 @@ def setup_thread(bot):
             valid_gif_api_dict[gif_api]["apikey"] = None
         bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'][gif_api] = valid_gif_api_dict[gif_api]
 
-    set_bot_event(bot, "SpiceBot_GifSearch")
-
-    while 'SpiceBot_CommandsQuery' not in bot.memory:
+    while not check_bot_events(bot, ["SpiceBot_CommandsQuery"]):
         pass
 
     for prefix_command in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
         commandsquery_register(bot, "prefix_command", prefix_command)
 
     stderr("[SpiceBot_CommandsQuery] Found " + str(len(bot.memory['SpiceBot_CommandsQuery']["prefix_command"].keys())) + " " + "prefix_command" + " commands.")
+
+    set_bot_event(bot, "SpiceBot_GifSearch")
 
 
 @sopel.module.commands('gif')
@@ -112,25 +114,6 @@ def gif_trigger(bot, trigger):
         bot.osd(gifdict["error"])
     else:
         bot.osd(str(gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"])))
-
-
-def sopel_triggerargs(bot, trigger, command_type='module_command'):
-    triggerargs = []
-
-    if len(trigger.args) > 1:
-        triggerargs = spicemanip.main(trigger.args[1], 'create')
-    triggerargs = spicemanip.main(triggerargs, 'create')
-
-    if command_type in ['module_command']:
-        triggerargs = spicemanip.main(triggerargs, '2+', 'list')
-    elif command_type in ['nickname_command']:
-        triggerargs = spicemanip.main(triggerargs, '3+', 'list')
-    elif command_type in ['prefix_command']:
-        prefixcommand = spicemanip.main(triggerargs, 1).lower()[1:]
-        triggerargs = spicemanip.main(triggerargs, '2+', 'list')
-        return triggerargs, prefixcommand
-
-    return triggerargs
 
 
 def getGif(bot, searchdict):
