@@ -6,8 +6,6 @@ import sopel.module
 from sopel.tools import stderr
 from sopel.config.types import StaticSection, ValidatedAttribute
 
-import sopel_modules.osd
-
 from sopel_modules.SpiceBot_Botevents.BotEvents import set_bot_event, check_bot_events, startup_bot_event
 
 from sopel_modules.SpiceBot_CommandsQuery.CommandsQuery import commandsquery_register, commandsquery_register_type
@@ -101,7 +99,7 @@ def setup_thread(bot):
 
 @sopel.module.commands('gif')
 def gif_trigger(bot, trigger):
-    triggerargs = sopel_triggerargs(bot, trigger)
+    triggerargs, triggercommand = sopel_triggerargs(bot, trigger)
     if triggerargs == []:
         return bot.osd("Please present a query to search.")
 
