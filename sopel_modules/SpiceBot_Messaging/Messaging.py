@@ -18,14 +18,31 @@ def setup(bot):
     pass
 
 
-@sopel.module.nickname_commands('action', 'notice', 'privmsg')
-def bot_command_hub(bot, trigger):
+@sopel.module.nickname_commands('action')
+def bot_command_action(bot, trigger):
+    bot_command_process(bot, trigger)
+
+
+@sopel.module.nickname_commands('notice')
+def bot_command_notice(bot, trigger):
+    bot_command_process(bot, trigger)
+
+
+@sopel.module.nickname_commands('privmsg', 'say', 'msg')
+def bot_command_privmsg(bot, trigger):
+    bot_command_process(bot, trigger)
+
+
+def bot_command_process(bot, trigger):
 
     if not command_permissions_check(bot, trigger, ['admins', 'owner']):
         bot.say("I was unable to process this Bot Nick command due to privilege issues.")
         return
 
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
+
+    if triggercommand in ['say', 'msg']:
+        triggercommand = 'privmsg'
 
     if not len(triggerargs):
         bot.say("You must specify a channel or nick.")

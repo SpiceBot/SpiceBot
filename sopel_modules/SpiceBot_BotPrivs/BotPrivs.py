@@ -18,8 +18,17 @@ def setup(bot):
     pass
 
 
-@sopel.module.nickname_commands('admins', 'owners', 'owner')
-def bot_command_hub(bot, trigger):
+@sopel.module.nickname_commands('owners', 'owner')
+def bot_command_owners(bot, trigger):
+    bot_command_process(bot, trigger)
+
+
+@sopel.module.nickname_commands('admins')
+def bot_command_admins(bot, trigger):
+    bot_command_process(bot, trigger)
+
+
+def bot_command_process(bot, trigger):
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
 
     if triggercommand == 'owner':
