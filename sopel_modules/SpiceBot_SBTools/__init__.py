@@ -36,15 +36,20 @@ def sopel_triggerargs(bot, trigger, command_type='module_command'):
     return triggerargs, command
 
 
+def bot_privs(bot, privtype):
+    botpriveval = eval("bot.config.core." + privtype)
+    if not isinstance(botpriveval, list):
+        botpriveval = [botpriveval]
+    return botpriveval
+
+
 def command_permissions_check(bot, trigger, privslist):
 
     commandrunconsensus = []
 
     for botpriv in ["admins", "owner"]:
         if botpriv in privslist:
-            botpriveval = eval("bot.config.core." + botpriv)
-            if not isinstance(botpriveval, list):
-                botpriveval = [botpriv]
+            botpriveval = bot_privs(bot, botpriv)
             if not inlist(bot, trigger.nick, botpriveval):
                 commandrunconsensus.append('False')
             else:

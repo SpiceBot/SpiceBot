@@ -38,7 +38,7 @@ def bot_command_hub(bot, trigger):
         bot.osd("Channel/nick name {} not valid.".format(target))
         return
 
-    triggerargs = spicemanip.main(triggerargs, '2+')
+    triggerargs = spicemanip.main(triggerargs, '2+', 'list')
 
     if target == 'allchans':
         targetsendlist = bot.channels.keys()
