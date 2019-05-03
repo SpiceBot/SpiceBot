@@ -50,11 +50,12 @@ def setup_thread(bot):
     # pypi installed
     try:
         import sopel_modules
-        pypi_modules = os.path.dirname(os.path.abspath(sopel_modules.__file__))
-        pypi_modules_dir = os.path.join(pypi_modules, 'modules')
-        filepathlisting.append(pypi_modules_dir)
+        for plugin_dir in set(sopel_modules.__path__):
+            for pathname in os.listdir(plugin_dir):
+                pypi_modules_dir = os.path.join(plugin_dir, pathname)
+                filepathlisting.append(pypi_modules_dir)
     except Exception as e:
-        stderr("[Sopel-CommandsQuery] sopel_modules not found:" + str(e))
+        stderr("[Sopel-CommandsQuery] sopel_modules not loaded :" + str(e))
 
     # Extra directories
     filepathlist = []
@@ -159,7 +160,6 @@ def query_detection(bot, trigger):
     # command must start with
     if not str(trigger).startswith(tuple(['?'])):
         return
-    stderr(trigger.args)
 
     commands_list = dict()
     for commandstype in bot.memory['Sopel-CommandsQuery'].keys():
