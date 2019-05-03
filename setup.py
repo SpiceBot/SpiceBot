@@ -27,7 +27,7 @@ with open('dev-requirements.txt') as dev_requirements_file:
 
 setup(
     name='sopel_modules.SpiceBot',
-    version='0.1.0',
+    version='0.1.1',
     description='SpiceBot aims to run SpiceBot as an IRC service',
     long_description=readme + '\n\n' + history,
     author='Sam Zick',

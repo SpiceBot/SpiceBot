@@ -5,9 +5,6 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 from sopel import module
 from sopel.tools import stderr
 
-import sopel_modules.osd
-
-
 from sopel_modules.SpiceBot_Botevents.BotEvents import set_bot_event, check_bot_events
 
 from sopel_modules.SpiceBot_CommandsQuery.CommandsQuery import commandsquery_register

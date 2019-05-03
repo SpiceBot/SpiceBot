@@ -7,8 +7,6 @@ import sopel.module
 from sopel.tools import stderr
 from sopel.config.types import StaticSection, ValidatedAttribute
 
-import sopel_modules.osd
-
 from sopel_modules.SpiceBot_SBTools import service_manip
 
 
