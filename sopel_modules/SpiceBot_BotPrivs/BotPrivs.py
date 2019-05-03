@@ -18,7 +18,7 @@ def setup(bot):
     pass
 
 
-@sopel.module.nickname_commands('owners', 'owner')
+@sopel.module.nickname_commands('owners', 'owners')
 def bot_command_owners(bot, trigger):
     bot_command_process(bot, trigger)
 

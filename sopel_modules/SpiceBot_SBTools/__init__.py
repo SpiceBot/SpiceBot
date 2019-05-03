@@ -37,6 +37,8 @@ def sopel_triggerargs(bot, trigger, command_type='module_command'):
 
 
 def bot_privs(bot, privtype):
+    if privtype == 'owners':
+        privtype = 'owner'
     botpriveval = eval("bot.config.core." + privtype)
     if not isinstance(botpriveval, list):
         botpriveval = [botpriveval]
