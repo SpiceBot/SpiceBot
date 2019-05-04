@@ -15,6 +15,18 @@ import codecs
 
 import spicemanip
 
+"""Variable References"""
+
+github_dict = {
+                "url_main": "https://github.com/",
+                "url_api": "https://api.github.com/repos/",
+                "url_raw": "https://raw.githubusercontent.com/",
+                "url_path_wiki": "/wiki",
+                "url_path_issues": "/issues",
+                "repo_owner": "SpiceBot",
+                "repo_name": "SpiceBot",
+                }
+
 
 """Sopel Wrapping Tools"""
 
@@ -75,6 +87,42 @@ def command_permissions_check(bot, trigger, privslist):
     return True
 
 
+"""
+Time
+"""
+
+
+def humanized_time(countdownseconds):
+    time = float(countdownseconds)
+    if time == 0:
+        return "just now"
+    year = time // (365 * 24 * 3600)
+    time = time % (365 * 24 * 3600)
+    day = time // (24 * 3600)
+    time = time % (24 * 3600)
+    time = time % (24 * 3600)
+    hour = time // 3600
+    time %= 3600
+    minute = time // 60
+    time %= 60
+    second = time
+    displaymsg = None
+    timearray = ['year', 'day', 'hour', 'minute', 'second']
+    for x in timearray:
+        currenttimevar = eval(x)
+        if currenttimevar >= 1:
+            timetype = x
+            if currenttimevar > 1:
+                timetype = str(x+"s")
+            if displaymsg:
+                displaymsg = str(displaymsg + " " + str(int(currenttimevar)) + " " + timetype)
+            else:
+                displaymsg = str(str(int(currenttimevar)) + " " + timetype)
+    if not displaymsg:
+        return "just now"
+    return displaymsg
+
+
 """List Manipulation Functions"""
 
 
@@ -97,6 +145,26 @@ def inlist(bot, searchterm, searchlist):
         return True
     else:
         return False
+
+
+def inlist_match(bot, searchterm, searchlist):
+    # verify we are searching a list
+    if isinstance(searchlist, collections.abc.KeysView) or isinstance(searchlist, dict):
+        searchlist = [x for x in searchlist]
+    if not isinstance(searchlist, list):
+        searchlist = [searchlist]
+    rebuildlist = []
+    for searchitem in searchlist:
+        rebuildlist.append(str(searchitem))
+
+    searchterm = str(searchterm)
+    if searchterm in rebuildlist:
+        return searchterm
+    else:
+        for searching in rebuildlist:
+            if searching.lower() == searchterm.lower():
+                return searching
+    return searchterm
 
 
 """Channel Functions"""
