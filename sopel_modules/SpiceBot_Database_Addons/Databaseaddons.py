@@ -4,7 +4,8 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 # sopel imports
 import sopel.module
-from sopel.tools import stderr, Identifier
+from sopel.tools import Identifier
+from sopel_modules.SpiceBot_SBTools import bot_logging
 from sopel.db import _deserialize, SopelDB
 
 import json
@@ -12,7 +13,7 @@ import json
 
 def setup(bot):
     # Inject Database Functions
-    stderr("[SpiceBot_Databaseaddons] Implanting Database functions into bot.")
+    bot_logging(bot, 'SpiceBot_Databaseaddons', "Implanting Database functions into bot")
     SopelDB.reset_nick_value = SopelDBCache.reset_nick_value
     SopelDB.adjust_nick_value = SopelDBCache.adjust_nick_value
     SopelDB.reset_channel_value = SopelDBCache.reset_channel_value

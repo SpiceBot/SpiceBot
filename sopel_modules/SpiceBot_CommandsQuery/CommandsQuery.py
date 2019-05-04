@@ -4,7 +4,6 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel
 import sopel.module
-from sopel.tools import stderr
 
 import os
 from difflib import SequenceMatcher
@@ -12,7 +11,7 @@ from operator import itemgetter
 import threading
 
 
-from sopel_modules.SpiceBot_Botevents.BotEvents import set_bot_event
+from sopel_modules.SpiceBot_Botevents.BotEvents import set_bot_event, check_bot_events, bot_logging
 
 import spicemanip
 
@@ -22,17 +21,27 @@ def configure(config):
 
 
 def setup(bot):
-    stderr("[SpiceBot_CommandsQuery] Evaluating Core Commands List")
+    bot_logging(bot, 'SpiceBot_CommandsQuery', "Evaluating Core Commands List")
 
     threading.Thread(target=setup_thread, args=(bot,)).start()
 
 
 def setup_thread(bot):
 
-    bot.memory['SpiceBot_CommandsQuery'] = dict()
+    if 'SpiceBot_CommandsQuery' not in bot.memory:
+        bot.memory['SpiceBot_CommandsQuery'] = dict()
+
+    if 'counts' not in bot.memory['SpiceBot_CommandsQuery'].keys():
+        bot.memory['SpiceBot_CommandsQuery']['counts'] = dict()
+
+    if 'commands' not in bot.memory['SpiceBot_CommandsQuery'].keys():
+        bot.memory['SpiceBot_CommandsQuery']['commands'] = dict()
+
     for comtype in ['module', 'nickname', 'rule']:
-        bot.memory['SpiceBot_CommandsQuery'][comtype + "_commands"] = dict()
-        bot.memory['SpiceBot_CommandsQuery'][comtype + "_commands_count"] = 0
+        if comtype not in bot.memory['SpiceBot_CommandsQuery']['counts'].keys():
+            bot.memory['SpiceBot_CommandsQuery']['counts'][comtype] = 0
+        if comtype not in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
+            bot.memory['SpiceBot_CommandsQuery']['commands'][comtype] = dict()
 
     filepathlisting = []
 
@@ -54,7 +63,7 @@ def setup_thread(bot):
                 pypi_modules_dir = os.path.join(plugin_dir, pathname)
                 filepathlisting.append(pypi_modules_dir)
     except Exception as e:
-        stderr("[SpiceBot_CommandsQuery] sopel_modules not loaded :" + str(e))
+        bot_logging(bot, 'SpiceBot_CommandsQuery', "sopel_modules not loaded :" + str(e))
 
     # Extra directories
     filepathlist = []
@@ -125,9 +134,7 @@ def setup_thread(bot):
             comtype = atlinefound["comtype"]
             validcoms = atlinefound["validcoms"]
 
-            comtypedict = str(comtype + "_commands")
-
-            bot.memory['SpiceBot_CommandsQuery'][comtypedict + "_count"] += 1
+            bot.memory['SpiceBot_CommandsQuery']['counts'][comtype] += 1
 
             # default command to filename
             if "validcoms" not in dict_from_file.keys():
@@ -139,13 +146,20 @@ def setup_thread(bot):
             else:
                 comaliases = []
 
-            bot.memory['SpiceBot_CommandsQuery'][comtypedict][maincom] = dict_from_file
+            bot.memory['SpiceBot_CommandsQuery']['commands'][comtype][maincom] = dict_from_file
             for comalias in comaliases:
-                if comalias not in bot.memory['SpiceBot_CommandsQuery'][comtypedict].keys():
-                    bot.memory['SpiceBot_CommandsQuery'][comtypedict][comalias] = {"aliasfor": maincom}
+                if comalias not in bot.memory['SpiceBot_CommandsQuery']['commands'][comtype].keys():
+                    bot.memory['SpiceBot_CommandsQuery']['commands'][comtype][comalias] = {"aliasfor": maincom}
 
-    for comtype in ['module_commands', 'nickname_commands', 'rule_commands']:
-        stderr("[SpiceBot_CommandsQuery] Found " + str(len(bot.memory['SpiceBot_CommandsQuery'][comtype].keys())) + " " + comtype + " commands.")
+    for comtype in ['module', 'nickname', 'rule']:
+        bot_logging(bot, 'SpiceBot_CommandsQuery', "Found " + str(len(bot.memory['SpiceBot_CommandsQuery']['commands'][comtype].keys())) + " " + comtype + " commands.")
+
+    while not check_bot_events(bot, ["startup_complete"]):
+        pass
+
+    for comtype in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
+        if comtype not in ['module', 'nickname', 'rule']:
+            bot_logging(bot, 'SpiceBot_CommandsQuery', "Found " + str(len(bot.memory['SpiceBot_CommandsQuery']['commands'][comtype].keys())) + " " + comtype + " commands.")
 
     set_bot_event(bot, "SpiceBot_CommandsQuery")
 
@@ -161,11 +175,10 @@ def query_detection(bot, trigger):
         return
 
     commands_list = dict()
-    for commandstype in bot.memory['SpiceBot_CommandsQuery'].keys():
-        if not commandstype.endswith("_count"):
-            for com in bot.memory['SpiceBot_CommandsQuery'][commandstype].keys():
-                if com not in commands_list.keys():
-                    commands_list[com] = bot.memory['SpiceBot_CommandsQuery'][commandstype][com]
+    for commandstype in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
+        for com in bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype].keys():
+            if com not in commands_list.keys():
+                commands_list[com] = bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype][com]
 
     triggerargsarray = spicemanip.main(trigger, 'create')
 
@@ -236,10 +249,18 @@ def commandsquery_register_type(bot, command_type):
     if 'SpiceBot_CommandsQuery' not in bot.memory:
         bot.memory['SpiceBot_CommandsQuery'] = dict()
 
+    if 'counts' not in bot.memory['SpiceBot_CommandsQuery'].keys():
+        bot.memory['SpiceBot_CommandsQuery']['counts'] = dict()
+
+    if 'commands' not in bot.memory['SpiceBot_CommandsQuery'].keys():
+        bot.memory['SpiceBot_CommandsQuery']['commands'] = dict()
+
     if command_type not in bot.memory['SpiceBot_CommandsQuery'].keys():
-        bot.memory['SpiceBot_CommandsQuery'][command_type] = dict()
-        bot.memory['SpiceBot_CommandsQuery'][command_type + "_count"] = 0
-    bot.memory['SpiceBot_CommandsQuery'][command_type + "_count"] += 1
+        if command_type not in bot.memory['SpiceBot_CommandsQuery']['counts'].keys():
+            bot.memory['SpiceBot_CommandsQuery']['counts'][command_type] = 0
+        if command_type not in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
+            bot.memory['SpiceBot_CommandsQuery']['commands'][command_type] = dict()
+    bot.memory['SpiceBot_CommandsQuery']['counts'][command_type] += 1
 
 
 def commandsquery_register(bot, command_type, validcoms, aliasfor=None):
@@ -250,10 +271,18 @@ def commandsquery_register(bot, command_type, validcoms, aliasfor=None):
     if 'SpiceBot_CommandsQuery' not in bot.memory:
         bot.memory['SpiceBot_CommandsQuery'] = dict()
 
+    if 'counts' not in bot.memory['SpiceBot_CommandsQuery'].keys():
+        bot.memory['SpiceBot_CommandsQuery']['counts'] = dict()
+
+    if 'commands' not in bot.memory['SpiceBot_CommandsQuery'].keys():
+        bot.memory['SpiceBot_CommandsQuery']['commands'] = dict()
+
     if command_type not in bot.memory['SpiceBot_CommandsQuery'].keys():
-        bot.memory['SpiceBot_CommandsQuery'][command_type] = dict()
-        bot.memory['SpiceBot_CommandsQuery'][command_type + "_count"] = 0
-    bot.memory['SpiceBot_CommandsQuery'][command_type + "_count"] += 1
+        if command_type not in bot.memory['SpiceBot_CommandsQuery']['counts'].keys():
+            bot.memory['SpiceBot_CommandsQuery']['counts'][command_type] = 0
+        if command_type not in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
+            bot.memory['SpiceBot_CommandsQuery']['commands'][command_type] = dict()
+    bot.memory['SpiceBot_CommandsQuery']['counts'][command_type] += 1
 
     dict_from_file = dict()
 
@@ -268,10 +297,10 @@ def commandsquery_register(bot, command_type, validcoms, aliasfor=None):
             comaliases = spicemanip.main(dict_from_file["validcoms"], '2+', 'list')
         else:
             comaliases = []
-        bot.memory['SpiceBot_CommandsQuery'][command_type][maincom] = dict_from_file
+        bot.memory['SpiceBot_CommandsQuery']['commands'][command_type][maincom] = dict_from_file
     else:
         comaliases = validcoms
 
     for comalias in comaliases:
-        if comalias not in bot.memory['SpiceBot_CommandsQuery'][command_type].keys():
-            bot.memory['SpiceBot_CommandsQuery'][command_type][comalias] = {"aliasfor": aliasfor}
+        if comalias not in bot.memory['SpiceBot_CommandsQuery']['commands'][command_type].keys():
+            bot.memory['SpiceBot_CommandsQuery']['commands'][command_type][comalias] = {"aliasfor": aliasfor}

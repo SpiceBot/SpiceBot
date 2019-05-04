@@ -87,6 +87,32 @@ def command_permissions_check(bot, trigger, privslist):
     return True
 
 
+"""Logging"""
+
+
+def bot_logging(bot, logtype, logentry):
+
+    if 'SpiceBot_Logs_queue' not in bot.memory:
+        bot.memory['SpiceBot_Logs_queue'] = []
+
+    logmessage = "[" + logtype + "] " + logentry + ""
+
+    if bot.config.SpiceBot_Logs.logging_channel:
+        bot.memory['SpiceBot_Logs_queue'].append(logmessage)
+
+    stderr("\n" + logmessage + "\n")
+
+    if 'SpiceBot_Logs' not in bot.memory:
+        bot.memory['SpiceBot_Logs'] = {}
+
+    if logtype not in bot.memory['SpiceBot_Logs'].keys():
+        bot.memory['SpiceBot_Logs'][logtype] = []
+
+    bot.memory['SpiceBot_Logs'][logtype].append(logentry)
+    if len(bot.memory['SpiceBot_Logs'][logtype]) > 10:
+        del bot.memory['SpiceBot_Logs'][logtype][0]
+
+
 """
 Time
 """
@@ -195,7 +221,7 @@ def join_all_channels(bot):
         for channel in bot.memory['SpiceBot_Channels']['channels'].keys():
             if channel not in bot.channels.keys() and channel not in bot.config.SpiceBot_Channels.chanignore:
                 bot.write(('JOIN', bot.nick, bot.memory['SpiceBot_Channels']['channels'][channel]['name']))
-                if channel not in bot.channels.keys():
+                if channel not in bot.channels.keys() and bot.config.SpiceBot_Channels.operadmin:
                     bot.write(('SAJOIN', bot.nick, bot.memory['SpiceBot_Channels']['channels'][channel]['name']))
 
 
@@ -226,44 +252,20 @@ def channel_list_current(bot):
 """Environment Functions"""
 
 
-def service_manip(bot, servicename, dowhat):
+def service_manip(bot, servicename, dowhat, log_from='service_manip'):
     if str(dowhat) not in ["start", "stop", "restart"]:
         return
     try:
-        stderr(str(dowhat).title() + "ing " + str(servicename) + ".service.")
+        bot_logging(bot, log_from, str(dowhat).title() + "ing " + str(servicename) + ".service.")
         os.system("sudo service " + str(servicename) + " " + str(dowhat))
     except Exception as e:
-        stderr(str(dowhat).title() + "ing " + str(servicename) + ".service Failed: " + str(e))
-
-
-def spicebot_update(bot, deps="False"):
-    stderr("Updating " + bot.nick + " from Github.")
-
-    pipcommand = "sudo pip3 install --upgrade"
-    if deps == "False":
-        pipcommand += " --no-deps"
-    pipcommand += " --force-reinstall"
-    pipcommand += " git+" + str(bot.config.SpiceBot_Update.gitrepo) + "@" + str(bot.config.SpiceBot_Update.gitbranch)
-    stderr(pipcommand)
-    for line in os.popen(pipcommand).read().split('\n'):
-        stderr(line)
-
-    # Remove stock modules, if present
-    main_sopel_dir = os.path.dirname(os.path.abspath(sopel.__file__))
-    modules_dir = os.path.join(main_sopel_dir, 'modules')
-    stockdir = os.path.join(modules_dir, "stock")
-    if not os.path.exists(stockdir) or not os.path.isdir(stockdir):
-        os.system("sudo mkdir " + stockdir)
-    for pathname in os.listdir(modules_dir):
-        path = os.path.join(modules_dir, pathname)
-        if (os.path.isfile(path) and path.endswith('.py') and not path.startswith('_')):
-            os.system("sudo mv " + path + " " + stockdir)
+        bot_logging(bot, log_from, str(dowhat).title() + "ing " + str(servicename) + ".service Failed: " + str(e))
 
 
 """Config Reading Functions"""
 
 
-def read_directory_json_to_dict(directories, configtypename="Config File", stderrname=''):
+def read_directory_json_to_dict(bot, directories, configtypename="Config File", log_from='read_directory_json_to_dict'):
 
     if not isinstance(directories, list):
         directories = [directories]
@@ -277,8 +279,6 @@ def read_directory_json_to_dict(directories, configtypename="Config File", stder
                     filepath = os.path.join(directory, file)
                     if os.path.isfile(filepath):
                         filesprocess.append(filepath)
-        else:
-            stderr(stderrname + directory)
 
     for filepath in filesprocess:
 
@@ -290,7 +290,8 @@ def read_directory_json_to_dict(directories, configtypename="Config File", stder
             dict_from_file = eval(infread)
         except Exception as e:
             filereadgood = False
-            stderr(stderrname + "Error loading %s: %s (%s)" % (configtypename, e, filepath))
+            if bot:
+                bot_logging(bot, log_from, "Error loading %s: %s (%s)" % (configtypename, e, filepath))
             dict_from_file = dict()
         # Close File
         inf.close()
@@ -304,9 +305,11 @@ def read_directory_json_to_dict(directories, configtypename="Config File", stder
             fileopenfail += 1
 
     if filecount:
-        stderr(stderrname + 'Registered %d %s files,' % (filecount, configtypename))
-        stderr(stderrname + '%d %s files failed to load' % (fileopenfail, configtypename))
+        if bot:
+            bot_logging(bot, log_from, 'Registered %d %s files,' % (filecount, configtypename))
+            bot_logging(bot, log_from, '%d %s files failed to load' % (fileopenfail, configtypename))
     else:
-        stderr(stderrname + "Warning: Couldn't load any %s files" % (configtypename))
+        if bot:
+            bot_logging(bot, log_from, "Warning: Couldn't load any %s files" % (configtypename))
 
     return configs_dict
