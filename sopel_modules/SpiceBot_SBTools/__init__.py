@@ -97,8 +97,7 @@ def bot_logging(bot, logtype, logentry):
 
     logmessage = "[" + logtype + "] " + logentry + ""
 
-    if bot.config.SpiceBot_Logs.logging_channel:
-        bot.memory['SpiceBot_Logs_queue'].append(logmessage)
+    bot.memory['SpiceBot_Logs_queue'].append(logmessage)
 
     stderr("\n" + logmessage + "\n")
 
