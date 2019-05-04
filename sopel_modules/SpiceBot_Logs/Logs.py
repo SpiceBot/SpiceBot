@@ -68,4 +68,4 @@ def bot_command_action(bot, trigger):
 
     bot.osd("Is Examining " + str(logtype) + " log(s).")
     for line in bot.memory['SpiceBot_Logs'][logtype]:
-        bot.osd(str(line), trigger.sender, 'action')
+        bot.osd("    " + str(line))
