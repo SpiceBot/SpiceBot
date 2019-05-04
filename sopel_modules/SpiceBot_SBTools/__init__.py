@@ -226,7 +226,6 @@ def channel_list_current(bot):
 
 
 def service_manip(bot, servicename, dowhat, log_from='service_manip'):
-    from sopel_modules.SpiceBot_Logs.Logs import bot_logging
     if str(dowhat) not in ["start", "stop", "restart"]:
         return
     try:
@@ -240,7 +239,6 @@ def service_manip(bot, servicename, dowhat, log_from='service_manip'):
 
 
 def read_directory_json_to_dict(bot, directories, configtypename="Config File", log_from='read_directory_json_to_dict'):
-    from sopel_modules.SpiceBot_Logs.Logs import bot_logging
 
     if not isinstance(directories, list):
         directories = [directories]
