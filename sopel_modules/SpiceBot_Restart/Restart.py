@@ -6,8 +6,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 from sopel.config.types import StaticSection, ValidatedAttribute
 
-from sopel_modules.SpiceBot_SBTools import service_manip
-from sopel_modules.SpiceBot_Logs.Logs import bot_logging
+from sopel_modules.SpiceBot_SBTools import service_manip, bot_logging
 
 
 @sopel.module.nickname_commands('restart')

@@ -14,7 +14,7 @@ from sopel import tools, module
 from sopel.tools import Identifier
 from sopel.config.types import StaticSection, ValidatedAttribute
 
-from sopel_modules.SpiceBot_Logs.Logs import bot_logging
+from sopel_modules.SpiceBot_SBTools import bot_logging
 
 import time
 from collections import abc

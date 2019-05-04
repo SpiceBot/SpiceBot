@@ -4,14 +4,13 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 # sopel imports
 import sopel.module
-from sopel_modules.SpiceBot_Logs.Logs import bot_logging
 from sopel.config.types import StaticSection, ValidatedAttribute
 
 import os
 
 import spicemanip
 
-from sopel_modules.SpiceBot_SBTools import service_manip, sopel_triggerargs, command_permissions_check
+from sopel_modules.SpiceBot_SBTools import service_manip, sopel_triggerargs, command_permissions_check, bot_logging
 
 
 class SpiceBot_Update_MainSection(StaticSection):

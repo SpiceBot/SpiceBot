@@ -3,14 +3,13 @@
 from __future__ import unicode_literals, absolute_import, division, print_function
 
 import sopel.module
-from sopel_modules.SpiceBot_Logs.Logs import bot_logging
 from sopel.config.types import StaticSection, ValidatedAttribute
 
 from sopel_modules.SpiceBot_Botevents.BotEvents import set_bot_event, startup_bot_event
 
 from sopel_modules.SpiceBot_CommandsQuery.CommandsQuery import commandsquery_register, commandsquery_register_type
 
-from sopel_modules.SpiceBot_SBTools import read_directory_json_to_dict, sopel_triggerargs
+from sopel_modules.SpiceBot_SBTools import read_directory_json_to_dict, sopel_triggerargs, bot_logging
 
 import spicemanip
 

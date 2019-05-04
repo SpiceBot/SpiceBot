@@ -7,8 +7,6 @@ import sopel
 from sopel.module import OP, ADMIN, VOICE, OWNER, HALFOP
 HOP = HALFOP
 
-from sopel_modules.SpiceBot_Logs.Logs import bot_logging
-
 import collections
 import re
 import os
@@ -86,6 +84,32 @@ def command_permissions_check(bot, trigger, privslist):
         return False
 
     return True
+
+
+"""Logging"""
+
+
+def bot_logging(bot, logtype, logentry):
+
+    if 'SpiceBot_Logs_queue' not in bot.memory:
+        bot.memory['SpiceBot_Logs_queue'] = []
+
+    logmessage = "[" + logtype + "] " + logentry
+
+    if bot.config.SpiceBot_Logs.logging_channel:
+        bot.memory['SpiceBot_Logs_queue'].append(logmessage)
+
+    stderr(logmessage)
+
+    if 'SpiceBot_Logs' not in bot.memory:
+        bot.memory['SpiceBot_Logs'] = {}
+
+    if logtype not in bot.memory['SpiceBot_Logs'].keys():
+        bot.memory['SpiceBot_Logs'][logtype] = []
+
+    bot.memory['SpiceBot_Logs'][logtype].append(logentry)
+    if len(bot.memory['SpiceBot_Logs'][logtype]) > 10:
+        del bot.memory['SpiceBot_Logs'][logtype][0]
 
 
 """

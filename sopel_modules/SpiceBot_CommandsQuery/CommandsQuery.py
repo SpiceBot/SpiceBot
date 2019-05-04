@@ -4,7 +4,6 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel
 import sopel.module
-from sopel_modules.SpiceBot_Logs.Logs import bot_logging
 
 import os
 from difflib import SequenceMatcher
@@ -12,7 +11,7 @@ from operator import itemgetter
 import threading
 
 
-from sopel_modules.SpiceBot_Botevents.BotEvents import set_bot_event, check_bot_events
+from sopel_modules.SpiceBot_Botevents.BotEvents import set_bot_event, check_bot_events, bot_logging
 
 import spicemanip
 

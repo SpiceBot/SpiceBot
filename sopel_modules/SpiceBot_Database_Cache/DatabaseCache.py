@@ -4,7 +4,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 # sopel imports
 import sopel.module
-from sopel_modules.SpiceBot_Logs.Logs import bot_logging
+from sopel_modules.SpiceBot_SBTools import bot_logging
 
 
 def setup(bot):

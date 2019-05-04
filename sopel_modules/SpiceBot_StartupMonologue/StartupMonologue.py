@@ -3,11 +3,10 @@
 from __future__ import unicode_literals, absolute_import, division, print_function
 
 from sopel import module
-from sopel_modules.SpiceBot_Logs.Logs import bot_logging
 
 from sopel_modules.SpiceBot_Botevents.BotEvents import set_bot_event, check_bot_events
 
-from sopel_modules.SpiceBot_SBTools import humanized_time
+from sopel_modules.SpiceBot_SBTools import humanized_time, bot_logging
 import time
 
 

@@ -8,7 +8,7 @@ import time
 
 from sopel_modules.SpiceBot_SBTools import humanized_time
 
-from sopel_modules.SpiceBot_Logs.Logs import bot_logging
+from sopel_modules.SpiceBot_SBTools import bot_logging
 
 
 def configure(config):

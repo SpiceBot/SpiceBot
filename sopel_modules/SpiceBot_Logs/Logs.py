@@ -69,26 +69,3 @@ def bot_command_action(bot, trigger):
     bot.osd("Is Examining " + str(logtype) + " log(s).")
     for line in bot.memory['SpiceBot_Logs'][logtype]:
         bot.osd(str(line), trigger.sender, 'action')
-
-
-def bot_logging(bot, logtype, logentry):
-
-    if 'SpiceBot_Logs_queue' not in bot.memory:
-        bot.memory['SpiceBot_Logs_queue'] = []
-
-    logmessage = "[" + logtype + "] " + logentry
-
-    if bot.config.SpiceBot_Logs.logging_channel:
-        bot.memory['SpiceBot_Logs_queue'].append(logmessage)
-
-    stderr(logmessage)
-
-    if 'SpiceBot_Logs' not in bot.memory:
-        bot.memory['SpiceBot_Logs'] = {}
-
-    if logtype not in bot.memory['SpiceBot_Logs'].keys():
-        bot.memory['SpiceBot_Logs'][logtype] = []
-
-    bot.memory['SpiceBot_Logs'][logtype].append(logentry)
-    if len(bot.memory['SpiceBot_Logs'][logtype]) > 10:
-        del bot.memory['SpiceBot_Logs'][logtype][0]

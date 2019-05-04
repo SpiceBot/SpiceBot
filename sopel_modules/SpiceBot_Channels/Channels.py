@@ -4,7 +4,6 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 # sopel imports
 import sopel.module
-from sopel_modules.SpiceBot_Logs.Logs import bot_logging
 from sopel.config.types import StaticSection, ValidatedAttribute, ListAttribute
 
 from sopel_modules.SpiceBot_Botevents.BotEvents import set_bot_event, startup_bot_event
@@ -15,7 +14,8 @@ import spicemanip
 
 from sopel_modules.SpiceBot_SBTools import (
                                             sopel_triggerargs, inlist, topic_compile, channel_privs,
-                                            join_all_channels, chanadmin_all_channels, channel_list_current
+                                            join_all_channels, chanadmin_all_channels, channel_list_current,
+                                            bot_logging
                                             )
 
 
