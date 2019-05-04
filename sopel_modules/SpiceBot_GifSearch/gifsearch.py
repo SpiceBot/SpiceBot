@@ -85,9 +85,9 @@ def setup_thread(bot):
             valid_gif_api_dict[gif_api]["apikey"] = None
         bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'][gif_api] = valid_gif_api_dict[gif_api]
 
-    commandsquery_register_type(bot, "prefix_command")
-    for prefix_command in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
-        commandsquery_register(bot, "prefix_command", prefix_command)
+    commandsquery_register_type(bot, "prefix")
+    for prefixcommand in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
+        commandsquery_register(bot, "prefix", prefixcommand)
 
     set_bot_event(bot, "SpiceBot_GifSearch")
 
