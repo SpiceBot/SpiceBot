@@ -134,7 +134,7 @@ def setup_thread(bot):
             comtype = atlinefound["comtype"]
             validcoms = atlinefound["validcoms"]
 
-            bot.memory['SpiceBot_CommandsQuery']['count'][comtype] += 1
+            bot.memory['SpiceBot_CommandsQuery']['counts'][comtype] += 1
 
             # default command to filename
             if "validcoms" not in dict_from_file.keys():
