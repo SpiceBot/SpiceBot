@@ -62,7 +62,7 @@ def nickname_comand_chanstats(bot, trigger):
         spicebot_update(bot, "True")
 
     # service_manip(bot, bot.nick, 'restart', 'SpiceBot_Update')
-    bot.restart()
+    # bot.restart()
 
 
 def spicebot_update(bot, deps="False"):
