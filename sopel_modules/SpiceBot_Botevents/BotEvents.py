@@ -20,6 +20,11 @@ def setup(bot):
     threading.Thread(target=setup_thread, args=(bot,)).start()
 
 
+def shutdown(bot):
+    if "Sopel_BotEvents" in bot.memory:
+        del bot.memory["Sopel_BotEvents"]
+
+
 def setup_thread(bot):
     if "Sopel_BotEvents" not in bot.memory:
         bot.memory["Sopel_BotEvents"] = {"loaded": [], "startup": []}

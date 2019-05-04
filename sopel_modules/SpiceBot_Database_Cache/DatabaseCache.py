@@ -11,3 +11,8 @@ def setup(bot):
     bot_logging(bot, 'SpiceBot_DatabaseCache', "Setting up Database Cache")
     if 'SpiceBot_DatabaseCache' not in bot.memory:
         bot.memory['SpiceBot_DatabaseCache'] = dict()
+
+
+def shutdown(bot):
+    if "SpiceBot_DatabaseCache" in bot.memory:
+        del bot.memory["SpiceBot_DatabaseCache"]

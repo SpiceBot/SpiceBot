@@ -22,6 +22,11 @@ def setup(bot):
         bot.memory["SpiceBot_Uptime"] = now
 
 
+def shutdown(bot):
+    if "SpiceBot_Uptime" in bot.memory:
+        del bot.memory["SpiceBot_Uptime"]
+
+
 @sopel.module.nickname_commands('uptime')
 def bot_command_srewyou(bot, trigger):
     timesince = str(humanized_time(time.time() - bot.memory["SpiceBot_Uptime"])) + " ago."

@@ -26,6 +26,11 @@ def setup(bot):
     threading.Thread(target=setup_thread, args=(bot,)).start()
 
 
+def shutdown(bot):
+    if "SpiceBot_CommandsQuery" in bot.memory:
+        del bot.memory["SpiceBot_CommandsQuery"]
+
+
 def setup_thread(bot):
 
     if 'SpiceBot_CommandsQuery' not in bot.memory:

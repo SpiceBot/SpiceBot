@@ -251,6 +251,10 @@ def channel_list_current(bot):
 """Environment Functions"""
 
 
+def spicebot_reload(bot):
+    bot.reload_plugins()
+
+
 def service_manip(bot, servicename, dowhat, log_from='service_manip'):
     if str(dowhat) not in ["start", "stop", "restart"]:
         return

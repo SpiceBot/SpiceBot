@@ -9,6 +9,10 @@ from sopel.config.types import StaticSection, ValidatedAttribute
 from sopel_modules.SpiceBot_SBTools import service_manip, bot_logging
 
 
+def shutdown(bot):
+    pass
+
+
 @sopel.module.nickname_commands('restart')
 def nickname_comand_chanstats(bot, trigger):
 
@@ -18,4 +22,5 @@ def nickname_comand_chanstats(bot, trigger):
     bot_logging(bot, 'SpiceBot_Restart', "Received command from " + trigger.nick + " to restart")
     bot.osd("Received command from " + trigger.nick + " to restart. Be Back Soon!", bot.channels.keys())
 
-    service_manip(bot, bot.nick, 'restart', 'SpiceBot_Restart')
+    # service_manip(bot, bot.nick, 'restart', 'SpiceBot_Restart')
+    bot.restart()

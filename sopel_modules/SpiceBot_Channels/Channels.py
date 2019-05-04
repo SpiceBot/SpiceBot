@@ -51,6 +51,11 @@ def setup(bot):
         bot.memory['SpiceBot_Channels']['ProcessLock'] = False
 
 
+def shutdown(bot):
+    if "SpiceBot_Channels" in bot.memory:
+        del bot.memory["SpiceBot_Channels"]
+
+
 @sopel.module.event('001')
 @sopel.module.rule('.*')
 def trigger_channel_list_initial(bot, trigger):

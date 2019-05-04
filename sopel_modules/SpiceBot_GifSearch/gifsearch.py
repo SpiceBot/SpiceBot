@@ -57,6 +57,11 @@ def setup(bot):
     threading.Thread(target=setup_thread, args=(bot,)).start()
 
 
+def shutdown(bot):
+    if "SpiceBot_GifSearch" in bot.memory:
+        del bot.memory["SpiceBot_GifSearch"]
+
+
 def setup_thread(bot):
 
     startup_bot_event(bot, "SpiceBot_GifSearch")

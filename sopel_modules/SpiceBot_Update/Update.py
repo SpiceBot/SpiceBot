@@ -29,6 +29,10 @@ def setup(bot):
     bot.config.define_section("SpiceBot_Update", SpiceBot_Update_MainSection, validate=False)
 
 
+def shutdown(bot):
+    pass
+
+
 @sopel.module.nickname_commands('update')
 def nickname_comand_chanstats(bot, trigger):
 
@@ -57,7 +61,8 @@ def nickname_comand_chanstats(bot, trigger):
     if commandused == 'deps':
         spicebot_update(bot, "True")
 
-    service_manip(bot, bot.nick, 'restart', 'SpiceBot_Update')
+    # service_manip(bot, bot.nick, 'restart', 'SpiceBot_Update')
+    bot.restart()
 
 
 def spicebot_update(bot, deps="False"):
