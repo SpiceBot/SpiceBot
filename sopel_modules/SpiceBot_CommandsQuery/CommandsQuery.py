@@ -31,10 +31,10 @@ def setup_thread(bot):
     if 'SpiceBot_CommandsQuery' not in bot.memory:
         bot.memory['SpiceBot_CommandsQuery'] = dict()
 
-    if ['counts'] not in bot.memory['SpiceBot_CommandsQuery'].keys():
+    if 'counts' not in bot.memory['SpiceBot_CommandsQuery'].keys():
         bot.memory['SpiceBot_CommandsQuery']['counts'] = dict()
 
-    if ['commands'] not in bot.memory['SpiceBot_CommandsQuery'].keys():
+    if 'commands' not in bot.memory['SpiceBot_CommandsQuery'].keys():
         bot.memory['SpiceBot_CommandsQuery']['commands'] = dict()
 
     for comtype in ['module', 'nickname', 'rule']:
@@ -249,10 +249,10 @@ def commandsquery_register_type(bot, command_type):
     if 'SpiceBot_CommandsQuery' not in bot.memory:
         bot.memory['SpiceBot_CommandsQuery'] = dict()
 
-    if ['counts'] not in bot.memory['SpiceBot_CommandsQuery'].keys():
+    if 'counts' not in bot.memory['SpiceBot_CommandsQuery'].keys():
         bot.memory['SpiceBot_CommandsQuery']['counts'] = dict()
 
-    if ['commands'] not in bot.memory['SpiceBot_CommandsQuery'].keys():
+    if 'commands' not in bot.memory['SpiceBot_CommandsQuery'].keys():
         bot.memory['SpiceBot_CommandsQuery']['commands'] = dict()
 
     if command_type not in bot.memory['SpiceBot_CommandsQuery'].keys():
@@ -271,10 +271,10 @@ def commandsquery_register(bot, command_type, validcoms, aliasfor=None):
     if 'SpiceBot_CommandsQuery' not in bot.memory:
         bot.memory['SpiceBot_CommandsQuery'] = dict()
 
-    if ['counts'] not in bot.memory['SpiceBot_CommandsQuery'].keys():
+    if 'counts' not in bot.memory['SpiceBot_CommandsQuery'].keys():
         bot.memory['SpiceBot_CommandsQuery']['counts'] = dict()
 
-    if ['commands'] not in bot.memory['SpiceBot_CommandsQuery'].keys():
+    if 'commands' not in bot.memory['SpiceBot_CommandsQuery'].keys():
         bot.memory['SpiceBot_CommandsQuery']['commands'] = dict()
 
     if command_type not in bot.memory['SpiceBot_CommandsQuery'].keys():
