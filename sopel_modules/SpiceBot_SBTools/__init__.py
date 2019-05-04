@@ -7,6 +7,8 @@ import sopel
 from sopel.module import OP, ADMIN, VOICE, OWNER, HALFOP
 HOP = HALFOP
 
+from sopel_modules.SpiceBot_Logs.Logs import bot_logging
+
 import collections
 import re
 import os

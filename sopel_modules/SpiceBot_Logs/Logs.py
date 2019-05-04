@@ -10,8 +10,6 @@ import spicemanip
 
 from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check, inlist, inlist_match
 
-from sopel_modules.SpiceBot_Botevents.BotEvents import check_bot_events
-
 
 def configure(config):
     config.define_section("SpiceBot_Logs", SpiceBot_Logs_MainSection, validate=False)
@@ -80,9 +78,8 @@ def bot_logging(bot, logtype, logentry):
 
     logmessage = "[" + logtype + "] " + logentry
 
-    if not check_bot_events(bot, ["connected"]):
-        if bot.config.SpiceBot_Logs.logging_channel:
-            bot.memory['SpiceBot_Logs_queue'].append(logmessage)
+    if bot.config.SpiceBot_Logs.logging_channel:
+        bot.memory['SpiceBot_Logs_queue'].append(logmessage)
 
     stderr(logmessage)
 
