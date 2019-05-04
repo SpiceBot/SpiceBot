@@ -10,7 +10,7 @@ import os
 
 import spicemanip
 
-from sopel_modules.SpiceBot_SBTools import service_manip, sopel_triggerargs, command_permissions_check, bot_logging
+from sopel_modules.SpiceBot_SBTools import service_manip, sopel_triggerargs, command_permissions_check, bot_logging, spicebot_reload
 
 
 class SpiceBot_Update_MainSection(StaticSection):
@@ -61,8 +61,7 @@ def nickname_comand_chanstats(bot, trigger):
     if commandused == 'deps':
         spicebot_update(bot, "True")
 
-    # service_manip(bot, bot.nick, 'restart', 'SpiceBot_Update')
-    # bot.restart()
+    spicebot_reload(bot)
 
 
 def spicebot_update(bot, deps="False"):
