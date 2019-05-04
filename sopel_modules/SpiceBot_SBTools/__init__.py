@@ -5,7 +5,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 import sopel
 from sopel.module import OP, ADMIN, VOICE, OWNER, HALFOP
-from sopel_modules.SpiceBot_Logs import bot_logging
+from sopel_modules.SpiceBot_Logs.Logs import bot_logging
 HOP = HALFOP
 
 import collections

@@ -7,7 +7,7 @@ import sopel.module
 from sopel.config.types import StaticSection, ValidatedAttribute
 
 from sopel_modules.SpiceBot_SBTools import service_manip
-from sopel_modules.SpiceBot_Logs import bot_logging
+from sopel_modules.SpiceBot_Logs.Logs import bot_logging
 
 
 @sopel.module.nickname_commands('restart')
