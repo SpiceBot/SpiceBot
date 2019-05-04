@@ -3,11 +3,12 @@
 from __future__ import unicode_literals, absolute_import, division, print_function
 
 from sopel import module
-from sopel.tools import stderr
+from sopel_modules.SpiceBot_Logs import bot_logging
 
 from sopel_modules.SpiceBot_Botevents.BotEvents import set_bot_event, check_bot_events
 
-from sopel_modules.SpiceBot_CommandsQuery.CommandsQuery import commandsquery_register
+from sopel_modules.SpiceBot_SBTools import humanized_time
+import time
 
 
 def configure(config):
@@ -35,7 +36,7 @@ def bot_startup_monologue(bot, trigger):
 def startup_fresh(bot, trigger):
 
     # Startup
-    stderr("[SpiceBot_StartupMonologue] " + bot.nick + " is now starting. Please wait while I load my configuration.")
+    bot_logging(bot, 'SpiceBot_StartupMonologue', bot.nick + " is now starting. Please wait while I load my configuration")
     bot.osd(" is now starting. Please wait while I load my configuration.", bot.channels.keys(), 'ACTION')
 
     startupcomplete = [bot.nick + " startup complete"]
@@ -44,22 +45,30 @@ def startup_fresh(bot, trigger):
         pass
 
     availablecomsnum, availablecomsfiles = 0, 0
-
-    for commandstype in bot.memory['SpiceBot_CommandsQuery'].keys():
-        if commandstype.endswith("_count"):
-            availablecomsfiles += bot.memory['SpiceBot_CommandsQuery'][commandstype]
-        else:
-            availablecomsnum += len(bot.memory['SpiceBot_CommandsQuery'][commandstype].keys())
+    for commandstype in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
+        availablecomsnum += len(bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype].keys())
+    for commandstype in bot.memory['SpiceBot_CommandsQuery']['counts'].keys():
+        availablecomsfiles += bot.memory['SpiceBot_CommandsQuery']['counts'][commandstype]
 
     startupcomplete.append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
-    stderr("[SpiceBot_StartupMonologue] " + "There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
+    bot_logging(bot, 'SpiceBot_StartupMonologue', "There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
+
+    while not check_bot_events(bot, ["SpiceBot_Channels"]):
+        pass
+
+    botcount = len(bot.channels.keys())
+    servercount = len(bot.memory['SpiceBot_Channels']['channels'].keys())
+    startupcomplete.append("I am in " + str(botcount) + " of " + str(servercount) + " channel(s) available on this server.")
 
     while not check_bot_events(bot, ["startup_complete"]):
         pass
 
+    timesince = humanized_time(time.time() - bot.memory["SpiceBot_Uptime"])
+    bot.osd("Startup took" + timesince)
+
     # Announce to chan, then handle some closing stuff
+    bot_logging(bot, 'SpiceBot_StartupMonologue', bot.nick + " startup complete")
     bot.osd(startupcomplete, bot.channels.keys())
-    stderr("[SpiceBot_StartupMonologue] " + bot.nick + " startup complete")
 
     set_bot_event(bot, "SpiceBot_StartupMonologue")
 
@@ -67,5 +76,5 @@ def startup_fresh(bot, trigger):
 def startup_reconnect(bot, trigger):
 
     # Startup
-    stderr("[SpiceBot_StartupMonologue] " + bot.nick + " has reconnected.")
+    bot_logging(bot, 'SpiceBot_StartupMonologue', bot.nick + " has reconnected.")
     bot.osd(" has reconnected.", bot.channels.keys(), 'ACTION')

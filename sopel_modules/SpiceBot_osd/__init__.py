@@ -11,8 +11,10 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.bot
 from sopel import tools, module
-from sopel.tools import stderr, Identifier
+from sopel.tools import Identifier
 from sopel.config.types import StaticSection, ValidatedAttribute
+
+from sopel_modules.SpiceBot_Logs import bot_logging
 
 import time
 from collections import abc
@@ -33,7 +35,7 @@ def configure(config):
 def setup(bot):
 
     # Inject OSD
-    stderr("[Sopel-OSD] Implanting OSD function into bot.")
+    bot_logging(bot, 'SpiceBot_OSD', "Implanting OSD function into bot")
     bot.osd = SopelOSD.osd
     bot.SopelWrapper.osd = SopelOSD.SopelWrapper.osd
     tools.get_available_message_bytes = ToolsOSD.get_available_message_bytes
@@ -41,14 +43,14 @@ def setup(bot):
     tools.get_message_recipientgroups = ToolsOSD.get_message_recipientgroups
 
     # overwrite default bot messaging
-    stderr("[Sopel-OSD] Overwrite Default Sopel messaging commands.")
+    bot_logging(bot, 'SpiceBot_OSD', "Overwrite Default Sopel messaging commands")
     bot.SopelWrapper.say = SopelOSD.SopelWrapper.say
     bot.SopelWrapper.action = SopelOSD.SopelWrapper.action
     bot.SopelWrapper.notice = SopelOSD.SopelWrapper.notice
     bot.SopelWrapper.reply = SopelOSD.SopelWrapper.reply
 
     # verify config settings for server
-    stderr("[Sopel-OSD] Checking for config settings.")
+    bot_logging(bot, 'SpiceBot_OSD', "Checking for config settings")
     bot.config.define_section("MAXTARGCONFIG", MAXTARGCONFIG, validate=False)
 
 

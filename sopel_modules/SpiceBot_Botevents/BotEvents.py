@@ -6,7 +6,7 @@ Sopel BotEvents is a poor mans way to create module load order dependencies
 from __future__ import unicode_literals, absolute_import, division, print_function
 
 import sopel.module
-from sopel.tools import stderr
+from sopel_modules.SpiceBot_Logs import bot_logging
 import threading
 
 
@@ -15,7 +15,7 @@ def configure(config):
 
 
 def setup(bot):
-    stderr("[Sopel_BotEvents] Starting Module Events Logging")
+    bot_logging(bot, 'Sopel_BotEvents', "Starting Module Events Logging")
 
     threading.Thread(target=setup_thread, args=(bot,)).start()
 

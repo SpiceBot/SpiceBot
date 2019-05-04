@@ -3,7 +3,7 @@
 from __future__ import unicode_literals, absolute_import, division, print_function
 
 import sopel.module
-from sopel.tools import stderr
+from sopel_modules.SpiceBot_Logs import bot_logging
 
 from .BotEvents import set_bot_event, check_bot_startup
 
@@ -16,4 +16,4 @@ def bot_startup_complete(bot, trigger):
         pass
 
     set_bot_event(bot, "startup_complete")
-    stderr("[Sopel_BotEvents] Module Events Logging Complete")
+    bot_logging(bot, 'Sopel_BotEvents', "Module Events Logging Complete")

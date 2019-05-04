@@ -4,19 +4,48 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.module
 from sopel.tools import stderr
+from sopel.config.types import StaticSection, ValidatedAttribute
 
 import spicemanip
 
 from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check, inlist, inlist_match
 
+from sopel_modules.SpiceBot_Botevents.BotEvents import check_bot_events
+
 
 def configure(config):
-    pass
+    config.define_section("SpiceBot_Logs", SpiceBot_Logs_MainSection, validate=False)
+    config.SpiceBot_Logs.configure_setting('logging_channel', 'SpiceBot_Logs channels')
+
+
+class SpiceBot_Logs_MainSection(StaticSection):
+    logging_channel = ValidatedAttribute('logging_channel', default=False)
 
 
 def setup(bot):
-    stderr("[SpiceBot_Logs] Starting Setup Procedure")
-    bot.memory['SpiceBot_Logs'] = {}
+    bot_logging(bot, 'SpiceBot_Logs', "Starting Setup Procedure")
+    bot.config.define_section("SpiceBot_Logs", SpiceBot_Logs_MainSection, validate=False)
+    if 'SpiceBot_Logs' not in bot.memory:
+        bot.memory['SpiceBot_Logs'] = {}
+
+    if 'SpiceBot_Logs_queue' not in bot.memory:
+        bot.memory['SpiceBot_Logs_queue'] = []
+
+
+@sopel.module.event('001')
+@sopel.module.rule('.*')
+def join_log_channel(bot, trigger):
+    if bot.config.SpiceBot_Logs.logging_channel:
+        channel = bot.config.SpiceBot_Logs.logging_channel
+        if channel not in bot.channels.keys():
+            bot.write(('JOIN', bot.nick, channel))
+            if channel not in bot.channels.keys() and bot.config.SpiceBot_Channels.operadmin:
+                bot.write(('SAJOIN', bot.nick, channel))
+
+    while True:
+        if len(bot.memory['SpiceBot_Logs_queue']):
+            bot.say(str(bot.memory['SpiceBot_Logs_queue'][0]))
+            del bot.memory['SpiceBot_Logs_queue'][0]
 
 
 @sopel.module.nickname_commands('logs')
@@ -45,6 +74,17 @@ def bot_command_action(bot, trigger):
 
 
 def bot_logging(bot, logtype, logentry):
+
+    if 'SpiceBot_Logs_queue' not in bot.memory:
+        bot.memory['SpiceBot_Logs_queue'] = []
+
+    logmessage = "[" + logtype + "] " + logentry
+
+    if not check_bot_events(bot, ["connected"]):
+        if bot.config.SpiceBot_Logs.logging_channel:
+            bot.memory['SpiceBot_Logs_queue'].append(logmessage)
+
+    stderr(logmessage)
 
     if 'SpiceBot_Logs' not in bot.memory:
         bot.memory['SpiceBot_Logs'] = {}

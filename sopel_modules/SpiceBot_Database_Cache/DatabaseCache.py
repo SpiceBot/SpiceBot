@@ -4,9 +4,10 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 # sopel imports
 import sopel.module
-from sopel.tools import stderr
+from sopel_modules.SpiceBot_Logs import bot_logging
 
 
 def setup(bot):
-    stderr("[SpiceBot_DatabaseCache] Setting up Database Cache.")
-    bot.memory['SpiceBot_DatabaseCache'] = dict()
+    bot_logging(bot, 'SpiceBot_DatabaseCache', "Setting up Database Cache")
+    if 'SpiceBot_DatabaseCache' not in bot.memory:
+        bot.memory['SpiceBot_DatabaseCache'] = dict()

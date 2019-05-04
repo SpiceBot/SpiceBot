@@ -3,10 +3,10 @@
 from __future__ import unicode_literals, absolute_import, division, print_function
 
 import sopel.module
-from sopel.tools import stderr
+from sopel_modules.SpiceBot_Logs import bot_logging
 from sopel.config.types import StaticSection, ValidatedAttribute
 
-from sopel_modules.SpiceBot_Botevents.BotEvents import set_bot_event, check_bot_events, startup_bot_event
+from sopel_modules.SpiceBot_Botevents.BotEvents import set_bot_event, startup_bot_event
 
 from sopel_modules.SpiceBot_CommandsQuery.CommandsQuery import commandsquery_register, commandsquery_register_type
 
@@ -39,7 +39,7 @@ class GifAPISection(StaticSection):
 def configure(config):
     moduledir = os.path.dirname(os.path.abspath(__file__))
     api_dir = os.path.join(moduledir, 'gifapi')
-    valid_gif_api_dict = read_directory_json_to_dict([api_dir], "Gif API", "[SpiceBot_GifSearch] ")
+    valid_gif_api_dict = read_directory_json_to_dict(None, [api_dir], "Gif API", "SpiceBot_GifSearch")
 
     config.define_section("SopelGifSearch", GifAPIMainSection, validate=False)
     config.SopelGifSearch.configure_setting('extra', 'SpiceBot_GifSearch API Extra directory')
@@ -53,7 +53,7 @@ def configure(config):
 
 def setup(bot):
 
-    stderr("[SpiceBot_GifSearch] Starting Setup Procedure")
+    bot_logging(bot, 'SpiceBot_GifSearch', "Starting Setup Procedure")
 
     threading.Thread(target=setup_thread, args=(bot,)).start()
 
@@ -62,7 +62,8 @@ def setup_thread(bot):
 
     startup_bot_event(bot, "SpiceBot_GifSearch")
 
-    bot.memory["SpiceBot_GifSearch"] = {"cache": {}, "badgiflinks": [], 'valid_gif_api_dict': {}}
+    if 'SpiceBot_GifSearch' not in bot.memory:
+        bot.memory["SpiceBot_GifSearch"] = {"cache": {}, "badgiflinks": [], 'valid_gif_api_dict': {}}
 
     dir_to_scan = []
 
@@ -74,7 +75,7 @@ def setup_thread(bot):
     if bot.config.SopelGifSearch.extra:
         dir_to_scan.append(bot.config.SopelGifSearch.extra)
 
-    valid_gif_api_dict = read_directory_json_to_dict(dir_to_scan, "Gif API", "[SpiceBot_GifSearch] ")
+    valid_gif_api_dict = read_directory_json_to_dict(bot, dir_to_scan, "Gif API", "SpiceBot_GifSearch")
 
     for gif_api in valid_gif_api_dict.keys():
         bot.config.define_section(gif_api, GifAPISection, validate=False)
@@ -85,14 +86,9 @@ def setup_thread(bot):
             valid_gif_api_dict[gif_api]["apikey"] = None
         bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'][gif_api] = valid_gif_api_dict[gif_api]
 
-    while not check_bot_events(bot, ["SpiceBot_CommandsQuery"]):
-        pass
-
     commandsquery_register_type(bot, "prefix_command")
     for prefix_command in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
         commandsquery_register(bot, "prefix_command", prefix_command)
-
-    stderr("[SpiceBot_CommandsQuery] Found " + str(len(bot.memory['SpiceBot_CommandsQuery']["prefix_command"].keys())) + " " + "prefix_command" + " commands.")
 
     set_bot_event(bot, "SpiceBot_GifSearch")
 

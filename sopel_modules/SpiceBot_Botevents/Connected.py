@@ -3,7 +3,6 @@
 from __future__ import unicode_literals, absolute_import, division, print_function
 
 import sopel.module
-from sopel.tools import stderr
 from .BotEvents import check_bot_events, startup_bot_event, set_bot_event
 
 import time
