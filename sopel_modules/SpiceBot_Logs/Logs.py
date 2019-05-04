@@ -40,10 +40,10 @@ def join_log_channel(bot, trigger):
             if channel not in bot.channels.keys() and bot.config.SpiceBot_Channels.operadmin:
                 bot.write(('SAJOIN', bot.nick, channel))
 
-    while True:
-        if len(bot.memory['SpiceBot_Logs_queue']):
-            bot.say(str(bot.memory['SpiceBot_Logs_queue'][0]))
-            del bot.memory['SpiceBot_Logs_queue'][0]
+        while True:
+            if len(bot.memory['SpiceBot_Logs_queue']):
+                bot.say(str(bot.memory['SpiceBot_Logs_queue'][0]), channel)
+                del bot.memory['SpiceBot_Logs_queue'][0]
 
 
 @sopel.module.nickname_commands('logs')
