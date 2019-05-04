@@ -63,7 +63,7 @@ def startup_fresh(bot, trigger):
         pass
 
     timesince = humanized_time(time.time() - bot.memory["SpiceBot_Uptime"])
-    bot.osd("Startup took" + timesince)
+    startupcomplete.append("Startup took" + timesince)
 
     # Announce to chan, then handle some closing stuff
     bot_logging(bot, 'SpiceBot_StartupMonologue', bot.nick + " startup complete")
