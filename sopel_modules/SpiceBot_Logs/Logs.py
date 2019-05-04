@@ -8,7 +8,7 @@ from sopel.config.types import StaticSection, ValidatedAttribute
 
 import spicemanip
 
-from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check, inlist, inlist_match
+from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check, inlist, inlist_match, bot_logging
 
 
 def configure(config):

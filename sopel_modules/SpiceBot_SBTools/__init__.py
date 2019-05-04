@@ -5,6 +5,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 import sopel
 from sopel.module import OP, ADMIN, VOICE, OWNER, HALFOP
+from sopel.tools import stderr
 HOP = HALFOP
 
 import collections
