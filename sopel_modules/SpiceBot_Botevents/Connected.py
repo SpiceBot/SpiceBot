@@ -3,8 +3,8 @@
 from __future__ import unicode_literals, absolute_import, division, print_function
 
 import sopel.module
-from sopel.tools import stderr
 from .BotEvents import check_bot_events, startup_bot_event, set_bot_event
+from sopel_modules.SpiceBot_SBTools import bot_logging
 
 import time
 
@@ -22,3 +22,4 @@ def bot_startup_connection(bot, trigger):
     time.sleep(1)
 
     set_bot_event(bot, "connected")
+    bot_logging(bot, 'Sopel_BotEvents', "Connected to IRC")

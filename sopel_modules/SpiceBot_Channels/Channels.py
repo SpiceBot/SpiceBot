@@ -4,8 +4,9 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 # sopel imports
 import sopel.module
-from sopel.tools import stderr
 from sopel.config.types import StaticSection, ValidatedAttribute, ListAttribute
+
+from sopel_modules.SpiceBot_Botevents.BotEvents import set_bot_event, startup_bot_event
 
 import time
 
@@ -13,7 +14,8 @@ import spicemanip
 
 from sopel_modules.SpiceBot_SBTools import (
                                             sopel_triggerargs, inlist, topic_compile, channel_privs,
-                                            join_all_channels, chanadmin_all_channels, channel_list_current
+                                            join_all_channels, chanadmin_all_channels, channel_list_current,
+                                            bot_logging
                                             )
 
 
@@ -33,14 +35,20 @@ def configure(config):
 
 
 def setup(bot):
-    stderr("[SpiceBot_Channels] Initial Setup processing...")
+    bot_logging(bot, 'SpiceBot_Channels', "Initial Setup processing")
+
+    startup_bot_event(bot, "SpiceBot_Channels")
 
     bot.config.define_section("SpiceBot_Channels", SpiceBot_Channels_MainSection, validate=False)
 
-    bot.memory['SpiceBot_Channels'] = dict()
-    bot.memory['SpiceBot_Channels']['channels'] = dict()
-    bot.memory['SpiceBot_Channels']['InitialProcess'] = False
-    bot.memory['SpiceBot_Channels']['ProcessLock'] = False
+    if 'SpiceBot_Channels' not in bot.memory:
+        bot.memory['SpiceBot_Channels'] = dict()
+    if 'channels' not in bot.memory['SpiceBot_Channels'].keys():
+        bot.memory['SpiceBot_Channels']['channels'] = dict()
+    if 'InitialProcess' not in bot.memory['SpiceBot_Channels'].keys():
+        bot.memory['SpiceBot_Channels']['InitialProcess'] = False
+    if 'ProcessLock' not in bot.memory['SpiceBot_Channels'].keys():
+        bot.memory['SpiceBot_Channels']['ProcessLock'] = False
 
 
 @sopel.module.event('001')
@@ -53,7 +61,7 @@ def trigger_channel_list_initial(bot, trigger):
     bot.write(['LIST'])
     bot.memory['SpiceBot_Channels']['ProcessLock'] = True
 
-    stderr("[SpiceBot_Channels] Initial Channel list populating...")
+    bot_logging(bot, 'SpiceBot_Channels', "Initial Channel list populating")
     starttime = time.time()
 
     while not bot.memory['SpiceBot_Channels']['InitialProcess']:
@@ -61,12 +69,13 @@ def trigger_channel_list_initial(bot, trigger):
         if timesince < 60:
             pass
         else:
-            stderr("[SpiceBot_Channels] Initial Channel list populating Timed Out.")
+            bot_logging(bot, 'SpiceBot_Channels', "Initial Channel list populating Timed Out")
             bot.memory['SpiceBot_Channels']['InitialProcess'] = True
 
     channel_list_current(bot)
     foundchannelcount = len(bot.memory['SpiceBot_Channels']['channels'].keys())
-    stderr("[SpiceBot_Channels] Channel listing finished! " + str(foundchannelcount) + " channel(s) found.")
+    bot_logging(bot, 'SpiceBot_Channels', "Channel listing finished! " + str(foundchannelcount) + " channel(s) found.")
+    set_bot_event(bot, "SpiceBot_Channels")
 
     join_all_channels(bot)
     chanadmin_all_channels(bot)
@@ -167,6 +176,7 @@ def nickname_comand_chanstats(bot, trigger):
         bot.memory['SpiceBot_Channels']['ProcessLock'] = True
         while bot.memory['SpiceBot_Channels']['ProcessLock']:
             pass
+        join_all_channels(bot)
         foundchannelcount = len(bot.memory['SpiceBot_Channels']['channels'].keys())
         bot.osd("[SpiceBot_Channels]", "Channel listing finished!", str(foundchannelcount) + " channel(s) found.")
         return

@@ -4,12 +4,13 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 # sopel imports
 import sopel.module
-from sopel.tools import stderr
 from sopel.config.types import StaticSection, ValidatedAttribute
+
+import os
 
 import spicemanip
 
-from sopel_modules.SpiceBot_SBTools import service_manip, spicebot_update, sopel_triggerargs, command_permissions_check
+from sopel_modules.SpiceBot_SBTools import service_manip, sopel_triggerargs, command_permissions_check, bot_logging
 
 
 class SpiceBot_Update_MainSection(StaticSection):
@@ -24,7 +25,7 @@ def configure(config):
 
 
 def setup(bot):
-    stderr("[SpiceBot_Update] Initial Setup processing...")
+    bot_logging(bot, 'SpiceBot_Update', "Initial Setup processing")
     bot.config.define_section("SpiceBot_Update", SpiceBot_Update_MainSection, validate=False)
 
 
@@ -48,7 +49,7 @@ def nickname_comand_chanstats(bot, trigger):
 
     triggerargs = spicemanip.main(triggerargs, '2+', 'list')
 
-    stderr("Recieved Command to update.")
+    bot_logging(bot, 'SpiceBot_Update', "Received command from " + trigger.nick + " to update from Github and restart")
     bot.osd("Received command from " + trigger.nick + " to update from Github and restart. Be Back Soon!", bot.channels.keys())
 
     if commandused == 'nodeps':
@@ -56,4 +57,28 @@ def nickname_comand_chanstats(bot, trigger):
     if commandused == 'deps':
         spicebot_update(bot, "True")
 
-    service_manip(bot, bot.nick, 'restart')
+    service_manip(bot, bot.nick, 'restart', 'SpiceBot_Update')
+
+
+def spicebot_update(bot, deps="False"):
+
+    pipcommand = "sudo pip3 install --upgrade"
+    if deps == "False":
+        pipcommand += " --no-deps"
+    pipcommand += " --force-reinstall"
+    pipcommand += " git+" + str(bot.config.SpiceBot_Update.gitrepo) + "@" + str(bot.config.SpiceBot_Update.gitbranch)
+
+    bot_logging(bot, 'SpiceBot_Update', "Running `" + pipcommand + "`")
+    for line in os.popen(pipcommand).read().split('\n'):
+        bot_logging(bot, 'SpiceBot_Update', "    " + line)
+
+    # Remove stock modules, if present
+    main_sopel_dir = os.path.dirname(os.path.abspath(sopel.__file__))
+    modules_dir = os.path.join(main_sopel_dir, 'modules')
+    stockdir = os.path.join(modules_dir, "stock")
+    if not os.path.exists(stockdir) or not os.path.isdir(stockdir):
+        os.system("sudo mkdir " + stockdir)
+    for pathname in os.listdir(modules_dir):
+        path = os.path.join(modules_dir, pathname)
+        if (os.path.isfile(path) and path.endswith('.py') and not path.startswith('_')):
+            os.system("sudo mv " + path + " " + stockdir)
