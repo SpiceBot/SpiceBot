@@ -95,7 +95,7 @@ def bot_logging(bot, logtype, logentry):
     if 'SpiceBot_Logs_queue' not in bot.memory:
         bot.memory['SpiceBot_Logs_queue'] = []
 
-    logmessage = "[" + logtype + "] " + logentry
+    logmessage = "\n[" + logtype + "] " + logentry + "\n"
 
     if bot.config.SpiceBot_Logs.logging_channel:
         bot.memory['SpiceBot_Logs_queue'].append(logmessage)
