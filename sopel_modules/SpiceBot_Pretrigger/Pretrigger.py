@@ -19,7 +19,6 @@ def bot_trigger_simulator(bot, trigger):
 
 
 def bot_event_trigger_create(bot, number, message):
-
     pretrigger = sopel.trigger.PreTrigger(
         bot.nick,
         ":SpiceBot_Event " + str(number) + " " + str(bot.nick) + " :" + message
