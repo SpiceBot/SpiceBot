@@ -252,9 +252,10 @@ def channel_list_current(bot):
 
 
 def spicebot_reload(bot, log_from='service_manip'):
-    service_manip(bot, bot.nick, 'restart', log_from)
+    # service_manip(bot, bot.nick, 'restart', log_from)
     # bot.reload_plugins()
     # bot.write(('NOTICE', bot.nick), '001 Foo :Hello')
+    bot.restart()
 
 
 def service_manip(bot, servicename, dowhat, log_from='service_manip'):
