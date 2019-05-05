@@ -17,6 +17,10 @@ def setup(bot):
     pass
 
 
+def shutdown(bot):
+    pass
+
+
 @sopel.module.nickname_commands('action')
 def bot_command_action(bot, trigger):
     bot_command_process(bot, trigger)

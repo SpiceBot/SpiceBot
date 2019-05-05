@@ -97,8 +97,7 @@ def bot_logging(bot, logtype, logentry):
 
     logmessage = "[" + logtype + "] " + logentry + ""
 
-    if bot.config.SpiceBot_Logs.logging_channel:
-        bot.memory['SpiceBot_Logs_queue'].append(logmessage)
+    bot.memory['SpiceBot_Logs_queue'].append(logmessage)
 
     stderr("\n" + logmessage + "\n")
 
@@ -250,6 +249,13 @@ def channel_list_current(bot):
 
 
 """Environment Functions"""
+
+
+def spicebot_reload(bot, log_from='service_manip', quitmessage='Recieved QUIT'):
+    # service_manip(bot, bot.nick, 'restart', log_from)
+    # bot.reload_plugins()
+    # bot.write(('NOTICE', bot.nick), '001 Foo :Hello')
+    bot.restart(quitmessage)
 
 
 def service_manip(bot, servicename, dowhat, log_from='service_manip'):
