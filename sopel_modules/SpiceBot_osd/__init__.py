@@ -44,10 +44,10 @@ def setup(bot):
 
     # overwrite default bot messaging
     bot_logging(bot, 'SpiceBot_OSD', "Overwrite Default Sopel messaging commands")
-    bot.SopelWrapper.say = SopelOSD.SopelWrapper.say
-    bot.SopelWrapper.action = SopelOSD.SopelWrapper.action
-    bot.SopelWrapper.notice = SopelOSD.SopelWrapper.notice
-    bot.SopelWrapper.reply = SopelOSD.SopelWrapper.reply
+    sopel.bot.SopelWrapper.say = SopelOSD.SopelWrapper.say
+    sopel.bot.SopelWrapper.action = SopelOSD.SopelWrapper.action
+    sopel.bot.SopelWrapper.notice = SopelOSD.SopelWrapper.notice
+    sopel.bot.SopelWrapper.reply = SopelOSD.SopelWrapper.reply
 
     # verify config settings for server
     bot_logging(bot, 'SpiceBot_OSD', "Checking for config settings")
