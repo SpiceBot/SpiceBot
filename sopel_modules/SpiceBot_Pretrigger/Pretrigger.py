@@ -27,6 +27,6 @@ def bot_trigger_create(bot, trigger):
 
     pretrigger = PreTrigger(
         bot.nick,
-        ":irc.spicebot.net 7777 SpiceDBB :Welcome to the SpiceBot IRC Network SpiceDBB!SpiceDBB@pfsense.dbb.local"
+        ":irc.spicebot.net 7777 " + str(bot.nick) + " :Welcome to the SpiceBot Test Event System!"
     )
     bot.dispatch(pretrigger)
