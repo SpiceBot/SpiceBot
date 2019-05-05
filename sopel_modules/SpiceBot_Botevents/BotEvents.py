@@ -40,6 +40,7 @@ def parse_event_spicebotdbb(bot, trigger):
 @sopel.module.event('001')
 @sopel.module.rule('.*')
 def bot_trigger_create(bot, trigger):
+    sopel.tools.stderr("\n" + trigger.event + "    " + str(trigger.args) + "\n")
     pretrigger = sopel.trigger.PreTrigger(
         bot.nick,
         ":" + str(bot.nick) + ".event 7777 " + str(bot.nick) +
