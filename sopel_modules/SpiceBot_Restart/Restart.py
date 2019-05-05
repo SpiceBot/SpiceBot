@@ -22,4 +22,5 @@ def nickname_comand_chanstats(bot, trigger):
     bot_logging(bot, 'SpiceBot_Restart', "Received command from " + trigger.nick + " to restart")
     bot.osd("Received command from " + trigger.nick + " to restart. Be Back Soon!", bot.channels.keys())
 
-    spicebot_reload(bot)
+    # service_manip(bot, bot.nick, 'restart', 'SpiceBot_Restart')
+    spicebot_reload(bot, 'SpiceBot_Restart')

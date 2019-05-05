@@ -61,7 +61,8 @@ def nickname_comand_chanstats(bot, trigger):
     if commandused == 'deps':
         spicebot_update(bot, "True")
 
-    spicebot_reload(bot)
+    # service_manip(bot, bot.nick, 'restart', 'SpiceBot_Update')
+    spicebot_reload(bot, 'SpiceBot_Update')
 
 
 def spicebot_update(bot, deps="False"):
