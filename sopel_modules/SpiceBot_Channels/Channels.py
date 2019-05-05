@@ -88,7 +88,7 @@ def trigger_channel_list_initial(bot, trigger):
     if "*" in bot.memory['SpiceBot_Channels']['channels']:
         del bot.memory['SpiceBot_Channels']['channels']["*"]
 
-    while True:
+    while 'SpiceBot_Channels' in bot.memory:
         time.sleep(1800)
         oldlist = list(bot.memory['SpiceBot_Channels']['channels'].keys())
         bot.write(['LIST'])

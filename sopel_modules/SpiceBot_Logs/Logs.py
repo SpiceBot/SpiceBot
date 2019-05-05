@@ -50,7 +50,7 @@ def join_log_channel(bot, trigger):
         if 'SpiceBot_Logs_queue' not in bot.memory:
             bot.memory['SpiceBot_Logs_queue'] = []
 
-        while True:
+        while 'SpiceBot_Logs_queue' in bot.memory:
             if len(bot.memory['SpiceBot_Logs_queue']):
                 bot.say(str(bot.memory['SpiceBot_Logs_queue'][0]), channel)
                 del bot.memory['SpiceBot_Logs_queue'][0]
