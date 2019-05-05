@@ -3,7 +3,7 @@
 from __future__ import unicode_literals, absolute_import, print_function, division
 
 # sopel imports
-from sopel import module, trigger
+import sopel
 
 from sopel_modules.SpiceBot_SBTools import bot_logging
 
@@ -17,9 +17,8 @@ def configure(config):
 def setup(bot):
     bot_logging(bot, 'SpiceBot_Events', "Starting setup procedure.")
     bot_events_setup_check(bot)
-    bot_event_startup_register(bot, ['1001', '1002', '1003', '1004'])
+    bot_events_startup_register(bot, ['1001', '1002', '1003', '1004'])
     bot_events_trigger(bot, 1001, "Welcome to the SpiceBot Events System")
-    bot_events_set_complete(bot, '1001')
 
 
 def shutdown(bot):
@@ -27,27 +26,40 @@ def shutdown(bot):
         del bot.memory["SpiceBot_Events"]
 
 
-@module.event('1001')
-@module.rule('.*')
-def bot_events_ready(bot, trigger):
+@sopel.module.event('1001')
+@sopel.module.rule('.*')
+def bot_events_start(bot, trigger):
+    bot_events_recieved(bot, trigger.event)
+
     bot_logging(bot, 'SpiceBot_Events', "Ready To Process module setup procedures")
     bot_events_trigger(bot, 1002, "Ready To Process module setup procedures")
-    bot_events_set_complete(bot, '1002')
 
     while not bot_events_startup_check(bot):
         pass
     bot_events_trigger(bot, 1004, "All registered modules setup procedures have completed")
-    bot_events_set_complete(bot, '1004')
 
 
-@module.event('1004')
-@module.rule('.*')
+@sopel.module.event('1002')
+@sopel.module.rule('.*')
+def bot_events_ready(bot, trigger):
+    bot_events_recieved(bot, trigger.event)
+
+
+@sopel.module.event('1003')
+@sopel.module.rule('.*')
+def bot_events_connected(bot, trigger):
+    bot_events_recieved(bot, trigger.event)
+
+
+@sopel.module.event('1004')
+@sopel.module.rule('.*')
 def bot_events_monologue(bot, trigger):
+    bot_events_recieved(bot, trigger.event)
     bot.osd('SpiceBot_Events complete', bot.channels.keys())
 
 
-@module.event('001')
-@module.rule('.*')
+@sopel.module.event('001')
+@sopel.module.rule('.*')
 def bot_startup_connection(bot, trigger):
 
     if bot_events_check(bot, '1004'):
@@ -58,8 +70,6 @@ def bot_startup_connection(bot, trigger):
     time.sleep(1)
     bot_events_trigger(bot, 1003, "Bot Connected to IRC")
 
-    bot_events_set_complete(bot, '1003')
-
 
 def bot_events_trigger(bot, number, message):
 
@@ -67,7 +77,7 @@ def bot_events_trigger(bot, number, message):
 
     bot.memory["SpiceBot_Events"]["triggers"][str(number)] = message
 
-    pretrigger = trigger.PreTrigger(
+    pretrigger = sopel.trigger.PreTrigger(
         bot.nick,
         ":SpiceBot_Events " + str(number) + " " + str(bot.nick) + " :" + message
     )
@@ -93,7 +103,7 @@ def bot_events_check(bot, listreq):
     return True
 
 
-def bot_event_startup_register(bot, addonreq):
+def bot_events_startup_register(bot, addonreq):
 
     bot_events_setup_check(bot)
 
@@ -103,14 +113,12 @@ def bot_event_startup_register(bot, addonreq):
     bot.memory["SpiceBot_Events"]["startup"].extend(addonreq)
 
 
-def bot_events_set_complete(bot, addonreq):
+def bot_events_recieved(bot, number):
 
     bot_events_setup_check(bot)
 
-    if not isinstance(addonreq, list):
-        addonreq = [str(addonreq)]
-
-    bot.memory["Sopel_LoadOrder"]["loaded"].extend(addonreq)
+    if str(number) not in bot.memory["SpiceBot_Events"]["loaded"]:
+        bot.memory["SpiceBot_Events"]["loaded"].append(str(number))
 
 
 def bot_events_startup_check(bot):
