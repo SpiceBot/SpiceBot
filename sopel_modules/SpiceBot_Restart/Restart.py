@@ -4,9 +4,16 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 # sopel imports
 import sopel.module
-from sopel.config.types import StaticSection, ValidatedAttribute
 
-from sopel_modules.SpiceBot_SBTools import service_manip, bot_logging, spicebot_reload
+from sopel_modules.SpiceBot_SBTools import bot_logging, spicebot_reload
+
+
+def configure(config):
+    pass
+
+
+def setup(bot):
+    pass
 
 
 def shutdown(bot):
