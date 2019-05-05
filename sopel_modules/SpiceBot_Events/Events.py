@@ -18,7 +18,6 @@ def setup(bot):
     bot_logging(bot, 'SpiceBot_Events', "Starting setup procedure.")
     bot_events_setup_check(bot)
     bot_events_startup_register(bot, ['1001', '1002', '1003', '1004'])
-    bot_events_trigger(bot, 1001, "Welcome to the SpiceBot Events System")
 
 
 def shutdown(bot):
@@ -61,6 +60,7 @@ def bot_events_monologue(bot, trigger):
 @sopel.module.event('001')
 @sopel.module.rule('.*')
 def bot_startup_connection(bot, trigger):
+    bot_events_trigger(bot, 1001, "Welcome to the SpiceBot Events System")
 
     if bot_events_check(bot, '1004'):
         return
