@@ -251,11 +251,11 @@ def channel_list_current(bot):
 """Environment Functions"""
 
 
-def spicebot_reload(bot, log_from='service_manip'):
+def spicebot_reload(bot, log_from='service_manip', quitmessage='Recieved QUIT'):
     # service_manip(bot, bot.nick, 'restart', log_from)
     # bot.reload_plugins()
     # bot.write(('NOTICE', bot.nick), '001 Foo :Hello')
-    bot.restart()
+    bot.restart(quitmessage)
 
 
 def service_manip(bot, servicename, dowhat, log_from='service_manip'):

@@ -54,22 +54,23 @@ def nickname_comand_update(bot, trigger):
 
     triggerargs = spicemanip.main(triggerargs, '2+', 'list')
 
-    bot_logging(bot, 'SpiceBot_Update', "Received command from " + trigger.nick + " to update from Github and restart")
-    bot.osd("Received command from " + trigger.nick + " to update from Github and restart. Be Back Soon!", bot.channels.keys())
+    quitmessage = "Received command from " + trigger.nick + " to update from Github and restart"
+    bot_logging(bot, 'SpiceBot_Update', quitmessage)
+    bot.osd(quitmessage, bot.channels.keys())
 
     if commandused == 'nodeps':
-        spicebot_update(bot, "False")
+        spicebot_update(bot, False)
     if commandused == 'deps':
-        spicebot_update(bot, "True")
+        spicebot_update(bot, True)
 
     # service_manip(bot, bot.nick, 'restart', 'SpiceBot_Update')
-    spicebot_reload(bot, 'SpiceBot_Update')
+    spicebot_reload(bot, 'SpiceBot_Update', quitmessage)
 
 
-def spicebot_update(bot, deps="False"):
+def spicebot_update(bot, deps=False):
 
     pipcommand = "sudo pip3 install --upgrade"
-    if deps == "False":
+    if not deps:
         pipcommand += " --no-deps"
     pipcommand += " --force-reinstall"
     pipcommand += " git+" + str(bot.config.SpiceBot_Update.gitrepo) + "@" + str(bot.config.SpiceBot_Update.gitbranch)
