@@ -17,6 +17,10 @@ def setup(bot):
     pass
 
 
+def shutdown(bot):
+    pass
+
+
 @sopel.module.nickname_commands('help', 'docs', 'wiki')
 def bot_command_owners(bot, trigger):
     bot.osd(["IRC Modules Repository", str(github_dict["url_main"] + github_dict["repo_owner"] + "/" + github_dict["repo_name"] + github_dict["url_path_wiki"])])

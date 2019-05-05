@@ -13,6 +13,10 @@ def setup(bot):
     pass
 
 
+def shutdown(bot):
+    pass
+
+
 @sopel.module.rule(r'(?i)(Fuck|Screw) (you|off),? $nickname[ \t]*$')
 def bot_command_srewyou(bot, trigger):
     bot.osd("Watch your mouth, " + trigger.nick + ", or I'll tell your mother!")

@@ -37,21 +37,25 @@ def setup(bot):
     # Inject OSD
     bot_logging(bot, 'SpiceBot_OSD', "Implanting OSD function into bot")
     bot.osd = SopelOSD.osd
-    bot.SopelWrapper.osd = SopelOSD.SopelWrapper.osd
+    sopel.bot.SopelWrapper.osd = SopelOSD.SopelWrapper.osd
     tools.get_available_message_bytes = ToolsOSD.get_available_message_bytes
     tools.get_sendable_message_list = ToolsOSD.get_sendable_message_list
     tools.get_message_recipientgroups = ToolsOSD.get_message_recipientgroups
 
     # overwrite default bot messaging
     bot_logging(bot, 'SpiceBot_OSD', "Overwrite Default Sopel messaging commands")
-    bot.SopelWrapper.say = SopelOSD.SopelWrapper.say
-    bot.SopelWrapper.action = SopelOSD.SopelWrapper.action
-    bot.SopelWrapper.notice = SopelOSD.SopelWrapper.notice
-    bot.SopelWrapper.reply = SopelOSD.SopelWrapper.reply
+    sopel.bot.SopelWrapper.say = SopelOSD.SopelWrapper.say
+    sopel.bot.SopelWrapper.action = SopelOSD.SopelWrapper.action
+    sopel.bot.SopelWrapper.notice = SopelOSD.SopelWrapper.notice
+    sopel.bot.SopelWrapper.reply = SopelOSD.SopelWrapper.reply
 
     # verify config settings for server
     bot_logging(bot, 'SpiceBot_OSD', "Checking for config settings")
     bot.config.define_section("MAXTARGCONFIG", MAXTARGCONFIG, validate=False)
+
+
+def shutdown(bot):
+    pass
 
 
 # RPL_ISUPPORT = '005'

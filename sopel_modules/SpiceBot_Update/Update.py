@@ -7,10 +7,11 @@ import sopel.module
 from sopel.config.types import StaticSection, ValidatedAttribute
 
 import os
+import pip
 
 import spicemanip
 
-from sopel_modules.SpiceBot_SBTools import service_manip, sopel_triggerargs, command_permissions_check, bot_logging
+from sopel_modules.SpiceBot_SBTools import service_manip, sopel_triggerargs, command_permissions_check, bot_logging, spicebot_reload
 
 
 class SpiceBot_Update_MainSection(StaticSection):
@@ -29,8 +30,12 @@ def setup(bot):
     bot.config.define_section("SpiceBot_Update", SpiceBot_Update_MainSection, validate=False)
 
 
+def shutdown(bot):
+    pass
+
+
 @sopel.module.nickname_commands('update')
-def nickname_comand_chanstats(bot, trigger):
+def nickname_comand_update(bot, trigger):
 
     if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
         bot.say("I was unable to process this Bot Nick command due to privilege issues.")
@@ -49,21 +54,23 @@ def nickname_comand_chanstats(bot, trigger):
 
     triggerargs = spicemanip.main(triggerargs, '2+', 'list')
 
-    bot_logging(bot, 'SpiceBot_Update', "Received command from " + trigger.nick + " to update from Github and restart")
-    bot.osd("Received command from " + trigger.nick + " to update from Github and restart. Be Back Soon!", bot.channels.keys())
+    quitmessage = "Received command from " + trigger.nick + " to update from Github and restart"
+    bot_logging(bot, 'SpiceBot_Update', quitmessage)
+    bot.osd(quitmessage, bot.channels.keys())
 
     if commandused == 'nodeps':
-        spicebot_update(bot, "False")
+        spicebot_update(bot, False)
     if commandused == 'deps':
-        spicebot_update(bot, "True")
+        spicebot_update(bot, True)
 
-    service_manip(bot, bot.nick, 'restart', 'SpiceBot_Update')
+    # service_manip(bot, bot.nick, 'restart', 'SpiceBot_Update')
+    spicebot_reload(bot, 'SpiceBot_Update', quitmessage)
 
 
-def spicebot_update(bot, deps="False"):
+def spicebot_update(bot, deps=False):
 
     pipcommand = "sudo pip3 install --upgrade"
-    if deps == "False":
+    if not deps:
         pipcommand += " --no-deps"
     pipcommand += " --force-reinstall"
     pipcommand += " git+" + str(bot.config.SpiceBot_Update.gitrepo) + "@" + str(bot.config.SpiceBot_Update.gitbranch)
@@ -71,6 +78,11 @@ def spicebot_update(bot, deps="False"):
     bot_logging(bot, 'SpiceBot_Update', "Running `" + pipcommand + "`")
     for line in os.popen(pipcommand).read().split('\n'):
         bot_logging(bot, 'SpiceBot_Update', "    " + line)
+
+    stock_modules_begone(bot)
+
+
+def stock_modules_begone(bot):
 
     # Remove stock modules, if present
     main_sopel_dir = os.path.dirname(os.path.abspath(sopel.__file__))

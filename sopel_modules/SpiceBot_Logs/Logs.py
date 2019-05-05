@@ -30,6 +30,13 @@ def setup(bot):
         bot.memory['SpiceBot_Logs_queue'] = []
 
 
+def shutdown(bot):
+    if "SpiceBot_Logs" in bot.memory:
+        del bot.memory["SpiceBot_Logs"]
+    if "SpiceBot_Logs_queue" in bot.memory:
+        del bot.memory["SpiceBot_Logs_queue"]
+
+
 @sopel.module.event('001')
 @sopel.module.rule('.*')
 def join_log_channel(bot, trigger):

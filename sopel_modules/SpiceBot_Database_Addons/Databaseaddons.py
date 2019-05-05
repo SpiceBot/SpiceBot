@@ -21,6 +21,10 @@ def setup(bot):
     SopelDB._create_table = SopelDBCache._create_table
 
 
+def shutdown(bot):
+    pass
+
+
 class SopelDBCache:
 
     """Dynamic Table Creation"""

@@ -18,6 +18,10 @@ def setup(bot):
     pass
 
 
+def shutdown(bot):
+    pass
+
+
 @module.event('001')
 @module.rule('.*')
 @module.thread(True)
