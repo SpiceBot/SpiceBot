@@ -6,6 +6,9 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel
 from sopel.module import OP, ADMIN, VOICE, OWNER, HALFOP
 from sopel.tools import stderr
+from sopel import coretasks, config
+from sopel.trigger import PreTrigger, Trigger
+from sopel.bot import SopelWrapper
 HOP = HALFOP
 
 import collections
@@ -46,6 +49,12 @@ def sopel_triggerargs(bot, trigger, command_type='module_command'):
         triggerargs = spicemanip.main(triggerargs, '2+', 'list')
 
     return triggerargs, command
+
+
+def bot_trigger_create(bot):
+    pretrigger = PreTrigger(bot.nick, ":test.example.com 7777 Foo #test ~Admin adminhost test.example.com Admin Hr~ :0 Admin",)
+    trigger = Trigger(bot.config, pretrigger, None)
+    coretasks.recv_who(SopelWrapper(bot, trigger), trigger)
 
 
 def bot_privs(bot, privtype):
@@ -242,7 +251,6 @@ def channel_list_current(bot):
         bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()] = dict()
         bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()]['name'] = str(channel)
         bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()]['topic'] = topic_compile(topic)
-        channel_privs(bot, channel)
 
     if "*" in bot.memory['SpiceBot_Channels']:
         bot.memory['SpiceBot_Channels'].remove("*")
