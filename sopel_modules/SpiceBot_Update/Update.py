@@ -75,8 +75,9 @@ def spicebot_update(bot, deps=False):
     pipcommand += " git+" + str(bot.config.SpiceBot_Update.gitrepo) + "@" + str(bot.config.SpiceBot_Update.gitbranch)
 
     bot_logging(bot, 'SpiceBot_Update', "Running `" + pipcommand + "`")
-    for line in os.popen(pipcommand).read().split('\n'):
-        bot_logging(bot, 'SpiceBot_Update', "    " + line)
+    # for line in os.popen(pipcommand).read().split('\n'):
+    #    bot_logging(bot, 'SpiceBot_Update', "    " + line)
+    os.system(pipcommand)
 
     stock_modules_begone(bot)
 
