@@ -1,3 +1,4 @@
 spicemanip>=0.1.6
 gitpython
 fake-useragent
+git+https://github.com/sopel-irc/sopel@master
