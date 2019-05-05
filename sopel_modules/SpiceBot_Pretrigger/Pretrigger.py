@@ -23,10 +23,13 @@ def parse_event_spicebotdbb(bot, trigger):
 
 @module.event('001')
 @module.rule('.*')
-def bot_trigger_create(bot, trigger):
+def bot_trigger_simulator(bot, trigger):
+    bot_trigger_create(bot, 7777, "Welcome to the SpiceBot Test Event System!")
+
+def bot_event_trigger_create(bot, number, message):
 
     pretrigger = PreTrigger(
         bot.nick,
-        ":irc.spicebot.net 7777 " + str(bot.nick) + " :Welcome to the SpiceBot Test Event System!"
+        ":irc.spicebot.net " +  str(number) + " " + str(bot.nick) + " :" + message
     )
     bot.dispatch(pretrigger)
