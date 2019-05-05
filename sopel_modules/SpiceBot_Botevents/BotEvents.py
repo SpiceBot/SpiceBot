@@ -31,6 +31,23 @@ def setup_thread(bot):
         bot.memory["Sopel_BotEvents"] = {"loaded": [], "startup": []}
 
 
+@sopel.module.event('7777')
+@sopel.module.rule('.*')
+def parse_event_spicebotdbb(bot, trigger):
+    sopel.tools.stderr("\n" + trigger.event + "    " + str(trigger.args) + "\n")
+
+
+@sopel.module.event('001')
+@sopel.module.rule('.*')
+def bot_trigger_create(bot, trigger):
+    pretrigger = sopel.trigger.PreTrigger(
+        bot.nick,
+        ":" + bot.nick + " 7777 " + bot.nick +
+        " :This is a test of the Fake Event System"
+    )
+    bot.dispatch(pretrigger)
+
+
 def list_bot_events(bot, list_type):
     if "Sopel_BotEvents" not in bot.memory:
         bot.memory["Sopel_BotEvents"] = {"loaded": [], "startup": []}

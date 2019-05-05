@@ -51,12 +51,6 @@ def sopel_triggerargs(bot, trigger, command_type='module_command'):
     return triggerargs, command
 
 
-def bot_trigger_create(bot):
-    pretrigger = PreTrigger(bot.nick, ":test.example.com 7777 Foo #test ~Admin adminhost test.example.com Admin Hr~ :0 Admin",)
-    trigger = Trigger(bot.config, pretrigger, None)
-    coretasks.recv_who(SopelWrapper(bot, trigger), trigger)
-
-
 def bot_privs(bot, privtype):
     if privtype == 'owners':
         privtype = 'owner'
