@@ -6,10 +6,6 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel
 
 
-def setup(bot):
-    sopel.tools._events.events.SpiceBotdbb = '7777'
-
-
 @sopel.module.event('7777')
 @sopel.module.rule('.*')
 def parse_event_spicebotdbb(bot, trigger):
