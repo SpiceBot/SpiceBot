@@ -68,14 +68,13 @@ def nickname_comand_chanstats(bot, trigger):
 
 def spicebot_update(bot, deps="False"):
 
-    """
     pipcommand = "sudo pip3 install --upgrade"
     if deps == "False":
         pipcommand += " --no-deps"
     pipcommand += " --force-reinstall"
     pipcommand += " git+" + str(bot.config.SpiceBot_Update.gitrepo) + "@" + str(bot.config.SpiceBot_Update.gitbranch)
-    """
 
+    """
     pipcommand = ['install']
     pipcommand.append('--upgrade')
     if deps == "False":
@@ -83,10 +82,11 @@ def spicebot_update(bot, deps="False"):
     pipcommand.append('--force-reinstall')
     pipcommand.append("git+" + str(bot.config.SpiceBot_Update.gitrepo) + "@" + str(bot.config.SpiceBot_Update.gitbranch))
     pip.main(pipcommand)
+    """
 
-    # bot_logging(bot, 'SpiceBot_Update', "Running `" + pipcommand + "`")
-    # for line in os.popen(pipcommand).read().split('\n'):
-    #    bot_logging(bot, 'SpiceBot_Update', "    " + line)
+    bot_logging(bot, 'SpiceBot_Update', "Running `" + pipcommand + "`")
+    for line in os.popen(pipcommand).read().split('\n'):
+        bot_logging(bot, 'SpiceBot_Update', "    " + line)
 
     # Remove stock modules, if present
     main_sopel_dir = os.path.dirname(os.path.abspath(sopel.__file__))
