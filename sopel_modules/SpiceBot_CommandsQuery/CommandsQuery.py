@@ -11,7 +11,7 @@ from operator import itemgetter
 import threading
 
 
-from sopel_modules.SpiceBot_Botevents.BotEvents import set_bot_event, check_bot_events, bot_logging
+from sopel_modules.SpiceBot_LoadOrder.LoadOrder import set_bot_event, check_bot_events, bot_logging
 
 import spicemanip
 

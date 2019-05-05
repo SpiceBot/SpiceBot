@@ -1,11 +1,11 @@
 # coding=utf8
-"""Sopel_BotEvents
+"""Sopel_LoadOrder
 
-Sopel BotEvents is a poor mans way to create module load order dependencies
+Sopel LoadOrder is a poor mans way to create module load order dependencies
 """
 from __future__ import unicode_literals, absolute_import, division, print_function
 
-from .BotEvents import *
+from .LoadOrder import *
 from .Connected import *
 from .Startup_Complete import *
 

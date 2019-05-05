@@ -5,7 +5,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import sopel.module
 from sopel.config.types import StaticSection, ValidatedAttribute
 
-from sopel_modules.SpiceBot_Botevents.BotEvents import set_bot_event, startup_bot_event
+from sopel_modules.SpiceBot_LoadOrder.LoadOrder import set_bot_event, startup_bot_event
 
 from sopel_modules.SpiceBot_CommandsQuery.CommandsQuery import commandsquery_register, commandsquery_register_type
 
