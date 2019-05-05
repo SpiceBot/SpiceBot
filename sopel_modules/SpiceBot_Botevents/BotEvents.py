@@ -5,7 +5,7 @@ Sopel BotEvents is a poor mans way to create module load order dependencies
 """
 from __future__ import unicode_literals, absolute_import, division, print_function
 
-import sopel.module
+import sopel
 from sopel_modules.SpiceBot_SBTools import bot_logging
 import threading
 
@@ -15,7 +15,6 @@ def configure(config):
 
 
 def setup(bot):
-    # TODO add custom pretrigger events
     bot_logging(bot, 'Sopel_BotEvents', "Starting Module Events Logging")
 
     threading.Thread(target=setup_thread, args=(bot,)).start()
@@ -27,6 +26,7 @@ def shutdown(bot):
 
 
 def setup_thread(bot):
+    sopel.tools._events.events.SpiceBotdbb = '7777'
     if "Sopel_BotEvents" not in bot.memory:
         bot.memory["Sopel_BotEvents"] = {"loaded": [], "startup": []}
 
@@ -42,7 +42,7 @@ def parse_event_spicebotdbb(bot, trigger):
 def bot_trigger_create(bot, trigger):
     pretrigger = sopel.trigger.PreTrigger(
         bot.nick,
-        ":" + bot.nick + " 7777 " + bot.nick +
+        ":" + str(bot.nick) + ".event 7777 " + str(bot.nick) +
         " :This is a test of the Fake Event System"
     )
     bot.dispatch(pretrigger)
