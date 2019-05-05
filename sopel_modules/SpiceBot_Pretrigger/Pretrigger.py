@@ -5,8 +5,6 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 # sopel imports
 import sopel
 
-from sopel.trigger import PreTrigger
-
 
 def setup(bot):
     sopel.tools._events.events.SpiceBotdbb = '7777'
@@ -26,7 +24,7 @@ def bot_trigger_simulator(bot, trigger):
 
 def bot_event_trigger_create(bot, number, message):
 
-    pretrigger = PreTrigger(
+    pretrigger = sopel.trigger.PreTrigger(
         bot.nick,
         ":SpiceBot_Event " + str(number) + " " + str(bot.nick) + " :" + message
     )
