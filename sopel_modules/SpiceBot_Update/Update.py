@@ -91,5 +91,5 @@ def stock_modules_begone(bot):
         os.system("sudo mkdir " + stockdir)
     for pathname in os.listdir(modules_dir):
         path = os.path.join(modules_dir, pathname)
-        if (os.path.isfile(path) and path.endswith('.py') and not path.startswith('_')):
+        if (os.path.isfile(path) and pathname.endswith('.py') and not pathname.startswith('_')):
             os.system("sudo mv " + path + " " + stockdir)
