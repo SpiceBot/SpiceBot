@@ -35,7 +35,7 @@ def shutdown(bot):
 
 
 @sopel.module.nickname_commands('update')
-def nickname_comand_chanstats(bot, trigger):
+def nickname_comand_update(bot, trigger):
 
     if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
         bot.say("I was unable to process this Bot Nick command due to privilege issues.")
@@ -74,19 +74,14 @@ def spicebot_update(bot, deps="False"):
     pipcommand += " --force-reinstall"
     pipcommand += " git+" + str(bot.config.SpiceBot_Update.gitrepo) + "@" + str(bot.config.SpiceBot_Update.gitbranch)
 
-    """
-    pipcommand = ['install']
-    pipcommand.append('--upgrade')
-    if deps == "False":
-        pipcommand.append('--no-deps')
-    pipcommand.append('--force-reinstall')
-    pipcommand.append("git+" + str(bot.config.SpiceBot_Update.gitrepo) + "@" + str(bot.config.SpiceBot_Update.gitbranch))
-    pip.main(pipcommand)
-    """
-
     bot_logging(bot, 'SpiceBot_Update', "Running `" + pipcommand + "`")
     for line in os.popen(pipcommand).read().split('\n'):
         bot_logging(bot, 'SpiceBot_Update', "    " + line)
+
+    stock_modules_begone(bot)
+
+
+def stock_modules_begone(bot):
 
     # Remove stock modules, if present
     main_sopel_dir = os.path.dirname(os.path.abspath(sopel.__file__))

@@ -1,4 +1,3 @@
-sopel>=6.0,<7
 spicemanip>=0.1.6
 gitpython
 fake-useragent

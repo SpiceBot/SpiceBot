@@ -37,7 +37,7 @@ def setup(bot):
     # Inject OSD
     bot_logging(bot, 'SpiceBot_OSD', "Implanting OSD function into bot")
     bot.osd = SopelOSD.osd
-    bot.SopelWrapper.osd = SopelOSD.SopelWrapper.osd
+    sopel.bot.SopelWrapper.osd = SopelOSD.SopelWrapper.osd
     tools.get_available_message_bytes = ToolsOSD.get_available_message_bytes
     tools.get_sendable_message_list = ToolsOSD.get_sendable_message_list
     tools.get_message_recipientgroups = ToolsOSD.get_message_recipientgroups

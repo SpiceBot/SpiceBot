@@ -14,7 +14,7 @@ def shutdown(bot):
 
 
 @sopel.module.nickname_commands('restart')
-def nickname_comand_chanstats(bot, trigger):
+def nickname_comand_restart(bot, trigger):
 
     if not trigger.admin:
         bot.say("You are not authorized to perform this function.")
