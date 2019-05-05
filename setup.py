@@ -21,6 +21,19 @@ def stock_modules_begone():
             os.system("sudo mv " + path + " " + stockdir)
 
 
+def sopel_master_install():
+
+    pipcommand = "sudo pip3 install --upgrade"
+    pipcommand += " --force-reinstall"
+    pipcommand += " git+https://github.com/sopel-irc/sopel@master"
+
+    print('Running {} '.format(pipcommand), file=sys.stderr)
+    for line in os.popen(pipcommand).read().split('\n'):
+        print(line, file=sys.stderr)
+
+    stock_modules_begone()
+
+
 if __name__ == '__main__':
     print('Sopel does not correctly load modules installed with setup.py '
           'directly. Please use "pip install .", or add {}/sopel_modules to '
@@ -34,13 +47,13 @@ with open('README.md') as readme_file:
 with open('NEWS') as history_file:
     history = history_file.read()
 
+sopel_master_install()
+
 with open('requirements.txt') as requirements_file:
     requirements = [req for req in requirements_file.readlines()]
 
 with open('dev-requirements.txt') as dev_requirements_file:
     dev_requirements = [req for req in dev_requirements_file.readlines()]
-
-stock_modules_begone()
 
 
 setup(
