@@ -15,6 +15,7 @@ def configure(config):
 
 
 def setup(bot):
+    # TODO add custom pretrigger events
     bot_logging(bot, 'Sopel_BotEvents', "Starting Module Events Logging")
 
     threading.Thread(target=setup_thread, args=(bot,)).start()
