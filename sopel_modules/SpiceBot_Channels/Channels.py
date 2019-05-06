@@ -81,27 +81,30 @@ def trigger_channel_list_initial(bot, trigger):
     if "*" in bot.memory['SpiceBot_Channels']['channels']:
         del bot.memory['SpiceBot_Channels']['channels']["*"]
 
-    while 'SpiceBot_Channels' in bot.memory:
-        time.sleep(1800)
-        oldlist = list(bot.memory['SpiceBot_Channels']['channels'].keys())
-        bot.write(['LIST'])
-        bot.memory['SpiceBot_Channels']['ProcessLock'] = True
+    while True:
+        try:
+            time.sleep(1800)
+            oldlist = list(bot.memory['SpiceBot_Channels']['channels'].keys())
+            bot.write(['LIST'])
+            bot.memory['SpiceBot_Channels']['ProcessLock'] = True
 
-        while bot.memory['SpiceBot_Channels']['ProcessLock']:
-            pass
+            while bot.memory['SpiceBot_Channels']['ProcessLock']:
+                pass
 
-        newlist = [item.lower() for item in oldlist if item.lower() not in bot.memory['SpiceBot_Channels']['channels']]
-        if "*" in newlist:
-            newlist.remove("*")
-        if len(newlist) and bot.config.SpiceBot_Channels.announcenew:
-            bot.osd(["The Following channel(s) are new:", spicemanip.main(newlist, 'andlist')], bot.channels.keys())
+            newlist = [item.lower() for item in oldlist if item.lower() not in bot.memory['SpiceBot_Channels']['channels']]
+            if "*" in newlist:
+                newlist.remove("*")
+            if len(newlist) and bot.config.SpiceBot_Channels.announcenew:
+                bot.osd(["The Following channel(s) are new:", spicemanip.main(newlist, 'andlist')], bot.channels.keys())
 
-        join_all_channels(bot)
+            join_all_channels(bot)
 
-        chanadmin_all_channels(bot)
+            chanadmin_all_channels(bot)
 
-        if "*" in bot.memory['SpiceBot_Channels']['channels']:
-            del bot.memory['SpiceBot_Channels']['channels']["*"]
+            if "*" in bot.memory['SpiceBot_Channels']['channels']:
+                del bot.memory['SpiceBot_Channels']['channels']["*"]
+        except KeyError:
+            return
 
 
 @sopel.module.event('2001')
