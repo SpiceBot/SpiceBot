@@ -84,7 +84,7 @@ def bot_events_startup_check(bot):
             notcomplete.append(str(startupitem))
 
     if len(notcomplete):
-        bot_logging(bot, 'SpiceBot_Events', str(notcomplete))
+        # bot_logging(bot, 'SpiceBot_Events', str(notcomplete))
         return False
     else:
         return True
