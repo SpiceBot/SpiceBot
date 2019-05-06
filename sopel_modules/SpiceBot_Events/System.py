@@ -29,12 +29,12 @@ def bot_events_trigger(bot, number, message):
         bot.nick,
         ":SpiceBot_Events " + str(number) + " " + str(bot.nick) + " :" + message
     )
-    bot.dispatch(pretrigger)
+    bot.memory['SpiceBot_Events']["queue"].append(pretrigger)
 
 
 def bot_events_setup_check(bot):
     if "SpiceBot_Events" not in bot.memory:
-        bot.memory["SpiceBot_Events"] = {"triggers": {}, "startup": [], "loaded": []}
+        bot.memory["SpiceBot_Events"] = {"triggers": {}, "startup": [], "loaded": [], "queue": []}
 
 
 def bot_events_check(bot, listreq):

@@ -4,7 +4,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.module
 
-from .System import bot_events_trigger, bot_events_recieved, bot_events_startup_check, bot_events_check
+from .System import bot_events_trigger, bot_events_recieved, bot_events_startup_check, bot_events_check, bot_events_setup_check
 from sopel_modules.SpiceBot_SBTools import bot_logging
 
 import time
@@ -49,6 +49,13 @@ def bot_events_ready(bot, trigger):
 def bot_events_connected(bot, trigger):
     bot_logging(bot, 'SpiceBot_Events', trigger.args[1])
     bot_events_recieved(bot, trigger.event)
+
+    bot_events_setup_check(bot)
+
+    while 'SpiceBot_Events' in bot.memory:
+        if len(bot.memory['SpiceBot_Events']["queue"]):
+            bot.dispatch(bot.memory['SpiceBot_Events']["queue"][0])
+            del bot.memory['SpiceBot_Events']["queue"][0]
 
 
 @sopel.module.event('1004')

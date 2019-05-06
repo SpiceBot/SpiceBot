@@ -23,17 +23,6 @@ def setup(bot):
     if 'SpiceBot_CommandsQuery' not in bot.memory:
         bot.memory['SpiceBot_CommandsQuery'] = {"counts": {}, "commands": {}}
 
-
-def shutdown(bot):
-    if "SpiceBot_CommandsQuery" in bot.memory:
-        del bot.memory["SpiceBot_CommandsQuery"]
-
-
-@sopel.module.event('1003')
-@sopel.module.rule('.*')
-def trigger_command_list_initial(bot, trigger):
-    bot_events_recieved(bot, trigger.event)
-
     for comtype in ['module', 'nickname', 'rule']:
         if comtype not in bot.memory['SpiceBot_CommandsQuery']['counts'].keys():
             bot.memory['SpiceBot_CommandsQuery']['counts'][comtype] = 0
@@ -153,6 +142,11 @@ def trigger_command_list_initial(bot, trigger):
 
     set_bot_event(bot, "SpiceBot_CommandsQuery")
     bot_events_trigger(bot, 2002, "SpiceBot_CommandsQuery")
+
+
+def shutdown(bot):
+    if "SpiceBot_CommandsQuery" in bot.memory:
+        del bot.memory["SpiceBot_CommandsQuery"]
 
 
 @sopel.module.event('1004')

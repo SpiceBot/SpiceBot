@@ -27,8 +27,18 @@ def setup(bot):
 
     startup_bot_event(bot, "SpiceBot_CommandsQuery")
 
+    bot_logs_setup_check(bot)
+
+
+def bot_logs_setup_check(bot):
     if 'SpiceBot_Logs' not in bot.memory:
         bot.memory['SpiceBot_Logs'] = {"logs": {}, "queue": []}
+
+
+@sopel.module.event('1003')
+@sopel.module.rule('.*')
+def bot_startup_logs_complete(bot, trigger):
+    bot_events_recieved(bot, trigger.event)
 
     set_bot_event(bot, "SpiceBot_Logs")
     bot_events_trigger(bot, 2004, "SpiceBot_Logs")
@@ -39,7 +49,7 @@ def shutdown(bot):
         del bot.memory["SpiceBot_Logs"]
 
 
-@sopel.module.event('1004')
+@sopel.module.event('1003')
 @sopel.module.rule('.*')
 def join_log_channel(bot, trigger):
     bot_events_recieved(bot, trigger.event)
@@ -51,8 +61,7 @@ def join_log_channel(bot, trigger):
             if channel not in bot.channels.keys() and bot.config.SpiceBot_Channels.operadmin:
                 bot.write(('SAJOIN', bot.nick, channel))
 
-        if 'SpiceBot_Logs' not in bot.memory:
-            bot.memory['SpiceBot_Logs'] = {"logs": {}, "queue": []}
+        bot_logs_setup_check(bot)
 
         while 'SpiceBot_Logs' in bot.memory:
             if len(bot.memory['SpiceBot_Logs']["queue"]):
