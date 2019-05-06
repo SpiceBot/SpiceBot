@@ -4,6 +4,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 # sopel imports
 import sopel
+from sopel.trigger import PreTrigger
 
 from sopel_modules.SpiceBot_SBTools import bot_logging
 
@@ -24,8 +25,15 @@ def bot_events_trigger(bot, number, message):
     bot_events_setup_check(bot)
 
     bot.memory["SpiceBot_Events"]["triggers"][str(number)] = message
-    pretriggerdict = {"number": number, "message": message}
-    bot.memory['SpiceBot_Events']["queue"].append(pretriggerdict)
+    if str(number) in ['1001', '1002', '1003']:
+        pretrigger = PreTrigger(
+            bot.nick,
+            ":SpiceBot_Events " + str(number) + " " + str(bot.nick) + " :" + message
+        )
+        bot.dispatch(pretrigger)
+    else:
+        pretriggerdict = {"number": number, "message": message}
+        bot.memory['SpiceBot_Events']["queue"].append(pretriggerdict)
 
 
 def bot_events_setup_check(bot):
