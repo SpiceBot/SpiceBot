@@ -5,7 +5,6 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import sopel.module
 from sopel.config.types import StaticSection, ValidatedAttribute
 
-from sopel_modules.SpiceBot_LoadOrder.LoadOrder import set_bot_event, startup_bot_event
 from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger
 
 from sopel_modules.SpiceBot_CommandsQuery.CommandsQuery import commandsquery_register
@@ -54,8 +53,6 @@ def setup(bot):
     bot_logging(bot, 'SpiceBot_GifSearch', "Starting Setup Procedure")
     bot_events_startup_register(bot, ['2003'])
 
-    startup_bot_event(bot, "SpiceBot_GifSearch")
-
     if 'SpiceBot_GifSearch' not in bot.memory:
         bot.memory["SpiceBot_GifSearch"] = {"cache": {}, "badgiflinks": [], 'valid_gif_api_dict': {}}
 
@@ -83,7 +80,6 @@ def setup(bot):
     for prefixcommand in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
         commandsquery_register(bot, "prefix", prefixcommand)
 
-    set_bot_event(bot, "SpiceBot_GifSearch")
     bot_events_trigger(bot, 2003, "SpiceBot_GifSearch")
 
 

@@ -7,7 +7,6 @@ from sopel.config.types import StaticSection, ValidatedAttribute
 
 from sopel_modules.SpiceBot_SBTools import bot_logging
 from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger
-from sopel_modules.SpiceBot_LoadOrder.LoadOrder import set_bot_event, startup_bot_event
 
 
 def configure(config):
@@ -25,23 +24,14 @@ def setup(bot):
 
     bot_events_startup_register(bot, ['2004'])
 
-    startup_bot_event(bot, "SpiceBot_CommandsQuery")
-
     bot_logs_setup_check(bot)
+
+    bot_events_trigger(bot, 2004, "SpiceBot_Logs")
 
 
 def bot_logs_setup_check(bot):
     if 'SpiceBot_Logs' not in bot.memory:
         bot.memory['SpiceBot_Logs'] = {"logs": {}, "queue": []}
-
-
-@sopel.module.event('1003')
-@sopel.module.rule('.*')
-def bot_startup_logs_complete(bot, trigger):
-    bot_events_recieved(bot, trigger.event)
-
-    set_bot_event(bot, "SpiceBot_Logs")
-    bot_events_trigger(bot, 2004, "SpiceBot_Logs")
 
 
 def shutdown(bot):

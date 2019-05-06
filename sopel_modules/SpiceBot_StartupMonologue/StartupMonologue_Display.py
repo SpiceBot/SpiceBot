@@ -5,7 +5,6 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import sopel.module
 
 from sopel_modules.SpiceBot_Events.System import bot_events_recieved, bot_events_trigger
-from sopel_modules.SpiceBot_LoadOrder.LoadOrder import set_bot_event
 from sopel_modules.SpiceBot_SBTools import humanized_time, bot_logging
 import time
 
@@ -63,5 +62,4 @@ def bot_startup_monologue_display(bot, trigger):
     bot_logging(bot, 'SpiceBot_StartupMonologue', bot.nick + " startup complete")
     bot.osd(bot.memory['SpiceBot_StartupMonologue'], bot.channels.keys())
 
-    set_bot_event(bot, "SpiceBot_StartupMonologue")
     bot_events_trigger(bot, 2005, "SpiceBot_StartupMonologue")

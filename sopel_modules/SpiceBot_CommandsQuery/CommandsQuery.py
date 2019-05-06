@@ -7,7 +7,6 @@ import sopel.module
 
 import os
 
-from sopel_modules.SpiceBot_LoadOrder.LoadOrder import set_bot_event, startup_bot_event
 from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger
 from sopel_modules.SpiceBot_SBTools import bot_logging
 
@@ -17,8 +16,6 @@ import spicemanip
 def setup(bot):
     bot_logging(bot, 'SpiceBot_CommandsQuery', "Starting setup procedure")
     bot_events_startup_register(bot, ['2002'])
-
-    startup_bot_event(bot, "SpiceBot_CommandsQuery")
 
     if 'SpiceBot_CommandsQuery' not in bot.memory:
         bot.memory['SpiceBot_CommandsQuery'] = {"counts": {}, "commands": {}}
@@ -115,32 +112,32 @@ def setup(bot):
                     validcomdict = {"comtype": comtype, "validcoms": validcoms}
                     filelinelist.append(validcomdict)
 
-        for atlinefound in filelinelist:
-
-            comtype = atlinefound["comtype"]
-            validcoms = atlinefound["validcoms"]
-
+        if len(filelinelist):
             bot.memory['SpiceBot_CommandsQuery']['counts'][comtype] += 1
 
-            # default command to filename
-            if "validcoms" not in dict_from_file.keys():
-                dict_from_file["validcoms"] = validcoms
+            for atlinefound in filelinelist:
 
-            maincom = dict_from_file["validcoms"][0]
-            if len(dict_from_file["validcoms"]) > 1:
-                comaliases = spicemanip.main(dict_from_file["validcoms"], '2+', 'list')
-            else:
-                comaliases = []
+                comtype = atlinefound["comtype"]
+                validcoms = atlinefound["validcoms"]
 
-            bot.memory['SpiceBot_CommandsQuery']['commands'][comtype][maincom] = dict_from_file
-            for comalias in comaliases:
-                if comalias not in bot.memory['SpiceBot_CommandsQuery']['commands'][comtype].keys():
-                    bot.memory['SpiceBot_CommandsQuery']['commands'][comtype][comalias] = {"aliasfor": maincom}
+                # default command to filename
+                if "validcoms" not in dict_from_file.keys():
+                    dict_from_file["validcoms"] = validcoms
+
+                maincom = dict_from_file["validcoms"][0]
+                if len(dict_from_file["validcoms"]) > 1:
+                    comaliases = spicemanip.main(dict_from_file["validcoms"], '2+', 'list')
+                else:
+                    comaliases = []
+
+                bot.memory['SpiceBot_CommandsQuery']['commands'][comtype][maincom] = dict_from_file
+                for comalias in comaliases:
+                    if comalias not in bot.memory['SpiceBot_CommandsQuery']['commands'][comtype].keys():
+                        bot.memory['SpiceBot_CommandsQuery']['commands'][comtype][comalias] = {"aliasfor": maincom}
 
     for comtype in ['module', 'nickname', 'rule']:
         bot_logging(bot, 'SpiceBot_CommandsQuery', "Found " + str(len(bot.memory['SpiceBot_CommandsQuery']['commands'][comtype].keys())) + " " + comtype + " commands.")
 
-    set_bot_event(bot, "SpiceBot_CommandsQuery")
     bot_events_trigger(bot, 2002, "SpiceBot_CommandsQuery")
 
 
