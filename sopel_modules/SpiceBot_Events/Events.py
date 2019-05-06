@@ -54,7 +54,13 @@ def bot_events_connected(bot, trigger):
 
     while 'SpiceBot_Events' in bot.memory:
         if len(bot.memory['SpiceBot_Events']["queue"]):
-            bot.dispatch(bot.memory['SpiceBot_Events']["queue"][0])
+            number = bot.memory['SpiceBot_Events']["queue"][0]["number"]
+            message = bot.memory['SpiceBot_Events']["queue"][0]["message"]
+            pretrigger = sopel.trigger.PreTrigger(
+                bot.nick,
+                ":SpiceBot_Events " + str(number) + " " + str(bot.nick) + " :" + message
+            )
+            bot.dispatch(pretrigger)
             del bot.memory['SpiceBot_Events']["queue"][0]
 
 

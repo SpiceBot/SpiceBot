@@ -24,15 +24,8 @@ def bot_events_trigger(bot, number, message):
     bot_events_setup_check(bot)
 
     bot.memory["SpiceBot_Events"]["triggers"][str(number)] = message
-
-    pretrigger = sopel.trigger.PreTrigger(
-        bot.nick,
-        ":SpiceBot_Events " + str(number) + " " + str(bot.nick) + " :" + message
-    )
-    if number in ['1001', '1002', '1003']:
-        bot.dispatch(pretrigger)
-    else:
-        bot.memory['SpiceBot_Events']["queue"].append(pretrigger)
+    pretriggerdict = {"number": number, "message": message}
+    bot.memory['SpiceBot_Events']["queue"].append(pretriggerdict)
 
 
 def bot_events_setup_check(bot):
