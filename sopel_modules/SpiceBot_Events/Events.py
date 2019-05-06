@@ -13,6 +13,7 @@ import time
 @sopel.module.event('001')
 @sopel.module.rule('.*')
 def bot_startup_connection(bot, trigger):
+    bot_events_trigger(bot, 1001, "Welcome to the SpiceBot Events System")
 
     if bot_events_check(bot, '1004'):
         return
