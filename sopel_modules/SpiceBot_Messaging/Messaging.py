@@ -9,18 +9,6 @@ import spicemanip
 from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check, inlist
 
 
-def configure(config):
-    pass
-
-
-def setup(bot):
-    pass
-
-
-def shutdown(bot):
-    pass
-
-
 @sopel.module.nickname_commands('action')
 def bot_command_action(bot, trigger):
     bot_command_process(bot, trigger)

@@ -8,10 +8,6 @@ import sopel
 from sopel_modules.SpiceBot_SBTools import bot_logging
 
 
-def configure(config):
-    pass
-
-
 def setup(bot):
     bot_logging(bot, 'SpiceBot_Events', "Starting setup procedure")
     bot_events_setup_check(bot)

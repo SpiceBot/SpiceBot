@@ -7,15 +7,11 @@ import sopel.module
 
 import os
 
-from sopel_modules.SpiceBot_LoadOrder.LoadOrder import set_bot_event, check_bot_events, startup_bot_event
+from sopel_modules.SpiceBot_LoadOrder.LoadOrder import set_bot_event, startup_bot_event
 from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger
 from sopel_modules.SpiceBot_SBTools import bot_logging
 
 import spicemanip
-
-
-def configure(config):
-    pass
 
 
 def setup(bot):

@@ -10,12 +10,7 @@ from sopel_modules.SpiceBot_SBTools import bot_logging
 import threading
 
 
-def configure(config):
-    pass
-
-
 def setup(bot):
-    # TODO add custom pretrigger events
     bot_logging(bot, 'Sopel_LoadOrder', "Starting Module Events Logging")
 
     threading.Thread(target=setup_thread, args=(bot,)).start()

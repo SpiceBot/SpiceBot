@@ -11,10 +11,6 @@ from sopel_modules.SpiceBot_SBTools import humanized_time
 from sopel_modules.SpiceBot_SBTools import bot_logging
 
 
-def configure(config):
-    pass
-
-
 def setup(bot):
     if 'SpiceBot_Uptime' not in bot.memory:
         now = time.time()

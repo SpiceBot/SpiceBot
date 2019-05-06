@@ -10,18 +10,6 @@ from sopel_modules.SpiceBot_SBTools import humanized_time, bot_logging
 import time
 
 
-def configure(config):
-    pass
-
-
-def setup(bot):
-    pass
-
-
-def shutdown(bot):
-    pass
-
-
 @module.event('001')
 @module.rule('.*')
 @module.thread(True)

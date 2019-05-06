@@ -29,10 +29,6 @@ def setup(bot):
     bot.config.define_section("SpiceBot_Update", SpiceBot_Update_MainSection, validate=False)
 
 
-def shutdown(bot):
-    pass
-
-
 @sopel.module.nickname_commands('update')
 def nickname_comand_update(bot, trigger):
 
