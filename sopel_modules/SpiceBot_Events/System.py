@@ -73,9 +73,14 @@ def bot_events_startup_check(bot):
 
     bot_events_setup_check(bot)
 
+    notcomplete = []
+
     for startupitem in bot.memory["SpiceBot_Events"]["startup"]:
         if str(startupitem) not in bot.memory["SpiceBot_Events"]["loaded"]:
-            bot_logging(bot, 'SpiceBot_Events', str(startupitem))
-            return False
+            notcomplete.append(str(startupitem))
 
-    return True
+    if len(notcomplete):
+        bot_logging(bot, 'SpiceBot_Events', str(notcomplete))
+        return False
+    else:
+        return True
