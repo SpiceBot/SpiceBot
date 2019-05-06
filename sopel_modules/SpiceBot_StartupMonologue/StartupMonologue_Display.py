@@ -18,8 +18,6 @@ def bot_startup_monologue_start(bot, trigger):
     bot_logging(bot, 'SpiceBot_StartupMonologue', bot.nick + " is now starting. Please wait while I load my configuration")
     bot.osd(" is now starting. Please wait while I load my configuration.", bot.channels.keys(), 'ACTION')
 
-    bot.memory['SpiceBot_StartupMonologue'].append(bot.nick + " startup complete")
-
 
 @sopel.module.event('2002')
 @sopel.module.rule('.*')
