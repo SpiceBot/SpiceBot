@@ -5,11 +5,11 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import sopel.module
 from sopel.config.types import StaticSection, ValidatedAttribute
 
-from sopel_modules.SpiceBot_Botevents.BotEvents import set_bot_event, startup_bot_event
+from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger
 
-from sopel_modules.SpiceBot_CommandsQuery.CommandsQuery import commandsquery_register, commandsquery_register_type
+from sopel_modules.SpiceBot_CommandsQuery.CommandsQuery import commandsquery_register
 
-from sopel_modules.SpiceBot_SBTools import read_directory_json_to_dict, sopel_triggerargs, bot_logging
+from sopel_modules.SpiceBot_SBTools import read_directory_json_to_dict, bot_logging
 
 import spicemanip
 
@@ -19,7 +19,6 @@ import requests
 import json
 from fake_useragent import UserAgent
 import random
-import threading
 
 # user agent and header
 ua = UserAgent()
@@ -51,20 +50,8 @@ def configure(config):
 
 
 def setup(bot):
-
     bot_logging(bot, 'SpiceBot_GifSearch', "Starting Setup Procedure")
-
-    threading.Thread(target=setup_thread, args=(bot,)).start()
-
-
-def shutdown(bot):
-    if "SpiceBot_GifSearch" in bot.memory:
-        del bot.memory["SpiceBot_GifSearch"]
-
-
-def setup_thread(bot):
-
-    startup_bot_event(bot, "SpiceBot_GifSearch")
+    bot_events_startup_register(bot, ['2003'])
 
     if 'SpiceBot_GifSearch' not in bot.memory:
         bot.memory["SpiceBot_GifSearch"] = {"cache": {}, "badgiflinks": [], 'valid_gif_api_dict': {}}
@@ -90,29 +77,18 @@ def setup_thread(bot):
             valid_gif_api_dict[gif_api]["apikey"] = None
         bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'][gif_api] = valid_gif_api_dict[gif_api]
 
-    commandsquery_register_type(bot, "prefix")
-    for prefixcommand in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
-        commandsquery_register(bot, "prefix", prefixcommand)
+    for validgifapi in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
+        commandsquery_register(bot, "prefix", validgifapi)
 
-    set_bot_event(bot, "SpiceBot_GifSearch")
+        if validgifapi not in bot.memory["SpiceBot_GifSearch"]['cache'].keys():
+            bot.memory["SpiceBot_GifSearch"]['cache'][validgifapi] = dict()
+
+    bot_events_trigger(bot, 2003, "SpiceBot_GifSearch")
 
 
-@sopel.module.commands('gif')
-def gif_trigger(bot, trigger):
-    triggerargs, triggercommand = sopel_triggerargs(bot, trigger)
-    if triggerargs == []:
-        return bot.osd("Please present a query to search.")
-
-    query = spicemanip.main(trigger.args[1], 0)
-    searchapis = bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys()
-    searchdict = {"query": query, "gifsearch": searchapis}
-
-    gifdict = getGif(bot, searchdict)
-
-    if gifdict["error"]:
-        bot.osd(gifdict["error"])
-    else:
-        bot.osd(str(gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"])))
+def shutdown(bot):
+    if "SpiceBot_GifSearch" in bot.memory:
+        del bot.memory["SpiceBot_GifSearch"]
 
 
 def getGif(bot, searchdict):
@@ -256,12 +232,13 @@ def getGif(bot, searchdict):
         try:
             gifpage = requests.get(gifdict["returnurl"], headers=None)
         except Exception as e:
+            gifpage = str(e)
             gifpage = None
 
         if gifpage and not str(gifpage.status_code).startswith(tuple(["4", "5"])):
             randombad = False
         else:
-            bot.memory["SpiceBot_GifSearch"]["badgiflinks"].append(gifdict["returnurl"])
+            bot.memory["SpiceBot_GifSearch"]["badgiflinks"].append(str(gifdict["returnurl"]))
             newlist = []
             for tempdict in gifapiresults:
                 if tempdict["returnurl"] != gifdict["returnurl"]:
@@ -274,3 +251,9 @@ def getGif(bot, searchdict):
     # return dict
     gifdict['error'] = None
     return gifdict
+
+
+@sopel.module.event('2003')
+@sopel.module.rule('.*')
+def bot_events_setup(bot, trigger):
+    bot_events_recieved(bot, trigger.event)

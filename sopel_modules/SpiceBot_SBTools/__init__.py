@@ -4,9 +4,6 @@
 from __future__ import unicode_literals, absolute_import, print_function, division
 
 import sopel
-from sopel.module import OP, ADMIN, VOICE, OWNER, HALFOP
-from sopel.tools import stderr
-HOP = HALFOP
 
 import collections
 import re
@@ -92,24 +89,21 @@ def command_permissions_check(bot, trigger, privslist):
 
 def bot_logging(bot, logtype, logentry):
 
-    if 'SpiceBot_Logs_queue' not in bot.memory:
-        bot.memory['SpiceBot_Logs_queue'] = []
+    if 'SpiceBot_Logs' not in bot.memory:
+        bot.memory['SpiceBot_Logs'] = {"logs": {}, "queue": []}
 
     logmessage = "[" + logtype + "] " + logentry + ""
 
-    bot.memory['SpiceBot_Logs_queue'].append(logmessage)
+    bot.memory['SpiceBot_Logs']["queue"].append(logmessage)
 
-    stderr("\n" + logmessage + "\n")
+    sopel.tools.stderr(logmessage)
 
-    if 'SpiceBot_Logs' not in bot.memory:
-        bot.memory['SpiceBot_Logs'] = {}
+    if logtype not in bot.memory['SpiceBot_Logs']["logs"].keys():
+        bot.memory['SpiceBot_Logs']["logs"][logtype] = []
 
-    if logtype not in bot.memory['SpiceBot_Logs'].keys():
-        bot.memory['SpiceBot_Logs'][logtype] = []
-
-    bot.memory['SpiceBot_Logs'][logtype].append(logentry)
-    if len(bot.memory['SpiceBot_Logs'][logtype]) > 10:
-        del bot.memory['SpiceBot_Logs'][logtype][0]
+    bot.memory['SpiceBot_Logs']["logs"][logtype].append(logentry)
+    if len(bot.memory['SpiceBot_Logs']["logs"][logtype]) > 10:
+        del bot.memory['SpiceBot_Logs']["logs"][logtype][0]
 
 
 """
@@ -146,6 +140,7 @@ def humanized_time(countdownseconds):
     if not displaymsg:
         return "just now"
     return displaymsg
+    eval(year + day + hour + minute + second)
 
 
 """List Manipulation Functions"""
@@ -208,9 +203,13 @@ def channel_privs(bot, channel, privtype):
             privnum = bot.channels[channel].privileges[user] or 0
         except KeyError:
             privnum = 0
-        if (privnum == eval(privtype) or
-                (privnum >= eval(privtype) and privtype == 'OWNER') or
-                (privnum >= eval(privtype) and privnum < eval("OWNER") and privtype == 'ADMIN')):
+        if privtype == 'HOP':
+            privtypeeval = sopel.module.HALFOP
+        else:
+            privtypeeval = eval("sopel.module." + privtype)
+        if (privnum == privtypeeval or
+                (privnum >= privtypeeval and privtype == 'OWNER') or
+                (privnum >= privtypeeval and privnum < sopel.module.OWNER and privtype == 'ADMIN')):
             privlist.append(user)
     return privlist
 
@@ -229,7 +228,7 @@ def chanadmin_all_channels(bot):
     for channel in bot.channels.keys():
         if channel not in bot.config.SpiceBot_Channels.chanignore:
             if bot.config.SpiceBot_Channels.operadmin:
-                if not bot.channels[channel].privileges[bot.nick] < ADMIN:
+                if not bot.channels[channel].privileges[bot.nick] < sopel.module.ADMIN:
                     bot.write(('SAMODE', channel, "+a", bot.nick))
         else:
             bot.part(channel)
@@ -242,7 +241,6 @@ def channel_list_current(bot):
         bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()] = dict()
         bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()]['name'] = str(channel)
         bot.memory['SpiceBot_Channels']['channels'][str(channel).lower()]['topic'] = topic_compile(topic)
-        channel_privs(bot, channel)
 
     if "*" in bot.memory['SpiceBot_Channels']:
         bot.memory['SpiceBot_Channels'].remove("*")

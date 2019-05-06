@@ -29,10 +29,6 @@ def setup(bot):
     bot.config.define_section("SpiceBot_Update", SpiceBot_Update_MainSection, validate=False)
 
 
-def shutdown(bot):
-    pass
-
-
 @sopel.module.nickname_commands('update')
 def nickname_comand_update(bot, trigger):
 
@@ -75,8 +71,9 @@ def spicebot_update(bot, deps=False):
     pipcommand += " git+" + str(bot.config.SpiceBot_Update.gitrepo) + "@" + str(bot.config.SpiceBot_Update.gitbranch)
 
     bot_logging(bot, 'SpiceBot_Update', "Running `" + pipcommand + "`")
-    for line in os.popen(pipcommand).read().split('\n'):
-        bot_logging(bot, 'SpiceBot_Update', "    " + line)
+    # for line in os.popen(pipcommand).read().split('\n'):
+    #    bot_logging(bot, 'SpiceBot_Update', "    " + line)
+    os.system(pipcommand)
 
     stock_modules_begone(bot)
 

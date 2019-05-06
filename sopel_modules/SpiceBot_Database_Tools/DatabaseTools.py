@@ -6,18 +6,6 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 
 
-def configure(config):
-    pass
-
-
-def setup(bot):
-    pass
-
-
-def shutdown(bot):
-    pass
-
-
 """Dyanmic Table Creation"""
 
 
