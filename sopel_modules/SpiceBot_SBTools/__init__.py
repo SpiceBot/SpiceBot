@@ -96,7 +96,7 @@ def bot_logging(bot, logtype, logentry):
 
     bot.memory['SpiceBot_Logs']["queue"].append(logmessage)
 
-    sopel.tools.stderr(logmessage)
+    # sopel.tools.stderr(logmessage)
 
     if logtype not in bot.memory['SpiceBot_Logs']["logs"].keys():
         bot.memory['SpiceBot_Logs']["logs"][logtype] = []
