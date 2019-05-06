@@ -4,21 +4,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.module
 
-import spicemanip
-
-from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, bot_privs, github_dict
-
-
-def configure(config):
-    pass
-
-
-def setup(bot):
-    pass
-
-
-def shutdown(bot):
-    pass
+from sopel_modules.SpiceBot_SBTools import github_dict
 
 
 @sopel.module.nickname_commands('help', 'docs', 'wiki')

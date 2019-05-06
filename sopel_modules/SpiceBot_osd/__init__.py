@@ -54,11 +54,6 @@ def setup(bot):
     bot.config.define_section("MAXTARGCONFIG", MAXTARGCONFIG, validate=False)
 
 
-def shutdown(bot):
-    pass
-
-
-# RPL_ISUPPORT = '005'
 @module.event('005')
 @module.rule('.*')
 def parse_event_005(bot, trigger):

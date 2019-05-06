@@ -8,18 +8,6 @@ import sopel.module
 from sopel_modules.SpiceBot_SBTools import bot_logging, spicebot_reload
 
 
-def configure(config):
-    pass
-
-
-def setup(bot):
-    pass
-
-
-def shutdown(bot):
-    pass
-
-
 @sopel.module.nickname_commands('restart')
 def nickname_comand_restart(bot, trigger):
 

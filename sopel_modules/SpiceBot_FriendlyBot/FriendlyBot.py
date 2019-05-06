@@ -7,18 +7,6 @@ import sopel.module
 import spicemanip
 
 
-def configure(config):
-    pass
-
-
-def setup(bot):
-    pass
-
-
-def shutdown(bot):
-    pass
-
-
 @sopel.module.rule(r'(?i)(hi|hello|hey),? $nickname[ \t]*$')
 def bot_command_hello(bot, trigger):
     hello = spicemanip.main(['Hi', 'Hey', 'Hello'], "random")

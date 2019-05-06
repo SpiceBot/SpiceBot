@@ -3,12 +3,10 @@
 from __future__ import unicode_literals, absolute_import, division, print_function
 
 import sopel.module
-from sopel.tools import stderr
 from sopel.config.types import StaticSection, ValidatedAttribute
 
-import spicemanip
-
-from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check, inlist, inlist_match, bot_logging
+from sopel_modules.SpiceBot_SBTools import bot_logging
+from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger
 
 
 def configure(config):
@@ -23,23 +21,29 @@ class SpiceBot_Logs_MainSection(StaticSection):
 def setup(bot):
     bot_logging(bot, 'SpiceBot_Logs', "Starting Setup Procedure")
     bot.config.define_section("SpiceBot_Logs", SpiceBot_Logs_MainSection, validate=False)
-    if 'SpiceBot_Logs' not in bot.memory:
-        bot.memory['SpiceBot_Logs'] = {}
 
-    if 'SpiceBot_Logs_queue' not in bot.memory:
-        bot.memory['SpiceBot_Logs_queue'] = []
+    bot_events_startup_register(bot, ['2004'])
+
+    bot_logs_setup_check(bot)
+
+    bot_events_trigger(bot, 2004, "SpiceBot_Logs")
+
+
+def bot_logs_setup_check(bot):
+    if 'SpiceBot_Logs' not in bot.memory:
+        bot.memory['SpiceBot_Logs'] = {"logs": {}, "queue": []}
 
 
 def shutdown(bot):
     if "SpiceBot_Logs" in bot.memory:
         del bot.memory["SpiceBot_Logs"]
-    if "SpiceBot_Logs_queue" in bot.memory:
-        del bot.memory["SpiceBot_Logs_queue"]
 
 
-@sopel.module.event('001')
+@sopel.module.event('1003')
 @sopel.module.rule('.*')
 def join_log_channel(bot, trigger):
+    bot_events_recieved(bot, trigger.event)
+
     if bot.config.SpiceBot_Logs.logging_channel:
         channel = bot.config.SpiceBot_Logs.logging_channel
         if channel not in bot.channels.keys():
@@ -47,35 +51,18 @@ def join_log_channel(bot, trigger):
             if channel not in bot.channels.keys() and bot.config.SpiceBot_Channels.operadmin:
                 bot.write(('SAJOIN', bot.nick, channel))
 
-        if 'SpiceBot_Logs_queue' not in bot.memory:
-            bot.memory['SpiceBot_Logs_queue'] = []
+        bot_logs_setup_check(bot)
 
         while True:
-            if len(bot.memory['SpiceBot_Logs_queue']):
-                bot.say(str(bot.memory['SpiceBot_Logs_queue'][0]), channel)
-                del bot.memory['SpiceBot_Logs_queue'][0]
+            try:
+                if len(bot.memory['SpiceBot_Logs']["queue"]):
+                    bot.say(str(bot.memory['SpiceBot_Logs']["queue"][0]), channel)
+                    del bot.memory['SpiceBot_Logs']["queue"][0]
+            except KeyError:
+                return
 
 
-@sopel.module.nickname_commands('logs')
-def bot_command_action(bot, trigger):
-
-    if not command_permissions_check(bot, trigger, ['admins', 'owner']):
-        bot.say("I was unable to process this Bot Nick command due to privilege issues.")
-        return
-
-    triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
-
-    logtype = spicemanip.main(triggerargs, 1) or None
-    if not logtype or not inlist(bot, logtype, bot.memory['SpiceBot_Logs'].keys()):
-        bot.osd("Current valid log(s) include: " + spicemanip.main(bot.memory['SpiceBot_Logs'].keys(), 'andlist'), trigger.sender, 'action')
-        return
-
-    logtype = inlist_match(bot, logtype, bot.memory['SpiceBot_Logs'].keys())
-
-    if len(bot.memory['SpiceBot_Logs'][logtype]) == 0:
-        bot.osd("No logs found for " + str(logtype) + ".")
-        return
-
-    bot.osd("Is Examining " + str(logtype) + " log(s).")
-    for line in bot.memory['SpiceBot_Logs'][logtype]:
-        bot.osd("    " + str(line))
+@sopel.module.event('2004')
+@sopel.module.rule('.*')
+def bot_events_setup(bot, trigger):
+    bot_events_recieved(bot, trigger.event)
