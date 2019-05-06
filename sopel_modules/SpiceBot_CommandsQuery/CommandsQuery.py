@@ -167,6 +167,9 @@ def bot_events_complete(bot, trigger):
 
 def commandsquery_register(bot, command_type, validcoms, aliasfor=None):
 
+    if 'SpiceBot_CommandsQuery' not in bot.memory:
+        bot.memory['SpiceBot_CommandsQuery'] = {"counts": {}, "commands": {}}
+
     if not isinstance(validcoms, list):
         validcoms = [validcoms]
 
