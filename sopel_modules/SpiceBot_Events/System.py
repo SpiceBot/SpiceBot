@@ -29,7 +29,10 @@ def bot_events_trigger(bot, number, message):
         bot.nick,
         ":SpiceBot_Events " + str(number) + " " + str(bot.nick) + " :" + message
     )
-    bot.memory['SpiceBot_Events']["queue"].append(pretrigger)
+    if number in ['1001', '1002', '1003']:
+        bot.dispatch(pretrigger)
+    else:
+        bot.memory['SpiceBot_Events']["queue"].append(pretrigger)
 
 
 def bot_events_setup_check(bot):
