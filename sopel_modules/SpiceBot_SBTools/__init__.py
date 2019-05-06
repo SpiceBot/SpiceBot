@@ -95,24 +95,21 @@ def command_permissions_check(bot, trigger, privslist):
 
 def bot_logging(bot, logtype, logentry):
 
-    if 'SpiceBot_Logs_queue' not in bot.memory:
-        bot.memory['SpiceBot_Logs_queue'] = []
+    if 'SpiceBot_Logs' not in bot.memory:
+        bot.memory['SpiceBot_Logs'] = {"logs": {}, "queue": []}
 
     logmessage = "[" + logtype + "] " + logentry + ""
 
-    bot.memory['SpiceBot_Logs_queue'].append(logmessage)
+    bot.memory['SpiceBot_Logs']["queue"].append(logmessage)
 
     stderr("\n" + logmessage + "\n")
 
-    if 'SpiceBot_Logs' not in bot.memory:
-        bot.memory['SpiceBot_Logs'] = {}
+    if logtype not in bot.memory['SpiceBot_Logs']["logs"].keys():
+        bot.memory['SpiceBot_Logs']["logs"][logtype] = []
 
-    if logtype not in bot.memory['SpiceBot_Logs'].keys():
-        bot.memory['SpiceBot_Logs'][logtype] = []
-
-    bot.memory['SpiceBot_Logs'][logtype].append(logentry)
-    if len(bot.memory['SpiceBot_Logs'][logtype]) > 10:
-        del bot.memory['SpiceBot_Logs'][logtype][0]
+    bot.memory['SpiceBot_Logs']["logs"][logtype].append(logentry)
+    if len(bot.memory['SpiceBot_Logs']["logs"][logtype]) > 10:
+        del bot.memory['SpiceBot_Logs']["logs"][logtype][0]
 
 
 """
