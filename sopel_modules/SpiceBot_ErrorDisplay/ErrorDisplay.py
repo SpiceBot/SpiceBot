@@ -5,7 +5,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import sopel.module
 
 from sopel_modules.SpiceBot_Events.System import bot_events_recieved
-from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check
+from sopel_modules.SpiceBot_SBTools import command_permissions_check
 
 import spicemanip
 
