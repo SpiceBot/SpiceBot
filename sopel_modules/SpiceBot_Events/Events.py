@@ -3,6 +3,7 @@
 from __future__ import unicode_literals, absolute_import, division, print_function
 
 import sopel.module
+from sopel.trigger import PreTrigger
 
 from .System import bot_events_trigger, bot_events_recieved, bot_events_startup_check, bot_events_check, bot_events_setup_check
 from sopel_modules.SpiceBot_SBTools import bot_logging
@@ -56,7 +57,7 @@ def bot_events_connected(bot, trigger):
         if len(bot.memory['SpiceBot_Events']["queue"]):
             number = bot.memory['SpiceBot_Events']["queue"][0]["number"]
             message = bot.memory['SpiceBot_Events']["queue"][0]["message"]
-            pretrigger = sopel.trigger.PreTrigger(
+            pretrigger = PreTrigger(
                 bot.nick,
                 ":SpiceBot_Events " + str(number) + " " + str(bot.nick) + " :" + message
             )
