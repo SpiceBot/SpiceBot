@@ -22,7 +22,7 @@ def bot_startup_monologue_start(bot, trigger):
     bot.memory['SpiceBot_StartupMonologue'].append(bot.nick + " startup complete")
 
 
-@sopel.module.event('2010')
+@sopel.module.event('2002')
 @sopel.module.rule('.*')
 def bot_startup_monologue_commands(bot, trigger):
     bot_events_recieved(bot, trigger.event)
@@ -36,8 +36,10 @@ def bot_startup_monologue_commands(bot, trigger):
     bot.memory['SpiceBot_StartupMonologue'].append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
     bot_logging(bot, 'SpiceBot_StartupMonologue', "There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
 
+    bot_events_trigger(bot, 2011, "SpiceBot_StartupMonologue")
 
-@sopel.module.event('2011')
+
+@sopel.module.event('2001')
 @sopel.module.rule('.*')
 def bot_startup_monologue_channels(bot, trigger):
     bot_events_recieved(bot, trigger.event)
@@ -45,6 +47,8 @@ def bot_startup_monologue_channels(bot, trigger):
     botcount = len(bot.channels.keys())
     servercount = len(bot.memory['SpiceBot_Channels']['channels'].keys())
     bot.memory['SpiceBot_StartupMonologue'].append("I am in " + str(botcount) + " of " + str(servercount) + " channel(s) available on this server.")
+
+    bot_events_trigger(bot, 2010, "SpiceBot_StartupMonologue")
 
 
 @sopel.module.event('1004')
