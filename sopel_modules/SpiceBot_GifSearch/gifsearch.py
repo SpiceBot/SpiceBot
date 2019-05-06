@@ -59,6 +59,12 @@ def setup(bot):
     if 'SpiceBot_GifSearch' not in bot.memory:
         bot.memory["SpiceBot_GifSearch"] = {"cache": {}, "badgiflinks": [], 'valid_gif_api_dict': {}}
 
+
+@sopel.module.event('1003')
+@sopel.module.rule('.*')
+def bot_startup_gifsearch_complete(bot, trigger):
+    bot_events_recieved(bot, trigger.event)
+
     dir_to_scan = []
 
     moduledir = os.path.dirname(os.path.abspath(__file__))

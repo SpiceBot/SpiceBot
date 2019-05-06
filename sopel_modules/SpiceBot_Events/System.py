@@ -75,7 +75,6 @@ def bot_events_startup_check(bot):
 
     for startupitem in bot.memory["SpiceBot_Events"]["startup"]:
         if str(startupitem) not in bot.memory["SpiceBot_Events"]["loaded"]:
-            bot_logging(bot, 'SpiceBot_Events', str(startupitem))
             return False
 
     return True
