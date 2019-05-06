@@ -4,12 +4,6 @@
 from __future__ import unicode_literals, absolute_import, print_function, division
 
 import sopel
-from sopel.module import OP, ADMIN, VOICE, OWNER, HALFOP
-from sopel.tools import stderr
-from sopel import coretasks, config
-from sopel.trigger import PreTrigger, Trigger
-from sopel.bot import SopelWrapper
-HOP = HALFOP
 
 import collections
 import re
@@ -102,7 +96,7 @@ def bot_logging(bot, logtype, logentry):
 
     bot.memory['SpiceBot_Logs']["queue"].append(logmessage)
 
-    stderr("\n" + logmessage + "\n")
+    sopel.tools.stderr("\n" + logmessage + "\n")
 
     if logtype not in bot.memory['SpiceBot_Logs']["logs"].keys():
         bot.memory['SpiceBot_Logs']["logs"][logtype] = []
@@ -208,9 +202,13 @@ def channel_privs(bot, channel, privtype):
             privnum = bot.channels[channel].privileges[user] or 0
         except KeyError:
             privnum = 0
-        if (privnum == eval(privtype) or
-                (privnum >= eval(privtype) and privtype == 'OWNER') or
-                (privnum >= eval(privtype) and privnum < eval("OWNER") and privtype == 'ADMIN')):
+        if privtype == 'HOP':
+            privtypeeval = sopel.module.HALFOP
+        else:
+            privtypeeval = eval("sopel.module." + privtype)
+        if (privnum == privtypeeval or
+                (privnum >= privtypeeval and privtype == 'OWNER') or
+                (privnum >= privtypeeval and privnum < sopel.module.OWNER and privtype == 'ADMIN')):
             privlist.append(user)
     return privlist
 
@@ -229,7 +227,7 @@ def chanadmin_all_channels(bot):
     for channel in bot.channels.keys():
         if channel not in bot.config.SpiceBot_Channels.chanignore:
             if bot.config.SpiceBot_Channels.operadmin:
-                if not bot.channels[channel].privileges[bot.nick] < ADMIN:
+                if not bot.channels[channel].privileges[bot.nick] < sopel.module.ADMIN:
                     bot.write(('SAMODE', channel, "+a", bot.nick))
         else:
             bot.part(channel)

@@ -5,9 +5,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import sopel.module
 from sopel.config.types import StaticSection, ValidatedAttribute
 
-import spicemanip
-
-from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check, inlist, inlist_match, bot_logging
+from sopel_modules.SpiceBot_SBTools import bot_logging
 from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger
 from sopel_modules.SpiceBot_LoadOrder.LoadOrder import set_bot_event, startup_bot_event
 
@@ -44,6 +42,8 @@ def shutdown(bot):
 @sopel.module.event('1004')
 @sopel.module.rule('.*')
 def join_log_channel(bot, trigger):
+    bot_events_recieved(bot, trigger.event)
+
     if bot.config.SpiceBot_Logs.logging_channel:
         channel = bot.config.SpiceBot_Logs.logging_channel
         if channel not in bot.channels.keys():
