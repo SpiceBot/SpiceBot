@@ -56,4 +56,3 @@ def bot_events_connected(bot, trigger):
 def bot_events_monologue(bot, trigger):
     bot_logging(bot, 'SpiceBot_Events', trigger.args[1])
     bot_events_recieved(bot, trigger.event)
-    bot.osd(trigger.args[1], bot.channels.keys())

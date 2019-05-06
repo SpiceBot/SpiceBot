@@ -13,7 +13,7 @@ def configure(config):
 
 
 def setup(bot):
-    bot_logging(bot, 'SpiceBot_Events', "Starting setup procedure.")
+    bot_logging(bot, 'SpiceBot_Events', "Starting setup procedure")
     bot_events_setup_check(bot)
     bot_events_startup_register(bot, ['1001', '1002', '1003'])
 
