@@ -12,7 +12,6 @@ import time
 
 def setup(bot):
     bot_logging(bot, 'SpiceBot_StartupMonologue', "Starting setup procedure")
-    bot_events_startup_register(bot, ['2005'])
 
     if 'SpiceBot_StartupMonologue' not in bot.memory:
         bot.memory['SpiceBot_StartupMonologue'] = []
