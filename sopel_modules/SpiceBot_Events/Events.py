@@ -50,16 +50,19 @@ def bot_events_connected(bot, trigger):
 
     bot_events_setup_check(bot)
 
-    while 'SpiceBot_Events' in bot.memory:
-        if len(bot.memory['SpiceBot_Events']["queue"]):
-            number = bot.memory['SpiceBot_Events']["queue"][0]["number"]
-            message = bot.memory['SpiceBot_Events']["queue"][0]["message"]
-            pretrigger = PreTrigger(
-                bot.nick,
-                ":SpiceBot_Events " + str(number) + " " + str(bot.nick) + " :" + message
-            )
-            bot.dispatch(pretrigger)
-            del bot.memory['SpiceBot_Events']["queue"][0]
+    while True:
+        try:
+            if len(bot.memory['SpiceBot_Events']["queue"]):
+                number = bot.memory['SpiceBot_Events']["queue"][0]["number"]
+                message = bot.memory['SpiceBot_Events']["queue"][0]["message"]
+                pretrigger = PreTrigger(
+                    bot.nick,
+                    ":SpiceBot_Events " + str(number) + " " + str(bot.nick) + " :" + message
+                )
+                bot.dispatch(pretrigger)
+                del bot.memory['SpiceBot_Events']["queue"][0]
+        except KeyError:
+            return
 
 
 @sopel.module.event('1004')

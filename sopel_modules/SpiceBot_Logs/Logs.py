@@ -53,10 +53,13 @@ def join_log_channel(bot, trigger):
 
         bot_logs_setup_check(bot)
 
-        while 'SpiceBot_Logs' in bot.memory:
-            if len(bot.memory['SpiceBot_Logs']["queue"]):
-                bot.say(str(bot.memory['SpiceBot_Logs']["queue"][0]), channel)
-                del bot.memory['SpiceBot_Logs']["queue"][0]
+        while True:
+            try:
+                if len(bot.memory['SpiceBot_Logs']["queue"]):
+                    bot.say(str(bot.memory['SpiceBot_Logs']["queue"][0]), channel)
+                    del bot.memory['SpiceBot_Logs']["queue"][0]
+            except KeyError:
+                return
 
 
 @sopel.module.event('2004')
