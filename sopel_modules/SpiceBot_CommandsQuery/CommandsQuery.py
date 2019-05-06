@@ -6,12 +6,10 @@ import sopel
 import sopel.module
 
 import os
-from difflib import SequenceMatcher
-from operator import itemgetter
-import threading
 
-
-from sopel_modules.SpiceBot_LoadOrder.LoadOrder import set_bot_event, check_bot_events, bot_logging
+from sopel_modules.SpiceBot_LoadOrder.LoadOrder import set_bot_event, check_bot_events, startup_bot_event
+from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger
+from sopel_modules.SpiceBot_SBTools import bot_logging
 
 import spicemanip
 
@@ -21,9 +19,13 @@ def configure(config):
 
 
 def setup(bot):
-    bot_logging(bot, 'SpiceBot_CommandsQuery', "Evaluating Core Commands List")
+    bot_logging(bot, 'SpiceBot_CommandsQuery', "Starting setup procedure")
+    bot_events_startup_register(bot, ['2002'])
 
-    threading.Thread(target=setup_thread, args=(bot,)).start()
+    startup_bot_event(bot, "SpiceBot_CommandsQuery")
+
+    if 'SpiceBot_CommandsQuery' not in bot.memory:
+        bot.memory['SpiceBot_CommandsQuery'] = {"counts": {}, "commands": {}}
 
 
 def shutdown(bot):
@@ -31,16 +33,10 @@ def shutdown(bot):
         del bot.memory["SpiceBot_CommandsQuery"]
 
 
-def setup_thread(bot):
-
-    if 'SpiceBot_CommandsQuery' not in bot.memory:
-        bot.memory['SpiceBot_CommandsQuery'] = dict()
-
-    if 'counts' not in bot.memory['SpiceBot_CommandsQuery'].keys():
-        bot.memory['SpiceBot_CommandsQuery']['counts'] = dict()
-
-    if 'commands' not in bot.memory['SpiceBot_CommandsQuery'].keys():
-        bot.memory['SpiceBot_CommandsQuery']['commands'] = dict()
+@sopel.module.event('1003')
+@sopel.module.rule('.*')
+def trigger_command_list_initial(bot, trigger):
+    bot_events_recieved(bot, trigger.event)
 
     for comtype in ['module', 'nickname', 'rule']:
         if comtype not in bot.memory['SpiceBot_CommandsQuery']['counts'].keys():
@@ -159,128 +155,24 @@ def setup_thread(bot):
     for comtype in ['module', 'nickname', 'rule']:
         bot_logging(bot, 'SpiceBot_CommandsQuery', "Found " + str(len(bot.memory['SpiceBot_CommandsQuery']['commands'][comtype].keys())) + " " + comtype + " commands.")
 
-    while not check_bot_events(bot, ["startup_complete"]):
-        pass
+    set_bot_event(bot, "SpiceBot_CommandsQuery")
+    bot_events_trigger(bot, 2002, "SpiceBot_CommandsQuery")
+
+
+@sopel.module.event('1004')
+@sopel.module.rule('.*')
+def bot_events_complete(bot, trigger):
+    bot_events_recieved(bot, trigger.event)
 
     for comtype in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
         if comtype not in ['module', 'nickname', 'rule']:
             bot_logging(bot, 'SpiceBot_CommandsQuery', "Found " + str(len(bot.memory['SpiceBot_CommandsQuery']['commands'][comtype].keys())) + " " + comtype + " commands.")
-
-    set_bot_event(bot, "SpiceBot_CommandsQuery")
-
-
-@sopel.module.rule('^\?(.*)')
-def query_detection(bot, trigger):
-
-    while "SpiceBot_CommandsQuery" not in bot.memory:
-        pass
-
-    # command must start with
-    if not str(trigger).startswith(tuple(['?'])):
-        return
-
-    commands_list = dict()
-    for commandstype in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
-        for com in bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype].keys():
-            if com not in commands_list.keys():
-                commands_list[com] = bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype][com]
-
-    triggerargsarray = spicemanip.main(trigger, 'create')
-
-    # command issued, check if valid
-    querycommand = spicemanip.main(triggerargsarray, 1).lower()[1:]
-    if len(querycommand) == 1:
-        commandlist = []
-        for command in commands_list.keys():
-            if command.lower().startswith(querycommand):
-                commandlist.append(command)
-        if commandlist == []:
-            bot.notice("No commands match " + str(querycommand) + ".", trigger.nick)
-            return
-        else:
-            bot.notice("The following commands match " + str(querycommand) + ": " + spicemanip.main(commandlist, 'andlist') + ".", trigger.nick)
-            return
-
-    elif querycommand.endswith(tuple(["+"])):
-        querycommand = querycommand[:-1]
-        if querycommand not in commands_list.keys():
-            bot.notice("The " + str(querycommand) + " does not appear to be valid.")
-            return
-        realcom = querycommand
-        if "aliasfor" in commands_list[querycommand].keys():
-            realcom = commands_list[querycommand]["aliasfor"]
-        validcomlist = commands_list[realcom]["validcoms"]
-        bot.notice("The following commands match " + str(querycommand) + ": " + spicemanip.main(validcomlist, 'andlist') + ".", trigger.nick)
-        return
-
-    elif querycommand.endswith(tuple(['?'])):
-        querycommand = querycommand[:-1]
-        sim_com, sim_num = [], []
-        for com in commands_list.keys():
-            similarlevel = SequenceMatcher(None, querycommand.lower(), com.lower()).ratio()
-            sim_com.append(com)
-            sim_num.append(similarlevel)
-        sim_num, sim_com = (list(x) for x in zip(*sorted(zip(sim_num, sim_com), key=itemgetter(0))))
-        closestmatch = spicemanip.main(sim_com, 'reverse', "list")
-        listnumb, relist = 1, []
-        for item in closestmatch:
-            if listnumb <= 10:
-                relist.append(str(item))
-            listnumb += 1
-        bot.notice("The following commands may match " + str(querycommand) + ": " + spicemanip.main(relist, 'andlist') + ".", trigger.nick)
-        return
-
-    elif querycommand in commands_list.keys():
-        bot.notice("The following commands match " + str(querycommand) + ": " + str(querycommand) + ".", trigger.nick)
-        return
-
-    elif not querycommand:
-        return
-
-    else:
-        commandlist = []
-        for command in commands_list.keys():
-            if command.lower().startswith(querycommand):
-                commandlist.append(command)
-        if commandlist == []:
-            bot.notice("No commands match " + str(querycommand) + ".", trigger.nick)
-            return
-        else:
-            bot.notice("The following commands match " + str(querycommand) + ": " + spicemanip.main(commandlist, 'andlist') + ".", trigger.nick)
-            return
-
-
-def commandsquery_register_type(bot, command_type):
-    if 'SpiceBot_CommandsQuery' not in bot.memory:
-        bot.memory['SpiceBot_CommandsQuery'] = dict()
-
-    if 'counts' not in bot.memory['SpiceBot_CommandsQuery'].keys():
-        bot.memory['SpiceBot_CommandsQuery']['counts'] = dict()
-
-    if 'commands' not in bot.memory['SpiceBot_CommandsQuery'].keys():
-        bot.memory['SpiceBot_CommandsQuery']['commands'] = dict()
-
-    if command_type not in bot.memory['SpiceBot_CommandsQuery'].keys():
-        if command_type not in bot.memory['SpiceBot_CommandsQuery']['counts'].keys():
-            bot.memory['SpiceBot_CommandsQuery']['counts'][command_type] = 0
-        if command_type not in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
-            bot.memory['SpiceBot_CommandsQuery']['commands'][command_type] = dict()
-    bot.memory['SpiceBot_CommandsQuery']['counts'][command_type] += 1
 
 
 def commandsquery_register(bot, command_type, validcoms, aliasfor=None):
 
     if not isinstance(validcoms, list):
         validcoms = [validcoms]
-
-    if 'SpiceBot_CommandsQuery' not in bot.memory:
-        bot.memory['SpiceBot_CommandsQuery'] = dict()
-
-    if 'counts' not in bot.memory['SpiceBot_CommandsQuery'].keys():
-        bot.memory['SpiceBot_CommandsQuery']['counts'] = dict()
-
-    if 'commands' not in bot.memory['SpiceBot_CommandsQuery'].keys():
-        bot.memory['SpiceBot_CommandsQuery']['commands'] = dict()
 
     if command_type not in bot.memory['SpiceBot_CommandsQuery'].keys():
         if command_type not in bot.memory['SpiceBot_CommandsQuery']['counts'].keys():
@@ -309,3 +201,9 @@ def commandsquery_register(bot, command_type, validcoms, aliasfor=None):
     for comalias in comaliases:
         if comalias not in bot.memory['SpiceBot_CommandsQuery']['commands'][command_type].keys():
             bot.memory['SpiceBot_CommandsQuery']['commands'][command_type][comalias] = {"aliasfor": aliasfor}
+
+
+@sopel.module.event('2002')
+@sopel.module.rule('.*')
+def bot_events_setup(bot, trigger):
+    bot_events_recieved(bot, trigger.event)

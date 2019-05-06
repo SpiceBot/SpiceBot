@@ -53,6 +53,6 @@ def bot_events_connected(bot, trigger):
 
 @sopel.module.event('1004')
 @sopel.module.rule('.*')
-def bot_events_monologue(bot, trigger):
+def bot_events_complete(bot, trigger):
     bot_logging(bot, 'SpiceBot_Events', trigger.args[1])
     bot_events_recieved(bot, trigger.event)

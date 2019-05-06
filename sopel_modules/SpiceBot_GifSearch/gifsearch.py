@@ -7,7 +7,7 @@ from sopel.config.types import StaticSection, ValidatedAttribute
 
 from sopel_modules.SpiceBot_LoadOrder.LoadOrder import set_bot_event, startup_bot_event
 
-from sopel_modules.SpiceBot_CommandsQuery.CommandsQuery import commandsquery_register, commandsquery_register_type
+from sopel_modules.SpiceBot_CommandsQuery.CommandsQuery import commandsquery_register
 
 from sopel_modules.SpiceBot_SBTools import read_directory_json_to_dict, sopel_triggerargs, bot_logging
 
@@ -90,7 +90,6 @@ def setup_thread(bot):
             valid_gif_api_dict[gif_api]["apikey"] = None
         bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'][gif_api] = valid_gif_api_dict[gif_api]
 
-    commandsquery_register_type(bot, "prefix")
     for prefixcommand in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
         commandsquery_register(bot, "prefix", prefixcommand)
 

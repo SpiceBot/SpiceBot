@@ -42,7 +42,8 @@ def setup(bot):
 
     bot.config.define_section("SpiceBot_Channels", SpiceBot_Channels_MainSection, validate=False)
 
-    bot_channels_setup_check(bot)
+    if "SpiceBot_Channels" not in bot.memory:
+        bot.memory["SpiceBot_Channels"] = {"channels": {}, "InitialProcess": False, "ProcessLock": False}
 
 
 def shutdown(bot):
@@ -53,7 +54,6 @@ def shutdown(bot):
 @sopel.module.event('1003')
 @sopel.module.rule('.*')
 def trigger_channel_list_initial(bot, trigger):
-    bot_logging(bot, 'SpiceBot_Events', trigger.args[1])
     bot_events_recieved(bot, trigger.event)
 
     # Unkickable
@@ -108,13 +108,7 @@ def trigger_channel_list_initial(bot, trigger):
             del bot.memory['SpiceBot_Channels']['channels']["*"]
 
 
-def bot_channels_setup_check(bot):
-    if "SpiceBot_Channels" not in bot.memory:
-        bot.memory["SpiceBot_Channels"] = {"channels": {}, "InitialProcess": False, "ProcessLock": False}
-
-
 @sopel.module.event('2001')
 @sopel.module.rule('.*')
 def bot_events_setup(bot, trigger):
-    bot_logging(bot, 'SpiceBot_Events', trigger.args[1])
     bot_events_recieved(bot, trigger.event)
