@@ -77,8 +77,11 @@ def setup(bot):
             valid_gif_api_dict[gif_api]["apikey"] = None
         bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'][gif_api] = valid_gif_api_dict[gif_api]
 
-    for prefixcommand in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
-        commandsquery_register(bot, "prefix", prefixcommand)
+    for validgifapi in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
+        commandsquery_register(bot, "prefix", validgifapi)
+
+        if validgifapi not in bot.memory["SpiceBot_GifSearch"]['cache'].keys():
+            bot.memory["SpiceBot_GifSearch"]['cache'][validgifapi] = dict()
 
     bot_events_trigger(bot, 2003, "SpiceBot_GifSearch")
 
@@ -235,7 +238,7 @@ def getGif(bot, searchdict):
         if gifpage and not str(gifpage.status_code).startswith(tuple(["4", "5"])):
             randombad = False
         else:
-            bot.memory["SpiceBot_GifSearch"]["badgiflinks"].append(gifdict["returnurl"])
+            bot.memory["SpiceBot_GifSearch"]["badgiflinks"].append(str(gifdict["returnurl"]))
             newlist = []
             for tempdict in gifapiresults:
                 if tempdict["returnurl"] != gifdict["returnurl"]:
