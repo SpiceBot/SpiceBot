@@ -16,7 +16,7 @@ def setup(bot):
         bot.memory['SpiceBot_StartupMonologue'] = []
 
 
-@sopel.module.event('2005')
+@sopel.module.event('2005', '2010', '2011')
 @sopel.module.rule('.*')
 def bot_events_setup(bot, trigger):
     bot_events_recieved(bot, trigger.event)

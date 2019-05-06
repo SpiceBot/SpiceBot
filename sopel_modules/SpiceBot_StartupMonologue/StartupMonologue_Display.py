@@ -3,7 +3,6 @@
 from __future__ import unicode_literals, absolute_import, division, print_function
 
 import sopel.module
-from sopel.tools import stderr
 
 from sopel_modules.SpiceBot_Events.System import bot_events_recieved, bot_events_trigger
 from sopel_modules.SpiceBot_LoadOrder.LoadOrder import set_bot_event
@@ -27,7 +26,6 @@ def bot_startup_monologue_start(bot, trigger):
 @sopel.module.rule('.*')
 def bot_startup_monologue_commands(bot, trigger):
     bot_events_recieved(bot, trigger.event)
-    stderr('2002')
 
     availablecomsnum, availablecomsfiles = 0, 0
     for commandstype in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
@@ -45,7 +43,6 @@ def bot_startup_monologue_commands(bot, trigger):
 @sopel.module.rule('.*')
 def bot_startup_monologue_channels(bot, trigger):
     bot_events_recieved(bot, trigger.event)
-    stderr('2001')
 
     botcount = len(bot.channels.keys())
     servercount = len(bot.memory['SpiceBot_Channels']['channels'].keys())
