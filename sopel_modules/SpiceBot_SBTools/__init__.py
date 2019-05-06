@@ -140,6 +140,7 @@ def humanized_time(countdownseconds):
     if not displaymsg:
         return "just now"
     return displaymsg
+    eval(year + day + hour + minute + second)
 
 
 """List Manipulation Functions"""
