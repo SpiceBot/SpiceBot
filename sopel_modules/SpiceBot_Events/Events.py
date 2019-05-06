@@ -27,9 +27,9 @@ def bot_startup_connection(bot, trigger):
 @sopel.module.event('1001')
 @sopel.module.rule('.*')
 def bot_events_start(bot, trigger):
+    bot_logging(bot, 'SpiceBot_Events', trigger.args[1])
     bot_events_recieved(bot, trigger.event)
 
-    bot_logging(bot, 'SpiceBot_Events', "Ready To Process module setup procedures")
     bot_events_trigger(bot, 1002, "Ready To Process module setup procedures")
 
     while not bot_events_startup_check(bot):
@@ -40,17 +40,20 @@ def bot_events_start(bot, trigger):
 @sopel.module.event('1002')
 @sopel.module.rule('.*')
 def bot_events_ready(bot, trigger):
+    bot_logging(bot, 'SpiceBot_Events', trigger.args[1])
     bot_events_recieved(bot, trigger.event)
 
 
 @sopel.module.event('1003')
 @sopel.module.rule('.*')
 def bot_events_connected(bot, trigger):
+    bot_logging(bot, 'SpiceBot_Events', trigger.args[1])
     bot_events_recieved(bot, trigger.event)
 
 
 @sopel.module.event('1004')
 @sopel.module.rule('.*')
 def bot_events_monologue(bot, trigger):
+    bot_logging(bot, 'SpiceBot_Events', trigger.args[1])
     bot_events_recieved(bot, trigger.event)
-    bot.osd('SpiceBot_Events complete', bot.channels.keys())
+    bot.osd(trigger.args[1], bot.channels.keys())
