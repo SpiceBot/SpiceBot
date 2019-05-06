@@ -170,11 +170,10 @@ def commandsquery_register(bot, command_type, validcoms, aliasfor=None):
     if not isinstance(validcoms, list):
         validcoms = [validcoms]
 
-    if command_type not in bot.memory['SpiceBot_CommandsQuery'].keys():
-        if command_type not in bot.memory['SpiceBot_CommandsQuery']['counts'].keys():
-            bot.memory['SpiceBot_CommandsQuery']['counts'][command_type] = 0
-        if command_type not in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
-            bot.memory['SpiceBot_CommandsQuery']['commands'][command_type] = dict()
+    if command_type not in bot.memory['SpiceBot_CommandsQuery']['counts'].keys():
+        bot.memory['SpiceBot_CommandsQuery']['counts'][command_type] = 0
+    if command_type not in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
+        bot.memory['SpiceBot_CommandsQuery']['commands'][command_type] = dict()
     bot.memory['SpiceBot_CommandsQuery']['counts'][command_type] += 1
 
     dict_from_file = dict()
