@@ -60,6 +60,8 @@ def bot_startup_monologue_display(bot, trigger):
 
     # Announce to chan, then handle some closing stuff
     bot_logging(bot, 'SpiceBot_StartupMonologue', bot.nick + " startup complete")
-    bot.osd(bot.memory['SpiceBot_StartupMonologue'], bot.channels.keys())
+    bot.memory['SpiceBot_StartupMonologue'].insert(0, " startup complete")
+
+    bot.osd(bot.memory['SpiceBot_StartupMonologue'], bot.channels.keys(), 'ACTION')
 
     bot_events_trigger(bot, 2005, "SpiceBot_StartupMonologue")
