@@ -20,9 +20,6 @@ from pygit2 import clone_repository
 
 import spicemanip
 
-# user agent and header
-ua = UserAgent()
-header = {'User-Agent': str(ua.chrome)}
 
 """Variable References"""
 
@@ -160,6 +157,7 @@ def humanized_time(countdownseconds):
 
 
 def googlesearch(bot, searchterm, searchtype=None):
+    header = {'User-Agent': str(UserAgent().chrome)}
     data = searchterm.replace(' ', '+')
     lookfor = data.replace(':', '%3A')
     try:

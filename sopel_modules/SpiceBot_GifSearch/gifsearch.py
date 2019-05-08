@@ -20,10 +20,6 @@ import json
 from fake_useragent import UserAgent
 import random
 
-# user agent and header
-ua = UserAgent()
-header = {'User-Agent': str(ua.chrome)}
-
 
 class GifAPIMainSection(StaticSection):
     extra = ValidatedAttribute('extra', default=None)
@@ -92,6 +88,8 @@ def shutdown(bot):
 
 
 def getGif(bot, searchdict):
+
+    header = {'User-Agent': str(UserAgent().chrome)}
 
     # list of defaults
     query_defaults = {
