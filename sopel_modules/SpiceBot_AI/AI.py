@@ -12,15 +12,13 @@ from sopel_modules.SpiceBot_Events.System import bot_events_check
 
 @sopel.module.rule(r'(?i)(hi|hello|hey),? $nickname[ \t]*$')
 def bot_command_hello_a(bot, trigger):
-    bot_command_hello(bot, trigger)
+    hello = spicemanip.main(['Hi', 'Hey', 'Hello'], "random")
+    punctuation = spicemanip.main(['', '!', '?'], "random")
+    bot.osd(hello + ' ' + trigger.nick + punctuation)
 
 
 @sopel.module.nickname_commands('hello')
 def bot_command_hello_b(bot, trigger):
-    bot_command_hello(bot, trigger)
-
-
-def bot_command_hello(bot, trigger):
     hello = spicemanip.main(['Hi', 'Hey', 'Hello'], "random")
     punctuation = spicemanip.main(['', '!', '?'], "random")
     bot.osd(hello + ' ' + trigger.nick + punctuation)

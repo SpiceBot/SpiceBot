@@ -109,8 +109,18 @@ def setup(bot):
                 elif str(line).startswith(tuple(["rule", "module.rule", "sopel.module.rule"])):
                     comtype = "rule"
                     line = str(line).split("rule(")[-1]
-                    validcoms = [str("(" + line)]
-                    validcomdict = {"comtype": comtype, "validcoms": validcoms}
+                    line = str("(" + line)
+                    validcoms = eval(str(line))
+                    if isinstance(validcoms, tuple):
+                        validcoms = list(validcoms)
+                    else:
+                        validcoms = [validcoms]
+                    for validcom in validcoms:
+                        if validcom.startswith("$nickname"):
+                            comtype = "nickname"
+                        else:
+                            comtype = "rule"
+                        validcomdict = {"comtype": comtype, "validcoms": [validcom]}
                     filelinelist.append(validcomdict)
 
         if len(filelinelist):
