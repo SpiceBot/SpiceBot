@@ -352,6 +352,8 @@ def spicebot_update(bot, deps=False):
     if not os.path.exists(clonepath) or not os.path.isdir(clonepath):
         os.system(clonepath)
 
+    bot_logging(bot, 'SpiceBot_Update', "Cloning  to " + clonepath)
+
     clone_repository(str(bot.config.SpiceBot_Update.gitrepo + ".git"), clonepath, checkout_branch=bot.config.SpiceBot_Update.gitbranch)
 
     pipcommand = "sudo pip3 install --upgrade"
@@ -361,10 +363,12 @@ def spicebot_update(bot, deps=False):
     # pipcommand += " git+" + str(bot.config.SpiceBot_Update.gitrepo) + "@" + str(bot.config.SpiceBot_Update.gitbranch)
     pipcommand += " /tmp/SpiceBot/"
 
-    # bot_logging(bot, 'SpiceBot_Update', "Running `" + pipcommand + "`")
+    bot_logging(bot, 'SpiceBot_Update', "Running `" + pipcommand + "`")
     # for line in os.popen(pipcommand).read().split('\n'):
     #    bot_logging(bot, 'SpiceBot_Update', "    " + line)
     os.system(pipcommand)
+
+    bot_logging(bot, 'SpiceBot_Update', "Deleting " + clonepath)
 
     os.system("sudo rm -r /tmp/SpiceBot")
 
