@@ -24,8 +24,9 @@ def query_detection(bot, trigger):
         for com in bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype].keys():
             if com not in commands_list.keys():
                 if commandstype == 'nickname':
-                    com = str(bot.nick) + " " + com
-                commands_list[com] = bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype][com]
+                    commands_list[str(bot.nick) + " " + com] = bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype][com]
+                else:
+                    commands_list[com] = bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype][com]
 
     triggerargsarray = spicemanip.main(trigger, 'create')
 
