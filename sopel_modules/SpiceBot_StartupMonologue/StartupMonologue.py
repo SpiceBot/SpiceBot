@@ -10,13 +10,13 @@ from sopel_modules.SpiceBot_SBTools import bot_logging
 
 def setup(bot):
     bot_logging(bot, 'SpiceBot_StartupMonologue', "Starting setup procedure")
-    bot_events_startup_register(bot, ['2010', '2011'])
+    bot_events_startup_register(bot, ['2010', '2011', '2012'])
 
     if 'SpiceBot_StartupMonologue' not in bot.memory:
         bot.memory['SpiceBot_StartupMonologue'] = []
 
 
-@sopel.module.event('2005', '2010', '2011')
+@sopel.module.event('2005', '2010', '2011', '2012')
 @sopel.module.rule('.*')
 def bot_events_setup(bot, trigger):
     bot_events_recieved(bot, trigger.event)
