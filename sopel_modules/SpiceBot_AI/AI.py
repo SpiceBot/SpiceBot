@@ -11,15 +11,19 @@ from sopel_modules.SpiceBot_Events.System import bot_events_check
 
 
 @sopel.module.rule(r'(?i)(hi|hello|hey),? $nickname[ \t]*$')
-def bot_command_hello(bot, trigger):
-    hello = spicemanip.main(['Hi', 'Hey', 'Hello'], "random")
-    punctuation = spicemanip.main(['', '!', '?'], "random")
-    bot.osd(hello + ' ' + trigger.nick + punctuation)
+def bot_command_hello_a(bot, trigger):
+    bot_command_hello(bot, trigger)
 
 
 @sopel.module.nickname_commands('hello')
 def bot_command_hello_b(bot, trigger):
     bot_command_hello(bot, trigger)
+
+
+def bot_command_hello(bot, trigger):
+    hello = spicemanip.main(['Hi', 'Hey', 'Hello'], "random")
+    punctuation = spicemanip.main(['', '!', '?'], "random")
+    bot.osd(hello + ' ' + trigger.nick + punctuation)
 
 
 @sopel.module.rule('$nickname!')
@@ -44,7 +48,7 @@ def bot_command_damnlazy(bot, trigger):
 
 @sopel.module.rule('$nickname is lazy')
 def bot_command_damnlazy_b(bot, trigger):
-    bot_command_damnlazy(bot, trigger)
+    bot.osd("I do not tell you how to do your job, " + trigger.nick + "!!!")
 
 
 @sopel.module.nickname_commands('(.*)')
