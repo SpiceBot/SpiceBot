@@ -16,6 +16,7 @@ from fake_useragent import UserAgent
 from difflib import SequenceMatcher
 from operator import itemgetter
 from collections import abc
+from git import Repo
 
 import spicemanip
 
@@ -345,16 +346,26 @@ def stock_modules_begone(bot):
 
 def spicebot_update(bot, deps=False):
 
+    if not os.path.exists("/tmp") or not os.path.isdir("/tmp"):
+        os.system("sudo mkdir /tmp")
+    if not os.path.exists("/tmp/SpiceBot") or not os.path.isdir("/tmp/SpiceBot"):
+        os.system("sudo mkdir /tmp/SpiceBot")
+
+    Repo.clone_from(str(github_dict["url_main"] + github_dict["repo_owner"] + "/" + github_dict["repo_name"] + ".git"), "/tmp/SpiceBot")
+
     pipcommand = "sudo pip3 install --upgrade"
     if not deps:
-        pipcommand += " --no-deps"
+         pipcommand += " --no-deps"
     pipcommand += " --force-reinstall"
-    pipcommand += " git+" + str(bot.config.SpiceBot_Update.gitrepo) + "@" + str(bot.config.SpiceBot_Update.gitbranch)
+    # pipcommand += " git+" + str(bot.config.SpiceBot_Update.gitrepo) + "@" + str(bot.config.SpiceBot_Update.gitbranch)
+    pipcommand += " /tmp/SpiceBot/"
 
-    bot_logging(bot, 'SpiceBot_Update', "Running `" + pipcommand + "`")
+    # bot_logging(bot, 'SpiceBot_Update', "Running `" + pipcommand + "`")
     # for line in os.popen(pipcommand).read().split('\n'):
     #    bot_logging(bot, 'SpiceBot_Update', "    " + line)
     os.system(pipcommand)
+
+    os.system("sudo rm -r /tmp/SpiceBot")
 
     stock_modules_begone(bot)
 
