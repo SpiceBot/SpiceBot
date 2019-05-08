@@ -99,7 +99,7 @@ def command_permissions_check(bot, trigger, privslist):
 """Logging"""
 
 
-def bot_logging(bot, logtype, logentry):
+def bot_logging(bot, logtype, logentry, stdio=False):
 
     if 'SpiceBot_Logs' not in bot.memory:
         bot.memory['SpiceBot_Logs'] = {"logs": {}, "queue": []}
@@ -108,7 +108,8 @@ def bot_logging(bot, logtype, logentry):
 
     bot.memory['SpiceBot_Logs']["queue"].append(logmessage)
 
-    # sopel.tools.stderr(logmessage)
+    if stdio:
+        sopel.tools.stderr(logmessage)
 
     if logtype not in bot.memory['SpiceBot_Logs']["logs"].keys():
         bot.memory['SpiceBot_Logs']["logs"][logtype] = []
