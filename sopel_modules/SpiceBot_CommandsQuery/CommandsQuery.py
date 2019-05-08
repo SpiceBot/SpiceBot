@@ -57,7 +57,8 @@ def setup(bot):
         for pathname in os.listdir(directory):
             path = os.path.join(directory, pathname)
             if (os.path.isfile(path) and path.endswith('.py') and not path.startswith('_')):
-                filepathlist.append(str(path))
+                if pathname not in ["SpiceBot_dummycommand.py"]:
+                    filepathlist.append(str(path))
 
     # CoreTasks
     ct_path = os.path.join(main_dir, 'coretasks.py')
