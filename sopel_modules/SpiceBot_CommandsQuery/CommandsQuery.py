@@ -145,7 +145,7 @@ def setup(bot):
                     bot.memory['SpiceBot_CommandsQuery']['commands'][comtype][comalias] = {"aliasfor": maincom}
 
     for comtype in ['module', 'nickname', 'rule']:
-        bot_logging(bot, 'SpiceBot_CommandsQuery', "Found " + str(len(bot.memory['SpiceBot_CommandsQuery']['commands'][comtype].keys())) + " " + comtype + " commands.")
+        bot_logging(bot, 'SpiceBot_CommandsQuery', "Found " + str(len(bot.memory['SpiceBot_CommandsQuery']['commands'][comtype].keys())) + " " + comtype + " commands.", True)
 
     for command in bot.memory['SpiceBot_CommandsQuery']['commands']['rule'].keys():
         if command.startswith("$nickname"):
@@ -168,7 +168,7 @@ def bot_events_complete(bot, trigger):
 
     for comtype in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
         if comtype not in ['module', 'nickname', 'rule']:
-            bot_logging(bot, 'SpiceBot_CommandsQuery', "Found " + str(len(bot.memory['SpiceBot_CommandsQuery']['commands'][comtype].keys())) + " " + comtype + " commands.")
+            bot_logging(bot, 'SpiceBot_CommandsQuery', "Found " + str(len(bot.memory['SpiceBot_CommandsQuery']['commands'][comtype].keys())) + " " + comtype + " commands.", True)
 
 
 def commandsquery_register(bot, command_type, validcoms, aliasfor=None):
