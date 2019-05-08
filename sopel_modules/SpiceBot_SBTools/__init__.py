@@ -16,7 +16,7 @@ from fake_useragent import UserAgent
 from difflib import SequenceMatcher
 from operator import itemgetter
 from collections import abc
-from git import Repo
+from pygit2 import clone_repository
 
 import spicemanip
 
@@ -348,10 +348,11 @@ def spicebot_update(bot, deps=False):
 
     if not os.path.exists("/tmp") or not os.path.isdir("/tmp"):
         os.system("sudo mkdir /tmp")
-    if not os.path.exists("/tmp/SpiceBot") or not os.path.isdir("/tmp/SpiceBot"):
-        os.system("sudo mkdir /tmp/SpiceBot")
+    clonepath = "/tmp/SpiceBot"
+    if not os.path.exists(clonepath) or not os.path.isdir(clonepath):
+        os.system(clonepath)
 
-    Repo.clone_from(str(github_dict["url_main"] + github_dict["repo_owner"] + "/" + github_dict["repo_name"] + ".git"), "/tmp/SpiceBot")
+    clone_repository(str(bot.config.SpiceBot_Update.gitrepo + ".git"), clonepath, checkout_branch=bot.config.SpiceBot_Update.gitbranch)
 
     pipcommand = "sudo pip3 install --upgrade"
     if not deps:
