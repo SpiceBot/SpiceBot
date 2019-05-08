@@ -4,10 +4,8 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.module
 
-import spicemanip
-
 from sopel_modules.SpiceBot_SBTools import sopel_triggerargs
-from sopel_modules.SpiceBot_Events.System import bot_events_check
+from sopel_modules.SpiceBot_Events.System import bot_events_check, bot_events_recieved
 
 
 def setup(bot):
@@ -46,4 +44,4 @@ def InvalidCommand_triggers(bot, trigger):
         invalid_display = ["I don't seem to have a command for " + str(triggercommand) + "!"]
         invalid_display.append("If you have a suggestion for this command, you can run .feature ." + str(triggercommand))
         invalid_display.append("ADD DESCRIPTION HERE!")
-        osd(bot, botcom.instigator, 'notice', invalid_display)
+        bot.osd(invalid_display, trigger.nick, 'notice')
