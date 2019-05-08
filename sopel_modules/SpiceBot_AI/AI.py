@@ -10,18 +10,52 @@ from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, googlesearch, bot_
 from sopel_modules.SpiceBot_Events.System import bot_events_check
 
 
+@sopel.module.rule(r'(?i)(hi|hello|hey),? $nickname[ \t]*$')
+def bot_command_hello(bot, trigger):
+    hello = spicemanip.main(['Hi', 'Hey', 'Hello'], "random")
+    punctuation = spicemanip.main(['', '!', '?'], "random")
+    bot.osd(hello + ' ' + trigger.nick + punctuation)
+
+
+@sopel.module.nickname_commands('hello')
+def bot_command_hello_b(bot, trigger):
+    bot_command_hello(bot, trigger)
+
+
+@sopel.module.rule('$nickname!')
+def exclaim(bot, trigger):
+    bot.say(trigger.nick + '!')
+
+
+@sopel.module.rule('$nickname?')
+def imhere(bot, trigger):
+    bot.say("I'm here, " + trigger.nick)
+
+
+@sopel.module.rule(r'(?i)(Fuck|Screw) (you|off),? $nickname[ \t]*$')
+def bot_command_srewyou(bot, trigger):
+    bot.osd("Watch your mouth, " + trigger.nick + ", or I'll tell your mother!")
+
+
+@sopel.module.rule(r'(?i)(Damnit|Lazy)? $nickname[ \t]*$')
+def bot_command_damnlazy(bot, trigger):
+    bot.osd("I do not tell you how to do your job, " + trigger.nick + "!!!")
+
+
+@sopel.module.rule('$nickname is lazy')
+def bot_command_damnlazy_b(bot, trigger):
+    bot_command_damnlazy(bot, trigger)
+
+
 @sopel.module.nickname_commands('(.*)')
-def bot_command_gender(bot, trigger):
+def bot_command_nick(bot, trigger):
 
     while not bot_events_check(bot, ['1004', '2002']):
         pass
 
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
 
-    if not triggercommand:
-        bot.bot.osd("I don't know what you are asking me to do!")
-        return
-    if str(bot.nick) + " " + triggercommand in bot.memory['SpiceBot_CommandsQuery']['commands']["nickname"].keys():
+    if not triggercommand or triggercommand in bot.memory['SpiceBot_CommandsQuery']['commands']["nickname"].keys():
         return
 
     specialcomposs = spicemanip.main(triggerargs, 0).lower()
@@ -58,6 +92,9 @@ def bot_command_gender(bot, trigger):
         else:
             bot.osd("Not sure what you want me to look for.")
         return
+
+    # if specialcomposs.lower().startswith("what time is it"):
+    # TODO
 
     # elif specialcomposs.lower().startswith(tuple(["have you seen"])):
     #    posstarget = spicemanip.main(triggerargs, 4) or 0
