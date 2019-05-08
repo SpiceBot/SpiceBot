@@ -29,8 +29,7 @@ def bot_startup_monologue_commands(bot, trigger):
     availablecomsnum, availablecomsfiles = 0, 0
     for commandstype in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
         availablecomsnum += len(bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype].keys())
-    for commandstype in bot.memory['SpiceBot_CommandsQuery']['counts'].keys():
-        availablecomsfiles += bot.memory['SpiceBot_CommandsQuery']['counts'][commandstype]
+    availablecomsfiles += bot.memory['SpiceBot_CommandsQuery']['counts']
 
     bot.memory['SpiceBot_StartupMonologue'].append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
     bot_logging(bot, 'SpiceBot_StartupMonologue', "There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")

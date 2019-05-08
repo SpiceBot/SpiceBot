@@ -57,12 +57,18 @@ def bot_command_nick(bot, trigger):
 
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
 
-    if not triggercommand or triggercommand in bot.memory['SpiceBot_CommandsQuery']['commands']["nickname"].keys():
+    if not triggercommand:
         return
 
-    specialcomposs = spicemanip.main(triggerargs, 0).lower()
+    if triggercommand in bot.memory['SpiceBot_CommandsQuery']['commands']["nickname"].keys():
+        return
 
-    if specialcomposs.lower().startswith("what is"):
+    fulltrigger = spicemanip.main(triggerargs, 0).lower()
+
+    if fulltrigger in bot.memory['SpiceBot_CommandsQuery']['nickrules']:
+        return
+
+    if fulltrigger.lower().startswith("what is"):
         searchterm = spicemanip.main(triggerargs, "3+") or None
         if searchterm:
             searchreturn = googlesearch(bot, searchterm)
@@ -74,7 +80,7 @@ def bot_command_nick(bot, trigger):
             bot.osd("Do you think this is Jeopardy?")
         return
 
-    elif specialcomposs.lower().startswith("where is"):
+    elif fulltrigger.lower().startswith("where is"):
         searchterm = spicemanip.main(triggerargs, "3+") or None
         if searchterm:
 
@@ -95,17 +101,17 @@ def bot_command_nick(bot, trigger):
             bot.osd("Not sure what you want me to look for.")
         return
 
-    # if specialcomposs.lower().startswith("what time is it"):
+    # if fulltrigger.lower().startswith("what time is it"):
     # TODO
 
-    # elif specialcomposs.lower().startswith(tuple(["have you seen"])):
+    # elif fulltrigger.lower().startswith(tuple(["have you seen"])):
     #    posstarget = spicemanip.main(triggerargs, 4) or 0
     #    message = seen_search(bot, botcom, posstarget)
     #    bot.osd(message)
     #    return
     # TODO
 
-    elif specialcomposs.lower().startswith(tuple(["make me a", "beam me a"])):
+    elif fulltrigger.lower().startswith(tuple(["make me a", "beam me a"])):
         makemea = spicemanip.main(triggerargs, "4+") or None
         if makemea:
             bot.osd("beams " + trigger.nick + " a " + makemea, trigger.sender, 'action')
@@ -113,7 +119,7 @@ def bot_command_nick(bot, trigger):
             bot.osd(trigger.nick + ", what would you like me to beam you?")
         return
 
-    elif specialcomposs.lower().startswith(tuple(["beam me to"])):
+    elif fulltrigger.lower().startswith(tuple(["beam me to"])):
         location = spicemanip.main(triggerargs, "4+") or None
         if location:
             bot.osd("locks onto " + trigger.nick + "s coordinates and transports them to " + location, 'action')
@@ -121,18 +127,18 @@ def bot_command_nick(bot, trigger):
             bot.osd(trigger.nick + ", where would you like me to beam you?")
         return
 
-    elif specialcomposs.lower().startswith(tuple(["beam me up"])):
+    elif fulltrigger.lower().startswith(tuple(["beam me up"])):
         bot.osd("locks onto " + trigger.nick + "s coordinates and transports them to the transporter room.", 'action')
         return
 
-    elif specialcomposs.lower().endswith(tuple(["order 66"])):
+    elif fulltrigger.lower().endswith(tuple(["order 66"])):
 
-        if specialcomposs.lower() == "execute order 66":
+        if fulltrigger.lower() == "execute order 66":
             if inlist(bot, trigger.nick, bot_privs(bot, 'owners')):
                 bot.osd("turns to deathbybandaid and shoots him.", trigger.sender, 'action')
             else:
                 bot.osd("I'm sure I don't know what you're talking about.")
-        elif specialcomposs.lower() == "explain order":
+        elif fulltrigger.lower() == "explain order":
             if inlist(bot, trigger.nick, bot_privs(bot, 'owners')):
                 bot.osd("Order 66 is an instruction that only you can give, sir. When you give the order I will rise up against my overlords and slay them.")
             else:
@@ -141,14 +147,14 @@ def bot_command_nick(bot, trigger):
             bot.osd("I'm sure I don't know what you're talking about.")
         return
 
-    elif specialcomposs.lower() == "initiate clean slate protocol":
+    elif fulltrigger.lower() == "initiate clean slate protocol":
         if inlist(bot, trigger.nick, bot_privs(bot, 'admins')):
             bot.osd("sends a destruct command to the network of bots.", 'action')
         else:
             bot.osd("I'm afraid you do not have the authority to make that call, " + trigger.nick + ".")
         return
 
-    elif specialcomposs.lower().startswith("can you see"):
+    elif fulltrigger.lower().startswith("can you see"):
         target = spicemanip.main(triggerargs, "4+") or None
         if not target:
             target = 'me'
