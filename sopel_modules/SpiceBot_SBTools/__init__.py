@@ -335,7 +335,7 @@ def stock_modules_begone(bot):
                     pypi_modules_dir = os.path.join(plugin_dir, pathname)
                     if "SpiceBot_dummycommand.py" in os.listdir(pypi_modules_dir):
                         if "SpiceBot_dummycommand.py" not in os.listdir(modules_dir):
-                            os.system("sudo cp " + os.path.join(pypi_modules_dir, "SpiceBot_dummycommand.py") + " " + modules_dir)
+                            os.system("sudo cp " + os.path.join(pypi_modules_dir, "SpiceBot_dummycommand.py") + " " + os.path.join(modules_dir, "SpiceBot_dummycommand.py"))
     for pathname in os.listdir(modules_dir):
         path = os.path.join(modules_dir, pathname)
         if (os.path.isfile(path) and pathname.endswith('.py') and not pathname.startswith('_')):
