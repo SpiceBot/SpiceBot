@@ -27,7 +27,7 @@ def exclaim(bot, trigger):
     bot.say(trigger.nick + '!')
 
 
-@sopel.module.rule('$nickname?')
+@sopel.module.rule('$nickname\?')
 def imhere(bot, trigger):
     bot.say("I'm here, " + trigger.nick)
 
