@@ -100,10 +100,10 @@ def setup(bot):
                         validcoms = list(validcoms)
                     else:
                         validcoms = [validcoms]
-                    nickified = []
-                    for nickcom in validcoms:
-                        nickified.append(str(bot.nick) + " " + nickcom)
-                    validcomdict = {"comtype": comtype, "validcoms": nickified}
+                    # nickified = []
+                    # for nickcom in validcoms:
+                    #     nickified.append(str(bot.nick) + " " + nickcom)
+                    validcomdict = {"comtype": comtype, "validcoms": validcoms}
                     filelinelist.append(validcomdict)
                 elif str(line).startswith(tuple(["rule", "module.rule", "sopel.module.rule"])):
                     comtype = "rule"

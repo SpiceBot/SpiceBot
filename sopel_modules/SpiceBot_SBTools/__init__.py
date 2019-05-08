@@ -8,9 +8,19 @@ import sopel
 import collections
 import re
 import os
+import sys
 import codecs
+import requests
+from fake_useragent import UserAgent
+from difflib import SequenceMatcher
+from operator import itemgetter
+from collections import abc
 
 import spicemanip
+
+# user agent and header
+ua = UserAgent()
+header = {'User-Agent': str(ua.chrome)}
 
 """Variable References"""
 
@@ -143,6 +153,27 @@ def humanized_time(countdownseconds):
     eval(year + day + hour + minute + second)
 
 
+"""Online Information Requests"""
+
+
+def googlesearch(bot, searchterm, searchtype=None):
+    data = searchterm.replace(' ', '+')
+    lookfor = data.replace(':', '%3A')
+    try:
+        if searchtype == 'maps':
+            var = requests.get(r'http://www.google.com/maps/place/' + lookfor, headers=header)
+        else:
+            var = requests.get(r'http://www.google.com/search?q=' + lookfor + '&btnI', headers=header)
+    except Exception as e:
+        var = e
+        var = None
+
+    if not var or not var.url:
+        return None
+    else:
+        return var.url
+
+
 """List Manipulation Functions"""
 
 
@@ -185,6 +216,44 @@ def inlist_match(bot, searchterm, searchlist):
             if searching.lower() == searchterm.lower():
                 return searching
     return searchterm
+
+
+def similar(a, b):
+    return SequenceMatcher(None, a, b).ratio()
+
+
+def similar_list(bot, searchitem, searchlist, matchcount=1, searchorder='reverse'):
+
+    if sys.version_info.major >= 3:
+        if isinstance(searchlist, abc.KeysView):
+            searchlist = [x for x in searchlist]
+    if isinstance(searchlist, dict):
+        searchlist = [x for x in searchlist]
+
+    if not isinstance(searchlist, list):
+        searchlist = [searchlist]
+
+    sim_listitems, sim_num = [], []
+    for listitem in searchlist:
+        similarlevel = similar(searchitem.lower(), listitem.lower())
+        if similarlevel >= .75:
+            sim_listitems.append(listitem)
+            sim_num.append(similarlevel)
+
+    if len(sim_listitems) and len(sim_num):
+        sim_num, sim_listitems = array_arrangesort(bot, sim_num, sim_listitems)
+
+    if searchorder == 'reverse':
+        sim_listitems = spicemanip.main(sim_listitems, 'reverse', "list")
+
+    sim_listitems[-matchcount:]
+
+    return sim_listitems
+
+
+def array_arrangesort(bot, sortbyarray, arrayb):
+    sortbyarray, arrayb = (list(x) for x in zip(*sorted(zip(sortbyarray, arrayb), key=itemgetter(0))))
+    return sortbyarray, arrayb
 
 
 """Channel Functions"""
