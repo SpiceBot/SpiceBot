@@ -12,6 +12,9 @@ from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, googlesearch, bot_
 @sopel.module.nickname_commands('(.*)')
 def bot_command_gender(bot, trigger):
 
+    while not bot_events_check(bot, ['1004', '2002']):
+        pass
+
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
 
     if not triggercommand:

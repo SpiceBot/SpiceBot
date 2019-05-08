@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # coding=utf-8
 """Useful miscellaneous tools and shortcuts for SpiceBot Sopel modules
 """
@@ -316,6 +317,46 @@ def channel_list_current(bot):
 
 
 """Environment Functions"""
+
+
+def stock_modules_begone(bot):
+
+    # Remove stock modules, if present
+    main_sopel_dir = os.path.dirname(os.path.abspath(sopel.__file__))
+    modules_dir = os.path.join(main_sopel_dir, 'modules')
+    stockdir = os.path.join(modules_dir, "stock")
+    if not os.path.exists(stockdir) or not os.path.isdir(stockdir):
+        os.system("sudo mkdir " + stockdir)
+    if "SpiceBot_dummycommand.py" not in os.listdir(modules_dir):
+        import sopel_modules
+        for plugin_dir in set(sopel_modules.__path__):
+            for pathname in os.listdir(plugin_dir):
+                if pathname == 'SpiceBot_SopelPatches':
+                    pypi_modules_dir = os.path.join(plugin_dir, pathname)
+                    if "SpiceBot_dummycommand.py" in os.listdir(pypi_modules_dir):
+                        if "SpiceBot_dummycommand.py" not in os.listdir(modules_dir):
+                            os.system("sudo cp " + os.path.join(pypi_modules_dir, "SpiceBot_dummycommand.py") + " " + modules_dir)
+    for pathname in os.listdir(modules_dir):
+        path = os.path.join(modules_dir, pathname)
+        if (os.path.isfile(path) and pathname.endswith('.py') and not pathname.startswith('_')):
+            if not pathname in ["__init__.py", "SpiceBot_dummycommand.py"]:
+                os.system("sudo mv " + path + " " + stockdir)
+
+
+def spicebot_update(bot, deps=False):
+
+    pipcommand = "sudo pip3 install --upgrade"
+    if not deps:
+        pipcommand += " --no-deps"
+    pipcommand += " --force-reinstall"
+    pipcommand += " git+" + str(bot.config.SpiceBot_Update.gitrepo) + "@" + str(bot.config.SpiceBot_Update.gitbranch)
+
+    bot_logging(bot, 'SpiceBot_Update', "Running `" + pipcommand + "`")
+    # for line in os.popen(pipcommand).read().split('\n'):
+    #    bot_logging(bot, 'SpiceBot_Update', "    " + line)
+    os.system(pipcommand)
+
+    stock_modules_begone(bot)
 
 
 def spicebot_reload(bot, log_from='service_manip', quitmessage='Recieved QUIT'):
