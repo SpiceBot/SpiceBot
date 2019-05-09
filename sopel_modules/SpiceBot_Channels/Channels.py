@@ -120,6 +120,8 @@ def bot_part_empty(bot):
     for channel in bot.channels.keys():
         if len(bot.channels[channel].privileges.keys()) == 1 and channel not in ignorepartlist:
             bot.part(channel, "Leaving Empty Channel")
+            if channel.lower() in bot.memory['SpiceBot_Channels']['channels']:
+                del bot.memory['SpiceBot_Channels']['channels'][channel.lower()]
 
 
 @sopel.module.event('2001')
