@@ -6,6 +6,6 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 
 
-@sopel.module.commands("?zz_dummycommand")
+@sopel.module.commands("zz_dummycommand")
 def dummycommand(bot, trigger):
     return
