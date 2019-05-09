@@ -68,6 +68,10 @@ def join_log_channel(bot, trigger):
 
 def stdio_logs_fetch(bot):
 
+    stdio_ignore = ["Loaded:"]
+    for logtype in bot.memory['SpiceBot_Logs']["logs"].keys():
+        stdio_ignore.append("[" + logtype + "]")
+
     logfile = os.path.os.path.join(bot.config.core.logdir, 'stdio.log')
 
     try:
@@ -84,10 +88,16 @@ def stdio_logs_fetch(bot):
                 linenumindex.append(currentline)
             currentline += 1
         last_start = max(linenumindex)
-        debuglines = log_file_lines[last_start:]
+        filelines = log_file_lines[last_start:]
     except Exception as e:
         debuglines = e
-        debuglines = []
+        filelines = []
+
+    debuglines = []
+    for line in filelines:
+        if not line.startswith(tuple(stdio_ignore)):
+            if not line.isspace():
+                debuglines.append(str(line))
 
     return debuglines
 
