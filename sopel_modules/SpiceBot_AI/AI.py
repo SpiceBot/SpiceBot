@@ -62,6 +62,7 @@ def bot_command_nick(bot, trigger):
 
     if triggercommand in bot.memory['SpiceBot_CommandsQuery']['commands']["nickname"].keys():
         return
+    triggerargs.insert(0, triggercommand)
 
     fulltrigger = spicemanip.main(triggerargs, 0).lower()
 
