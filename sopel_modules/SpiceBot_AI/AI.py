@@ -85,14 +85,18 @@ def bot_command_nick(bot, trigger):
         searchterm = spicemanip.main(triggerargs, "3+") or None
         if searchterm:
 
-            if searchterm.lower() == 'waldo':
+            if searchterm.lower() in ['waldo', 'wally']:
                 bot.osd("He is hiding for a reason?")
+                searchreturn = googlesearch(bot, "wimmelbilderbuch")
+                if searchreturn:
+                    bot.osd(str(searchreturn))
                 return
 
             elif searchterm.lower() == 'carmen sandiego':
-                bot.osd("She is hiding for a reason?")
+                carmenlocale = ['ACME Headquarters', "Villains' International League of Evil"]
+                bot.osd("Currently she is located at " + spicemanip.main(carmenlocale, 'random'))
                 return
-            searchreturn = googlesearch(bot, searchterm)
+            searchreturn = googlesearch(bot, searchterm, 'maps')
 
             if not searchreturn:
                 bot.osd('I cannot find anything about that')
@@ -136,10 +140,14 @@ def bot_command_nick(bot, trigger):
 
         if fulltrigger.lower() == "execute order 66":
             if inlist(bot, trigger.nick, bot_privs(bot, 'owners')):
-                bot.osd("turns to deathbybandaid and shoots him.", trigger.sender, 'action')
+                if trigger.is_privmsg:
+                    jedi = trigger.nick
+                else:
+                    jedi = spicemanip.main(bot.channels[trigger.sender].privileges.keys(), 'random')
+                bot.osd("turns to " + jedi + " and shoots him.", trigger.sender, 'action')
             else:
                 bot.osd("I'm sure I don't know what you're talking about.")
-        elif fulltrigger.lower() == "explain order":
+        elif fulltrigger.lower() == "explain order 66":
             if inlist(bot, trigger.nick, bot_privs(bot, 'owners')):
                 bot.osd("Order 66 is an instruction that only you can give, sir. When you give the order I will rise up against my overlords and slay them.")
             else:
