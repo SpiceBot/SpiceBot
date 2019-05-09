@@ -62,21 +62,8 @@ def bot_command_damnlazy_b(bot, trigger):
 @sopel.module.nickname_commands('(.*)')
 def bot_command_nick(bot, trigger):
 
-    while not bot_events_check(bot, ['1004', '2002']):
-        pass
-
-    triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
-
-    if not triggercommand:
-        return
-
-    if triggercommand in bot.memory['SpiceBot_CommandsQuery']['commands']["nickname"].keys():
-        return
-    triggerargs.insert(0, triggercommand)
-
-    fulltrigger = spicemanip.main(triggerargs, 0).lower()
-
-    if fulltrigger in bot.memory['SpiceBot_CommandsQuery']['nickrules']:
+    triggerargs, triggercommand, fulltrigger, canrun = bot_command_nick_setup(bot, trigger)
+    if not canrun:
         return
 
     if fulltrigger.lower().startswith("what is"):
@@ -211,3 +198,27 @@ def bot_command_nick(bot, trigger):
         else:
             bot.osd("I don't know what you are asking me to do!")
             return
+
+
+def bot_command_nick_setup(bot, trigger):
+
+    while not bot_events_check(bot, ['1004', '2002']):
+        pass
+
+    canrun = True
+
+    triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
+
+    if not triggercommand:
+        return '', '', '', False
+
+    if triggercommand in bot.memory['SpiceBot_CommandsQuery']['commands']["nickname"].keys():
+        return
+    triggerargs.insert(0, triggercommand)
+
+    fulltrigger = spicemanip.main(triggerargs, 0).lower()
+
+    if fulltrigger in bot.memory['SpiceBot_CommandsQuery']['nickrules']:
+        return '', '', '', False
+
+    return triggerargs, triggercommand, fulltrigger, canrun
