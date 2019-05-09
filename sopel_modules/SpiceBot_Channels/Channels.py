@@ -53,16 +53,10 @@ def shutdown(bot):
 def trigger_channel_list_initial(bot, trigger):
     bot_events_recieved(bot, trigger.event)
 
-    ignorepartlist = []
-    if bot.config.SpiceBot_Logs.logging_channel:
-        ignorepartlist.append(bot.config.SpiceBot_Logs.logging_channel)
-
     # Unkickable
     bot.write(('SAMODE', bot.nick, '+q'))
 
-    for channel in bot.channels.keys():
-        if len(bot.channels[channel].privileges.keys()) == 1 and channel not in ignorepartlist:
-            bot.part(channel, "Leaving Empty Channel")
+    bot_part_empty(bot)
 
     bot.write(['LIST'])
     bot.memory['SpiceBot_Channels']['ProcessLock'] = True
@@ -89,16 +83,12 @@ def trigger_channel_list_initial(bot, trigger):
     if "*" in bot.memory['SpiceBot_Channels']['channels']:
         del bot.memory['SpiceBot_Channels']['channels']["*"]
 
-    for channel in bot.channels.keys():
-        if len(bot.channels[channel].privileges.keys()) == 1 and channel not in ignorepartlist:
-            bot.part(channel, "Leaving Empty Channel")
+    bot_part_empty(bot)
 
     while True:
         try:
             time.sleep(1800)
-            for channel in bot.channels.keys():
-                if len(bot.channels[channel].privileges.keys()) == 1 and channel not in ignorepartlist:
-                    bot.part(channel, "Leaving Empty Channel")
+            bot_part_empty(bot)
             oldlist = list(bot.memory['SpiceBot_Channels']['channels'].keys())
             bot.write(['LIST'])
             bot.memory['SpiceBot_Channels']['ProcessLock'] = True
@@ -118,11 +108,18 @@ def trigger_channel_list_initial(bot, trigger):
 
             if "*" in bot.memory['SpiceBot_Channels']['channels']:
                 del bot.memory['SpiceBot_Channels']['channels']["*"]
-            for channel in bot.channels.keys():
-                if len(bot.channels[channel].privileges.keys()) == 1 and channel not in ignorepartlist:
-                    bot.part(channel, "Leaving Empty Channel")
+            bot_part_empty(bot)
         except KeyError:
             return
+
+
+def bot_part_empty(bot):
+    ignorepartlist = []
+    if bot.config.SpiceBot_Logs.logging_channel:
+        ignorepartlist.append(bot.config.SpiceBot_Logs.logging_channel)
+    for channel in bot.channels.keys():
+        if len(bot.channels[channel].privileges.keys()) == 1 and channel not in ignorepartlist:
+            bot.part(channel, "Leaving Empty Channel")
 
 
 @sopel.module.event('2001')
