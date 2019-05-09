@@ -8,7 +8,7 @@ import spicemanip
 
 from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check, inlist, inlist_match
 from sopel_modules.SpiceBot_Events.System import bot_events_check
-from .Logs import errordisplay_fetch
+from .Logs import systemd_logs_fetch
 
 
 @sopel.module.nickname_commands('logs', 'debug')
@@ -30,10 +30,12 @@ def bot_command_action(bot, trigger):
 
     logtype = inlist_match(bot, logtype, bot.memory['SpiceBot_Logs'].keys())
 
-    if logtype != "Sopel_systemd":
-        logindex = bot.memory['SpiceBot_Logs']["logs"][logtype]
+    if logtype == "Sopel_systemd":
+        logindex = systemd_logs_fetch(bot)
+    elif logtype == "Sopel_stdio":
+        logindex = stdio_logs_fetch(bot)
     else:
-        logindex = errordisplay_fetch(bot)
+        logindex = bot.memory['SpiceBot_Logs']["logs"][logtype]
 
     if not len(logindex):
         bot.osd("No logs found for " + str(logtype) + ".")

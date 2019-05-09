@@ -35,7 +35,7 @@ def setup(bot):
 
 def bot_logs_setup_check(bot):
     if 'SpiceBot_Logs' not in bot.memory:
-        bot.memory['SpiceBot_Logs'] = {"logs": {"Sopel_systemd": []}, "queue": []}
+        bot.memory['SpiceBot_Logs'] = {"logs": {"Sopel_systemd": [], "Sopel_stdio": []}, "queue": []}
 
 
 def shutdown(bot):
@@ -66,18 +66,40 @@ def join_log_channel(bot, trigger):
                 return
 
 
-def errordisplay_fetch(bot):
+def stdio_logs_fetch(bot):
+
+    try:
+        log_file_lines = []
+        log_file = open("/home/sopel.sopel/logs/stdio.log", 'r')
+        lines = log_file.readlines()
+        for line in lines:
+            log_file_lines.append(line)
+        log_file.close()
+
+        currentline, linenumindex = 0, []
+        for line in log_file_lines:
+            if line.startswith("Welcome to Sopel. Loading modules..."):
+                linenumindex.append(currentline)
+            currentline += 1
+        last_start = max(linenumindex)
+        debuglines = log_file_lines[last_start:]
+    except Exception as e:
+        debuglines = e
+        debuglines = []
+
+    return debuglines
+
+
+def systemd_logs_fetch(bot):
     servicepid = get_running_pid(bot)
     debuglines = []
     for line in os.popen(str("sudo journalctl _PID=" + str(servicepid))).read().split('\n'):
-        if not str(line).startswith("-- Logs begin at"):
-            line = str(line).split(str(os.uname()[1] + " "))[-1]
-            if not str(line).startswith("sudo"):
-                lineparts = str(line).split(": ")
-                del lineparts[0]
-                line = spicemanip.main(lineparts, 0)
-                if not line.isspace():
-                    debuglines.append(str(line))
+        line = str(line).split(str(os.uname()[1] + " "))[-1]
+        lineparts = str(line).split(": ")
+        del lineparts[0]
+        line = spicemanip.main(lineparts, 0)
+        if not line.isspace():
+            debuglines.append(str(line))
     return debuglines
 
 
