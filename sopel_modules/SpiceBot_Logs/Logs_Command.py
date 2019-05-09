@@ -8,15 +8,16 @@ import spicemanip
 
 from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check, inlist, inlist_match
 from sopel_modules.SpiceBot_Events.System import bot_events_check
+from .Logs import errordisplay_fetch
 
 
-@sopel.module.nickname_commands('logs')
+@sopel.module.nickname_commands('logs', 'debug')
 def bot_command_action(bot, trigger):
 
     while not bot_events_check(bot, '2004'):
         pass
 
-    if not command_permissions_check(bot, trigger, ['admins', 'owner']):
+    if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
         bot.say("I was unable to process this Bot Nick command due to privilege issues.")
         return
 
@@ -29,10 +30,15 @@ def bot_command_action(bot, trigger):
 
     logtype = inlist_match(bot, logtype, bot.memory['SpiceBot_Logs'].keys())
 
-    if len(bot.memory['SpiceBot_Logs']["logs"][logtype]) == 0:
+    if logtype != "Sopel_systemd":
+        logindex = bot.memory['SpiceBot_Logs']["logs"][logtype]
+    else:
+        logindex = errordisplay_fetch(bot)
+
+    if not len(logindex):
         bot.osd("No logs found for " + str(logtype) + ".")
         return
 
     bot.osd("Is Examining " + str(logtype) + " log(s).")
-    for line in bot.memory['SpiceBot_Logs']["logs"][logtype]:
+    for line in logindex:
         bot.osd("    " + str(line))
