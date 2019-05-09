@@ -3,6 +3,7 @@
 from __future__ import unicode_literals, absolute_import, division, print_function
 
 import sopel.module
+from sopel.cli import run
 
 from sopel_modules.SpiceBot_Events.System import bot_events_recieved
 from sopel_modules.SpiceBot_SBTools import command_permissions_check
@@ -56,7 +57,8 @@ def bot_command_hub(bot, trigger):
 
 
 def errordisplay_fetch(bot):
-    servicepid = str(os.popen("systemctl show " + str(bot.nick) + " --property=MainPID").read()).split("=")[-1]
+    # servicepid = str(os.popen("systemctl show " + str(bot.nick) + " --property=MainPID").read()).split("=")[-1]
+    servicepid = get_running_pid(bot)
     debuglines = []
     for line in os.popen(str("sudo journalctl _PID=" + str(servicepid))).read().split('\n'):
         if not str(line).startswith("-- Logs begin at"):
@@ -69,3 +71,14 @@ def errordisplay_fetch(bot):
         else:
             debuglines.append(str(line))
     return debuglines
+
+
+def get_running_pid(bot):
+    try:
+        filename = "/run/sopel/" + str(bot.nick) + ".pid"
+        with open(filename, 'r') as pid_file:
+            pidnum = int(pid_file.read())
+    except Exception as e:
+        pidnum = e
+        pidnum = str(os.popen("systemctl show " + str(bot.nick) + " --property=MainPID").read()).split("=")[-1]
+    return pidnum
