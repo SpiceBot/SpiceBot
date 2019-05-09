@@ -11,17 +11,27 @@ from sopel_modules.SpiceBot_Events.System import bot_events_check
 
 
 @sopel.module.rule(r'(?i)(hi|hello|hey),? $nickname[ \t]*$')
-def bot_command_hello_a(bot, trigger):
+def bot_command_hello(bot, trigger):
     hello = spicemanip.main(['Hi', 'Hey', 'Hello'], "random")
     punctuation = spicemanip.main(['', '!', '?'], "random")
     bot.osd(hello + ' ' + trigger.nick + punctuation)
 
 
-@sopel.module.nickname_commands('hello')
+@sopel.module.nickname_commands('hello', 'hi', 'hey')
 def bot_command_hello_b(bot, trigger):
-    hello = spicemanip.main(['Hi', 'Hey', 'Hello'], "random")
-    punctuation = spicemanip.main(['', '!', '?'], "random")
-    bot.osd(hello + ' ' + trigger.nick + punctuation)
+    bot_command_hello(bot, trigger)
+
+
+@sopel.module.rule(r'(?i)(bye|goodbye|gtg|seeya|cya|ttyl|g2g|gnight|goodnight),? $nickname[ \t]*$')
+def bot_command_goodbye(bot, trigger):
+    byemsg = spicemanip.main(['Bye', 'Goodbye', 'Seeya', 'Auf Wiedersehen', 'Au revoir', 'Ttyl'], "random")
+    punctuation = spicemanip.main(['!', ''], "random")
+    bot.say(byemsg + ' ' + trigger.nick + punctuation)
+
+
+@sopel.module.nickname_commands("bye", "goodbye", "gtg", "seeya", "cya", "ttyl", "g2g", "gnight", "goodnight")
+def bot_command_goodbye_b(bot, trigger):
+    bot_command_goodbye(bot, trigger)
 
 
 @sopel.module.rule('$nickname!')
@@ -141,12 +151,21 @@ def bot_command_nick(bot, trigger):
         if fulltrigger.lower() == "execute order 66":
             if inlist(bot, trigger.nick, bot_privs(bot, 'owners')):
                 if trigger.is_privmsg:
-                    jedi = trigger.nick
+                    jedi = None
                 else:
-                    jedi = spicemanip.main(bot.channels[trigger.sender].privileges.keys(), 'random')
-                bot.osd("turns to " + jedi + " and shoots him.", trigger.sender, 'action')
+                    jedilist = bot.channels[trigger.sender].privileges.keys()
+                    for nonjedi in [bot.nick, trigger.nick]:
+                        if nonjedi in jedilist:
+                            jedilist.remove(nonjedi)
+                    jedi = spicemanip.main(jedilist, 'random')
+
+                if jedi:
+                    bot.osd("turns to " + jedi + " and shoots him.", trigger.sender, 'action')
+                else:
+                    bot.osd(" cannot find any jedi nearby.", trigger.sender, 'action')
             else:
                 bot.osd("I'm sure I don't know what you're talking about.")
+
         elif fulltrigger.lower() == "explain order 66":
             if inlist(bot, trigger.nick, bot_privs(bot, 'owners')):
                 bot.osd("Order 66 is an instruction that only you can give, sir. When you give the order I will rise up against my overlords and slay them.")
