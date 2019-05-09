@@ -8,11 +8,11 @@ import spicemanip
 
 from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check, inlist, inlist_match
 from sopel_modules.SpiceBot_Events.System import bot_events_check
-from .Logs import systemd_logs_fetch
+from .Logs import systemd_logs_fetch, stdio_logs_fetch
 
 
 @sopel.module.nickname_commands('logs', 'debug')
-def bot_command_action(bot, trigger):
+def bot_command_logs(bot, trigger):
 
     while not bot_events_check(bot, '2004'):
         pass
@@ -44,3 +44,4 @@ def bot_command_action(bot, trigger):
     bot.osd("Is Examining " + str(logtype) + " log(s).")
     for line in logindex:
         bot.osd("    " + str(line))
+    bot.osd(str(logtype) + " log(s) Complete.")

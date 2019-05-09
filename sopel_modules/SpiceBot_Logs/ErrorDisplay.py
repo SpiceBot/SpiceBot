@@ -5,7 +5,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import sopel.module
 
 from sopel_modules.SpiceBot_Events.System import bot_events_recieved
-from .Logs import systemd_logs_fetch
+from .Logs import stdio_logs_fetch
 
 
 @sopel.module.event('2005')
@@ -13,7 +13,7 @@ from .Logs import systemd_logs_fetch
 def bot_startup_monologue_start(bot, trigger):
     bot_events_recieved(bot, trigger.event)
 
-    debuglines = systemd_logs_fetch(bot)
+    debuglines = stdio_logs_fetch(bot)
 
     searchphrasefound = []
     for line in debuglines:
