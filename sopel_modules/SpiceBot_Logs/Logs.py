@@ -8,6 +8,10 @@ from sopel.config.types import StaticSection, ValidatedAttribute
 from sopel_modules.SpiceBot_SBTools import bot_logging
 from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger
 
+import os
+
+import spicemanip
+
 
 def configure(config):
     config.define_section("SpiceBot_Logs", SpiceBot_Logs_MainSection, validate=False)
@@ -31,7 +35,7 @@ def setup(bot):
 
 def bot_logs_setup_check(bot):
     if 'SpiceBot_Logs' not in bot.memory:
-        bot.memory['SpiceBot_Logs'] = {"logs": {}, "queue": []}
+        bot.memory['SpiceBot_Logs'] = {"logs": {"Sopel_systemd": [], "Sopel_stdio": []}, "queue": []}
 
 
 def shutdown(bot):
@@ -60,6 +64,66 @@ def join_log_channel(bot, trigger):
                     del bot.memory['SpiceBot_Logs']["queue"][0]
             except KeyError:
                 return
+
+
+def stdio_logs_fetch(bot):
+
+    stdio_ignore = ["Loaded:"]
+    for logtype in bot.memory['SpiceBot_Logs']["logs"].keys():
+        stdio_ignore.append("[" + logtype + "]")
+
+    logfile = os.path.os.path.join(bot.config.core.logdir, 'stdio.log')
+
+    try:
+        log_file_lines = []
+        log_file = open(logfile, 'r')
+        lines = log_file.readlines()
+        for line in lines:
+            log_file_lines.append(line)
+        log_file.close()
+
+        currentline, linenumindex = 0, []
+        for line in log_file_lines:
+            if line.startswith("Welcome to Sopel. Loading modules..."):
+                linenumindex.append(currentline)
+            currentline += 1
+        last_start = max(linenumindex)
+        filelines = log_file_lines[last_start:]
+    except Exception as e:
+        debuglines = e
+        filelines = []
+
+    debuglines = []
+    for line in filelines:
+        if not line.startswith(tuple(stdio_ignore)):
+            if not line.isspace():
+                debuglines.append(str(line))
+
+    return debuglines
+
+
+def systemd_logs_fetch(bot):
+    servicepid = get_running_pid(bot)
+    debuglines = []
+    for line in os.popen(str("sudo journalctl _PID=" + str(servicepid))).read().split('\n'):
+        line = str(line).split(str(os.uname()[1] + " "))[-1]
+        lineparts = str(line).split(": ")
+        del lineparts[0]
+        line = spicemanip.main(lineparts, 0)
+        if not line.isspace():
+            debuglines.append(str(line))
+    return debuglines
+
+
+def get_running_pid(bot):
+    try:
+        filename = "/run/sopel/" + str(bot.nick) + ".pid"
+        with open(filename, 'r') as pid_file:
+            pidnum = int(pid_file.read())
+    except Exception as e:
+        pidnum = e
+        pidnum = str(os.popen("systemctl show " + str(bot.nick) + " --property=MainPID").read()).split("=")[-1]
+    return pidnum
 
 
 @sopel.module.event('2004')

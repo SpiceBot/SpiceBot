@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # coding=utf-8
 """Useful miscellaneous tools and shortcuts for SpiceBot Sopel modules
 """
@@ -8,9 +9,17 @@ import sopel
 import collections
 import re
 import os
+import sys
 import codecs
+import requests
+from fake_useragent import UserAgent
+from difflib import SequenceMatcher
+from operator import itemgetter
+from collections import abc
+from pygit2 import clone_repository
 
 import spicemanip
+
 
 """Variable References"""
 
@@ -87,16 +96,17 @@ def command_permissions_check(bot, trigger, privslist):
 """Logging"""
 
 
-def bot_logging(bot, logtype, logentry):
+def bot_logging(bot, logtype, logentry, stdio=False):
 
     if 'SpiceBot_Logs' not in bot.memory:
-        bot.memory['SpiceBot_Logs'] = {"logs": {}, "queue": []}
+        bot.memory['SpiceBot_Logs'] = {"logs": {"Sopel_systemd": [], "Sopel_stdio": []}, "queue": []}
 
     logmessage = "[" + logtype + "] " + logentry + ""
 
     bot.memory['SpiceBot_Logs']["queue"].append(logmessage)
 
-    sopel.tools.stderr(logmessage)
+    if stdio:
+        sopel.tools.stderr(logmessage)
 
     if logtype not in bot.memory['SpiceBot_Logs']["logs"].keys():
         bot.memory['SpiceBot_Logs']["logs"][logtype] = []
@@ -143,6 +153,28 @@ def humanized_time(countdownseconds):
     eval(year + day + hour + minute + second)
 
 
+"""Online Information Requests"""
+
+
+def googlesearch(bot, searchterm, searchtype=None):
+    header = {'User-Agent': str(UserAgent().chrome)}
+    data = searchterm.replace(' ', '+')
+    lookfor = data.replace(':', '%3A')
+    try:
+        if searchtype == 'maps':
+            var = requests.get(r'http://www.google.com/maps/place/' + lookfor, headers=header)
+        else:
+            var = requests.get(r'http://www.google.com/search?q=' + lookfor + '&btnI', headers=header)
+    except Exception as e:
+        var = e
+        var = None
+
+    if not var or not var.url:
+        return None
+    else:
+        return var.url
+
+
 """List Manipulation Functions"""
 
 
@@ -185,6 +217,44 @@ def inlist_match(bot, searchterm, searchlist):
             if searching.lower() == searchterm.lower():
                 return searching
     return searchterm
+
+
+def similar(a, b):
+    return SequenceMatcher(None, a, b).ratio()
+
+
+def similar_list(bot, searchitem, searchlist, matchcount=1, searchorder='reverse'):
+
+    if sys.version_info.major >= 3:
+        if isinstance(searchlist, abc.KeysView):
+            searchlist = [x for x in searchlist]
+    if isinstance(searchlist, dict):
+        searchlist = [x for x in searchlist]
+
+    if not isinstance(searchlist, list):
+        searchlist = [searchlist]
+
+    sim_listitems, sim_num = [], []
+    for listitem in searchlist:
+        similarlevel = similar(searchitem.lower(), listitem.lower())
+        if similarlevel >= .75:
+            sim_listitems.append(listitem)
+            sim_num.append(similarlevel)
+
+    if len(sim_listitems) and len(sim_num):
+        sim_num, sim_listitems = array_arrangesort(bot, sim_num, sim_listitems)
+
+    if searchorder == 'reverse':
+        sim_listitems = spicemanip.main(sim_listitems, 'reverse', "list")
+
+    sim_listitems[-matchcount:]
+
+    return sim_listitems
+
+
+def array_arrangesort(bot, sortbyarray, arrayb):
+    sortbyarray, arrayb = (list(x) for x in zip(*sorted(zip(sortbyarray, arrayb), key=itemgetter(0))))
+    return sortbyarray, arrayb
 
 
 """Channel Functions"""
@@ -247,6 +317,61 @@ def channel_list_current(bot):
 
 
 """Environment Functions"""
+
+
+def stock_modules_begone(bot):
+
+    # Remove stock modules, if present
+    main_sopel_dir = os.path.dirname(os.path.abspath(sopel.__file__))
+    modules_dir = os.path.join(main_sopel_dir, 'modules')
+    stockdir = os.path.join(modules_dir, "stock")
+    if not os.path.exists(stockdir) or not os.path.isdir(stockdir):
+        os.system("sudo mkdir " + stockdir)
+    if "SpiceBot_dummycommand.py" not in os.listdir(modules_dir):
+        import sopel_modules
+        for plugin_dir in set(sopel_modules.__path__):
+            for pathname in os.listdir(plugin_dir):
+                if pathname == 'SpiceBot_SopelPatches':
+                    pypi_modules_dir = os.path.join(plugin_dir, pathname)
+                    if "SpiceBot_dummycommand.py" in os.listdir(pypi_modules_dir):
+                        if "SpiceBot_dummycommand.py" not in os.listdir(modules_dir):
+                            os.system("sudo cp " + os.path.join(pypi_modules_dir, "SpiceBot_dummycommand.py") + " " + os.path.join(modules_dir, "SpiceBot_dummycommand.py"))
+    for pathname in os.listdir(modules_dir):
+        path = os.path.join(modules_dir, pathname)
+        if (os.path.isfile(path) and pathname.endswith('.py') and not pathname.startswith('_')):
+            if not pathname in ["__init__.py", "SpiceBot_dummycommand.py"]:
+                os.system("sudo mv " + path + " " + stockdir)
+
+
+def spicebot_update(bot, deps=False):
+
+    if not os.path.exists("/tmp") or not os.path.isdir("/tmp"):
+        os.system("sudo mkdir /tmp")
+    clonepath = "/tmp/SpiceBot"
+    if not os.path.exists(clonepath) or not os.path.isdir(clonepath):
+        os.system(clonepath)
+
+    bot_logging(bot, 'SpiceBot_Update', "Cloning  to " + clonepath, True)
+
+    clone_repository(str(bot.config.SpiceBot_Update.gitrepo + ".git"), clonepath, checkout_branch=bot.config.SpiceBot_Update.gitbranch)
+
+    pipcommand = "sudo pip3 install --upgrade"
+    if not deps:
+         pipcommand += " --no-deps"
+    pipcommand += " --force-reinstall"
+    # pipcommand += " git+" + str(bot.config.SpiceBot_Update.gitrepo) + "@" + str(bot.config.SpiceBot_Update.gitbranch)
+    pipcommand += " /tmp/SpiceBot/"
+
+    bot_logging(bot, 'SpiceBot_Update', "Running `" + pipcommand + "`", True)
+    # for line in os.popen(pipcommand).read().split('\n'):
+    #    bot_logging(bot, 'SpiceBot_Update', "    " + line)
+    os.system(pipcommand)
+
+    bot_logging(bot, 'SpiceBot_Update', "Deleting " + clonepath, True)
+
+    os.system("sudo rm -r /tmp/SpiceBot")
+
+    stock_modules_begone(bot)
 
 
 def spicebot_reload(bot, log_from='service_manip', quitmessage='Recieved QUIT'):

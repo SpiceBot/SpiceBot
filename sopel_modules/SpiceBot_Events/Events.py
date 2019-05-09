@@ -25,7 +25,7 @@ def bot_startup_connection(bot, trigger):
 @sopel.module.event('1001')
 @sopel.module.rule('.*')
 def bot_events_start(bot, trigger):
-    bot_logging(bot, 'SpiceBot_Events', trigger.args[1])
+    bot_logging(bot, 'SpiceBot_Events', trigger.args[1], True)
     bot_events_recieved(bot, trigger.event)
 
     bot_events_trigger(bot, 1002, "Ready To Process module setup procedures")
@@ -38,14 +38,14 @@ def bot_events_start(bot, trigger):
 @sopel.module.event('1002')
 @sopel.module.rule('.*')
 def bot_events_ready(bot, trigger):
-    bot_logging(bot, 'SpiceBot_Events', trigger.args[1])
+    bot_logging(bot, 'SpiceBot_Events', trigger.args[1], True)
     bot_events_recieved(bot, trigger.event)
 
 
 @sopel.module.event('1003')
 @sopel.module.rule('.*')
 def bot_events_connected(bot, trigger):
-    bot_logging(bot, 'SpiceBot_Events', trigger.args[1])
+    bot_logging(bot, 'SpiceBot_Events', trigger.args[1], True)
     bot_events_recieved(bot, trigger.event)
 
     bot_events_setup_check(bot)
@@ -68,5 +68,5 @@ def bot_events_connected(bot, trigger):
 @sopel.module.event('1004')
 @sopel.module.rule('.*')
 def bot_events_complete(bot, trigger):
-    bot_logging(bot, 'SpiceBot_Events', trigger.args[1])
+    bot_logging(bot, 'SpiceBot_Events', trigger.args[1], True)
     bot_events_recieved(bot, trigger.event)

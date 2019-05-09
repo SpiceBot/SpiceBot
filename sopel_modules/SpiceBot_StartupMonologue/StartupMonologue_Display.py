@@ -18,6 +18,8 @@ def bot_startup_monologue_start(bot, trigger):
     bot_logging(bot, 'SpiceBot_StartupMonologue', bot.nick + " is now starting. Please wait while I load my configuration")
     bot.osd(" is now starting. Please wait while I load my configuration.", bot.channels.keys(), 'ACTION')
 
+    bot_events_trigger(bot, 2012, "SpiceBot_StartupMonologue")
+
 
 @sopel.module.event('2002')
 @sopel.module.rule('.*')
@@ -27,8 +29,7 @@ def bot_startup_monologue_commands(bot, trigger):
     availablecomsnum, availablecomsfiles = 0, 0
     for commandstype in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
         availablecomsnum += len(bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype].keys())
-    for commandstype in bot.memory['SpiceBot_CommandsQuery']['counts'].keys():
-        availablecomsfiles += bot.memory['SpiceBot_CommandsQuery']['counts'][commandstype]
+    availablecomsfiles += bot.memory['SpiceBot_CommandsQuery']['counts']
 
     bot.memory['SpiceBot_StartupMonologue'].append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
     bot_logging(bot, 'SpiceBot_StartupMonologue', "There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
