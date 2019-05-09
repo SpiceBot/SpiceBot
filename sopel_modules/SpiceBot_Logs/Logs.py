@@ -70,8 +70,14 @@ def errordisplay_fetch(bot):
     servicepid = get_running_pid(bot)
     debuglines = []
     for line in os.popen(str("sudo journalctl _PID=" + str(servicepid))).read().split('\n'):
-        if not str(line).startswith("sudo") and not line.isspace():
-            debuglines.append(str(line))
+        if not str(line).startswith("-- Logs begin at"):
+            line = str(line).split(str(os.uname()[1] + " "))[-1]
+            if not str(line).startswith("sudo"):
+                lineparts = str(line).split(": ")
+                del lineparts[0]
+                line = spicemanip.main(lineparts, 0)
+                if not line.isspace():
+                    debuglines.append(str(line))
     return debuglines
 
 
