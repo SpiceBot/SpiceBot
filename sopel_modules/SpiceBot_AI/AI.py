@@ -185,7 +185,8 @@ def bot_command_nick(bot, trigger):
     elif fulltrigger.lower().startswith("can you see"):
         target = spicemanip.main(triggerargs, "4+") or None
         if not target:
-            target = 'me'
+            bot.osd(trigger.nick + ", I can see clearly.")
+            return
         if target in [trigger.nick, 'me']:
             bot.osd(trigger.nick + ", I can see you.")
         else:
@@ -200,7 +201,7 @@ def bot_command_nick(bot, trigger):
                 # TODO
         return
 
-    if not inlist(bot, triggercommand, bot.memory['SpiceBot_CommandsQuery']['commands']["nickname"].keys()):
+    else:
 
         closestmatches = similar_list(bot, triggercommand, bot.memory['SpiceBot_CommandsQuery']['commands']["nickname"].keys(), 3, 'reverse')
 
