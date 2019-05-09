@@ -35,6 +35,11 @@ git clone https://github.com/SpiceBot/SpiceBot.git /home/sopel/SpiceBot
 cd /home/sopel/SpiceBot
 git checkout dev
 
+mkdir /run/sopel
+echo $$ > /run/sopel/sopel-SpiceBotSERV.pid
+chmod -R 777 /run/sopel/
+
+
 cp /home/sopel/SpiceBot/System-Files/Config/SpiceBot.cfg /home/sopel/SpiceBot.cfg
 cp /home/sopel/SpiceBot/System-Files/systemd/SpiceBot.service /lib/systemd/system/SpiceBot.service
 systemctl enable SpiceBot.service

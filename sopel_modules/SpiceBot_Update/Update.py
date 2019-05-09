@@ -6,11 +6,9 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 from sopel.config.types import StaticSection, ValidatedAttribute
 
-import os
-
 import spicemanip
 
-from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check, bot_logging, spicebot_reload
+from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check, bot_logging, spicebot_reload, spicebot_update
 
 
 class SpiceBot_Update_MainSection(StaticSection):
@@ -60,33 +58,3 @@ def nickname_comand_update(bot, trigger):
 
     # service_manip(bot, bot.nick, 'restart', 'SpiceBot_Update')
     spicebot_reload(bot, 'SpiceBot_Update', quitmessage)
-
-
-def spicebot_update(bot, deps=False):
-
-    pipcommand = "sudo pip3 install --upgrade"
-    if not deps:
-        pipcommand += " --no-deps"
-    pipcommand += " --force-reinstall"
-    pipcommand += " git+" + str(bot.config.SpiceBot_Update.gitrepo) + "@" + str(bot.config.SpiceBot_Update.gitbranch)
-
-    bot_logging(bot, 'SpiceBot_Update', "Running `" + pipcommand + "`")
-    # for line in os.popen(pipcommand).read().split('\n'):
-    #    bot_logging(bot, 'SpiceBot_Update', "    " + line)
-    os.system(pipcommand)
-
-    stock_modules_begone(bot)
-
-
-def stock_modules_begone(bot):
-
-    # Remove stock modules, if present
-    main_sopel_dir = os.path.dirname(os.path.abspath(sopel.__file__))
-    modules_dir = os.path.join(main_sopel_dir, 'modules')
-    stockdir = os.path.join(modules_dir, "stock")
-    if not os.path.exists(stockdir) or not os.path.isdir(stockdir):
-        os.system("sudo mkdir " + stockdir)
-    for pathname in os.listdir(modules_dir):
-        path = os.path.join(modules_dir, pathname)
-        if (os.path.isfile(path) and pathname.endswith('.py') and not pathname.startswith('_')):
-            os.system("sudo mv " + path + " " + stockdir)

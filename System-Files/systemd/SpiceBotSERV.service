@@ -6,7 +6,7 @@ After=network.target
 [Service]
 Type=simple
 User=sopel
-PIDFile=/run/sopel/sopel-sopel.pid
+PIDFile=/run/sopel/sopel-SpiceBotSERV.pid
 ExecStart=/usr/local/bin/sopel -c /home/sopel/.sopel/SpiceBot.cfg
 Restart=on-failure
 RestartPreventExitStatus=2
