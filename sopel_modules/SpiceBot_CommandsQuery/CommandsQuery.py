@@ -72,10 +72,8 @@ def setup(bot):
         module_file.close()
 
         dict_from_file = dict()
-        filelinelist = []
 
         detected_lines = []
-
         for line in module_file_lines:
 
             if str(line).startswith("@"):
@@ -101,48 +99,49 @@ def setup(bot):
         if len(detected_lines):
             bot.memory['SpiceBot_CommandsQuery']['counts'] += 1
 
-        for detected_line in detected_lines:
+            filelinelist = []
+            for detected_line in detected_lines:
 
-            # Commands
-            if str(line).startswith("commands"):
-                comtype = "module"
-                validcoms = eval(str(line).split("commands")[-1])
-            elif str(line).startswith("nickname_commands"):
-                comtype = "nickname"
-                validcoms = eval(str(line).split("nickname_commands")[-1])
-            elif str(line).startswith("rule"):
-                comtype = "rule"
-                validcoms = eval(str(line).split("rule")[-1])
+                # Commands
+                if str(line).startswith("commands"):
+                    comtype = "module"
+                    validcoms = eval(str(line).split("commands")[-1])
+                elif str(line).startswith("nickname_commands"):
+                    comtype = "nickname"
+                    validcoms = eval(str(line).split("nickname_commands")[-1])
+                elif str(line).startswith("rule"):
+                    comtype = "rule"
+                    validcoms = eval(str(line).split("rule")[-1])
 
-            if isinstance(validcoms, tuple):
-                validcoms = list(validcoms)
-            else:
-                validcoms = [validcoms]
+                if isinstance(validcoms, tuple):
+                    validcoms = list(validcoms)
+                else:
+                    validcoms = [validcoms]
 
-            validcomdict = {"comtype": comtype, "validcoms": validcoms}
-            filelinelist.append(validcomdict)
+                validcomdict = {"comtype": comtype, "validcoms": validcoms}
+                filelinelist.append(validcomdict)
 
-        for atlinefound in filelinelist:
+            for atlinefound in filelinelist:
 
-            dict_from_file = dict()
+                dict_from_file = dict()
 
-            comtype = atlinefound["comtype"]
-            validcoms = atlinefound["validcoms"]
+                comtype = atlinefound["comtype"]
+                validcoms = atlinefound["validcoms"]
 
-            # default command to filename
-            if "validcoms" not in dict_from_file.keys():
-                dict_from_file["validcoms"] = validcoms
+                # default command to filename
+                if "validcoms" not in dict_from_file.keys():
+                    dict_from_file["validcoms"] = validcoms
 
-            maincom = dict_from_file["validcoms"][0]
-            if len(dict_from_file["validcoms"]) > 1:
-                comaliases = spicemanip.main(dict_from_file["validcoms"], '2+', 'list')
-            else:
-                comaliases = []
+                maincom = dict_from_file["validcoms"][0]
+                if len(dict_from_file["validcoms"]) > 1:
+                    comaliases = spicemanip.main(dict_from_file["validcoms"], '2+', 'list')
+                else:
+                    comaliases = []
 
-            bot.memory['SpiceBot_CommandsQuery']['commands'][comtype][maincom] = dict_from_file
-            for comalias in comaliases:
-                if comalias not in bot.memory['SpiceBot_CommandsQuery']['commands'][comtype].keys():
-                    bot.memory['SpiceBot_CommandsQuery']['commands'][comtype][comalias] = {"aliasfor": maincom}
+                bot.memory['SpiceBot_CommandsQuery']['commands'][comtype][maincom] = dict_from_file
+                for comalias in comaliases:
+                    if comalias not in bot.memory['SpiceBot_CommandsQuery']['commands'][comtype].keys():
+                        bot.memory['SpiceBot_CommandsQuery']['commands'][comtype][comalias] = {"aliasfor": maincom}
 
     for comtype in ['module', 'nickname', 'rule']:
         bot_logging(bot, 'SpiceBot_CommandsQuery', "Found " + str(len(bot.memory['SpiceBot_CommandsQuery']['commands'][comtype].keys())) + " " + comtype + " commands.", True)
