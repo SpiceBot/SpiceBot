@@ -134,7 +134,7 @@ def bot_command_nick(bot, trigger):
             bot.osd(trigger.nick + ", what would you like me to beam you?")
         return
 
-    elif fulltrigger.lower().startswith(tuple(["beam me to"])):
+    elif fulltrigger.lower().startswith("beam me to"):
         location = spicemanip.main(triggerargs, "4+") or None
         if location:
             bot.osd("locks onto " + trigger.nick + "s coordinates and transports them to " + location, 'action')
@@ -142,7 +142,7 @@ def bot_command_nick(bot, trigger):
             bot.osd(trigger.nick + ", where would you like me to beam you?")
         return
 
-    elif fulltrigger.lower().startswith(tuple(["beam me up"])):
+    elif fulltrigger.lower().startswith("beam me up"):
         bot.osd("locks onto " + trigger.nick + "s coordinates and transports them to the transporter room.", 'action')
         return
 
@@ -153,7 +153,7 @@ def bot_command_nick(bot, trigger):
                 if trigger.is_privmsg:
                     jedi = None
                 else:
-                    jedilist = bot.channels[trigger.sender].privileges.keys()
+                    jedilist = list(bot.channels[trigger.sender].privileges.keys())
                     for nonjedi in [bot.nick, trigger.nick]:
                         if nonjedi in jedilist:
                             jedilist.remove(nonjedi)
