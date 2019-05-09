@@ -68,9 +68,11 @@ def join_log_channel(bot, trigger):
 
 def stdio_logs_fetch(bot):
 
+    logfile = os.path.os.path.join(bot.config.core.logdir, 'stdio.log')
+
     try:
         log_file_lines = []
-        log_file = open("/home/sopel/sopel/logs/stdio.log", 'r')
+        log_file = open(logfile, 'r')
         lines = log_file.readlines()
         for line in lines:
             log_file_lines.append(line)
