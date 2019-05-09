@@ -103,15 +103,15 @@ def setup(bot):
             for detected_line in detected_lines:
 
                 # Commands
-                if str(line).startswith("commands"):
+                if str(detected_line).startswith("commands"):
                     comtype = "module"
-                    validcoms = eval(str(line).split("commands")[-1])
-                elif str(line).startswith("nickname_commands"):
+                    validcoms = eval(str(detected_line).split("commands")[-1])
+                elif str(detected_line).startswith("nickname_commands"):
                     comtype = "nickname"
-                    validcoms = eval(str(line).split("nickname_commands")[-1])
-                elif str(line).startswith("rule"):
+                    validcoms = eval(str(detected_line).split("nickname_commands")[-1])
+                elif str(detected_line).startswith("rule"):
                     comtype = "rule"
-                    validcoms = eval(str(line).split("rule")[-1])
+                    validcoms = eval(str(detected_line).split("rule")[-1])
 
                 if isinstance(validcoms, tuple):
                     validcoms = list(validcoms)
