@@ -70,7 +70,7 @@ def stdio_logs_fetch(bot):
 
     try:
         log_file_lines = []
-        log_file = open("/home/sopel.sopel/logs/stdio.log", 'r')
+        log_file = open("/home/sopel/sopel/logs/stdio.log", 'r')
         lines = log_file.readlines()
         for line in lines:
             log_file_lines.append(line)
