@@ -28,7 +28,7 @@ def bot_command_logs(bot, trigger):
         bot.osd("Current valid log(s) include: " + spicemanip.main(bot.memory['SpiceBot_Logs']["logs"].keys(), 'andlist'), trigger.sender, 'action')
         return
 
-    logtype = inlist_match(bot, logtype, bot.memory['SpiceBot_Logs'].keys())
+    logtype = inlist_match(bot, logtype, bot.memory['SpiceBot_Logs']["logs"].keys())
 
     if logtype == "Sopel_systemd":
         logindex = systemd_logs_fetch(bot)

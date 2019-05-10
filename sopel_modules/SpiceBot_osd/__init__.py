@@ -385,11 +385,9 @@ class SopelWrapperOSD(object):
             recipients = self._trigger.sender
         self._bot.osd(self, messages, recipients, text_method, max_messages)
 
-    def msg(self, destination=None, message='', max_messages=1):
-        if destination is None:
-            destination = self._trigger.sender
+    def msg(self, destination, message, max_messages=1):
         self._bot.osd(self, message, destination, 'PRIVMSG', 1)
-        # self._bot.say(message, destination, max_messages)
+        # self._bot.msg(destination, message, max_messages)
 
     def say(self, message, destination=None, max_messages=1):
         if destination is None:
