@@ -34,6 +34,16 @@ def bot_command_goodbye_b(bot, trigger):
     bot_command_goodbye(bot, trigger)
 
 
+@sopel.module.rule(r'(?i)(thank|thanks) (you|),? $nickname[ \t]*$')
+def bot_command_thanks(bot, trigger):
+    bot.reply("You're welcome.")
+
+
+@sopel.module.rule('$nickname thank you', '$nickname thanks')
+def bot_command_thanks_b(bot, trigger):
+    bot_command_thanks(bot, trigger)
+
+
 @sopel.module.rule('$nickname!')
 def exclaim(bot, trigger):
     bot.say(trigger.nick + '!')
