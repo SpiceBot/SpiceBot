@@ -39,8 +39,13 @@ def bot_command_thanks(bot, trigger):
     bot.reply("You're welcome.")
 
 
-@sopel.module.rule('$nickname thank you', '$nickname thanks')
+@sopel.module.rule('$nickname thank you')
 def bot_command_thanks_b(bot, trigger):
+    bot_command_thanks(bot, trigger)
+
+
+@sopel.module.rule('$nickname thanks')
+def bot_command_thanks_c(bot, trigger):
     bot_command_thanks(bot, trigger)
 
 
