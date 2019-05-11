@@ -44,7 +44,7 @@ def bot_command_thanks_b(bot, trigger):
     bot_command_thanks(bot, trigger)
 
 
-@sopel.module.rule('$nickname thanks')
+@sopel.module.nickname_commands('thanks')
 def bot_command_thanks_c(bot, trigger):
     bot_command_thanks(bot, trigger)
 
