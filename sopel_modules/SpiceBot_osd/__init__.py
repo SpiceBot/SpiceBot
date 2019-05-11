@@ -188,7 +188,7 @@ class ToolsOSD:
                     messages_list[-1] = messages_list[-1] + message_padding + message
             else:
                 text_list = []
-                while len(message.encode('utf-8')) > max_length:
+                while len(message.encode('utf-8')) > max_length and not message.isspace():
                     last_space = message.rfind(' ', 0, max_length)
                     if last_space == -1:
                         # No last space, just split where it is possible
@@ -202,7 +202,7 @@ class ToolsOSD:
                         if not splitappend.isspace():
                             text_list.append(splitappend)
                         message = message[last_space:]
-                if len(message.encode('utf-8')):
+                if len(message.encode('utf-8')) and not message.isspace():
                     text_list.append(message)
                 messages_list.extend(text_list)
 
