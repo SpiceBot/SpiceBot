@@ -7,7 +7,7 @@ import sopel.module
 
 @sopel.module.rule(r'(?i)(I love you|loveya),? $nickname[ \t]*$')
 def bot_command_love(bot, trigger):
-    bot.reply("You're welcome.")
+    bot.reply("I love you too.")
 
 
 @sopel.module.rule('$nickname (loveya|I love you)')
