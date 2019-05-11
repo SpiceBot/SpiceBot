@@ -9,6 +9,7 @@ from .AI_Acknowledge import *
 from .AI_Lazy import *
 from .AI_InsultHandler import *
 from .AI_Ping import *
+from .AI_Love import *
 
 __author__ = 'Sam Zick'
 __email__ = 'sam@deathbybandaid.net'
