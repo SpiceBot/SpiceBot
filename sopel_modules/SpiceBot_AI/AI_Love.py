@@ -20,6 +20,11 @@ def bot_command_love_c(bot, trigger):
     bot_command_love(bot, trigger)
 
 
+@sopel.module.rule('(I love) $nickname')
+def bot_command_love_d(bot, trigger):
+    bot_command_like(bot, trigger)
+
+
 @sopel.module.rule(r'(?i)(I like you),? $nickname[ \t]*$')
 def bot_command_like(bot, trigger):
     bot.reply("I like you too.")
@@ -27,4 +32,9 @@ def bot_command_like(bot, trigger):
 
 @sopel.module.rule('$nickname (I like you)')
 def bot_command_like_b(bot, trigger):
+    bot_command_like(bot, trigger)
+
+
+@sopel.module.rule('(I like) $nickname')
+def bot_command_like_c(bot, trigger):
     bot_command_like(bot, trigger)
