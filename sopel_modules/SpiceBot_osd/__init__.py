@@ -177,15 +177,14 @@ class ToolsOSD:
         if not isinstance(messages, list):
             messages = [messages]
 
-        messages_list = ['']
+        messages_list = []
         message_padding = 4 * " "
 
         for message in messages:
-            if len((messages_list[-1] + message_padding + message).encode('utf-8')) <= max_length:
-                if messages_list[-1] == '':
-                    messages_list[-1] = message
-                else:
-                    messages_list[-1] = messages_list[-1] + message_padding + message
+            if not len(messages_list) and len(message.encode('utf-8')) <= max_length:
+                messages_list[-1] = message
+            elif len(messages_list) and len((messages_list[-1] + message_padding + message).encode('utf-8')) <= max_length:
+                messages_list[-1] = messages_list[-1] + message_padding + message
             else:
                 text_list = []
                 while len(message.encode('utf-8')) > max_length and not message.isspace():
@@ -204,7 +203,13 @@ class ToolsOSD:
                         message = message[last_space:]
                 if len(message.encode('utf-8')) and not message.isspace():
                     text_list.append(message)
-                messages_list.extend(text_list)
+                for splitmsg in text_list:
+                    if not len(messages_list) and len(splitmsg.encode('utf-8')) <= max_length:
+                        messages_list[-1] = splitmsg
+                    elif len(messages_list) and len((messages_list[-1] + message_padding + splitmsg).encode('utf-8')) <= max_length:
+                        messages_list[-1] = messages_list[-1] + message_padding + splitmsg
+                    else:
+                        messages_list.append(splitmsg)
 
         return messages_list
 
