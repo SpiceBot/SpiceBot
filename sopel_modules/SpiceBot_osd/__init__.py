@@ -192,11 +192,15 @@ class ToolsOSD:
                     last_space = message.rfind(' ', 0, max_length)
                     if last_space == -1:
                         # No last space, just split where it is possible
-                        text_list.append(message[:max_length])
+                        splitappend = message[:max_length]
+                        if not splitappend.isspace():
+                            text_list.append(splitappend)
                         message = message[max_length:]
                     else:
                         # Split at the last best space found
-                        text_list.append(message[:last_space])
+                        splitappend = message[:last_space]
+                        if not splitappend.isspace():
+                            text_list.append(splitappend)
                         message = message[last_space:]
                 if len(message.encode('utf-8')):
                     text_list.append(message)
