@@ -12,6 +12,7 @@ import json
 
 
 def setup(bot):
+    pass
     # Inject Database Functions
     bot_logging(bot, 'SpiceBot_Databaseaddons', "Implanting Database functions into bot")
     SopelDB.reset_nick_value = SopelDBCache.reset_nick_value
