@@ -44,9 +44,10 @@ def query_detection(bot, trigger):
             return
 
         if triggercommand not in commands_list.keys():
+            dispmsg = ["Cannot find any alias commands: No valid commands match " + str(triggercommand) + "."]
             closestmatches = similar_list(bot, triggercommand, commands_list.keys(), 10, 'reverse')
-            dispmsg = ["Cannot find any alias commands: No valid commands match " + str(triggercommand) + ".",
-                        "The following commands match " + str(triggercommand) + ": " + spicemanip.main(closestmatches, 'andlist') + "."]
+            if len(closestmatches):
+                dispmsg.append("The following commands match " + str(triggercommand) + ": " + spicemanip.main(closestmatches, 'andlist') + ".")
             bot.notice(dispmsg, trigger.nick)
             return
 
@@ -72,7 +73,7 @@ def query_detection(bot, trigger):
 
     commandlist = []
     for command in commands_list.keys():
-        if command.lower().startswith(triggercommand):
+        if command.lower().startswith(str(triggercommand).lower()):
             commandlist.append(command)
 
     if not len(commandlist):
