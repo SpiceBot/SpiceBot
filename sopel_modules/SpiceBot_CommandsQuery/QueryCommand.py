@@ -9,6 +9,8 @@ from difflib import SequenceMatcher
 from operator import itemgetter
 
 from sopel_modules.SpiceBot_Events.System import bot_events_check
+from sopel_modules.SpiceBot_SBTools import sopel_triggerargs
+
 
 import spicemanip
 
@@ -19,15 +21,11 @@ def query_detection(bot, trigger):
     while not bot_events_check(bot, '2002'):
         pass
 
-    commands_list = dict()
-    for commandstype in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
-        if commandstype != 'rule':
-            for com in bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype].keys():
-                if com not in commands_list.keys():
-                    if commandstype == 'nickname':
-                        commands_list[str(bot.nick) + " " + com] = bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype][com]
-                    else:
-                        commands_list[com] = bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype][com]
+    commands_list = bot.memory['SpiceBot_CommandsQuery']['commands_all']
+
+    triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'query_command')
+    bot.say(str(triggerargs))
+    bot.say(str(triggercommand))
 
     triggerargsarray = spicemanip.main(trigger, 'create')
 
