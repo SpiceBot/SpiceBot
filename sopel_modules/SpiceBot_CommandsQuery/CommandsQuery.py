@@ -117,9 +117,10 @@ def setup(bot):
                     validcoms = list(validcoms)
                 else:
                     validcoms = [validcoms]
-                if "(.*)" in validcoms:
-                    while "(.*)" in validcoms:
-                        validcoms.remove("(.*)")
+                for regexcom in ["(.*)", '^\?(.*)']:
+                    if regexcom in validcoms:
+                        while regexcom in validcoms:
+                            validcoms.remove(regexcom)
 
                 if len(validcoms):
                     validcomdict = {"comtype": comtype, "validcoms": validcoms}
