@@ -6,7 +6,7 @@ import sopel.module
 
 import spicemanip
 
-from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check, inlist, inlist_match
+from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check, inlist, inlist_match, similar_list
 from sopel_modules.SpiceBot_Events.System import bot_events_check
 from .Logs import systemd_logs_fetch, stdio_logs_fetch
 
@@ -24,8 +24,17 @@ def bot_command_logs(bot, trigger):
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
 
     logtype = spicemanip.main(triggerargs, 1) or None
-    if not logtype or not inlist(bot, logtype, bot.memory['SpiceBot_Logs']["logs"].keys()):
+    if not logtype:
         bot.osd("Current valid log(s) include: " + spicemanip.main(bot.memory['SpiceBot_Logs']["logs"].keys(), 'andlist'), trigger.sender, 'action')
+        return
+
+    if not inlist(bot, logtype, bot.memory['SpiceBot_Logs']["logs"].keys()):
+        closestmatches = similar_list(bot, logtype, bot.memory['SpiceBot_Logs']["logs"].keys(), 10, 'reverse')
+        if not len(closestmatches):
+            bot.notice("No valid logs match " + str(logtype) + ".", trigger.nick)
+        else:
+            bot.notice("The following commands may match " + str(logtype) + ": " + spicemanip.main(closestmatches, 'andlist') + ".", trigger.nick)
+
         return
 
     logtype = inlist_match(bot, logtype, bot.memory['SpiceBot_Logs']["logs"].keys())
