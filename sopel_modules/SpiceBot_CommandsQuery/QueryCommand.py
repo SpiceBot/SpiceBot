@@ -25,6 +25,9 @@ def query_detection(bot, trigger):
                 if com not in commands_list.keys():
                     if commandstype == 'nickname':
                         commands_list[str(bot.nick) + " " + com] = bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype][com]
+                        if "aliasfor" in commands_list[str(bot.nick) + " " + com].keys():
+                            aliasforcom = commands_list[str(bot.nick) + " " + com]["aliasfor"]
+                            commands_list[str(bot.nick) + " " + com]["aliasfor"] = str(bot.nick) + " " + aliasforcom
                     else:
                         commands_list[com] = bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype][com]
 
