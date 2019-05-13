@@ -47,9 +47,6 @@ def sopel_triggerargs(bot, trigger, command_type='module_command'):
     if command_type in ['nickname_command']:
         command = spicemanip.main(triggerargs, 2).lower()
         triggerargs = spicemanip.main(triggerargs, '3+', 'list')
-    elif command_type in ['query_command']:
-        command = spicemanip.main(triggerargs, 1).lower()[1:]
-        triggerargs = spicemanip.main(triggerargs, '2+', 'list')
     else:
         command = spicemanip.main(triggerargs, 1).lower()[1:]
         triggerargs = spicemanip.main(triggerargs, '2+', 'list')
