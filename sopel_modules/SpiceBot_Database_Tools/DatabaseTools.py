@@ -6,13 +6,6 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 
 
-"""Dyanmic Table Creation"""
-
-
-def db_create_table(bot, tablename):
-    bot.db._create_table(tablename)
-
-
 """Database Direct"""
 
 

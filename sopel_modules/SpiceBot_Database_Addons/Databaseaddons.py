@@ -6,7 +6,8 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 from sopel.tools import Identifier
 from sopel_modules.SpiceBot_SBTools import bot_logging
-from sopel.db import _deserialize, SopelDB
+from sopel.db import SopelDB, NickValues, ChannelValues
+from sqlalchemy.exc import SQLAlchemyError
 
 import json
 
@@ -15,64 +16,104 @@ def setup(bot):
     pass
     # Inject Database Functions
     bot_logging(bot, 'SpiceBot_Databaseaddons', "Implanting Database functions into bot")
-    SopelDB.reset_nick_value = SopelDBCache.reset_nick_value
-    SopelDB.adjust_nick_value = SopelDBCache.adjust_nick_value
-    SopelDB.reset_channel_value = SopelDBCache.reset_channel_value
-    SopelDB.adjust_channel_value = SopelDBCache.adjust_channel_value
-    SopelDB._create_table = SopelDBCache._create_table
+    SopelDB.delete_nick_value = SopelDBCache.delete_nick_value
+    # SopelDB.adjust_nick_value = SopelDBCache.adjust_nick_value
+    SopelDB.delete_channel_value = SopelDBCache.delete_channel_value
+    # SopelDB.adjust_channel_value = SopelDBCache.adjust_channel_value
 
 
 class SopelDBCache:
 
-    """Dynamic Table Creation"""
-
-    def _create_table(self, tablename):
-        self.execute('CREATE TABLE IF NOT EXISTS ? (mainid STRING, key STRING, value STRING, PRIMARY KEY (mainid, key))', tablename)
-
     """Nicks"""
 
-    def reset_nick_value(self, nick, key):
-        """Resets the value for a given key to be associated with the nick."""
+    def delete_nick_value(self, nick, key):
+        """Deletes the value for a given key to be associated with the nick."""
         nick = Identifier(nick)
         nick_id = self.get_nick_id(nick)
-        self.execute('DELETE FROM nick_values WHERE nick_id = ? AND key = ?', [nick_id, key])
+        session = self.ssession()
+        try:
+            result = session.query(NickValues) \
+                .filter(NickValues.nick_id == nick_id) \
+                .filter(NickValues.key == key) \
+                .one_or_none()
+            # NickValue exists, delete
+            if result:
+                session.delete(result.value)
+                session.commit()
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
 
     def adjust_nick_value(self, nick, key, value):
-        """Adjusts the value for a given key to be associated with the nick."""
+        """Sets the value for a given key to be associated with the nick."""
         nick = Identifier(nick)
-        result = self.execute(
-            'SELECT value FROM nicknames JOIN nick_values '
-            'ON nicknames.nick_id = nick_values.nick_id '
-            'WHERE slug = ? AND key = ?',
-            [nick.lower(), key]
-        ).fetchone()
-        if result is not None:
-            result = result[0]
-        current_value = _deserialize(result)
-        value = current_value + value
         value = json.dumps(value, ensure_ascii=False)
         nick_id = self.get_nick_id(nick)
-        self.execute('INSERT OR REPLACE INTO nick_values VALUES (?, ?, ?)',
-                     [nick_id, key, value])
+        session = self.ssession()
+        try:
+            result = session.query(NickValues) \
+                .filter(NickValues.nick_id == nick_id) \
+                .filter(NickValues.key == key) \
+                .one_or_none()
+            # NickValue exists, update
+            if result:
+                result.value = result.value + value
+                session.commit()
+            # DNE - Insert
+            else:
+                new_nickvalue = NickValues(nick_id=nick_id, key=key, value=value)
+                session.add(new_nickvalue)
+                session.commit()
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
 
     """Channels"""
 
-    def reset_channel_value(self, channel, key):
-        """Resets the value for a given key to be associated with a channel."""
+    def delete_channel_value(self, channel, key):
+        """Sets the value for a given key to be associated with the channel."""
         channel = Identifier(channel).lower()
-        self.execute('DELETE FROM channel_values WHERE channel = ? AND key = ?', [channel, key])
+        session = self.ssession()
+        try:
+            result = session.query(ChannelValues) \
+                .filter(ChannelValues.channel == channel)\
+                .filter(ChannelValues.key == key) \
+                .one_or_none()
+            # ChannelValue exists, update
+            if result:
+                session.delete(result.value)
+                session.commit()
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
 
     def adjust_channel_value(self, channel, key, value):
-        """Adjusts the value for a given key to be associated with the channel."""
+        """Sets the value for a given key to be associated with the channel."""
         channel = Identifier(channel).lower()
-        result = self.execute(
-            'SELECT value FROM channel_values WHERE channel = ? AND key = ?',
-            [channel, key]
-        ).fetchone()
-        if result is not None:
-            result = result[0]
-        current_value = _deserialize(result)
-        value = current_value + value
         value = json.dumps(value, ensure_ascii=False)
-        self.execute('INSERT OR REPLACE INTO channel_values VALUES (?, ?, ?)',
-                     [channel, key, value])
+        session = self.ssession()
+        try:
+            result = session.query(ChannelValues) \
+                .filter(ChannelValues.channel == channel)\
+                .filter(ChannelValues.key == key) \
+                .one_or_none()
+            # ChannelValue exists, update
+            if result:
+                result.value = result.value + value
+                session.commit()
+            # DNE - Insert
+            else:
+                new_channelvalue = ChannelValues(channel=channel, key=key, value=value)
+                session.add(new_channelvalue)
+                session.commit()
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
