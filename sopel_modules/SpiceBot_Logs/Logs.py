@@ -68,7 +68,7 @@ def join_log_channel(bot, trigger):
 
 def stdio_logs_fetch(bot):
 
-    stdio_ignore = ["Loaded:"]
+    stdio_ignore = []
     for logtype in bot.memory['SpiceBot_Logs']["logs"].keys():
         stdio_ignore.append("[" + logtype + "]")
 
@@ -94,10 +94,15 @@ def stdio_logs_fetch(bot):
         filelines = []
 
     debuglines = []
+    loadedmodules = []
     for line in filelines:
-        if not line.startswith(tuple(stdio_ignore)):
-            if not line.isspace():
+        if not line.startswith("Loaded:"):
+            loadedmodules.append(str(line).split("Loaded:")[-1])
+        else:
+            if not line.startswith(tuple(stdio_ignore)) and not line.isspace():
                 debuglines.append(str(line))
+    loadedmodules = "Loaded: " + spicemanip.main(loadedmodules, 'andlist')
+    debuglines.insert(1, loadedmodules)
 
     return debuglines
 
