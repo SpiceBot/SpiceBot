@@ -23,7 +23,7 @@ def gifapi_triggers(bot, trigger):
     if triggercommand not in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
         return
 
-    if triggerargs == []:
+    if not len(triggerargs):
         return bot.osd("Please present a query to search.")
 
     query = spicemanip.main(triggerargs, 0)

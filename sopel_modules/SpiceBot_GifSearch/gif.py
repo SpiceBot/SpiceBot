@@ -19,7 +19,7 @@ def gif_trigger(bot, trigger):
         pass
 
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger)
-    if triggerargs == []:
+    if not len(triggerargs):
         return bot.osd("Please present a query to search.")
 
     query = spicemanip.main(triggerargs, 0)

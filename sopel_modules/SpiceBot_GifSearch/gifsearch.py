@@ -167,7 +167,7 @@ def getGif(bot, searchdict):
         if str(searchdict["searchquery"]) not in bot.memory["SpiceBot_GifSearch"]['cache'][currentapi].keys():
             bot.memory["SpiceBot_GifSearch"]['cache'][currentapi][str(searchdict["searchquery"])] = []
 
-        if bot.memory["SpiceBot_GifSearch"]['cache'][currentapi][str(searchdict["searchquery"])] == []:
+        if not len(bot.memory["SpiceBot_GifSearch"]['cache'][currentapi][str(searchdict["searchquery"])]):
 
             try:
                 page = requests.get(url, headers=header)
@@ -195,7 +195,7 @@ def getGif(bot, searchdict):
                         resultsarray.append(cururl)
 
                 # make sure there are results
-                if resultsarray != []:
+                if len(resultsarray):
 
                     # Create Temp dict for every result
                     tempresultnum = 0
@@ -215,10 +215,10 @@ def getGif(bot, searchdict):
                     verifygoodlinks.append(gifresult)
             bot.memory["SpiceBot_GifSearch"]['cache'][currentapi][str(searchdict["searchquery"])] = verifygoodlinks
 
-        if bot.memory["SpiceBot_GifSearch"]['cache'][currentapi][str(searchdict["searchquery"])] != []:
+        if len(bot.memory["SpiceBot_GifSearch"]['cache'][currentapi][str(searchdict["searchquery"])]):
             gifapiresults.extend(bot.memory["SpiceBot_GifSearch"]['cache'][currentapi][str(searchdict["searchquery"])])
 
-    if gifapiresults == []:
+    if not len(gifapiresults):
         return {"error": "No Results were found for '" + searchdict["query"] + "' in the " + str(spicemanip.main(searchdict['gifsearch'], 'orlist')) + " api(s)"}
 
     random.shuffle(gifapiresults)
@@ -243,7 +243,7 @@ def getGif(bot, searchdict):
                     newlist.append(tempdict)
             gifapiresults = newlist
 
-    if gifapiresults == []:
+    if not len(gifapiresults):
         return {"error": "No Results were found for '" + searchdict["query"] + "' in the " + str(spicemanip.main(searchdict['gifsearch'], 'orlist')) + " api(s)"}
 
     # return dict
