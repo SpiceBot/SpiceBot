@@ -32,4 +32,4 @@ def bot_startup_monologue_start(bot, trigger):
         searchphrasefound.append("Run the debug command for more information.")
         bot.osd(searchphrasefound, bot.channels.keys())
     else:
-        bot_logging(bot, 'SpiceBot_Logs', "No issues found at bot startup!")
+        bot_logging(bot, 'SpiceBot_Logs', "No issues found at bot startup!", True)

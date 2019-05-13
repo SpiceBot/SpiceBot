@@ -64,4 +64,4 @@ def bot_startup_monologue_display(bot, trigger):
     bot.osd(bot.memory['SpiceBot_StartupMonologue'], bot.channels.keys(), 'ACTION')
 
     bot_events_trigger(bot, 2005, "SpiceBot_StartupMonologue")
-    bot_logging(bot, 'SpiceBot_StartupMonologue', "Startup Monologue has been issued to all channels.")
+    bot_logging(bot, 'SpiceBot_StartupMonologue', "Startup Monologue has been issued to all channels.", True)
