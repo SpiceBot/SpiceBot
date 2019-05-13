@@ -54,7 +54,6 @@ def setup(bot):
     sopel.bot.SopelWrapper.action = SopelWrapperOSD.action
     sopel.bot.SopelWrapper.notice = SopelWrapperOSD.notice
     sopel.bot.SopelWrapper.reply = SopelWrapperOSD.reply
-    sopel.bot.SopelWrapper.msg = SopelWrapperOSD.msg
 
     # verify config settings for server
     bot_logging(bot, 'SpiceBot_OSD', "Checking for config settings")
@@ -388,10 +387,6 @@ class SopelWrapperOSD(object):
         if recipients is None:
             recipients = self._trigger.sender
         self._bot.osd(self, messages, recipients, text_method, max_messages)
-
-    def msg(self, destination, message, max_messages=1):
-        self._bot.osd(self, message, destination, 'PRIVMSG', 1)
-        # self._bot.msg(destination, message, max_messages)
 
     def say(self, message, destination=None, max_messages=1):
         if destination is None:
