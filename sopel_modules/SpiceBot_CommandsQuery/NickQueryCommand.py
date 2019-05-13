@@ -39,10 +39,10 @@ def query_detection_nick(bot, trigger):
             return
 
         if triggercommand.lower() not in list(commands_list.keys()):
-            dispmsg = ["Cannot find any alias commands: No valid commands match " + str(triggercommand) + "."]
+            dispmsg = ["Cannot find any alias " + bot.nick + " commands: No valid commands match " + str(triggercommand) + "."]
             closestmatches = similar_list(bot, triggercommand, list(commands_list.keys()), 10, 'reverse')
             if len(closestmatches):
-                dispmsg.append("The following commands match " + str(triggercommand) + ": " + spicemanip.main(closestmatches, 'andlist') + ".")
+                dispmsg.append("The following " + bot.nick + " commands match " + str(triggercommand) + ": " + spicemanip.main(closestmatches, 'andlist') + ".")
             bot.notice(dispmsg, trigger.nick)
             return
 
@@ -50,7 +50,7 @@ def query_detection_nick(bot, trigger):
         if "aliasfor" in commands_list[triggercommand].keys():
             realcom = commands_list[triggercommand]["aliasfor"]
         validcomlist = commands_list[realcom]["validcoms"]
-        bot.notice("The following commands match " + str(triggercommand) + ": " + spicemanip.main(validcomlist, 'andlist') + ".", trigger.nick)
+        bot.notice("The following " + bot.nick + "commands match " + str(triggercommand) + ": " + spicemanip.main(validcomlist, 'andlist') + ".", trigger.nick)
         return
 
     if triggercommand.endswith("?"):
@@ -61,9 +61,9 @@ def query_detection_nick(bot, trigger):
 
         closestmatches = similar_list(bot, triggercommand, list(commands_list.keys()), 10, 'reverse')
         if not len(closestmatches):
-            bot.notice("Cannot find any similar commands for " + str(triggercommand) + ".", trigger.nick)
+            bot.notice("Cannot find any similar " + bot.nick + "commands for " + str(triggercommand) + ".", trigger.nick)
         else:
-            bot.notice("The following commands may match " + str(triggercommand) + ": " + spicemanip.main(closestmatches, 'andlist') + ".", trigger.nick)
+            bot.notice("The following " + bot.nick + "commands may match " + str(triggercommand) + ": " + spicemanip.main(closestmatches, 'andlist') + ".", trigger.nick)
         return
 
     commandlist = []
@@ -72,6 +72,6 @@ def query_detection_nick(bot, trigger):
             commandlist.append(command)
 
     if not len(commandlist):
-        bot.notice("No commands start with " + str(triggercommand) + ".", trigger.nick)
+        bot.notice("No " + bot.nick + "commands start with " + str(triggercommand) + ".", trigger.nick)
     else:
-        bot.notice("The following commands start with " + str(triggercommand) + ": " + spicemanip.main(commandlist, 'andlist') + ".", trigger.nick)
+        bot.notice("The following " + bot.nick + "commands start with " + str(triggercommand) + ": " + spicemanip.main(commandlist, 'andlist') + ".", trigger.nick)
