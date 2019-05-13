@@ -34,7 +34,7 @@ def query_detection(bot, trigger):
                 if com not in commands_list.keys():
                     commands_list[com] = bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype][com]
 
-    if triggercommand.endswith("+"):
+    if triggercommand[:-1] == "+":
 
         triggercommand = triggercommand[:-1]
         if not triggercommand or not len(triggercommand):
@@ -55,7 +55,7 @@ def query_detection(bot, trigger):
         bot.notice("The following commands match " + str(triggercommand) + ": " + spicemanip.main(validcomlist, 'andlist') + ".", trigger.nick)
         return
 
-    if triggercommand.endswith("?"):
+    if triggercommand[:-1] == "?":
 
         triggercommand = triggercommand[:-1]
         if not triggercommand or not len(triggercommand):
