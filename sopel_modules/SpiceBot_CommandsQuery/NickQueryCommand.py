@@ -12,13 +12,13 @@ from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, similar_list, lett
 import spicemanip
 
 
-@sopel.module.rule('^\?(.*)')
-def query_detection(bot, trigger):
+@sopel.module.nickname_commands('^\?(.*)')
+def query_detection_nick(bot, trigger):
 
     while not bot_events_check(bot, '2002'):
         pass
 
-    triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'query_command')
+    triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
 
     # command issued, check if valid
     if not triggercommand or not len(triggercommand):
@@ -28,11 +28,9 @@ def query_detection(bot, trigger):
         return
 
     commands_list = dict()
-    for commandstype in bot.memory['SpiceBot_CommandsQuery']['commands']["commandstype"].keys():
-        if commandstype not in ['rule', 'nickname']:
-            for com in bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype].keys():
-                if com not in commands_list.keys():
-                    commands_list[com] = bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype][com]
+    for com in bot.memory['SpiceBot_CommandsQuery']['commands']['nickname'].keys():
+        if com not in commands_list.keys():
+            commands_list[com] = bot.memory['SpiceBot_CommandsQuery']['commands']['nickname'][com]
 
     if triggercommand.endswith("+"):
 
