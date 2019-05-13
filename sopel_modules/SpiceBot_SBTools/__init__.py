@@ -259,9 +259,9 @@ def array_arrangesort(bot, sortbyarray, arrayb):
 
 def letters_in_string(text):
     if text.isupper() or text.islower():
-        return False
-    else:
         return True
+    else:
+        return False
 
 
 """Channel Functions"""
