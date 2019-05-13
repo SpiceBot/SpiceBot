@@ -18,7 +18,7 @@ def setup(bot):
     bot_events_startup_register(bot, ['2002'])
 
     if 'SpiceBot_CommandsQuery' not in bot.memory:
-        bot.memory['SpiceBot_CommandsQuery'] = {"counts": 0, 'commands_all': {}, "commands": {}, "nickrules": []}
+        bot.memory['SpiceBot_CommandsQuery'] = {"counts": 0, "commands": {}, "nickrules": []}
 
     for comtype in ['module', 'nickname', 'rule']:
         if comtype not in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
@@ -152,15 +152,6 @@ def setup(bot):
             if command not in bot.memory['SpiceBot_CommandsQuery']['nickrules']:
                 bot.memory['SpiceBot_CommandsQuery']['nickrules'].append(command)
 
-    for commandstype in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
-        if commandstype != 'rule':
-            for com in bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype].keys():
-                if com not in bot.memory['SpiceBot_CommandsQuery']['commands_all'].keys():
-                    if commandstype == 'nickname':
-                        bot.memory['SpiceBot_CommandsQuery']['commands_all'][str(bot.nick) + " " + com] = bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype][com]
-                    else:
-                        bot.memory['SpiceBot_CommandsQuery']['commands_all'][com] = bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype][com]
-
     bot_events_trigger(bot, 2002, "SpiceBot_CommandsQuery")
 
 
@@ -182,7 +173,7 @@ def bot_events_complete(bot, trigger):
 def commandsquery_register(bot, command_type, validcoms, aliasfor=None):
 
     if 'SpiceBot_CommandsQuery' not in bot.memory:
-        bot.memory['SpiceBot_CommandsQuery'] = {"counts": 0, 'commands_all': {}, "commands": {}, "nickrules": []}
+        bot.memory['SpiceBot_CommandsQuery'] = {"counts": 0, "commands": {}, "nickrules": []}
 
     if not isinstance(validcoms, list):
         validcoms = [validcoms]
@@ -211,14 +202,6 @@ def commandsquery_register(bot, command_type, validcoms, aliasfor=None):
     for comalias in comaliases:
         if comalias not in bot.memory['SpiceBot_CommandsQuery']['commands'][command_type].keys():
             bot.memory['SpiceBot_CommandsQuery']['commands'][command_type][comalias] = {"aliasfor": aliasfor}
-
-    for comalias in comaliases:
-        if command_type != 'rule':
-            if comalias not in bot.memory['SpiceBot_CommandsQuery']['commands_all'].keys():
-                if command_type == 'nickname':
-                    bot.memory['SpiceBot_CommandsQuery']['commands_all'][str(bot.nick) + " " + comalias] = bot.memory['SpiceBot_CommandsQuery']['commands'][command_type][comalias]
-                else:
-                    bot.memory['SpiceBot_CommandsQuery']['commands_all'][comalias] = bot.memory['SpiceBot_CommandsQuery']['commands'][command_type][comalias]
 
 
 @sopel.module.event('2002')

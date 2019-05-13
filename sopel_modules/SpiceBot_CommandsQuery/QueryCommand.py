@@ -18,7 +18,15 @@ def query_detection(bot, trigger):
     while not bot_events_check(bot, '2002'):
         pass
 
-    commands_list = bot.memory['SpiceBot_CommandsQuery']['commands_all']
+    commands_list = dict()
+    for commandstype in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
+        if commandstype != 'rule':
+            for com in bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype].keys():
+                if com not in commands_list.keys():
+                    if commandstype == 'nickname':
+                        commands_list[str(bot.nick) + " " + com] = bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype][com]
+                    else:
+                        commands_list[com] = bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype][com]
 
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'query_command')
 
