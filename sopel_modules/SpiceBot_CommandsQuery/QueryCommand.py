@@ -21,18 +21,23 @@ def query_detection(bot, trigger):
 
     commands_list = dict()
     for commandstype in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
-        # if commandstype != 'rule':
-        for com in bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype].keys():
-            if com not in commands_list.keys():
-                if commandstype == 'nickname':
-                    commands_list[str(bot.nick) + " " + com] = bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype][com]
-                else:
-                    commands_list[com] = bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype][com]
+        if commandstype != 'rule':
+            for com in bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype].keys():
+                if com not in commands_list.keys():
+                    if commandstype == 'nickname':
+                        commands_list[str(bot.nick) + " " + com] = bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype][com]
+                    else:
+                        commands_list[com] = bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype][com]
 
     triggerargsarray = spicemanip.main(trigger, 'create')
 
     # command issued, check if valid
-    querycommand = spicemanip.main(triggerargsarray, 1).lower()[1:]
+    querycommand = spicemanip.main(triggerargsarray, 1).lower()[1:] or None
+    if not querycommand:
+        return
+        bot.say(str(querycommand))
+    bot.say("no querycommand")
+
     if len(querycommand) == 1:
         commandlist = []
         for command in commands_list.keys():
@@ -45,7 +50,7 @@ def query_detection(bot, trigger):
             bot.notice("The following commands match " + str(querycommand) + ": " + spicemanip.main(commandlist, 'andlist') + ".", trigger.nick)
             return
 
-    elif querycommand.endswith(tuple(["+"])):
+    elif querycommand.endswith("+"):
         querycommand = querycommand[:-1]
         if querycommand not in commands_list.keys():
             bot.notice("The " + str(querycommand) + " does not appear to be valid.")
@@ -57,7 +62,7 @@ def query_detection(bot, trigger):
         bot.notice("The following commands match " + str(querycommand) + ": " + spicemanip.main(validcomlist, 'andlist') + ".", trigger.nick)
         return
 
-    elif querycommand.endswith(tuple(['?'])):
+    elif querycommand.endswith('?'):
         querycommand = querycommand[:-1]
         sim_com, sim_num = [], []
         for com in commands_list.keys():
@@ -76,9 +81,6 @@ def query_detection(bot, trigger):
 
     elif querycommand in commands_list.keys():
         bot.notice("The following commands match " + str(querycommand) + ": " + str(querycommand) + ".", trigger.nick)
-        return
-
-    elif not querycommand:
         return
 
     else:
