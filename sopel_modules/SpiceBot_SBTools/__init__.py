@@ -440,10 +440,10 @@ def read_directory_json_to_dict(bot, directories, configtypename="Config File", 
 
     if filecount:
         if bot:
-            bot_logging(bot, log_from, 'Registered %d %s files,' % (filecount, configtypename))
-            bot_logging(bot, log_from, '%d %s files failed to load' % (fileopenfail, configtypename))
+            bot_logging(bot, log_from, 'Registered %d %s dict files,' % (filecount, configtypename))
+            bot_logging(bot, log_from, '%d %s dict files failed to load' % (fileopenfail, configtypename), True)
     else:
         if bot:
-            bot_logging(bot, log_from, "Warning: Couldn't load any %s files" % (configtypename))
+            bot_logging(bot, log_from, "Warning: Couldn't load any %s dict files" % (configtypename))
 
     return configs_dict

@@ -18,12 +18,8 @@ def bot_startup_monologue_start(bot, trigger):
 
     searchphrasefound = []
     for line in debuglines:
-        if "modules failed to load" in str(line) and "0 modules failed to load" not in str(line):
-            searchphrase = str(line).replace(" modules failed to load", "")
-            searchphrasefound.append(str(searchphrase) + " module(s) failed")
-        elif "dict files failed to load" in str(line) and "0 dict files failed to load" not in str(line):
-            searchphrase = str(line).replace(" dict files failed to load", "")
-            searchphrasefound.append(str(searchphrase) + " dict file(s) failed")
+        if str(line).endswith("failed to load") and not str(line).startswith("0"):
+            searchphrasefound.append(line)
 
     if len(searchphrasefound):
         for foundphase in searchphrasefound:
