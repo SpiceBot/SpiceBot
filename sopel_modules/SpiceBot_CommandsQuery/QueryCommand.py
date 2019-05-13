@@ -79,6 +79,7 @@ def query_detection(bot, trigger):
         return
 
     elif not querycommand:
+        bot.say("no query command")
         return
 
     else:
