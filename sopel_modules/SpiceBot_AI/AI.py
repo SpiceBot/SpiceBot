@@ -14,7 +14,7 @@ from sopel_modules.SpiceBot_Events.System import bot_events_check
 def bot_command_nick(bot, trigger):
 
     # command must not start with
-    if str(trigger).startswith(tuple(['?'])):
+    if str(trigger.args[1])[0] == "?":
         return
 
     while not bot_events_check(bot, ['1004', '2002']):
