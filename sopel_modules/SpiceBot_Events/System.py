@@ -97,18 +97,17 @@ class botevents(object):
     Events contained in this module will utilize the 1000-range
 
     All Other events will be tagged with a randomly generated
-    4-digit number above 2000 via the function.
+    4-digit number above 2000.
 
     This allows you to do, for example, ``@module.event(botevents.BOT_WELCOME)``
     rather than ``@module.event('1001')``
     """
-    def __init__(self):
-        self.usednumbers = ['0', '1001', '1002', '1003', '1004']
+    usednumbers = ['0', '1001', '1002', '1003', '1004']
 
-        self.BOT_WELCOME = '1001'
-        self.BOT_READY = '1002'
-        self.BOT_CONNECTED = '1003'
-        self.BOT_LOADED = '1004'
+    BOT_WELCOME = '1001'
+    BOT_READY = '1002'
+    BOT_CONNECTED = '1003'
+    BOT_LOADED = '1004'
 
     def __getattr__(self, attr):
         eventnumber = 0
@@ -116,4 +115,3 @@ class botevents(object):
             eventnumber = randint(2000, 9999)
         setattr(self, str(attr).upper(), str(eventnumber))
         self.usednumbers.append(str(eventnumber))
-        return eventnumber
