@@ -8,8 +8,6 @@ from sopel.trigger import PreTrigger
 
 from sopel_modules.SpiceBot_SBTools import bot_logging
 
-from random import randint
-
 
 class botevents(object):
     """An dynamic listing of all the notable Bot numeric events.
@@ -34,7 +32,7 @@ class botevents(object):
         ''' will only get called for undefined attributes '''
         eventnumber = max(self.usednumbers) + 1
         self.usednumbers.append(eventnumber)
-        setattr(self, str(attr).upper()) = str(eventnumber)
+        setattr(self, str(attr).upper(), str(eventnumber))
 
 
 def setup(bot):
