@@ -7,8 +7,9 @@ import sopel.module
 
 import os
 
-from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger, botevents
+from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger, BotEvents
 from sopel_modules.SpiceBot_SBTools import bot_logging
+botevents = BotEvents()
 
 import spicemanip
 

@@ -4,8 +4,9 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.module
 
-from sopel_modules.SpiceBot_Events.System import bot_events_recieved, bot_events_trigger, botevents
+from sopel_modules.SpiceBot_Events.System import bot_events_recieved, bot_events_trigger, BotEvents
 from sopel_modules.SpiceBot_SBTools import humanized_time, bot_logging
+botevents = BotEvents()
 import time
 
 

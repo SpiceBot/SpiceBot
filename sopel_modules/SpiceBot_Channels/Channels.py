@@ -6,12 +6,13 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 from sopel.config.types import StaticSection, ValidatedAttribute, ListAttribute
 
-from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger, botevents
+from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger, BotEvents
 
 from sopel_modules.SpiceBot_SBTools import (
                                             join_all_channels, chanadmin_all_channels, channel_list_current,
                                             bot_logging
                                             )
+botevents = BotEvents()
 
 import spicemanip
 

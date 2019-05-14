@@ -11,6 +11,35 @@ from sopel_modules.SpiceBot_SBTools import bot_logging
 from random import randint
 
 
+class BotEvents(object):
+    """An dynamic listing of all the notable Bot numeric events.
+
+    Events contained in this module will utilize the 1000-range
+
+    All Other events will be tagged with a randomly generated
+    4-digit number above 2000.
+
+    This allows you to do, for example, ``@module.event(botevents.BOT_WELCOME)``
+    rather than ``@module.event('1001')``
+    """
+    usednumbers = ['0', '1001', '1002', '1003', '1004']
+
+    BOT_WELCOME = '1001'
+    BOT_READY = '1002'
+    BOT_CONNECTED = '1003'
+    BOT_LOADED = '1004'
+
+    def __getattr__(self, attr):
+        eventnumber = 0
+        while eventnumber not in self.usednumbers:
+            eventnumber = randint(2000, 9999)
+        setattr(self, str(attr).upper(), str(eventnumber))
+        self.usednumbers.append(str(eventnumber))
+
+
+botevents = BotEvents()
+
+
 def setup(bot):
     bot_logging(bot, 'SpiceBot_Events', "Starting setup procedure")
     bot_events_setup_check(bot)
@@ -89,29 +118,3 @@ def bot_events_startup_check(bot):
         return False
     else:
         return True
-
-
-class botevents(object):
-    """An dynamic listing of all the notable Bot numeric events.
-
-    Events contained in this module will utilize the 1000-range
-
-    All Other events will be tagged with a randomly generated
-    4-digit number above 2000.
-
-    This allows you to do, for example, ``@module.event(botevents.BOT_WELCOME)``
-    rather than ``@module.event('1001')``
-    """
-    usednumbers = ['0', '1001', '1002', '1003', '1004']
-
-    BOT_WELCOME = '1001'
-    BOT_READY = '1002'
-    BOT_CONNECTED = '1003'
-    BOT_LOADED = '1004'
-
-    def __getattr__(self, attr):
-        eventnumber = 0
-        while eventnumber not in self.usednumbers:
-            eventnumber = randint(2000, 9999)
-        setattr(self, str(attr).upper(), str(eventnumber))
-        self.usednumbers.append(str(eventnumber))
