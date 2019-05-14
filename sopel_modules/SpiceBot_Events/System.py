@@ -40,8 +40,7 @@ def bot_events_trigger(bot, number, message):
 
 def bot_events_setup_check(bot):
     if "SpiceBot_Events" not in bot.memory:
-        bot.memory["SpiceBot_Events"] = {"triggers": {}, "startup": [], "loaded": [], "queue": [],
-                                            "usednumbers": [botevents.BOT_WELCOME, botevents.BOT_READY, botevents.BOT_CONNECTED, botevents.BOT_LOADED]}
+        bot.memory["SpiceBot_Events"] = {"triggers": {}, "startup": [], "loaded": [], "queue": []}
 
 
 def bot_events_check(bot, listreq):
@@ -92,14 +91,6 @@ def bot_events_startup_check(bot):
         return True
 
 
-def assign_event_number(bot, eventname):
-    eventnumber = 0
-    while not eventnumber and eventnumber not in bot.memory["SpiceBot_Events"]["usednumbers"]:
-        eventnumber = randint(2000, 9999)
-    exec("botevents." + str(eventname).upper() + " = " + str(eventnumber))
-    return eventnumber
-
-
 class botevents(object):
     """An dynamic listing of all the notable Bot numeric events.
 
@@ -112,7 +103,19 @@ class botevents(object):
     rather than ``@module.event('1001')``
     """
 
+    usednumbers = []
+
     BOT_WELCOME = '1001'
     BOT_READY = '1002'
     BOT_CONNECTED = '1003'
     BOT_LOADED = '1004'
+
+    def __getattr__(self, name):
+        if hasattr(self, name):
+            return self.__getattribute__(name)
+        else:
+            eventnumber = 0
+            while not eventnumber and eventnumber not in self.usednumbers:
+                eventnumber = randint(2000, 9999)
+            exec("self." + str(name).upper() + " = " + str(eventnumber))
+            return eventnumber
