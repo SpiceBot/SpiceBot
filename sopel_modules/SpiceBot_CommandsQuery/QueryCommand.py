@@ -28,7 +28,7 @@ def query_detection(bot, trigger):
         return
 
     commands_list = dict()
-    for commandstype in bot.memory['SpiceBot_CommandsQuery']['commands']["commandstype"].keys():
+    for commandstype in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
         if commandstype not in ['rule', 'nickname']:
             for com in bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype].keys():
                 if com not in commands_list.keys():
