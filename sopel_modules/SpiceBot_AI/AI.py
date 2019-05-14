@@ -7,7 +7,8 @@ import sopel.module
 import spicemanip
 
 from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, googlesearch, bot_privs, inlist, inlist_match, similar_list
-from sopel_modules.SpiceBot_Events.System import bot_events_check, botevents
+from sopel_modules.SpiceBot_Events.System import bot_events_check, BotEvents
+botevents = BotEvents()
 
 
 @sopel.module.nickname_commands('(.*)')

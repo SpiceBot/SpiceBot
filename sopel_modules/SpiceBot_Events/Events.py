@@ -5,7 +5,8 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import sopel.module
 from sopel.trigger import PreTrigger
 
-from .System import bot_events_trigger, bot_events_recieved, bot_events_startup_check, bot_events_setup_check, botevents
+from .System import bot_events_trigger, bot_events_recieved, bot_events_startup_check, bot_events_setup_check, BotEvents
+botevents = BotEvents()
 from sopel_modules.SpiceBot_SBTools import bot_logging
 
 import time

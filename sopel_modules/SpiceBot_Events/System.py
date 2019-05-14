@@ -11,17 +11,6 @@ from sopel_modules.SpiceBot_SBTools import bot_logging
 from random import randint
 
 
-def setup(bot):
-    bot_logging(bot, 'SpiceBot_Events', "Starting setup procedure")
-    bot_events_setup_check(bot)
-    bot_events_startup_register(bot, [botevents.BOT_WELCOME, botevents.BOT_READY, botevents.BOT_CONNECTED])
-
-
-def shutdown(bot):
-    if "SpiceBot_Events" in bot.memory:
-        del bot.memory["SpiceBot_Events"]
-
-
 class BotEvents(object):
     """An dynamic listing of all the notable Bot numeric events.
 
@@ -52,6 +41,17 @@ class BotEvents(object):
 
 
 botevents = BotEvents()
+
+
+def setup(bot):
+    bot_logging(bot, 'SpiceBot_Events', "Starting setup procedure")
+    bot_events_setup_check(bot)
+    bot_events_startup_register(bot, [botevents.BOT_WELCOME, botevents.BOT_READY, botevents.BOT_CONNECTED])
+
+
+def shutdown(bot):
+    if "SpiceBot_Events" in bot.memory:
+        del bot.memory["SpiceBot_Events"]
 
 
 def bot_events_trigger(bot, number, message):
