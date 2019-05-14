@@ -102,22 +102,15 @@ class botevents(object):
     This allows you to do, for example, ``@module.event(botevents.BOT_WELCOME)``
     rather than ``@module.event('1001')``
     """
-
-    def __init__(self):
-
-        self.usednumbers = ['0', '1001', '1002', '1003', '1004']
-        self.BOT_WELCOME = '1001'
-        self.BOT_READY = '1002'
-        self.BOT_CONNECTED = '1003'
-        self.BOT_LOADED = '1004'
-
-    def __getattr__(self, name):
-        if hasattr(self, name):
-            return self.__getattribute__(name)
-        else:
-            eventnumber = 0
-            while str(eventnumber) not in self.usednumbers:
-                eventnumber = randint(2000, 9999)
-            exec("self." + str(name).upper() + " = " + str(eventnumber))
-            self.usednumbers.append(str(eventnumber))
-            return eventnumber
+    usednumbers = ['0', '1001', '1002', '1003', '1004']
+    try:
+        BOT_WELCOME = '1001'
+        BOT_READY = '1002'
+        BOT_CONNECTED = '1003'
+        BOT_LOADED = '1004'
+    except AttributeError:
+        eventnumber = 0
+        while str(eventnumber) not in usednumbers:
+            eventnumber = randint(2000, 9999)
+        exec(str(object).upper() + " = " + str(eventnumber))
+        usednumbers.append(str(eventnumber))
