@@ -91,19 +91,7 @@ def bot_events_startup_check(bot):
         return True
 
 
-def botevents(name):
-    if hasattr(boteventsclass, name):
-        return boteventsclass.__getattribute__(name)
-    else:
-        eventnumber = 0
-        while eventnumber not in boteventsclass.usednumbers:
-            eventnumber = randint(2000, 9999)
-        exec("self." + str(name).upper() + " = " + str(eventnumber))
-        boteventsclass.usednumbers.append(str(eventnumber))
-        return eventnumber
-
-
-class boteventsclass(object):
+class botevents(object):
     """An dynamic listing of all the notable Bot numeric events.
 
     Events contained in this module will utilize the 1000-range
