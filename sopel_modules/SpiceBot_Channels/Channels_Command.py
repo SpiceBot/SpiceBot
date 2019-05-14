@@ -6,8 +6,7 @@ import sopel.module
 
 import spicemanip
 
-from sopel_modules.SpiceBot_Events.System import bot_events_check, BotEvents
-botevents = BotEvents()
+from sopel_modules.SpiceBot_Events.System import bot_events_check, botevents
 from sopel_modules.SpiceBot_SBTools import (
                                             sopel_triggerargs, inlist, channel_privs,
                                             join_all_channels, channel_list_current,

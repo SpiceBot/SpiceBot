@@ -5,8 +5,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import sopel.module
 
 from sopel_modules.SpiceBot_SBTools import sopel_triggerargs
-from sopel_modules.SpiceBot_Events.System import bot_events_check, bot_events_recieved, BotEvents
-botevents = BotEvents()
+from sopel_modules.SpiceBot_Events.System import bot_events_check, bot_events_recieved, botevents
 
 
 def setup(bot):

@@ -4,8 +4,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.module
 
-from sopel_modules.SpiceBot_Events.System import bot_events_recieved, bot_events_trigger, BotEvents
-botevents = BotEvents()
+from sopel_modules.SpiceBot_Events.System import bot_events_recieved, bot_events_trigger, botevents
 from sopel_modules.SpiceBot_SBTools import humanized_time, bot_logging
 
 import time
@@ -39,7 +38,7 @@ def bot_startup_monologue_commands(bot, trigger):
     bot_events_trigger(bot, 2011, "SpiceBot_StartupMonologue")
 
 
-@sopel.module.event(botevents.BOT_CHANNELS)
+@sopel.module.event('2001')
 @sopel.module.rule('.*')
 def bot_startup_monologue_channels(bot, trigger):
     bot_events_recieved(bot, trigger.event)

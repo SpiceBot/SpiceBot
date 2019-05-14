@@ -11,7 +11,7 @@ from sopel_modules.SpiceBot_SBTools import bot_logging
 from random import randint
 
 
-class BotEvents(object):
+class botevents(object):
     """An dynamic listing of all the notable Bot numeric events.
 
     Events contained in this module will utilize the 1000-range
@@ -23,13 +23,12 @@ class BotEvents(object):
     rather than ``@module.event('1001')``
     """
 
-    def __init__(self):
-        self.usednumbers = ['0', '1001', '1002', '1003', '1004']
+    usednumbers = ['0', '1001', '1002', '1003', '1004']
 
-        self.BOT_WELCOME = '1001'
-        self.BOT_READY = '1002'
-        self.BOT_CONNECTED = '1003'
-        self.BOT_LOADED = '1004'
+    BOT_WELCOME = '1001'
+    BOT_READY = '1002'
+    BOT_CONNECTED = '1003'
+    BOT_LOADED = '1004'
 
     def __getattr__(self, attr):
         eventnumber = 0
@@ -38,9 +37,6 @@ class BotEvents(object):
         setattr(self, str(attr).upper(), str(eventnumber))
         self.usednumbers.append(str(eventnumber))
         return eventnumber
-
-
-botevents = BotEvents()
 
 
 def setup(bot):
