@@ -46,6 +46,7 @@ class BotEvents(object):
             eventnumber = randint(2000, 9999)
         setattr(self, str(attr).upper(), str(eventnumber))
         self.usednumbers.append(str(eventnumber))
+        return eventnumber
 
 
 botevents = BotEvents()
