@@ -7,7 +7,7 @@ import sopel.module
 import spicemanip
 
 from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, googlesearch, bot_privs, inlist, inlist_match, similar_list
-from sopel_modules.SpiceBot_Events.System import bot_events_check
+from sopel_modules.SpiceBot_Events.System import bot_events_check, botevents
 
 
 @sopel.module.nickname_commands('(.*)')
@@ -17,7 +17,7 @@ def bot_command_nick(bot, trigger):
     if str(trigger.args[1])[0] == "?":
         return
 
-    while not bot_events_check(bot, ['1004', '2002']):
+    while not bot_events_check(bot, [botevents.BOT_LOADED, '2002']):
         pass
 
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')

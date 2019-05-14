@@ -7,7 +7,7 @@ import sopel.module
 
 import os
 
-from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger
+from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger, botevents
 from sopel_modules.SpiceBot_SBTools import bot_logging
 
 import spicemanip
@@ -170,7 +170,7 @@ def shutdown(bot):
         del bot.memory["SpiceBot_CommandsQuery"]
 
 
-@sopel.module.event('1004')
+@sopel.module.event(botevents.BOT_LOADED)
 @sopel.module.rule('.*')
 def bot_events_complete(bot, trigger):
     bot_events_recieved(bot, trigger.event)

@@ -5,7 +5,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import sopel.module
 
 from sopel_modules.SpiceBot_SBTools import sopel_triggerargs
-from sopel_modules.SpiceBot_Events.System import bot_events_check, bot_events_recieved
+from sopel_modules.SpiceBot_Events.System import bot_events_check, bot_events_recieved, botevents
 
 
 def setup(bot):
@@ -18,7 +18,7 @@ def shutdown(bot):
         del bot.memory["SpiceBot_InvalidCommand"]
 
 
-@sopel.module.event('1004')
+@sopel.module.event(botevents.BOT_LOADED)
 @sopel.module.rule('.*')
 def bot_events_complete(bot, trigger):
     bot_events_recieved(bot, trigger.event)
@@ -31,7 +31,7 @@ def bot_events_complete(bot, trigger):
 def InvalidCommand_triggers(bot, trigger):
     return
 
-    while not bot_events_check(bot, ['1004', '2002']):
+    while not bot_events_check(bot, [botevents.BOT_LOADED, '2002']):
         pass
 
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'prefix_command')

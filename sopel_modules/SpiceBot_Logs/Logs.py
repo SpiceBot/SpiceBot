@@ -5,7 +5,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import sopel.module
 from sopel.config.types import StaticSection, ValidatedAttribute
 
-from sopel_modules.SpiceBot_SBTools import bot_logging
+from sopel_modules.SpiceBot_SBTools import bot_logging, botevents
 from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger
 
 import os
@@ -43,7 +43,7 @@ def shutdown(bot):
         del bot.memory["SpiceBot_Logs"]
 
 
-@sopel.module.event('1003')
+@sopel.module.event(botevents.BOT_CONNECTED)
 @sopel.module.rule('.*')
 def join_log_channel(bot, trigger):
     bot_events_recieved(bot, trigger.event)
