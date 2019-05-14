@@ -37,7 +37,7 @@ def bot_startup_monologue_commands(bot, trigger):
     bot_events_trigger(bot, 2011, "SpiceBot_StartupMonologue")
 
 
-@sopel.module.event('2001')
+@sopel.module.event(botevents.BOT_CHANNELS)
 @sopel.module.rule('.*')
 def bot_startup_monologue_channels(bot, trigger):
     bot_events_recieved(bot, trigger.event)

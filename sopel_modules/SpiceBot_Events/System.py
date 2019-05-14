@@ -8,6 +8,8 @@ from sopel.trigger import PreTrigger
 
 from sopel_modules.SpiceBot_SBTools import bot_logging
 
+from random import randint
+
 
 def setup(bot):
     bot_logging(bot, 'SpiceBot_Events', "Starting setup procedure")
@@ -38,7 +40,8 @@ def bot_events_trigger(bot, number, message):
 
 def bot_events_setup_check(bot):
     if "SpiceBot_Events" not in bot.memory:
-        bot.memory["SpiceBot_Events"] = {"triggers": {}, "startup": [], "loaded": [], "queue": []}
+        bot.memory["SpiceBot_Events"] = {"triggers": {}, "startup": [], "loaded": [], "queue": [],
+                                            "usednumbers": [botevents.BOT_WELCOME, botevents.BOT_READY, botevents.BOT_CONNECTED, botevents.BOT_LOADED]}
 
 
 def bot_events_check(bot, listreq):
@@ -89,8 +92,12 @@ def bot_events_startup_check(bot):
         return True
 
 
-def assign_event_number():
-    return 5
+def assign_event_number(bot, eventname):
+    eventnumber = 0
+    while not eventnumber and eventnumber not in bot.memory["SpiceBot_Events"]["usednumbers"]:
+        eventnumber = randint(2000, 9999)
+    exec("botevents." + str(eventname).upper() + " = " + str(eventnumber))
+    return eventnumber
 
 
 class botevents(object):
