@@ -91,26 +91,40 @@ def bot_events_startup_check(bot):
         return True
 
 
-class botevents(object):
+def botevents(name):
+    if hasattr(boteventsclass, name):
+        return boteventsclass.__getattribute__(name)
+    else:
+        eventnumber = 0
+        while eventnumber not in boteventsclass.usednumbers:
+            eventnumber = randint(2000, 9999)
+        exec("self." + str(name).upper() + " = " + str(eventnumber))
+        boteventsclass.usednumbers.append(str(eventnumber))
+        return eventnumber
+
+
+class boteventsclass(object):
     """An dynamic listing of all the notable Bot numeric events.
 
     Events contained in this module will utilize the 1000-range
 
     All Other events will be tagged with a randomly generated
-    4-digit number above 2000.
+    4-digit number above 2000 via the function.
 
     This allows you to do, for example, ``@module.event(botevents.BOT_WELCOME)``
     rather than ``@module.event('1001')``
     """
     usednumbers = ['0', '1001', '1002', '1003', '1004']
-    try:
-        BOT_WELCOME = '1001'
-        BOT_READY = '1002'
-        BOT_CONNECTED = '1003'
-        BOT_LOADED = '1004'
-    except AttributeError:
+
+    BOT_WELCOME = '1001'
+    BOT_READY = '1002'
+    BOT_CONNECTED = '1003'
+    BOT_LOADED = '1004'
+
+    def __getattr__(self, attr):
         eventnumber = 0
-        while str(eventnumber) not in usednumbers:
+        while eventnumber not in self.usednumbers:
             eventnumber = randint(2000, 9999)
-        exec(str(object).upper() + " = " + str(eventnumber))
-        usednumbers.append(str(eventnumber))
+        setattr(self, str(attr).upper(), str(eventnumber))
+        self.usednumbers.append(str(eventnumber))
+        return eventnumber
