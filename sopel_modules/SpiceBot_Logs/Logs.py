@@ -6,8 +6,7 @@ import sopel.module
 from sopel.config.types import StaticSection, ValidatedAttribute
 
 from sopel_modules.SpiceBot_SBTools import bot_logging
-from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger, BotEvents
-botevents = BotEvents()
+from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger, botevents
 
 import os
 
