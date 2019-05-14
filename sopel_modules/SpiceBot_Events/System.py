@@ -84,7 +84,6 @@ def bot_events_startup_check(bot):
             notcomplete.append(str(startupitem))
 
     if len(notcomplete):
-        # bot_logging(bot, 'SpiceBot_Events', str(notcomplete))
         return False
     else:
         return True
@@ -103,7 +102,7 @@ class botevents(object):
     4-digit number above 2000.
 
     This allows you to do, for example, ``@module.event(botevents.BOT_WELCOME)``
-    rather than ``@module.event('1000')``
+    rather than ``@module.event('1001')``
     """
 
     BOT_WELCOME = '1001'
