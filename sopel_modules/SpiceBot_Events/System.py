@@ -33,12 +33,14 @@ class BotEvents(object):
     This allows you to do, for example, ``@module.event(botevents.BOT_WELCOME)``
     rather than ``@module.event('1001')``
     """
-    usednumbers = ['0', '1001', '1002', '1003', '1004']
 
-    BOT_WELCOME = '1001'
-    BOT_READY = '1002'
-    BOT_CONNECTED = '1003'
-    BOT_LOADED = '1004'
+    def __init__(self):
+        self.usednumbers = ['0', '1001', '1002', '1003', '1004']
+
+        self.BOT_WELCOME = '1001'
+        self.BOT_READY = '1002'
+        self.BOT_CONNECTED = '1003'
+        self.BOT_LOADED = '1004'
 
     def __getattr__(self, attr):
         eventnumber = 0
