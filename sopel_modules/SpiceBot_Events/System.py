@@ -9,7 +9,7 @@ from sopel.trigger import PreTrigger
 from sopel_modules.SpiceBot_SBTools import bot_logging
 
 
-class botevents(object):
+class BotEvents(object):
     """An dynamic listing of all the notable Bot numeric events.
 
     Events contained in this module will utilize the 1000-range
@@ -23,6 +23,10 @@ class botevents(object):
 
     def __init__(self, usednumbers):
         self.usednumbers = [0, 1001, 1002, 1003, 1004, 2000]
+        self.BOT_WELCOME = '1001'
+        self.BOT_READY = '1002'
+        self.BOT_CONNECTED = '1003'
+        self.BOT_LOADED = '1004'
 
     # usednumbers = [0, 1001, 1002, 1003, 1004, 2000]
     # BOT_WELCOME = '1001'
@@ -35,6 +39,9 @@ class botevents(object):
         eventnumber = max(self.usednumbers) + 1
         self.usednumbers.append(eventnumber)
         setattr(self, str(attr).upper(), str(eventnumber))
+
+
+botevents = BotEvents()
 
 
 def setup(bot):
