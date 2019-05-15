@@ -34,11 +34,11 @@ class BotEvents(object):
     # BOT_CONNECTED = '1003'
     # BOT_LOADED = '1004'
 
-    def __getattr__(self, attr):
+    def __getattr__(self, name):
         ''' will only get called for undefined attributes '''
         eventnumber = max(self.usednumbers) + 1
         self.usednumbers.append(eventnumber)
-        setattr(self, str(attr).upper(), str(eventnumber))
+        setattr(self, str(name).upper(), str(eventnumber))
 
 
 botevents = BotEvents()
