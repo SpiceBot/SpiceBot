@@ -21,7 +21,7 @@ class BotEvents(object):
     rather than ``@module.event('1001')``
     """
 
-    def __init__(self, usednumbers):
+    def __init__(self):
         self.usednumbers = [0, 1001, 1002, 1003, 1004, 2000]
         self.BOT_WELCOME = '1001'
         self.BOT_READY = '1002'
