@@ -39,6 +39,7 @@ class BotEvents(object):
         eventnumber = max(self.usednumbers) + 1
         self.usednumbers.append(eventnumber)
         setattr(self, name, str(eventnumber))
+        return str(eventnumber)
 
 
 botevents = BotEvents()
