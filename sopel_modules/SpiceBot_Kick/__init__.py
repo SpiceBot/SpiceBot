@@ -12,7 +12,6 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import sopel.bot
 from sopel import tools, module
 from sopel.tools import Identifier
-from sopel.module import HALFOP
 from sopel.config.types import StaticSection, ValidatedAttribute
 
 from sopel_modules.SpiceBot_SBTools import bot_logging
@@ -28,8 +27,8 @@ __version__ = '0.1.2'
 
 
 def configure(config):
-    config.define_section("MAXTARGCONFIG_KICK", MAXTARGCONFIG_KICK, validate=False)
-    config.MAXTARGCONFIG_KICK.configure_setting('kick', 'MAXTARG limit for KICK')
+    config.define_section("SpiceBot_Kick", SpiceBot_Kick, validate=False)
+    config.SpiceBot_Kick.configure_setting('kick', 'MAXTARG limit for KICK')
 
 
 def setup(bot):
@@ -41,7 +40,7 @@ def setup(bot):
 
     # verify config settings for server
     bot_logging(bot, 'SpiceBot_Kick', "Checking for config settings")
-    bot.config.define_section("MAXTARGCONFIG_KICK", MAXTARGCONFIG_KICK, validate=False)
+    bot.config.define_section("SpiceBot_Kick", SpiceBot_Kick, validate=False)
 
 
 @module.event('005')
@@ -63,10 +62,10 @@ def parse_event_005(bot, trigger):
                         except IndexError:
                             value = None
                         if value:
-                            bot.config.MAXTARGCONFIG_KICK.kick = int(value)
+                            bot.config.SpiceBot_Kick.kick = int(value)
 
 
-class MAXTARGCONFIG_KICK(StaticSection):
+class SpiceBot_Kick(StaticSection):
     kick = ValidatedAttribute('kick', default=1)
 
 
@@ -80,8 +79,7 @@ class SopelKICK:
         The bot must be a channel operator in specified channel for this to work.
         .. versionadded:: 7.0
         """
-        if self.channels[channel].privileges[self.nick] < HALFOP:
-            self.write(['KICK', channel, nick], text)
+        self.write(['KICK', channel, nick], text)
 
 
 class SopelWrapperKICK(object):
@@ -89,9 +87,9 @@ class SopelWrapperKICK(object):
     def kick(self, nick, channel=None, message=None):
         if channel is None:
             if self._trigger.is_privmsg:
-                return
+                raise RuntimeError('Error: KICK requires a channel.')
             else:
                 channel = self._trigger.sender
         if nick is None:
-            return
+            raise RuntimeError('Error: KICK requires a nick.')
         self._bot.kick(nick, channel, message)
