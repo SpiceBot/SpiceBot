@@ -39,6 +39,9 @@ mkdir /run/sopel
 echo $$ > /run/sopel/sopel-SpiceBotSERV.pid
 chmod -R 777 /run/sopel/
 
+apt install mysql-server libmysqlclient-dev -y
+pip3 install mysql
+
 
 cp /home/sopel/SpiceBot/System-Files/Config/SpiceBot.cfg /home/sopel/SpiceBot.cfg
 cp /home/sopel/SpiceBot/System-Files/systemd/SpiceBot.service /lib/systemd/system/SpiceBot.service

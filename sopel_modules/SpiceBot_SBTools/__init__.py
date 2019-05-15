@@ -84,7 +84,7 @@ def command_permissions_check(bot, trigger, privslist):
                 else:
                     commandrunconsensus.append('True')
 
-    if privslist == []:
+    if not len(privslist):
         commandrunconsensus.append('True')
 
     if 'True' not in commandrunconsensus:
@@ -236,13 +236,13 @@ def similar_list(bot, searchitem, searchlist, matchcount=1, searchorder='reverse
 
     sim_listitems, sim_num = [], []
     for listitem in searchlist:
-        similarlevel = similar(searchitem.lower(), listitem.lower())
+        similarlevel = SequenceMatcher(None, searchitem.lower(), listitem.lower()).ratio()
         if similarlevel >= .75:
             sim_listitems.append(listitem)
             sim_num.append(similarlevel)
 
     if len(sim_listitems) and len(sim_num):
-        sim_num, sim_listitems = array_arrangesort(bot, sim_num, sim_listitems)
+        sim_num, sim_listitems = (list(x) for x in zip(*sorted(zip(sim_num, sim_listitems), key=itemgetter(0))))
 
     if searchorder == 'reverse':
         sim_listitems = spicemanip.main(sim_listitems, 'reverse', "list")
@@ -255,6 +255,13 @@ def similar_list(bot, searchitem, searchlist, matchcount=1, searchorder='reverse
 def array_arrangesort(bot, sortbyarray, arrayb):
     sortbyarray, arrayb = (list(x) for x in zip(*sorted(zip(sortbyarray, arrayb), key=itemgetter(0))))
     return sortbyarray, arrayb
+
+
+def letters_in_string(text):
+    if text.isupper() or text.islower():
+        return True
+    else:
+        return False
 
 
 """Channel Functions"""
@@ -433,10 +440,10 @@ def read_directory_json_to_dict(bot, directories, configtypename="Config File", 
 
     if filecount:
         if bot:
-            bot_logging(bot, log_from, 'Registered %d %s files,' % (filecount, configtypename))
-            bot_logging(bot, log_from, '%d %s files failed to load' % (fileopenfail, configtypename))
+            bot_logging(bot, log_from, 'Registered %d %s dict files,' % (filecount, configtypename))
+            bot_logging(bot, log_from, '%d %s dict files failed to load' % (fileopenfail, configtypename), True)
     else:
         if bot:
-            bot_logging(bot, log_from, "Warning: Couldn't load any %s files" % (configtypename))
+            bot_logging(bot, log_from, "Warning: Couldn't load any %s dict files" % (configtypename))
 
     return configs_dict

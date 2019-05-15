@@ -9,10 +9,32 @@ from sopel.trigger import PreTrigger
 from sopel_modules.SpiceBot_SBTools import bot_logging
 
 
+class BotEvents(object):
+    """A dynamic listing of all the notable Bot numeric events.
+
+    Events will be assigned a 4-digit number above 1000.
+
+    This allows you to do, ``@module.event(botevents.BOT_WELCOME)````
+    """
+
+    def __init__(self):
+        self.usednumbers = [1000]
+
+    def __getattr__(self, name):
+        ''' will only get called for undefined attributes '''
+        eventnumber = max(self.usednumbers) + 1
+        self.usednumbers.append(eventnumber)
+        setattr(self, name, str(eventnumber))
+        return str(eventnumber)
+
+
+botevents = BotEvents()
+
+
 def setup(bot):
     bot_logging(bot, 'SpiceBot_Events', "Starting setup procedure")
     bot_events_setup_check(bot)
-    bot_events_startup_register(bot, ['1001', '1002', '1003'])
+    bot_events_startup_register(bot, [botevents.BOT_WELCOME, botevents.BOT_READY, botevents.BOT_CONNECTED])
 
 
 def shutdown(bot):
@@ -25,7 +47,7 @@ def bot_events_trigger(bot, number, message):
     bot_events_setup_check(bot)
 
     bot.memory["SpiceBot_Events"]["triggers"][str(number)] = message
-    if str(number) in ['1001', '1002', '1003']:
+    if str(number) in [botevents.BOT_WELCOME, botevents.BOT_READY, botevents.BOT_CONNECTED]:
         pretrigger = PreTrigger(
             bot.nick,
             ":SpiceBot_Events " + str(number) + " " + str(bot.nick) + " :" + message
@@ -84,7 +106,6 @@ def bot_events_startup_check(bot):
             notcomplete.append(str(startupitem))
 
     if len(notcomplete):
-        # bot_logging(bot, 'SpiceBot_Events', str(notcomplete))
         return False
     else:
         return True
