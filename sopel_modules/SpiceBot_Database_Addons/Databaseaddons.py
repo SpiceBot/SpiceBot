@@ -17,9 +17,9 @@ def setup(bot):
     # Inject Database Functions
     bot_logging(bot, 'SpiceBot_Databaseaddons', "Implanting Database functions into bot")
     SopelDB.delete_nick_value = SopelDBCache.delete_nick_value
-    # SopelDB.adjust_nick_value = SopelDBCache.adjust_nick_value
+    SopelDB.adjust_nick_value = SopelDBCache.adjust_nick_value
     SopelDB.delete_channel_value = SopelDBCache.delete_channel_value
-    # SopelDB.adjust_channel_value = SopelDBCache.adjust_channel_value
+    SopelDB.adjust_channel_value = SopelDBCache.adjust_channel_value
 
 
 class SopelDBCache:
