@@ -12,39 +12,41 @@ from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, similar_list, lett
 import spicemanip
 
 
-@sopel.module.rule('^\?(.*)')
-def query_detection(bot, trigger):
+@sopel.module.nickname_commands('(.*)')
+def query_detection_nick(bot, trigger):
 
     while not bot_events_check(bot, botevents.BOT_COMMANDSQUERY):
         pass
 
-    triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'query_command')
+    triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
 
     # command issued, check if valid
     if not triggercommand or not len(triggercommand):
         return
 
+    if not triggercommand[0] == "?":
+        return
+    triggercommand = triggercommand[1:]
+
     if not letters_in_string(triggercommand):
         return
 
     commands_list = dict()
-    for commandstype in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
-        if commandstype not in ['rule', 'nickname']:
-            for com in bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype].keys():
-                if com not in commands_list.keys():
-                    commands_list[com] = bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype][com]
+    for com in bot.memory['SpiceBot_CommandsQuery']['commands']['nickname'].keys():
+        if com not in commands_list.keys():
+            commands_list[com] = bot.memory['SpiceBot_CommandsQuery']['commands']['nickname'][com]
 
-    if triggercommand[:-1] == "+":
+    if triggercommand.endswith("+"):
 
         triggercommand = triggercommand[:-1]
         if not triggercommand or not len(triggercommand):
             return
 
         if triggercommand.lower() not in list(commands_list.keys()):
-            dispmsg = ["Cannot find any alias commands: No valid commands match " + str(triggercommand) + "."]
+            dispmsg = ["Cannot find any alias " + bot.nick + " commands: No valid commands match " + str(triggercommand) + "."]
             closestmatches = similar_list(bot, triggercommand, list(commands_list.keys()), 10, 'reverse')
             if len(closestmatches):
-                dispmsg.append("The following commands match " + str(triggercommand) + ": " + spicemanip.main(closestmatches, 'andlist') + ".")
+                dispmsg.append("The following " + bot.nick + " commands match " + str(triggercommand) + ": " + spicemanip.main(closestmatches, 'andlist') + ".")
             bot.notice(dispmsg, trigger.nick)
             return
 
@@ -52,10 +54,10 @@ def query_detection(bot, trigger):
         if "aliasfor" in commands_list[triggercommand].keys():
             realcom = commands_list[triggercommand]["aliasfor"]
         validcomlist = commands_list[realcom]["validcoms"]
-        bot.notice("The following commands match " + str(triggercommand) + ": " + spicemanip.main(validcomlist, 'andlist') + ".", trigger.nick)
+        bot.notice("The following " + bot.nick + " commands match " + str(triggercommand) + ": " + spicemanip.main(validcomlist, 'andlist') + ".", trigger.nick)
         return
 
-    if triggercommand[:-1] == "?":
+    if triggercommand.endswith("?"):
 
         triggercommand = triggercommand[:-1]
         if not triggercommand or not len(triggercommand):
@@ -63,9 +65,9 @@ def query_detection(bot, trigger):
 
         closestmatches = similar_list(bot, triggercommand, list(commands_list.keys()), 10, 'reverse')
         if not len(closestmatches):
-            bot.notice("Cannot find any similar commands for " + str(triggercommand) + ".", trigger.nick)
+            bot.notice("Cannot find any similar " + bot.nick + " commands for " + str(triggercommand) + ".", trigger.nick)
         else:
-            bot.notice("The following commands may match " + str(triggercommand) + ": " + spicemanip.main(closestmatches, 'andlist') + ".", trigger.nick)
+            bot.notice("The following " + bot.nick + " commands may match " + str(triggercommand) + ": " + spicemanip.main(closestmatches, 'andlist') + ".", trigger.nick)
         return
 
     commandlist = []
@@ -74,6 +76,6 @@ def query_detection(bot, trigger):
             commandlist.append(command)
 
     if not len(commandlist):
-        bot.notice("No commands start with " + str(triggercommand) + ".", trigger.nick)
+        bot.notice("No " + bot.nick + " commands start with " + str(triggercommand) + ".", trigger.nick)
     else:
-        bot.notice("The following commands start with " + str(triggercommand) + ": " + spicemanip.main(commandlist, 'andlist') + ".", trigger.nick)
+        bot.notice("The following " + bot.nick + " commands start with " + str(triggercommand) + ": " + spicemanip.main(commandlist, 'andlist') + ".", trigger.nick)

@@ -7,6 +7,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 from .CommandsQuery import *
 from .QueryCommand import *
+from .NickQueryCommand import *
 
 __author__ = 'Sam Zick'
 __email__ = 'sam@deathbybandaid.net'

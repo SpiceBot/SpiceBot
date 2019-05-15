@@ -37,17 +37,23 @@ def setup(bot):
     # Inject OSD
     bot_logging(bot, 'SpiceBot_OSD', "Implanting OSD function into bot")
     bot.osd = SopelOSD.osd
-    sopel.bot.SopelWrapper.osd = SopelOSD.SopelWrapper.osd
+    sopel.bot.SopelWrapper.osd = SopelWrapperOSD.osd
     tools.get_available_message_bytes = ToolsOSD.get_available_message_bytes
     tools.get_sendable_message_list = ToolsOSD.get_sendable_message_list
     tools.get_message_recipientgroups = ToolsOSD.get_message_recipientgroups
 
     # overwrite default bot messaging
     bot_logging(bot, 'SpiceBot_OSD', "Overwrite Default Sopel messaging commands")
-    sopel.bot.SopelWrapper.say = SopelOSD.SopelWrapper.say
-    sopel.bot.SopelWrapper.action = SopelOSD.SopelWrapper.action
-    sopel.bot.SopelWrapper.notice = SopelOSD.SopelWrapper.notice
-    sopel.bot.SopelWrapper.reply = SopelOSD.SopelWrapper.reply
+    bot.osd = SopelOSD.osd
+    bot.say = SopelOSD.say
+    bot.action = SopelOSD.action
+    bot.notice = SopelOSD.notice
+    bot.reply = SopelOSD.reply
+    bot.msg = SopelOSD.msg
+    sopel.bot.SopelWrapper.say = SopelWrapperOSD.say
+    sopel.bot.SopelWrapper.action = SopelWrapperOSD.action
+    sopel.bot.SopelWrapper.notice = SopelWrapperOSD.notice
+    sopel.bot.SopelWrapper.reply = SopelWrapperOSD.reply
 
     # verify config settings for server
     bot_logging(bot, 'SpiceBot_OSD', "Checking for config settings")
@@ -181,17 +187,21 @@ class ToolsOSD:
                     messages_list[-1] = messages_list[-1] + message_padding + message
             else:
                 text_list = []
-                while len(message.encode('utf-8')) > max_length:
+                while len(message.encode('utf-8')) > max_length and not message.isspace():
                     last_space = message.rfind(' ', 0, max_length)
                     if last_space == -1:
                         # No last space, just split where it is possible
-                        text_list.append(message[:max_length])
+                        splitappend = message[:max_length]
+                        if not splitappend.isspace():
+                            text_list.append(splitappend)
                         message = message[max_length:]
                     else:
                         # Split at the last best space found
-                        text_list.append(message[:last_space])
+                        splitappend = message[:last_space]
+                        if not splitappend.isspace():
+                            text_list.append(splitappend)
                         message = message[last_space:]
-                if len(message.encode('utf-8')):
+                if len(message.encode('utf-8')) and not message.isspace():
                     text_list.append(message)
                 messages_list.extend(text_list)
 
@@ -318,39 +328,92 @@ class SopelOSD:
                 finally:
                     self.sending.release()
 
-    class SopelWrapper(object):
+    def say(self, text, recipient, max_messages=1):
+        """Send ``text`` as a PRIVMSG to ``recipient``.
+        In the context of a triggered callable, the ``recipient`` defaults to
+        the channel (or nickname, if a private message) from which the message
+        was received.
+        """
+        self.osd(text, recipient, 'PRIVMSG', max_messages)
 
-        def osd(self, messages, recipients=None, text_method='PRIVMSG', max_messages=-1):
-            if recipients is None:
-                recipients = self._trigger.sender
-            self._bot.osd(self, messages, recipients, text_method, max_messages)
+    def notice(self, text, dest, max_messages=1):
+        """Send an IRC NOTICE to a user or a channel.
 
-        def say(self, message, destination=None, max_messages=1):
-            if destination is None:
-                destination = self._trigger.sender
-            self._bot.osd(self, message, destination, 'PRIVMSG', 1)
-            # self._bot.say(message, destination, max_messages)
+        Within the context of a triggered callable, ``dest`` will default to
+        the channel (or nickname, if a private message), in which the trigger
+        happened.
+        """
+        self.osd(text, dest, 'NOTICE', max_messages)
 
-        def action(self, message, destination=None, max_messages=1):
-            if destination is None:
-                destination = self._trigger.sender
-            self._bot.osd(self, message, destination, 'ACTION', 1)
-            # self._bot.action(message, destination, max_messages)
+    def action(self, text, dest, max_messages=1):
+        """Send ``text`` as a CTCP ACTION PRIVMSG to ``dest``.
 
-        def notice(self, message, destination=None, max_messages=1):
-            if destination is None:
-                destination = self._trigger.sender
+        The same loop detection and length restrictions apply as with
+        :func:`say`, though automatic message splitting is not available.
+
+        Within the context of a triggered callable, ``dest`` will default to
+        the channel (or nickname, if a private message), in which the trigger
+        happened.
+        """
+        self.osd(text, dest, 'ACTION', max_messages)
+
+    def reply(self, text, dest, reply_to, notice=False, max_messages=1):
+        """Prepend ``reply_to`` to ``text``, and send as a PRIVMSG to ``dest``.
+
+        If ``notice`` is ``True``, send a NOTICE rather than a PRIVMSG.
+
+        The same loop detection and length restrictions apply as with
+        :func:`say`, though automatic message splitting is not available.
+
+        Within the context of a triggered callable, ``reply_to`` will default to
+        the nickname of the user who triggered the call, and ``dest`` to the
+        channel (or nickname, if a private message), in which the trigger
+        happened.
+        """
+        text = '%s: %s' % (reply_to, text)
+        if notice:
+            self.osd(text, dest, 'NOTICE', max_messages)
+        else:
+            self.osd(text, dest, 'PRIVMSG', max_messages)
+
+    def msg(self, recipient, text, max_messages=1):
+        # Deprecated, but way too much of a pain to remove.
+        self.osd(text, recipient, 'PRIVMSG', max_messages)
+
+
+class SopelWrapperOSD(object):
+
+    def osd(self, messages, recipients=None, text_method='PRIVMSG', max_messages=-1):
+        if recipients is None:
+            recipients = self._trigger.sender
+        self._bot.osd(self, messages, recipients, text_method, max_messages)
+
+    def say(self, message, destination=None, max_messages=1):
+        if destination is None:
+            destination = self._trigger.sender
+        self._bot.osd(self, message, destination, 'PRIVMSG', 1)
+        # self._bot.say(message, destination, max_messages)
+
+    def action(self, message, destination=None, max_messages=1):
+        if destination is None:
+            destination = self._trigger.sender
+        self._bot.osd(self, message, destination, 'ACTION', 1)
+        # self._bot.action(message, destination, max_messages)
+
+    def notice(self, message, destination=None, max_messages=1):
+        if destination is None:
+            destination = self._trigger.sender
+        self._bot.osd(self, message, destination, 'NOTICE', 1)
+        # self._bot.notice(message, destination, max_messages)
+
+    def reply(self, message, destination=None, reply_to=None, notice=False, max_messages=1):
+        if destination is None:
+            destination = self._trigger.sender
+        if reply_to is None:
+            reply_to = self._trigger.nick
+        message = '%s: %s' % (reply_to, message)
+        if notice:
             self._bot.osd(self, message, destination, 'NOTICE', 1)
-            # self._bot.notice(message, destination, max_messages)
-
-        def reply(self, message, destination=None, reply_to=None, notice=False, max_messages=1):
-            if destination is None:
-                destination = self._trigger.sender
-            if reply_to is None:
-                reply_to = self._trigger.nick
-            message = '%s: %s' % (reply_to, message)
-            if notice:
-                self._bot.osd(self, message, destination, 'NOTICE', 1)
-            else:
-                self._bot.osd(self, message, destination, 'PRIVMSG', 1)
-            # self._bot.reply(message, destination, reply_to, notice, max_messages)
+        else:
+            self._bot.osd(self, message, destination, 'PRIVMSG', 1)
+        # self._bot.reply(message, destination, reply_to, notice, max_messages)

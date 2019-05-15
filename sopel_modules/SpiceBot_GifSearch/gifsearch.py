@@ -5,7 +5,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import sopel.module
 from sopel.config.types import StaticSection, ValidatedAttribute
 
-from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger
+from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger, botevents
 
 from sopel_modules.SpiceBot_CommandsQuery.CommandsQuery import commandsquery_register
 
@@ -47,7 +47,7 @@ def configure(config):
 
 def setup(bot):
     bot_logging(bot, 'SpiceBot_GifSearch', "Starting Setup Procedure")
-    bot_events_startup_register(bot, ['2003'])
+    bot_events_startup_register(bot, [botevents.BOT_GIFSEARCH])
 
     if 'SpiceBot_GifSearch' not in bot.memory:
         bot.memory["SpiceBot_GifSearch"] = {"cache": {}, "badgiflinks": [], 'valid_gif_api_dict': {}}
@@ -79,7 +79,7 @@ def setup(bot):
         if validgifapi not in bot.memory["SpiceBot_GifSearch"]['cache'].keys():
             bot.memory["SpiceBot_GifSearch"]['cache'][validgifapi] = dict()
 
-    bot_events_trigger(bot, 2003, "SpiceBot_GifSearch")
+    bot_events_trigger(bot, botevents.BOT_GIFSEARCH, "SpiceBot_GifSearch")
 
 
 def shutdown(bot):
@@ -167,7 +167,7 @@ def getGif(bot, searchdict):
         if str(searchdict["searchquery"]) not in bot.memory["SpiceBot_GifSearch"]['cache'][currentapi].keys():
             bot.memory["SpiceBot_GifSearch"]['cache'][currentapi][str(searchdict["searchquery"])] = []
 
-        if bot.memory["SpiceBot_GifSearch"]['cache'][currentapi][str(searchdict["searchquery"])] == []:
+        if not len(bot.memory["SpiceBot_GifSearch"]['cache'][currentapi][str(searchdict["searchquery"])]):
 
             try:
                 page = requests.get(url, headers=header)
@@ -195,7 +195,7 @@ def getGif(bot, searchdict):
                         resultsarray.append(cururl)
 
                 # make sure there are results
-                if resultsarray != []:
+                if len(resultsarray):
 
                     # Create Temp dict for every result
                     tempresultnum = 0
@@ -215,10 +215,10 @@ def getGif(bot, searchdict):
                     verifygoodlinks.append(gifresult)
             bot.memory["SpiceBot_GifSearch"]['cache'][currentapi][str(searchdict["searchquery"])] = verifygoodlinks
 
-        if bot.memory["SpiceBot_GifSearch"]['cache'][currentapi][str(searchdict["searchquery"])] != []:
+        if len(bot.memory["SpiceBot_GifSearch"]['cache'][currentapi][str(searchdict["searchquery"])]):
             gifapiresults.extend(bot.memory["SpiceBot_GifSearch"]['cache'][currentapi][str(searchdict["searchquery"])])
 
-    if gifapiresults == []:
+    if not len(gifapiresults):
         return {"error": "No Results were found for '" + searchdict["query"] + "' in the " + str(spicemanip.main(searchdict['gifsearch'], 'orlist')) + " api(s)"}
 
     random.shuffle(gifapiresults)
@@ -243,7 +243,7 @@ def getGif(bot, searchdict):
                     newlist.append(tempdict)
             gifapiresults = newlist
 
-    if gifapiresults == []:
+    if not len(gifapiresults):
         return {"error": "No Results were found for '" + searchdict["query"] + "' in the " + str(spicemanip.main(searchdict['gifsearch'], 'orlist')) + " api(s)"}
 
     # return dict
@@ -251,7 +251,7 @@ def getGif(bot, searchdict):
     return gifdict
 
 
-@sopel.module.event('2003')
+@sopel.module.event(botevents.BOT_GIFSEARCH)
 @sopel.module.rule('.*')
 def bot_events_setup(bot, trigger):
     bot_events_recieved(bot, trigger.event)

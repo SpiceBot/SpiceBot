@@ -7,67 +7,21 @@ import sopel.module
 import spicemanip
 
 from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, googlesearch, bot_privs, inlist, inlist_match, similar_list
-from sopel_modules.SpiceBot_Events.System import bot_events_check
-
-
-@sopel.module.rule(r'(?i)(hi|hello|hey),? $nickname[ \t]*$')
-def bot_command_hello(bot, trigger):
-    hello = spicemanip.main(['Hi', 'Hey', 'Hello'], "random")
-    punctuation = spicemanip.main(['', '!', '?'], "random")
-    bot.osd(hello + ' ' + trigger.nick + punctuation)
-
-
-@sopel.module.nickname_commands('hello', 'hi', 'hey')
-def bot_command_hello_b(bot, trigger):
-    bot_command_hello(bot, trigger)
-
-
-@sopel.module.rule(r'(?i)(bye|goodbye|gtg|seeya|cya|ttyl|g2g|gnight|goodnight),? $nickname[ \t]*$')
-def bot_command_goodbye(bot, trigger):
-    byemsg = spicemanip.main(['Bye', 'Goodbye', 'Seeya', 'Auf Wiedersehen', 'Au revoir', 'Ttyl'], "random")
-    punctuation = spicemanip.main(['!', ''], "random")
-    bot.say(byemsg + ' ' + trigger.nick + punctuation)
-
-
-@sopel.module.nickname_commands("bye", "goodbye", "gtg", "seeya", "cya", "ttyl", "g2g", "gnight", "goodnight")
-def bot_command_goodbye_b(bot, trigger):
-    bot_command_goodbye(bot, trigger)
-
-
-@sopel.module.rule('$nickname!')
-def exclaim(bot, trigger):
-    bot.say(trigger.nick + '!')
-
-
-@sopel.module.rule('$nickname\?')
-def imhere(bot, trigger):
-    bot.say("I'm here, " + trigger.nick)
-
-
-@sopel.module.rule(r'(?i)(Fuck|Screw) (you|off),? $nickname[ \t]*$')
-def bot_command_srewyou(bot, trigger):
-    bot.osd("Watch your mouth, " + trigger.nick + ", or I'll tell your mother!")
-
-
-@sopel.module.rule(r'(?i)(Damnit|Lazy)? $nickname[ \t]*$')
-def bot_command_damnlazy(bot, trigger):
-    bot.osd("I do not tell you how to do your job, " + trigger.nick + "!!!")
-
-
-@sopel.module.rule('$nickname is lazy')
-def bot_command_damnlazy_b(bot, trigger):
-    bot.osd("I do not tell you how to do your job, " + trigger.nick + "!!!")
+from sopel_modules.SpiceBot_Events.System import bot_events_check, botevents
 
 
 @sopel.module.nickname_commands('(.*)')
 def bot_command_nick(bot, trigger):
 
-    while not bot_events_check(bot, ['1004', '2002']):
+    while not bot_events_check(bot, [botevents.BOT_LOADED, botevents.BOT_COMMANDSQUERY]):
         pass
 
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
 
     if not triggercommand:
+        return
+
+    if triggercommand[0] == "?":
         return
 
     if triggercommand in bot.memory['SpiceBot_CommandsQuery']['commands']["nickname"].keys():
@@ -134,7 +88,7 @@ def bot_command_nick(bot, trigger):
             bot.osd(trigger.nick + ", what would you like me to beam you?")
         return
 
-    elif fulltrigger.lower().startswith(tuple(["beam me to"])):
+    elif fulltrigger.lower().startswith("beam me to"):
         location = spicemanip.main(triggerargs, "4+") or None
         if location:
             bot.osd("locks onto " + trigger.nick + "s coordinates and transports them to " + location, 'action')
@@ -142,7 +96,7 @@ def bot_command_nick(bot, trigger):
             bot.osd(trigger.nick + ", where would you like me to beam you?")
         return
 
-    elif fulltrigger.lower().startswith(tuple(["beam me up"])):
+    elif fulltrigger.lower().startswith("beam me up"):
         bot.osd("locks onto " + trigger.nick + "s coordinates and transports them to the transporter room.", 'action')
         return
 
@@ -153,7 +107,7 @@ def bot_command_nick(bot, trigger):
                 if trigger.is_privmsg:
                     jedi = None
                 else:
-                    jedilist = bot.channels[trigger.sender].privileges.keys()
+                    jedilist = list(bot.channels[trigger.sender].privileges.keys())
                     for nonjedi in [bot.nick, trigger.nick]:
                         if nonjedi in jedilist:
                             jedilist.remove(nonjedi)
@@ -185,7 +139,8 @@ def bot_command_nick(bot, trigger):
     elif fulltrigger.lower().startswith("can you see"):
         target = spicemanip.main(triggerargs, "4+") or None
         if not target:
-            target = 'me'
+            bot.osd(trigger.nick + ", I can see clearly.")
+            return
         if target in [trigger.nick, 'me']:
             bot.osd(trigger.nick + ", I can see you.")
         else:
@@ -200,7 +155,7 @@ def bot_command_nick(bot, trigger):
                 # TODO
         return
 
-    if not inlist(bot, triggercommand, bot.memory['SpiceBot_CommandsQuery']['commands']["nickname"].keys()):
+    else:
 
         closestmatches = similar_list(bot, triggercommand, bot.memory['SpiceBot_CommandsQuery']['commands']["nickname"].keys(), 3, 'reverse')
 

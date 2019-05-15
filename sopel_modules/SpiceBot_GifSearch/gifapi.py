@@ -9,13 +9,13 @@ import sopel.module
 import spicemanip
 
 from sopel_modules.SpiceBot_SBTools import sopel_triggerargs
-from sopel_modules.SpiceBot_Events.System import bot_events_check
+from sopel_modules.SpiceBot_Events.System import bot_events_check, botevents
 
 
 @sopel.module.commands('(.*)')
 def gifapi_triggers(bot, trigger):
 
-    while not bot_events_check(bot, '2003'):
+    while not bot_events_check(bot, botevents.BOT_GIFSEARCH):
         pass
 
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'prefix_command')
@@ -23,7 +23,7 @@ def gifapi_triggers(bot, trigger):
     if triggercommand not in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
         return
 
-    if triggerargs == []:
+    if not len(triggerargs):
         return bot.osd("Please present a query to search.")
 
     query = spicemanip.main(triggerargs, 0)
