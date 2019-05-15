@@ -19,7 +19,7 @@ def bot_startup_monologue_start(bot, trigger):
     bot_logging(bot, 'SpiceBot_StartupMonologue', bot.nick + " is now starting. Please wait while I load my configuration")
     bot.osd(" is now starting. Please wait while I load my configuration.", bot.channels.keys(), 'ACTION')
 
-    botevents.trigger(botevents.BOT_STARTUPMONOLOGUE_CONNECTED, "SpiceBot_StartupMonologue")
+    botevents.trigger(bot, botevents.BOT_STARTUPMONOLOGUE_CONNECTED, "SpiceBot_StartupMonologue")
 
 
 @sopel.module.event(botevents.BOT_COMMANDSQUERY)
@@ -35,7 +35,7 @@ def bot_startup_monologue_commands(bot, trigger):
     bot.memory['SpiceBot_StartupMonologue'].append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
     bot_logging(bot, 'SpiceBot_StartupMonologue', "There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
 
-    botevents.trigger(botevents.BOT_STARTUPMONOLOGUE_COMMANDSQUERY, "SpiceBot_StartupMonologue")
+    botevents.trigger(bot, botevents.BOT_STARTUPMONOLOGUE_COMMANDSQUERY, "SpiceBot_StartupMonologue")
 
 
 @sopel.module.event(botevents.BOT_CHANNELS)
@@ -47,7 +47,7 @@ def bot_startup_monologue_channels(bot, trigger):
     servercount = len(bot.memory['SpiceBot_Channels']['channels'].keys())
     bot.memory['SpiceBot_StartupMonologue'].append("I am in " + str(botcount) + " of " + str(servercount) + " channel(s) available on this server.")
 
-    botevents.trigger(botevents.BOT_STARTUPMONOLOGUE_CHANNELS, "SpiceBot_StartupMonologue")
+    botevents.trigger(bot, botevents.BOT_STARTUPMONOLOGUE_CHANNELS, "SpiceBot_StartupMonologue")
 
 
 @sopel.module.event(botevents.BOT_LOADED)
@@ -64,5 +64,5 @@ def bot_startup_monologue_display(bot, trigger):
 
     bot.osd(bot.memory['SpiceBot_StartupMonologue'], bot.channels.keys(), 'ACTION')
 
-    botevents.trigger(botevents.BOT_STARTUPMONOLOGUE, "SpiceBot_StartupMonologue")
+    botevents.trigger(bot, botevents.BOT_STARTUPMONOLOGUE, "SpiceBot_StartupMonologue")
     bot_logging(bot, 'SpiceBot_StartupMonologue', "Startup Monologue has been issued to all channels.", True)

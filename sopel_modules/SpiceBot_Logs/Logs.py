@@ -30,7 +30,7 @@ def setup(bot):
 
     bot_logs_setup_check(bot)
 
-    botevents.trigger(botevents.BOT_LOGS, "SpiceBot_Logs")
+    botevents.trigger(bot, botevents.BOT_LOGS, "SpiceBot_Logs")
 
 
 def bot_logs_setup_check(bot):

@@ -79,7 +79,7 @@ def setup(bot):
         if validgifapi not in bot.memory["SpiceBot_GifSearch"]['cache'].keys():
             bot.memory["SpiceBot_GifSearch"]['cache'][validgifapi] = dict()
 
-    botevents.trigger(botevents.BOT_GIFSEARCH, "SpiceBot_GifSearch")
+    botevents.trigger(bot, botevents.BOT_GIFSEARCH, "SpiceBot_GifSearch")
 
 
 def shutdown(bot):

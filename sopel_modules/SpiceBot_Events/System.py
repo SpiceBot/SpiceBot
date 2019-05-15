@@ -38,14 +38,14 @@ class BotEvents(object):
         setattr(self, name, str(eventnumber))
         return str(eventnumber)
 
-    def trigger(self, number, message="SpiceBot_Events"):
+    def trigger(self, bot, number, message="SpiceBot_Events"):
         number = str(number)
         if number in [self.BOT_WELCOME, self.BOT_READY, self.BOT_CONNECTED, self.BOT_LOADED]:
             pretrigger = PreTrigger(
-                sopel.bot.nick,
-                ":SpiceBot_Events " + number + " " + str(sopel.bot.nick) + " :" + message
+                bot.nick,
+                ":SpiceBot_Events " + number + " " + str(bot.nick) + " :" + message
             )
-            sopel.bot.dispatch(pretrigger)
+            bot.dispatch(pretrigger)
         else:
             pretriggerdict = {"number": number, "message": message}
             self.SpiceBot_Events["trigger_queue"].append(pretriggerdict)

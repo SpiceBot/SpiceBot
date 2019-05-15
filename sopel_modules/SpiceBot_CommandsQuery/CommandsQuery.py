@@ -162,7 +162,7 @@ def setup(bot):
             if command not in bot.memory['SpiceBot_CommandsQuery']['nickrules']:
                 bot.memory['SpiceBot_CommandsQuery']['nickrules'].append(command)
 
-    botevents.trigger(botevents.BOT_COMMANDSQUERY, "SpiceBot_CommandsQuery")
+    botevents.trigger(bot, botevents.BOT_COMMANDSQUERY, "SpiceBot_CommandsQuery")
 
 
 def shutdown(bot):

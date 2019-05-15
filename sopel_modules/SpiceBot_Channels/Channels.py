@@ -74,7 +74,7 @@ def trigger_channel_list_initial(bot, trigger):
     channel_list_current(bot)
     foundchannelcount = len(bot.memory['SpiceBot_Channels']['channels'].keys())
     bot_logging(bot, 'SpiceBot_Channels', "Channel listing finished! " + str(foundchannelcount) + " channel(s) found.")
-    botevents.trigger(botevents.BOT_CHANNELS, "SpiceBot_Channels")
+    botevents.trigger(bot, botevents.BOT_CHANNELS, "SpiceBot_Channels")
 
     join_all_channels(bot)
     chanadmin_all_channels(bot)
