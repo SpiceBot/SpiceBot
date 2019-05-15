@@ -38,7 +38,7 @@ class BotEvents(object):
         ''' will only get called for undefined attributes '''
         eventnumber = max(self.usednumbers) + 1
         self.usednumbers.append(eventnumber)
-        setattr(self, str(name).upper(), str(eventnumber))
+        setattr(self, name, str(eventnumber))
 
 
 botevents = BotEvents()
