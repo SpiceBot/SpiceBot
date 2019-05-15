@@ -38,7 +38,7 @@ class SopelDBCache:
                 .one_or_none()
             # NickValue exists, delete
             if result:
-                session.delete(result.value)
+                session.delete(result)
                 session.commit()
         except SQLAlchemyError:
             session.rollback()
@@ -85,7 +85,7 @@ class SopelDBCache:
                 .one_or_none()
             # ChannelValue exists, update
             if result:
-                session.delete(result.value)
+                session.delete(result)
                 session.commit()
         except SQLAlchemyError:
             session.rollback()
