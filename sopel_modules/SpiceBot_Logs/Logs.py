@@ -96,7 +96,7 @@ def stdio_logs_fetch(bot):
     debuglines = []
     loadedmodules = []
     for line in filelines:
-        if not line.startswith("Loaded:"):
+        if line.startswith("Loaded:"):
             loadedmodules.append(str(line).split("Loaded:")[-1])
         else:
             if not line.startswith(tuple(stdio_ignore)) and not line.isspace():
