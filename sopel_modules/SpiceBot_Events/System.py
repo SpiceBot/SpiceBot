@@ -95,21 +95,3 @@ botevents = BotEvents()
 def setup(bot):
     bot_logging(bot, 'SpiceBot_Events', "Starting setup procedure")
     botevents.startup_add([botevents.BOT_WELCOME, botevents.BOT_READY, botevents.BOT_CONNECTED])
-
-
-"""
-def register_trigger(number, message):
-    def actual_decorator(function):
-        @functools.wraps(function)
-        def _nop(*args, **kwargs):
-            # Assign trigger and bot for easy access later
-            bot, trigger = args[0:2]
-            return function(*args, **kwargs)
-        return _nop
-
-ideas:
-
-    while not botevents.check([botevents.BOT_LOADED, botevents.BOT_COMMANDSQUERY]):
-        pass
-
-"""
