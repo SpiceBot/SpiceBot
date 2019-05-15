@@ -5,7 +5,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 # sopel imports
 import sopel
 from sopel.trigger import PreTrigger
-# import functools
+import functools
 
 from sopel_modules.SpiceBot_SBTools import bot_logging
 
@@ -76,8 +76,25 @@ class BotEvents(object):
                 return False
         return True
 
+    def check_ready(self, checklist):
+        def actual_decorator(function):
+            @functools.wraps(function)
+            def _nop(*args, **kwargs):
+                # Assign trigger and bot for easy access later
+                bot, trigger = args[0:2]
+                while not self.check(checklist):
+                    pass
+                return function(*args, **kwargs)
+            return _nop
+        return actual_decorator
+
 
 botevents = BotEvents()
+
+
+def setup(bot):
+    bot_logging(bot, 'SpiceBot_Events', "Starting setup procedure")
+    botevents.startup_add([botevents.BOT_WELCOME, botevents.BOT_READY, botevents.BOT_CONNECTED])
 
 
 """
@@ -96,8 +113,3 @@ ideas:
         pass
 
 """
-
-
-def setup(bot):
-    bot_logging(bot, 'SpiceBot_Events', "Starting setup procedure")
-    botevents.startup_add([botevents.BOT_WELCOME, botevents.BOT_READY, botevents.BOT_CONNECTED])

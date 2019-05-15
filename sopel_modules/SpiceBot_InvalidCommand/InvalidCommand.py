@@ -27,12 +27,13 @@ def bot_events_complete(bot, trigger):
         bot.memory["SpiceBot_InvalidCommand"]["valid"].extend(bot.memory['SpiceBot_CommandsQuery']['commands'][comtype].keys())
 
 
+@botevents.check_ready([botevents.BOT_LOADED, botevents.BOT_COMMANDSQUERY])
 @sopel.module.commands('(.*)')
 def InvalidCommand_triggers(bot, trigger):
     return
 
-    while not botevents.check([botevents.BOT_LOADED, botevents.BOT_COMMANDSQUERY]):
-        pass
+    # while not botevents.check([botevents.BOT_LOADED, botevents.BOT_COMMANDSQUERY]):
+    #    pass
 
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'prefix_command')
 

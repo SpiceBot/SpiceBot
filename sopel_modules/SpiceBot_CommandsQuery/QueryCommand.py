@@ -12,11 +12,12 @@ from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, similar_list, lett
 import spicemanip
 
 
+@botevents.check_ready([botevents.BOT_COMMANDSQUERY])
 @sopel.module.rule('^\?(.*)')
 def query_detection(bot, trigger):
 
-    while not botevents.check(botevents.BOT_COMMANDSQUERY):
-        pass
+    # while not botevents.check(botevents.BOT_COMMANDSQUERY):
+    #    pass
 
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'query_command')
 

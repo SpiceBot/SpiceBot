@@ -14,11 +14,12 @@ from sopel_modules.SpiceBot_SBTools import (
 from .Channels import bot_part_empty
 
 
+@botevents.check_ready([botevents.BOT_LOADED])
 @sopel.module.nickname_commands('channels', 'channel')
 def nickname_comand_channels(bot, trigger):
 
-    while not botevents.check(botevents.BOT_LOADED):
-        pass
+    # while not botevents.check(botevents.BOT_LOADED):
+    #    pass
 
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
 
