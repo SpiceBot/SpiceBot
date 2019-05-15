@@ -5,6 +5,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 # sopel imports
 import sopel
 from sopel.trigger import PreTrigger
+# import functools
 
 from sopel_modules.SpiceBot_SBTools import bot_logging
 
@@ -18,17 +19,29 @@ class BotEvents(object):
     """
 
     def __init__(self):
-        self.usednumbers = [1000]
+        self.SpiceBot_Events = {"assigned_IDs": [1000]}
 
     def __getattr__(self, name):
         ''' will only get called for undefined attributes '''
-        eventnumber = max(self.usednumbers) + 1
-        self.usednumbers.append(eventnumber)
+        eventnumber = max(self.SpiceBot_Events["assigned_IDs"]) + 1
+        self.SpiceBot_Events["assigned_IDs"].append(eventnumber)
         setattr(self, name, str(eventnumber))
         return str(eventnumber)
 
 
 botevents = BotEvents()
+
+
+"""
+def register_trigger(number, message):
+    def actual_decorator(function):
+        @functools.wraps(function)
+        def _nop(*args, **kwargs):
+            # Assign trigger and bot for easy access later
+            bot, trigger = args[0:2]
+            return function(*args, **kwargs)
+        return _nop
+"""
 
 
 def setup(bot):
