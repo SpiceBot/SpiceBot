@@ -21,12 +21,14 @@ class botevents(object):
     rather than ``@module.event('1001')``
     """
 
-    usednumbers = [0, 1001, 1002, 1003, 1004, 2000]
+    def __init__(self, usednumbers):
+        self.usednumbers = [0, 1001, 1002, 1003, 1004, 2000]
 
-    BOT_WELCOME = '1001'
-    BOT_READY = '1002'
-    BOT_CONNECTED = '1003'
-    BOT_LOADED = '1004'
+    # usednumbers = [0, 1001, 1002, 1003, 1004, 2000]
+    # BOT_WELCOME = '1001'
+    # BOT_READY = '1002'
+    # BOT_CONNECTED = '1003'
+    # BOT_LOADED = '1004'
 
     def __getattr__(self, attr):
         ''' will only get called for undefined attributes '''
