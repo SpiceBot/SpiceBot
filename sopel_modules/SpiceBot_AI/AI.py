@@ -17,7 +17,7 @@ def bot_command_nick(bot, trigger):
     if str(trigger.args[1])[0] == "?":
         return
 
-    while not bot_events_check(bot, [botevents.BOT_LOADED, '2002']):
+    while not bot_events_check(bot, [botevents.BOT_LOADED, botevents.BOT_COMMANDSQUERY]):
         pass
 
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')

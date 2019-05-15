@@ -26,11 +26,11 @@ def setup(bot):
     bot_logging(bot, 'SpiceBot_Logs', "Starting Setup Procedure")
     bot.config.define_section("SpiceBot_Logs", SpiceBot_Logs_MainSection, validate=False)
 
-    bot_events_startup_register(bot, ['2004'])
+    bot_events_startup_register(bot, [botevents.BOT_LOGS])
 
     bot_logs_setup_check(bot)
 
-    bot_events_trigger(bot, 2004, "SpiceBot_Logs")
+    bot_events_trigger(bot, botevents.BOT_LOGS, "SpiceBot_Logs")
 
 
 def bot_logs_setup_check(bot):
@@ -131,7 +131,7 @@ def get_running_pid(bot):
     return pidnum
 
 
-@sopel.module.event('2004')
+@sopel.module.event(botevents.BOT_LOGS)
 @sopel.module.rule('.*')
 def bot_events_setup(bot, trigger):
     bot_events_recieved(bot, trigger.event)

@@ -15,7 +15,7 @@ import spicemanip
 
 def setup(bot):
     bot_logging(bot, 'SpiceBot_CommandsQuery', "Starting setup procedure")
-    bot_events_startup_register(bot, ['2002'])
+    bot_events_startup_register(bot, [botevents.BOT_COMMANDSQUERY])
 
     if 'SpiceBot_CommandsQuery' not in bot.memory:
         bot.memory['SpiceBot_CommandsQuery'] = {"counts": 0, "commands": {}, "nickrules": []}
@@ -162,7 +162,7 @@ def setup(bot):
             if command not in bot.memory['SpiceBot_CommandsQuery']['nickrules']:
                 bot.memory['SpiceBot_CommandsQuery']['nickrules'].append(command)
 
-    bot_events_trigger(bot, 2002, "SpiceBot_CommandsQuery")
+    bot_events_trigger(bot, botevents.BOT_COMMANDSQUERY, "SpiceBot_CommandsQuery")
 
 
 def shutdown(bot):
@@ -214,7 +214,7 @@ def commandsquery_register(bot, command_type, validcoms, aliasfor=None):
             bot.memory['SpiceBot_CommandsQuery']['commands'][command_type][comalias] = {"aliasfor": aliasfor}
 
 
-@sopel.module.event('2002')
+@sopel.module.event(botevents.BOT_COMMANDSQUERY)
 @sopel.module.rule('.*')
 def bot_events_setup(bot, trigger):
     bot_events_recieved(bot, trigger.event)

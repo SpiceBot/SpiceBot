@@ -31,7 +31,7 @@ def bot_events_complete(bot, trigger):
 def InvalidCommand_triggers(bot, trigger):
     return
 
-    while not bot_events_check(bot, [botevents.BOT_LOADED, '2002']):
+    while not bot_events_check(bot, [botevents.BOT_LOADED, botevents.BOT_COMMANDSQUERY]):
         pass
 
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'prefix_command')
