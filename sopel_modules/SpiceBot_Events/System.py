@@ -10,29 +10,15 @@ from sopel_modules.SpiceBot_SBTools import bot_logging
 
 
 class BotEvents(object):
-    """An dynamic listing of all the notable Bot numeric events.
+    """A dynamic listing of all the notable Bot numeric events.
 
-    Events contained in this module will utilize the 1000-range
+    Events will be assigned a 4-digit number above 1000.
 
-    All Other events will be tagged with a randomly generated
-    4-digit number above 2000.
-
-    This allows you to do, for example, ``@module.event(botevents.BOT_WELCOME)``
-    rather than ``@module.event('1001')``
+    This allows you to do, ``@module.event(botevents.BOT_WELCOME)````
     """
 
     def __init__(self):
-        self.usednumbers = [0, 1001, 1002, 1003, 1004, 2000]
-        self.BOT_WELCOME = '1001'
-        self.BOT_READY = '1002'
-        self.BOT_CONNECTED = '1003'
-        self.BOT_LOADED = '1004'
-
-    # usednumbers = [0, 1001, 1002, 1003, 1004, 2000]
-    # BOT_WELCOME = '1001'
-    # BOT_READY = '1002'
-    # BOT_CONNECTED = '1003'
-    # BOT_LOADED = '1004'
+        self.usednumbers = [1000]
 
     def __getattr__(self, name):
         ''' will only get called for undefined attributes '''
