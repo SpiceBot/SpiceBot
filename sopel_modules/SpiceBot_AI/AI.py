@@ -13,8 +13,7 @@ from sopel_modules.SpiceBot_Events.System import bot_events_check, botevents
 @sopel.module.nickname_commands('(.*)')
 def bot_command_nick(bot, trigger):
 
-    # command must not start with
-    if str(trigger.args[1])[0] == "?":
+    if trigger.args[1].lower().startswith(bot.nick.lower() + " ?"):
         return
 
     while not bot_events_check(bot, [botevents.BOT_LOADED, botevents.BOT_COMMANDSQUERY]):

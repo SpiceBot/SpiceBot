@@ -12,8 +12,11 @@ from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, similar_list, lett
 import spicemanip
 
 
-@sopel.module.nickname_commands('^\?(.*)')
+@sopel.module.nickname_commands('(.*)')
 def query_detection_nick(bot, trigger):
+
+    if not trigger.args[0].lower().startswith(bot.nick.lower() + " ?"):
+        return
 
     while not bot_events_check(bot, botevents.BOT_COMMANDSQUERY):
         pass
