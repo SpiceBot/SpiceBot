@@ -19,7 +19,6 @@ def query_detection_nick(bot, trigger):
         pass
 
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
-    triggercommand = triggercommand[1:]
 
     # command issued, check if valid
     if not triggercommand or not len(triggercommand):
@@ -27,6 +26,7 @@ def query_detection_nick(bot, trigger):
 
     if not triggercommand[0] == "?":
         return
+    triggercommand = triggercommand[1:]
 
     if not letters_in_string(triggercommand):
         return
