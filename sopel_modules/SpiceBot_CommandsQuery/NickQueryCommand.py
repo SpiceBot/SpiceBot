@@ -22,6 +22,7 @@ def query_detection_nick(bot, trigger):
         pass
 
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
+    triggercommand = triggercommand[1:]
 
     # command issued, check if valid
     if not triggercommand or not len(triggercommand):
@@ -53,7 +54,7 @@ def query_detection_nick(bot, trigger):
         if "aliasfor" in commands_list[triggercommand].keys():
             realcom = commands_list[triggercommand]["aliasfor"]
         validcomlist = commands_list[realcom]["validcoms"]
-        bot.notice("The following " + bot.nick + "commands match " + str(triggercommand) + ": " + spicemanip.main(validcomlist, 'andlist') + ".", trigger.nick)
+        bot.notice("The following " + bot.nick + " commands match " + str(triggercommand) + ": " + spicemanip.main(validcomlist, 'andlist') + ".", trigger.nick)
         return
 
     if triggercommand.endswith("?"):
