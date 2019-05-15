@@ -7,7 +7,7 @@ from sopel import module
 from .gifsearch import getGif
 
 from sopel_modules.SpiceBot_SBTools import sopel_triggerargs
-from sopel_modules.SpiceBot_Events.System import bot_events_check, botevents
+from sopel_modules.SpiceBot_Events.System import botevents
 
 import spicemanip
 
@@ -15,7 +15,7 @@ import spicemanip
 @module.commands('gif')
 def gif_trigger(bot, trigger):
 
-    while not bot_events_check(bot, botevents.BOT_GIFSEARCH):
+    while not botevents.check(botevents.BOT_GIFSEARCH):
         pass
 
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger)

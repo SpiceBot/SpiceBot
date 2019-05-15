@@ -7,14 +7,14 @@ import sopel.module
 import spicemanip
 
 from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check, inlist, inlist_match, similar_list
-from sopel_modules.SpiceBot_Events.System import bot_events_check, botevents
+from sopel_modules.SpiceBot_Events.System import botevents
 from .Logs import systemd_logs_fetch, stdio_logs_fetch
 
 
 @sopel.module.nickname_commands('logs', 'debug')
 def bot_command_logs(bot, trigger):
 
-    while not bot_events_check(bot, botevents.BOT_LOGS):
+    while not botevents.check(botevents.BOT_LOGS):
         pass
 
     if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):

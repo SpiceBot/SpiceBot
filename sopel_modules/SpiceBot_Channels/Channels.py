@@ -6,7 +6,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 from sopel.config.types import StaticSection, ValidatedAttribute, ListAttribute
 
-from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger, botevents
+from sopel_modules.SpiceBot_Events.System import botevents
 from sopel_modules.SpiceBot_SBTools import (
                                             join_all_channels, chanadmin_all_channels, channel_list_current,
                                             bot_logging
@@ -34,7 +34,7 @@ def configure(config):
 
 def setup(bot):
     bot_logging(bot, 'SpiceBot_Channels', "Starting setup procedure")
-    bot_events_startup_register(bot, [botevents.BOT_CHANNELS])
+    botevents.startup_add([botevents.BOT_CHANNELS])
 
     bot.config.define_section("SpiceBot_Channels", SpiceBot_Channels_MainSection, validate=False)
 
@@ -50,7 +50,7 @@ def shutdown(bot):
 @sopel.module.event(botevents.BOT_CONNECTED)
 @sopel.module.rule('.*')
 def trigger_channel_list_initial(bot, trigger):
-    bot_events_recieved(bot, trigger.event)
+    botevents.recieved(trigger)
 
     # Unkickable
     bot.write(('SAMODE', bot.nick, '+q'))
@@ -74,7 +74,7 @@ def trigger_channel_list_initial(bot, trigger):
     channel_list_current(bot)
     foundchannelcount = len(bot.memory['SpiceBot_Channels']['channels'].keys())
     bot_logging(bot, 'SpiceBot_Channels', "Channel listing finished! " + str(foundchannelcount) + " channel(s) found.")
-    bot_events_trigger(bot, botevents.BOT_CHANNELS, "SpiceBot_Channels")
+    botevents.trigger(botevents.BOT_CHANNELS, "SpiceBot_Channels")
 
     join_all_channels(bot)
     chanadmin_all_channels(bot)
@@ -126,4 +126,4 @@ def bot_part_empty(bot):
 @sopel.module.event(botevents.BOT_CHANNELS)
 @sopel.module.rule('.*')
 def bot_events_setup(bot, trigger):
-    bot_events_recieved(bot, trigger.event)
+    botevents.recieved(trigger)

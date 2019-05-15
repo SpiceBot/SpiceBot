@@ -5,7 +5,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import sopel.module
 from sopel.config.types import StaticSection, ValidatedAttribute
 
-from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger, botevents
+from sopel_modules.SpiceBot_Events.System import botevents
 
 from sopel_modules.SpiceBot_CommandsQuery.CommandsQuery import commandsquery_register
 
@@ -47,7 +47,7 @@ def configure(config):
 
 def setup(bot):
     bot_logging(bot, 'SpiceBot_GifSearch', "Starting Setup Procedure")
-    bot_events_startup_register(bot, [botevents.BOT_GIFSEARCH])
+    botevents.startup_add([botevents.BOT_GIFSEARCH])
 
     if 'SpiceBot_GifSearch' not in bot.memory:
         bot.memory["SpiceBot_GifSearch"] = {"cache": {}, "badgiflinks": [], 'valid_gif_api_dict': {}}
@@ -79,7 +79,7 @@ def setup(bot):
         if validgifapi not in bot.memory["SpiceBot_GifSearch"]['cache'].keys():
             bot.memory["SpiceBot_GifSearch"]['cache'][validgifapi] = dict()
 
-    bot_events_trigger(bot, botevents.BOT_GIFSEARCH, "SpiceBot_GifSearch")
+    botevents.trigger(botevents.BOT_GIFSEARCH, "SpiceBot_GifSearch")
 
 
 def shutdown(bot):
@@ -254,4 +254,4 @@ def getGif(bot, searchdict):
 @sopel.module.event(botevents.BOT_GIFSEARCH)
 @sopel.module.rule('.*')
 def bot_events_setup(bot, trigger):
-    bot_events_recieved(bot, trigger.event)
+    botevents.recieved(trigger)

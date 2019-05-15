@@ -6,7 +6,7 @@ import sopel.module
 from sopel.config.types import StaticSection, ValidatedAttribute
 
 from sopel_modules.SpiceBot_SBTools import bot_logging
-from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger, botevents
+from sopel_modules.SpiceBot_Events.System import botevents
 
 import os
 
@@ -26,11 +26,11 @@ def setup(bot):
     bot_logging(bot, 'SpiceBot_Logs', "Starting Setup Procedure")
     bot.config.define_section("SpiceBot_Logs", SpiceBot_Logs_MainSection, validate=False)
 
-    bot_events_startup_register(bot, [botevents.BOT_LOGS])
+    botevents.startup_add([botevents.BOT_LOGS])
 
     bot_logs_setup_check(bot)
 
-    bot_events_trigger(bot, botevents.BOT_LOGS, "SpiceBot_Logs")
+    botevents.trigger(botevents.BOT_LOGS, "SpiceBot_Logs")
 
 
 def bot_logs_setup_check(bot):
@@ -46,7 +46,7 @@ def shutdown(bot):
 @sopel.module.event(botevents.BOT_CONNECTED)
 @sopel.module.rule('.*')
 def join_log_channel(bot, trigger):
-    bot_events_recieved(bot, trigger.event)
+    botevents.recieved(trigger)
 
     if bot.config.SpiceBot_Logs.logging_channel:
         channel = bot.config.SpiceBot_Logs.logging_channel
@@ -134,4 +134,4 @@ def get_running_pid(bot):
 @sopel.module.event(botevents.BOT_LOGS)
 @sopel.module.rule('.*')
 def bot_events_setup(bot, trigger):
-    bot_events_recieved(bot, trigger.event)
+    botevents.recieved(trigger)

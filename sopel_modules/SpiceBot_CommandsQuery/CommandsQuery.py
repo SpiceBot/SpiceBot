@@ -7,7 +7,7 @@ import sopel.module
 
 import os
 
-from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger, botevents
+from sopel_modules.SpiceBot_Events.System import botevents
 from sopel_modules.SpiceBot_SBTools import bot_logging
 
 import spicemanip
@@ -15,7 +15,7 @@ import spicemanip
 
 def setup(bot):
     bot_logging(bot, 'SpiceBot_CommandsQuery', "Starting setup procedure")
-    bot_events_startup_register(bot, [botevents.BOT_COMMANDSQUERY])
+    botevents.startup_add([botevents.BOT_COMMANDSQUERY])
 
     if 'SpiceBot_CommandsQuery' not in bot.memory:
         bot.memory['SpiceBot_CommandsQuery'] = {"counts": 0, "commands": {}, "nickrules": []}
@@ -162,7 +162,7 @@ def setup(bot):
             if command not in bot.memory['SpiceBot_CommandsQuery']['nickrules']:
                 bot.memory['SpiceBot_CommandsQuery']['nickrules'].append(command)
 
-    bot_events_trigger(bot, botevents.BOT_COMMANDSQUERY, "SpiceBot_CommandsQuery")
+    botevents.trigger(botevents.BOT_COMMANDSQUERY, "SpiceBot_CommandsQuery")
 
 
 def shutdown(bot):
@@ -173,7 +173,7 @@ def shutdown(bot):
 @sopel.module.event(botevents.BOT_LOADED)
 @sopel.module.rule('.*')
 def bot_events_complete(bot, trigger):
-    bot_events_recieved(bot, trigger.event)
+    botevents.recieved(trigger)
 
     for comtype in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
         if comtype not in ['module', 'nickname', 'rule']:
@@ -217,4 +217,4 @@ def commandsquery_register(bot, command_type, validcoms, aliasfor=None):
 @sopel.module.event(botevents.BOT_COMMANDSQUERY)
 @sopel.module.rule('.*')
 def bot_events_setup(bot, trigger):
-    bot_events_recieved(bot, trigger.event)
+    botevents.recieved(trigger)

@@ -92,7 +92,7 @@ def register_trigger(number, message):
 
 ideas:
 
-    while not bot_events_check(bot, [botevents.BOT_LOADED, botevents.BOT_COMMANDSQUERY]):
+    while not botevents.check([botevents.BOT_LOADED, botevents.BOT_COMMANDSQUERY]):
         pass
 
 """
@@ -100,79 +100,4 @@ ideas:
 
 def setup(bot):
     bot_logging(bot, 'SpiceBot_Events', "Starting setup procedure")
-    bot_events_setup_check(bot)
-    bot_events_startup_register(bot, [botevents.BOT_WELCOME, botevents.BOT_READY, botevents.BOT_CONNECTED])
-
-
-def shutdown(bot):
-    if "SpiceBot_Events" in bot.memory:
-        del bot.memory["SpiceBot_Events"]
-
-
-def bot_events_trigger(bot, number, message):
-
-    bot_events_setup_check(bot)
-
-    bot.memory["SpiceBot_Events"]["triggers"][str(number)] = message
-    if str(number) in [botevents.BOT_WELCOME, botevents.BOT_READY, botevents.BOT_CONNECTED]:
-        pretrigger = PreTrigger(
-            bot.nick,
-            ":SpiceBot_Events " + str(number) + " " + str(bot.nick) + " :" + message
-        )
-        bot.dispatch(pretrigger)
-    else:
-        pretriggerdict = {"number": number, "message": message}
-        bot.memory['SpiceBot_Events']["queue"].append(pretriggerdict)
-
-
-def bot_events_setup_check(bot):
-    if "SpiceBot_Events" not in bot.memory:
-        bot.memory["SpiceBot_Events"] = {"triggers": {}, "startup": [], "loaded": [], "queue": []}
-
-
-def bot_events_check(bot, listreq):
-
-    bot_events_setup_check(bot)
-
-    if not isinstance(listreq, list):
-        listreq = [str(listreq)]
-
-    for requirement in listreq:
-        if requirement not in bot.memory["SpiceBot_Events"]["loaded"]:
-            return False
-
-    return True
-
-
-def bot_events_startup_register(bot, addonreq):
-
-    bot_events_setup_check(bot)
-
-    if not isinstance(addonreq, list):
-        addonreq = [str(addonreq)]
-
-    bot.memory["SpiceBot_Events"]["startup"].extend(addonreq)
-
-
-def bot_events_recieved(bot, number):
-
-    bot_events_setup_check(bot)
-
-    if str(number) not in bot.memory["SpiceBot_Events"]["loaded"]:
-        bot.memory["SpiceBot_Events"]["loaded"].append(str(number))
-
-
-def bot_events_startup_check(bot):
-
-    bot_events_setup_check(bot)
-
-    notcomplete = []
-
-    for startupitem in bot.memory["SpiceBot_Events"]["startup"]:
-        if str(startupitem) not in bot.memory["SpiceBot_Events"]["loaded"]:
-            notcomplete.append(str(startupitem))
-
-    if len(notcomplete):
-        return False
-    else:
-        return True
+    botevents.startup_add([botevents.BOT_WELCOME, botevents.BOT_READY, botevents.BOT_CONNECTED])

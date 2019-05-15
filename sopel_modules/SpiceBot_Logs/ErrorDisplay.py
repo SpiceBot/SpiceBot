@@ -4,7 +4,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.module
 
-from sopel_modules.SpiceBot_Events.System import bot_events_recieved, botevents
+from sopel_modules.SpiceBot_Events.System import botevents
 from sopel_modules.SpiceBot_SBTools import bot_logging
 from .Logs import stdio_logs_fetch
 
@@ -12,7 +12,7 @@ from .Logs import stdio_logs_fetch
 @sopel.module.event(botevents.BOT_STARTUPMONOLOGUE)
 @sopel.module.rule('.*')
 def bot_startup_monologue_start(bot, trigger):
-    bot_events_recieved(bot, trigger.event)
+    botevents.recieved(trigger)
 
     debuglines = stdio_logs_fetch(bot)
 
