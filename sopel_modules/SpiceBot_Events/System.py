@@ -55,7 +55,7 @@ class BotEvents(object):
         message_payload = trigger.args[1]
         if eventnumber not in self.SpiceBot_Events["triggers_recieved"]:
             self.SpiceBot_Events["triggers_recieved"][eventnumber] = []
-        self.SpiceBot_Events["assigned_IDs"]["triggers_recieved"][eventnumber].append(message_payload)
+        self.SpiceBot_Events["triggers_recieved"][eventnumber].append(message_payload)
 
     def check(self, checklist):
         if not isinstance(checklist, list):
