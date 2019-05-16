@@ -5,7 +5,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import sopel.module
 
 from sopel_modules.SpiceBot_SBTools import sopel_triggerargs
-from sopel_modules.SpiceBot_Events.System import bot_events_check, bot_events_recieved
+from sopel_modules.SpiceBot_Events.System import botevents
 
 
 def setup(bot):
@@ -18,21 +18,22 @@ def shutdown(bot):
         del bot.memory["SpiceBot_InvalidCommand"]
 
 
-@sopel.module.event('1004')
+@sopel.module.event(botevents.BOT_LOADED)
 @sopel.module.rule('.*')
 def bot_events_complete(bot, trigger):
-    bot_events_recieved(bot, trigger.event)
+    botevents.recieved(trigger)
 
     for comtype in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
         bot.memory["SpiceBot_InvalidCommand"]["valid"].extend(bot.memory['SpiceBot_CommandsQuery']['commands'][comtype].keys())
 
 
+@botevents.check_ready([botevents.BOT_LOADED, botevents.BOT_COMMANDSQUERY])
 @sopel.module.commands('(.*)')
 def InvalidCommand_triggers(bot, trigger):
     return
 
-    while not bot_events_check(bot, ['1004', '2002']):
-        pass
+    # while not botevents.check([botevents.BOT_LOADED, botevents.BOT_COMMANDSQUERY]):
+    #    pass
 
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'prefix_command')
 

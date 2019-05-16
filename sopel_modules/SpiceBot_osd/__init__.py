@@ -27,9 +27,13 @@ __version__ = '0.1.2'
 
 
 def configure(config):
-    config.define_section("MAXTARGCONFIG", MAXTARGCONFIG, validate=False)
-    config.MAXTARGCONFIG.configure_setting('notice', 'MAXTARG limit for NOTICE')
-    config.MAXTARGCONFIG.configure_setting('privmsg', 'MAXTARG limit for PRIVMSG')
+    config.define_section("SpiceBot_OSD", SpiceBot_OSD, validate=False)
+    config.SpiceBot_OSD.configure_setting('notice', 'MAXTARG limit for NOTICE')
+    config.SpiceBot_OSD.configure_setting('privmsg', 'MAXTARG limit for PRIVMSG')
+    config.SpiceBot_OSD.configure_setting('flood_burst_lines', 'How many messages can be sent in burst mode.')
+    config.SpiceBot_OSD.configure_setting('flood_empty_wait', 'How long to wait between sending messages when not in burst mode, in seconds.')
+    config.SpiceBot_OSD.configure_setting('flood_refill_rate', 'How quickly burst mode recovers, in messages per second.')
+    config.SpiceBot_OSD.configure_setting('flood_dots', 'Display dots instead of spam.')
 
 
 def setup(bot):
@@ -57,7 +61,7 @@ def setup(bot):
 
     # verify config settings for server
     bot_logging(bot, 'SpiceBot_OSD', "Checking for config settings")
-    bot.config.define_section("MAXTARGCONFIG", MAXTARGCONFIG, validate=False)
+    bot.config.define_section("SpiceBot_OSD", SpiceBot_OSD, validate=False)
 
 
 @module.event('005')
@@ -80,14 +84,28 @@ def parse_event_005(bot, trigger):
                             value = None
                         if value:
                             if settingname.upper() == 'NOTICE':
-                                bot.config.MAXTARGCONFIG.notice = int(value)
+                                bot.config.SpiceBot_OSD.notice = int(value)
                             elif settingname.upper() == 'PRIVMSG':
-                                bot.config.MAXTARGCONFIG.privmsg = int(value)
+                                bot.config.SpiceBot_OSD.privmsg = int(value)
 
 
-class MAXTARGCONFIG(StaticSection):
+class SpiceBot_OSD(StaticSection):
+
+    """MAXTARG"""
     notice = ValidatedAttribute('notice', default=1)
     privmsg = ValidatedAttribute('privmsg', default=1)
+
+    flood_burst_lines = ValidatedAttribute('flood_burst_lines', int, default=4)
+    """How many messages can be sent in burst mode."""
+
+    flood_empty_wait = ValidatedAttribute('flood_empty_wait', float, default=0.7)
+    """How long to wait between sending messages when not in burst mode, in seconds."""
+
+    flood_refill_rate = ValidatedAttribute('flood_refill_rate', int, default=1)
+    """How quickly burst mode recovers, in messages per second."""
+
+    flood_dots = ValidatedAttribute('flood_dots', default=True)
+    """Display dots instead of spam."""
 
 
 class ToolsOSD:
@@ -117,9 +135,9 @@ class ToolsOSD:
             raise ValueError("Recipients list empty.")
 
         if text_method == 'NOTICE':
-            maxtargets = bot.config.MAXTARGCONFIG.notice
+            maxtargets = bot.config.SpiceBot_OSD.notice
         elif text_method in ['PRIVMSG', 'ACTION']:
-            maxtargets = bot.config.MAXTARGCONFIG.privmsg
+            maxtargets = bot.config.SpiceBot_OSD.privmsg
         maxtargets = int(maxtargets)
 
         recipientgroups = []
@@ -259,17 +277,12 @@ class SopelOSD:
         for recipientgroup in recipientgroups:
             text_method = text_method_orig
 
-            # No messages within the last 3 seconds? Go ahead!
-            # Otherwise, wait so it's been at least 0.8 seconds + penalty
-
             recipient_id = Identifier(recipientgroup)
 
             recipient_stack = self.stack.setdefault(recipient_id, {
                 'messages': [],
-                'flood_left': 4,
+                'flood_left': self.config.SpiceBot_OSD.flood_burst_lines,
                 'dots': 0,
-                # TODO
-                # 'flood_left': self.config.core.flood_burst_lines,
             })
             recipient_stack['dots'] = 0
 
@@ -281,32 +294,30 @@ class SopelOSD:
 
                     if not recipient_stack['flood_left']:
                         elapsed = time.time() - recipient_stack['messages'][-1][0]
-                        # TODO
-                        # recipient_stack['flood_left'] = min(
-                        #    self.config.core.flood_burst_lines,
-                        #    int(elapsed) * self.config.core.flood_refill_rate)
-                        recipient_stack['flood_left'] = min(4, int(elapsed) * 1)
+                        recipient_stack['flood_left'] = min(
+                            self.config.SpiceBot_OSD.flood_burst_lines,
+                            int(elapsed) * self.config.SpiceBot_OSD.flood_refill_rate)
 
                     if not recipient_stack['flood_left']:
                         elapsed = time.time() - recipient_stack['messages'][-1][0]
                         penalty = float(max(0, len(text) - 50)) / 70
                         # Never wait more than 2 seconds
-                        # wait = min(self.config.core.flood_empty_wait + penalty, 2) # TODO
-                        wait = min(0.7 + penalty, 2)
+                        wait = min(self.config.SpiceBot_OSD.flood_empty_wait + penalty, 2)
                         if elapsed < wait:
                             time.sleep(wait - elapsed)
 
                         # Loop detection
                         messages = [m[1] for m in recipient_stack['messages'][-8:]]
 
-                        # If what we about to send repeated at least 5 times in the
-                        # last 2 minutes, replace with '...'
-                        if messages.count(text) >= 5 and elapsed < 120:
-                            recipient_stack['dots'] += 1
-                        else:
-                            recipient_stack['dots'] = 0
+                        if self.config.SpiceBot_OSD.flood_dots:
+                            # If what we about to send repeated at least 5 times in the
+                            # last 2 minutes, replace with '...'
+                            if messages.count(text) >= 5 and elapsed < 120:
+                                recipient_stack['dots'] += 1
+                            else:
+                                recipient_stack['dots'] = 0
 
-                    if not recipient_stack['dots'] >= 3:
+                    if recipient_stack['dots'] <= 3:
 
                         recipient_stack['flood_left'] = max(0, recipient_stack['flood_left'] - 1)
                         recipient_stack['messages'].append((time.time(), self.safe(text)))
@@ -377,7 +388,10 @@ class SopelOSD:
             self.osd(text, dest, 'PRIVMSG', max_messages)
 
     def msg(self, recipient, text, max_messages=1):
-        # Deprecated, but way too much of a pain to remove.
+        """
+        .. deprecated:: 6.0
+            Use :meth:`say` instead. Will be removed in Sopel 8.
+        """
         self.osd(text, recipient, 'PRIVMSG', max_messages)
 
 
@@ -392,19 +406,16 @@ class SopelWrapperOSD(object):
         if destination is None:
             destination = self._trigger.sender
         self._bot.osd(self, message, destination, 'PRIVMSG', 1)
-        # self._bot.say(message, destination, max_messages)
 
     def action(self, message, destination=None, max_messages=1):
         if destination is None:
             destination = self._trigger.sender
         self._bot.osd(self, message, destination, 'ACTION', 1)
-        # self._bot.action(message, destination, max_messages)
 
     def notice(self, message, destination=None, max_messages=1):
         if destination is None:
             destination = self._trigger.sender
         self._bot.osd(self, message, destination, 'NOTICE', 1)
-        # self._bot.notice(message, destination, max_messages)
 
     def reply(self, message, destination=None, reply_to=None, notice=False, max_messages=1):
         if destination is None:
@@ -416,4 +427,3 @@ class SopelWrapperOSD(object):
             self._bot.osd(self, message, destination, 'NOTICE', 1)
         else:
             self._bot.osd(self, message, destination, 'PRIVMSG', 1)
-        # self._bot.reply(message, destination, reply_to, notice, max_messages)

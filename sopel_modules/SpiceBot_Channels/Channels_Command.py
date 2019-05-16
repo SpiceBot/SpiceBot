@@ -6,7 +6,7 @@ import sopel.module
 
 import spicemanip
 
-from sopel_modules.SpiceBot_Events.System import bot_events_check
+from sopel_modules.SpiceBot_Events.System import botevents
 from sopel_modules.SpiceBot_SBTools import (
                                             sopel_triggerargs, inlist, channel_privs,
                                             join_all_channels, channel_list_current,
@@ -14,11 +14,12 @@ from sopel_modules.SpiceBot_SBTools import (
 from .Channels import bot_part_empty
 
 
+@botevents.check_ready([botevents.BOT_LOADED])
 @sopel.module.nickname_commands('channels', 'channel')
 def nickname_comand_channels(bot, trigger):
 
-    while not bot_events_check(bot, '1004'):
-        pass
+    # while not botevents.check(botevents.BOT_LOADED):
+    #    pass
 
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
 

@@ -6,13 +6,6 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 
 
-"""Dyanmic Table Creation"""
-
-
-def db_create_table(bot, tablename):
-    bot.db._create_table(tablename)
-
-
 """Database Direct"""
 
 
@@ -58,7 +51,7 @@ def db_adjust_list(bot, nick, entries, key, adjustmentdirection):
     for x in adjustlistnew:
         if x not in adjustlist:
             adjustlist.append(x)
-    if adjustlist == []:
+    if not len(adjustlist):
         db_reset_value(bot, nick, key)
     else:
         db_set_nick_value(bot, nick, key, adjustlist)

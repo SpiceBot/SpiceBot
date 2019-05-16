@@ -6,7 +6,7 @@ import sopel.module
 from sopel.config.types import StaticSection, ValidatedAttribute
 
 from sopel_modules.SpiceBot_SBTools import bot_logging
-from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger
+from sopel_modules.SpiceBot_Events.System import botevents
 
 import os
 
@@ -26,11 +26,11 @@ def setup(bot):
     bot_logging(bot, 'SpiceBot_Logs', "Starting Setup Procedure")
     bot.config.define_section("SpiceBot_Logs", SpiceBot_Logs_MainSection, validate=False)
 
-    bot_events_startup_register(bot, ['2004'])
+    botevents.startup_add([botevents.BOT_LOGS])
 
     bot_logs_setup_check(bot)
 
-    bot_events_trigger(bot, 2004, "SpiceBot_Logs")
+    botevents.trigger(bot, botevents.BOT_LOGS, "SpiceBot_Logs")
 
 
 def bot_logs_setup_check(bot):
@@ -43,10 +43,10 @@ def shutdown(bot):
         del bot.memory["SpiceBot_Logs"]
 
 
-@sopel.module.event('1003')
+@sopel.module.event(botevents.BOT_CONNECTED)
 @sopel.module.rule('.*')
 def join_log_channel(bot, trigger):
-    bot_events_recieved(bot, trigger.event)
+    botevents.recieved(trigger)
 
     if bot.config.SpiceBot_Logs.logging_channel:
         channel = bot.config.SpiceBot_Logs.logging_channel
@@ -68,7 +68,7 @@ def join_log_channel(bot, trigger):
 
 def stdio_logs_fetch(bot):
 
-    stdio_ignore = ["Loaded:"]
+    stdio_ignore = []
     for logtype in bot.memory['SpiceBot_Logs']["logs"].keys():
         stdio_ignore.append("[" + logtype + "]")
 
@@ -94,10 +94,15 @@ def stdio_logs_fetch(bot):
         filelines = []
 
     debuglines = []
+    loadedmodules = []
     for line in filelines:
-        if not line.startswith(tuple(stdio_ignore)):
-            if not line.isspace():
+        if line.startswith("Loaded:"):
+            loadedmodules.append(str(line).split("Loaded:")[-1])
+        else:
+            if not line.startswith(tuple(stdio_ignore)) and not line.isspace():
                 debuglines.append(str(line))
+    loadedmodules = "Loaded: " + spicemanip.main(loadedmodules, 'andlist')
+    debuglines.insert(1, loadedmodules)
 
     return debuglines
 
@@ -126,7 +131,7 @@ def get_running_pid(bot):
     return pidnum
 
 
-@sopel.module.event('2004')
+@sopel.module.event(botevents.BOT_LOGS)
 @sopel.module.rule('.*')
 def bot_events_setup(bot, trigger):
-    bot_events_recieved(bot, trigger.event)
+    botevents.recieved(trigger)

@@ -20,7 +20,8 @@ rm dev-requirements.txt
 wget https://raw.githubusercontent.com/SpiceBot/SpiceBot/development/Installation%20Files/requirements.txt
 pip3 install -r requirements.txt
 rm requirements.txt
-pip3 install sopel
+# pip3 install sopel
+pip3 install --upgrade --force-reinstall git+https://github.com/sopel-irc/sopel@master
 
 mkdir /usr/local/lib/python3.6/dist-packages/sopel/modules/stock
 mv /usr/local/lib/python3.6/dist-packages/sopel/modules/* /usr/local/lib/python3.6/dist-packages/sopel/modules/stock/
@@ -38,6 +39,9 @@ git checkout dev
 mkdir /run/sopel
 echo $$ > /run/sopel/sopel-SpiceBotSERV.pid
 chmod -R 777 /run/sopel/
+
+apt install mysql-server libmysqlclient-dev -y
+pip3 install mysql
 
 
 cp /home/sopel/SpiceBot/System-Files/Config/SpiceBot.cfg /home/sopel/SpiceBot.cfg
