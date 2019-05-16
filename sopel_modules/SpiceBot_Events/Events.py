@@ -11,7 +11,7 @@ from sopel_modules.SpiceBot_SBTools import bot_logging
 import time
 
 
-@sopel.module.event('001')
+@botevents.event('001')
 @sopel.module.rule('.*')
 def bot_startup_connection(bot, trigger):
     botevents.trigger(bot, botevents.BOT_WELCOME, "Welcome to the SpiceBot Events System")
@@ -21,7 +21,7 @@ def bot_startup_connection(bot, trigger):
     botevents.trigger(bot, botevents.BOT_CONNECTED, "Bot Connected to IRC")
 
 
-@sopel.module.event(botevents.BOT_WELCOME)
+@botevents.event(botevents.BOT_WELCOME)
 @sopel.module.rule('.*')
 def bot_events_start(bot, trigger):
     bot_logging(bot, 'SpiceBot_Events', trigger.args[1], True)
@@ -30,20 +30,20 @@ def bot_events_start(bot, trigger):
 
 
 @botevents.startup_check_ready()
-@sopel.module.event(botevents.BOT_READY)
+@botevents.event(botevents.BOT_READY)
 @sopel.module.rule('.*')
 def bot_events_startup_complete(bot, trigger):
     botevents.trigger(bot, botevents.BOT_LOADED, "All registered modules setup procedures have completed")
 
 
-@sopel.module.event(botevents.BOT_READY)
+@botevents.event(botevents.BOT_READY)
 @sopel.module.rule('.*')
 def bot_events_ready(bot, trigger):
     bot_logging(bot, 'SpiceBot_Events', trigger.args[1], True)
     botevents.recieved(trigger)
 
 
-@sopel.module.event(botevents.BOT_CONNECTED)
+@botevents.event(botevents.BOT_CONNECTED)
 @sopel.module.rule('.*')
 def bot_events_connected(bot, trigger):
     bot_logging(bot, 'SpiceBot_Events', trigger.args[1], True)
@@ -60,7 +60,7 @@ def bot_events_connected(bot, trigger):
             del botevents.SpiceBot_Events["trigger_queue"][0]
 
 
-@sopel.module.event(botevents.BOT_LOADED)
+@botevents.event(botevents.BOT_LOADED)
 @sopel.module.rule('.*')
 def bot_events_complete(bot, trigger):
     bot_logging(bot, 'SpiceBot_Events', trigger.args[1], True)

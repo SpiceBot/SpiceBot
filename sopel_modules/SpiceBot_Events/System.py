@@ -96,6 +96,18 @@ class BotEvents(object):
             return _nop
         return actual_decorator
 
+    def event(self, *event_list):
+        def actual_decorator(function):
+            @functools.wraps(function)
+            def add_attribute(function):
+                if not hasattr(function, "event"):
+                    function.event = []
+                function.event.extend(event_list)
+                self.recieved(function)
+                return function
+            return add_attribute
+        return actual_decorator
+
 
 botevents = BotEvents()
 
