@@ -32,9 +32,6 @@ def bot_events_complete(bot, trigger):
 def InvalidCommand_triggers(bot, trigger):
     return
 
-    # while not botevents.check([botevents.BOT_LOADED, botevents.BOT_COMMANDSQUERY]):
-    #    pass
-
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'prefix_command')
 
     # patch for people typing "...", maybe other stuff, but this verifies that there is still a command here

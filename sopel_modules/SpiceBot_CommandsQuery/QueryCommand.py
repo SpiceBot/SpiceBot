@@ -16,9 +16,6 @@ import spicemanip
 @sopel.module.rule('^\?(.*)')
 def query_detection(bot, trigger):
 
-    # while not botevents.check(botevents.BOT_COMMANDSQUERY):
-    #    pass
-
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'query_command')
 
     # command issued, check if valid

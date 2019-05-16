@@ -15,7 +15,6 @@ import time
 @sopel.module.rule('.*')
 def bot_startup_connection(bot, trigger):
     botevents.trigger(bot, botevents.BOT_WELCOME, "Welcome to the SpiceBot Events System")
-
     while not len(bot.channels.keys()) > 0:
         pass
     time.sleep(1)
@@ -27,11 +26,13 @@ def bot_startup_connection(bot, trigger):
 def bot_events_start(bot, trigger):
     bot_logging(bot, 'SpiceBot_Events', trigger.args[1], True)
     botevents.recieved(trigger)
-
     botevents.trigger(bot, botevents.BOT_READY, "Ready To Process module setup procedures")
 
-    while not botevents.startup_check():
-        pass
+
+@botevents.startup_check_ready()
+@sopel.module.event(botevents.BOT_READY)
+@sopel.module.rule('.*')
+def bot_events_startup_complete(bot, trigger):
     botevents.trigger(bot, botevents.BOT_LOADED, "All registered modules setup procedures have completed")
 
 

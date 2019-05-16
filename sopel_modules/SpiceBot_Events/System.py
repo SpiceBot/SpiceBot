@@ -80,9 +80,17 @@ class BotEvents(object):
         def actual_decorator(function):
             @functools.wraps(function)
             def _nop(*args, **kwargs):
-                # Assign trigger and bot for easy access later
-                bot, trigger = args[0:2]
                 while not self.check(checklist):
+                    pass
+                return function(*args, **kwargs)
+            return _nop
+        return actual_decorator
+
+    def startup_check_ready(self):
+        def actual_decorator(function):
+            @functools.wraps(function)
+            def _nop(*args, **kwargs):
+                while not self.startup_check():
                     pass
                 return function(*args, **kwargs)
             return _nop

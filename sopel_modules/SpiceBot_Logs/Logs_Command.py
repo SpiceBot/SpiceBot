@@ -15,9 +15,6 @@ from .Logs import systemd_logs_fetch, stdio_logs_fetch
 @sopel.module.nickname_commands('logs', 'debug')
 def bot_command_logs(bot, trigger):
 
-    # while not botevents.check(botevents.BOT_LOGS):
-    #    pass
-
     if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
         bot.say("I was unable to process this Bot Nick command due to privilege issues.")
         return

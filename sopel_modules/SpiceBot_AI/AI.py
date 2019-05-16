@@ -14,9 +14,6 @@ from sopel_modules.SpiceBot_Events.System import botevents
 @sopel.module.nickname_commands('(.*)')
 def bot_command_nick(bot, trigger):
 
-    # while not botevents.check([botevents.BOT_LOADED, botevents.BOT_COMMANDSQUERY]):
-    #    pass
-
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
 
     if not triggercommand:

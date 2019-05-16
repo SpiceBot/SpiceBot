@@ -18,9 +18,6 @@ from .Channels import bot_part_empty
 @sopel.module.nickname_commands('channels', 'channel')
 def nickname_comand_channels(bot, trigger):
 
-    # while not botevents.check(botevents.BOT_LOADED):
-    #    pass
-
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
 
     if not len(triggerargs):

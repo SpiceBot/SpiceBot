@@ -16,9 +16,6 @@ import spicemanip
 @sopel.module.nickname_commands('(.*)')
 def query_detection_nick(bot, trigger):
 
-    # while not botevents.check(botevents.BOT_COMMANDSQUERY):
-    #    pass
-
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
 
     # command issued, check if valid

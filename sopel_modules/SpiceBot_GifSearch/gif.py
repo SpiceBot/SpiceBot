@@ -16,9 +16,6 @@ import spicemanip
 @module.commands('gif')
 def gif_trigger(bot, trigger):
 
-    # while not botevents.check(botevents.BOT_GIFSEARCH):
-    #    pass
-
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger)
     if not len(triggerargs):
         return bot.osd("Please present a query to search.")
