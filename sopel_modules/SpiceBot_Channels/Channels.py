@@ -65,8 +65,6 @@ def trigger_channel_list_initial(bot, trigger):
     # Unkickable
     bot.write(('SAMODE', bot.nick, '+q'))
 
-    bot_part_empty(bot)
-
     bot.write(['LIST'])
     bot.memory['SpiceBot_Channels']['ProcessLock'] = True
 
@@ -84,7 +82,6 @@ def trigger_channel_list_initial(bot, trigger):
     channel_list_current(bot)
     foundchannelcount = len(bot.memory['SpiceBot_Channels']['channels'].keys())
     bot_logging(bot, 'SpiceBot_Channels', "Channel listing finished! " + str(foundchannelcount) + " channel(s) found.")
-    botevents.trigger(bot, botevents.BOT_CHANNELS, "SpiceBot_Channels")
 
     join_all_channels(bot)
     chanadmin_all_channels(bot)
@@ -92,12 +89,16 @@ def trigger_channel_list_initial(bot, trigger):
     if "*" in bot.memory['SpiceBot_Channels']['channels']:
         del bot.memory['SpiceBot_Channels']['channels']["*"]
 
-    bot_part_empty(bot)
+    botevents.trigger(bot, botevents.BOT_CHANNELS, "SpiceBot_Channels")
 
+
+@sopel.module.event(botevents.BOT_CHANNELS)
+@sopel.module.rule('.*')
+def trigger_channel_list_recurring(bot, trigger):
     while True:
         try:
             time.sleep(1800)
-            bot_part_empty(bot)
+
             oldlist = list(bot.memory['SpiceBot_Channels']['channels'].keys())
             bot.write(['LIST'])
             bot.memory['SpiceBot_Channels']['ProcessLock'] = True
@@ -117,17 +118,21 @@ def trigger_channel_list_initial(bot, trigger):
 
             if "*" in bot.memory['SpiceBot_Channels']['channels']:
                 del bot.memory['SpiceBot_Channels']['channels']["*"]
-            bot_part_empty(bot)
+
         except KeyError:
             return
 
 
-def bot_part_empty(bot):
+@sopel.module.event(botevents.BOT_CHANNELS)
+@sopel.module.rule('.*')
+def bot_part_empty(bot, trigger):
+    """Don't stay in empty channels"""
     ignorepartlist = []
     if bot.config.SpiceBot_Logs.logging_channel:
         ignorepartlist.append(bot.config.SpiceBot_Logs.logging_channel)
-    for channel in bot.channels.keys():
-        if len(bot.channels[channel].privileges.keys()) == 1 and channel not in ignorepartlist:
-            bot.part(channel, "Leaving Empty Channel")
-            if channel.lower() in bot.memory['SpiceBot_Channels']['channels']:
-                del bot.memory['SpiceBot_Channels']['channels'][channel.lower()]
+    while True:
+        for channel in bot.channels.keys():
+            if len(bot.channels[channel].privileges.keys()) == 1 and channel not in ignorepartlist:
+                bot.part(channel, "Leaving Empty Channel")
+                if channel.lower() in bot.memory['SpiceBot_Channels']['channels']:
+                    del bot.memory['SpiceBot_Channels']['channels'][channel.lower()]
