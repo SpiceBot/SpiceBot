@@ -46,7 +46,6 @@ def shutdown(bot):
 @sopel.module.event(botevents.BOT_CONNECTED)
 @sopel.module.rule('.*')
 def join_log_channel(bot, trigger):
-    botevents.recieved(trigger)
 
     if bot.config.SpiceBot_Logs.logging_channel:
         channel = bot.config.SpiceBot_Logs.logging_channel
@@ -129,9 +128,3 @@ def get_running_pid(bot):
         pidnum = e
         pidnum = str(os.popen("systemctl show " + str(bot.nick) + " --property=MainPID").read()).split("=")[-1]
     return pidnum
-
-
-@sopel.module.event(botevents.BOT_LOGS)
-@sopel.module.rule('.*')
-def bot_events_setup(bot, trigger):
-    botevents.recieved(trigger)

@@ -21,8 +21,6 @@ def shutdown(bot):
 @sopel.module.event(botevents.BOT_LOADED)
 @sopel.module.rule('.*')
 def bot_events_complete(bot, trigger):
-    botevents.recieved(trigger)
-
     for comtype in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
         bot.memory["SpiceBot_InvalidCommand"]["valid"].extend(bot.memory['SpiceBot_CommandsQuery']['commands'][comtype].keys())
 

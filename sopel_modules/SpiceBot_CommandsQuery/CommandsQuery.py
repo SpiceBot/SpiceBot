@@ -173,7 +173,6 @@ def shutdown(bot):
 @sopel.module.event(botevents.BOT_LOADED)
 @sopel.module.rule('.*')
 def bot_events_complete(bot, trigger):
-    botevents.recieved(trigger)
 
     for comtype in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
         if comtype not in ['module', 'nickname', 'rule']:
@@ -212,9 +211,3 @@ def commandsquery_register(bot, command_type, validcoms, aliasfor=None):
     for comalias in comaliases:
         if comalias not in bot.memory['SpiceBot_CommandsQuery']['commands'][command_type].keys():
             bot.memory['SpiceBot_CommandsQuery']['commands'][command_type][comalias] = {"aliasfor": aliasfor}
-
-
-@sopel.module.event(botevents.BOT_COMMANDSQUERY)
-@sopel.module.rule('.*')
-def bot_events_setup(bot, trigger):
-    botevents.recieved(trigger)

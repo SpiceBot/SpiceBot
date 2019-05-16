@@ -46,16 +46,21 @@ class BotEvents(object):
                 ":SpiceBot_Events " + number + " " + str(bot.nick) + " :" + message
             )
             bot.dispatch(pretrigger)
+            self.recieved({"number": number, "message": message})
         else:
             pretriggerdict = {"number": number, "message": message}
             self.SpiceBot_Events["trigger_queue"].append(pretriggerdict)
 
     def recieved(self, trigger):
-        eventnumber = str(trigger.event)
-        message_payload = trigger.args[1]
+        if isinstance(trigger, dict):
+            eventnumber = str(trigger["number"])
+            message = str(trigger["message"])
+        else:
+            eventnumber = str(trigger.event)
+            message = trigger.args[1]
         if eventnumber not in self.SpiceBot_Events["triggers_recieved"]:
             self.SpiceBot_Events["triggers_recieved"][eventnumber] = []
-        self.SpiceBot_Events["triggers_recieved"][eventnumber].append(message_payload)
+        self.SpiceBot_Events["triggers_recieved"][eventnumber].append(message)
 
     def check(self, checklist):
         if not isinstance(checklist, list):
@@ -94,18 +99,6 @@ class BotEvents(object):
                     pass
                 return function(*args, **kwargs)
             return _nop
-        return actual_decorator
-
-    def event(self, *event_list):
-        def actual_decorator(function):
-            @functools.wraps(function)
-            def add_attribute(function):
-                if not hasattr(function, "event"):
-                    function.event = []
-                function.event.extend(event_list)
-                self.recieved(function)
-                return function
-            return add_attribute
         return actual_decorator
 
 

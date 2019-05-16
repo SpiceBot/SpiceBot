@@ -249,9 +249,3 @@ def getGif(bot, searchdict):
     # return dict
     gifdict['error'] = None
     return gifdict
-
-
-@sopel.module.event(botevents.BOT_GIFSEARCH)
-@sopel.module.rule('.*')
-def bot_events_setup(bot, trigger):
-    botevents.recieved(trigger)

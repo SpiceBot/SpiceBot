@@ -14,9 +14,3 @@ def setup(bot):
 
     if 'SpiceBot_StartupMonologue' not in bot.memory:
         bot.memory['SpiceBot_StartupMonologue'] = []
-
-
-@sopel.module.event(botevents.BOT_STARTUPMONOLOGUE, botevents.BOT_STARTUPMONOLOGUE_CHANNELS, botevents.BOT_STARTUPMONOLOGUE_COMMANDSQUERY, botevents.BOT_STARTUPMONOLOGUE_CONNECTED)
-@sopel.module.rule('.*')
-def bot_events_setup(bot, trigger):
-    botevents.recieved(trigger)

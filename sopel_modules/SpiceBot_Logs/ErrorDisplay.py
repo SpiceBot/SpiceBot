@@ -12,7 +12,6 @@ from .Logs import stdio_logs_fetch
 @sopel.module.event(botevents.BOT_STARTUPMONOLOGUE)
 @sopel.module.rule('.*')
 def bot_startup_monologue_start(bot, trigger):
-    botevents.recieved(trigger)
 
     debuglines = stdio_logs_fetch(bot)
 

@@ -13,7 +13,6 @@ import time
 @sopel.module.event(botevents.BOT_CONNECTED)
 @sopel.module.rule('.*')
 def bot_startup_monologue_start(bot, trigger):
-    botevents.recieved(trigger)
 
     # Startup
     bot_logging(bot, 'SpiceBot_StartupMonologue', bot.nick + " is now starting. Please wait while I load my configuration")
@@ -25,7 +24,6 @@ def bot_startup_monologue_start(bot, trigger):
 @sopel.module.event(botevents.BOT_COMMANDSQUERY)
 @sopel.module.rule('.*')
 def bot_startup_monologue_commands(bot, trigger):
-    botevents.recieved(trigger)
 
     availablecomsnum, availablecomsfiles = 0, 0
     for commandstype in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
@@ -41,7 +39,6 @@ def bot_startup_monologue_commands(bot, trigger):
 @sopel.module.event(botevents.BOT_CHANNELS)
 @sopel.module.rule('.*')
 def bot_startup_monologue_channels(bot, trigger):
-    botevents.recieved(trigger)
 
     botcount = len(bot.channels.keys())
     servercount = len(bot.memory['SpiceBot_Channels']['channels'].keys())
@@ -53,7 +50,6 @@ def bot_startup_monologue_channels(bot, trigger):
 @sopel.module.event(botevents.BOT_LOADED)
 @sopel.module.rule('.*')
 def bot_startup_monologue_display(bot, trigger):
-    botevents.recieved(trigger)
 
     timesince = humanized_time(time.time() - bot.memory["SpiceBot_Uptime"])
     bot.memory['SpiceBot_StartupMonologue'].append("Startup took " + timesince)

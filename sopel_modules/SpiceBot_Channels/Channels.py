@@ -61,7 +61,6 @@ def shutdown(bot):
 @sopel.module.event(botevents.BOT_CONNECTED)
 @sopel.module.rule('.*')
 def trigger_channel_list_initial(bot, trigger):
-    botevents.recieved(trigger)
 
     # Unkickable
     bot.write(('SAMODE', bot.nick, '+q'))
@@ -132,9 +131,3 @@ def bot_part_empty(bot):
             bot.part(channel, "Leaving Empty Channel")
             if channel.lower() in bot.memory['SpiceBot_Channels']['channels']:
                 del bot.memory['SpiceBot_Channels']['channels'][channel.lower()]
-
-
-@sopel.module.event(botevents.BOT_CHANNELS)
-@sopel.module.rule('.*')
-def bot_events_setup(bot, trigger):
-    botevents.recieved(trigger)
