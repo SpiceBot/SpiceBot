@@ -24,11 +24,17 @@ class BotEvents(object):
     """
 
     def __init__(self):
+        self.RPL_WELCOME = '001'  # This is a defined IRC event
+        self.BOT_WELCOME = '1001'
+        self.BOT_READY = '1002'
+        self.BOT_CONNECTED = '1003'
+        self.BOT_LOADED = '1004'
+        self.defaultevents = [self.BOT_WELCOME, self.BOT_READY, self.BOT_CONNECTED, self.BOT_LOADED]
         self.SpiceBot_Events = {
-                                "assigned_IDs": [1000],
+                                "assigned_IDs": [1000, 1001, 1002, 1003, 1004],
                                 "triggers_recieved": {},
                                 "trigger_queue": [],
-                                "startup_required": []
+                                "startup_required": [self.BOT_WELCOME, self.BOT_READY, self.BOT_CONNECTED]
                                 }
 
     def __getattr__(self, name):
@@ -40,7 +46,7 @@ class BotEvents(object):
 
     def trigger(self, bot, number, message="SpiceBot_Events"):
         number = str(number)
-        if number in [self.BOT_WELCOME, self.BOT_READY, self.BOT_CONNECTED, self.BOT_LOADED]:
+        if number in self.defaultevents or self.check(self.BOT_CONNECTED):
             pretrigger = PreTrigger(
                 bot.nick,
                 ":SpiceBot_Events " + number + " " + str(bot.nick) + " :" + message
@@ -107,4 +113,3 @@ botevents = BotEvents()
 
 def setup(bot):
     bot_logging(bot, 'SpiceBot_Events', "Starting setup procedure")
-    botevents.startup_add([botevents.BOT_WELCOME, botevents.BOT_READY, botevents.BOT_CONNECTED])

@@ -11,39 +11,45 @@ from sopel_modules.SpiceBot_SBTools import bot_logging
 import time
 
 
-@sopel.module.event('001')
+@sopel.module.event(botevents.RPL_WELCOME)
 @sopel.module.rule('.*')
-def bot_startup_connection(bot, trigger):
+def bot_startup_welcome(bot, trigger):
+    """The Bot events system does not start until RPL_WELCOME 001 is recieved
+    from the server"""
     botevents.trigger(bot, botevents.BOT_WELCOME, "Welcome to the SpiceBot Events System")
-    while not len(bot.channels.keys()) > 0:
-        pass
-    time.sleep(1)
-    botevents.trigger(bot, botevents.BOT_CONNECTED, "Bot Connected to IRC")
 
 
 @sopel.module.event(botevents.BOT_WELCOME)
 @sopel.module.rule('.*')
 def bot_events_start(bot, trigger):
+    """This stage is redundant, but shows the system is working."""
     bot_logging(bot, 'SpiceBot_Events', trigger.args[1], True)
     botevents.trigger(bot, botevents.BOT_READY, "Ready To Process module setup procedures")
+
+
+@sopel.module.event(botevents.BOT_WELCOME)
+@sopel.module.rule('.*')
+def bot_startup_connection(bot, trigger):
+    """Here, we wait until we are in at least one channel"""
+    while not len(bot.channels.keys()):
+        pass
+    time.sleep(1)
+    botevents.trigger(bot, botevents.BOT_CONNECTED, "Bot Connected to IRC")
 
 
 @botevents.startup_check_ready()
 @sopel.module.event(botevents.BOT_READY)
 @sopel.module.rule('.*')
 def bot_events_startup_complete(bot, trigger):
-    botevents.trigger(bot, botevents.BOT_LOADED, "All registered modules setup procedures have completed")
-
-
-@sopel.module.event(botevents.BOT_READY)
-@sopel.module.rule('.*')
-def bot_events_ready(bot, trigger):
+    """All events registered as required for startup have completed"""
     bot_logging(bot, 'SpiceBot_Events', trigger.args[1], True)
+    botevents.trigger(bot, botevents.BOT_LOADED, "All registered modules setup procedures have completed")
 
 
 @sopel.module.event(botevents.BOT_CONNECTED)
 @sopel.module.rule('.*')
 def bot_events_connected(bot, trigger):
+    """For items tossed in a queue, this will trigger then accordingly"""
     bot_logging(bot, 'SpiceBot_Events', trigger.args[1], True)
 
     while True:
@@ -57,9 +63,13 @@ def bot_events_connected(bot, trigger):
             bot.dispatch(pretrigger)
             del botevents.SpiceBot_Events["trigger_queue"][0]
             botevents.recieved({"number": number, "message": message})
+        else:
+            if botevents.startup_check():
+                return
 
 
 @sopel.module.event(botevents.BOT_LOADED)
 @sopel.module.rule('.*')
 def bot_events_complete(bot, trigger):
+    """This is here simply to log to stderr that this was recieved."""
     bot_logging(bot, 'SpiceBot_Events', trigger.args[1], True)
