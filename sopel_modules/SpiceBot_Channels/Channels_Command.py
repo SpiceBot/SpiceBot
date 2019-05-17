@@ -11,6 +11,7 @@ from sopel_modules.SpiceBot_SBTools import (
                                             sopel_triggerargs, inlist, channel_privs,
                                             join_all_channels, channel_list_current,
                                             )
+from .Channels import bot_part_empty
 
 
 @botevents.check_ready([botevents.BOT_LOADED])
@@ -54,6 +55,7 @@ def nickname_comand_channels(bot, trigger):
         if not trigger.admin:
             bot.osd("You do not have permission to update the channel listing.")
             return
+        bot_part_empty(bot)
 
         bot.write(['LIST'])
         bot.osd(["[SpiceBot_Channels]", "I am now updating the channel listing for this server."])
@@ -63,7 +65,7 @@ def nickname_comand_channels(bot, trigger):
         join_all_channels(bot)
         foundchannelcount = len(bot.memory['SpiceBot_Channels']['channels'].keys())
         bot.osd("[SpiceBot_Channels]", "Channel listing finished!", str(foundchannelcount) + " channel(s) found.")
-
+        bot_part_empty(bot)
         return
 
     elif commandused == 'topic':

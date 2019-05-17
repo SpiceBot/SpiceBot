@@ -97,23 +97,8 @@ def command_permissions_check(bot, trigger, privslist):
 
 
 def bot_logging(bot, logtype, logentry, stdio=False):
-
-    if 'SpiceBot_Logs' not in bot.memory:
-        bot.memory['SpiceBot_Logs'] = {"logs": {"Sopel_systemd": [], "Sopel_stdio": []}, "queue": []}
-
-    logmessage = "[" + logtype + "] " + logentry + ""
-
-    bot.memory['SpiceBot_Logs']["queue"].append(logmessage)
-
-    if stdio:
-        sopel.tools.stderr(logmessage)
-
-    if logtype not in bot.memory['SpiceBot_Logs']["logs"].keys():
-        bot.memory['SpiceBot_Logs']["logs"][logtype] = []
-
-    bot.memory['SpiceBot_Logs']["logs"][logtype].append(logentry)
-    if len(bot.memory['SpiceBot_Logs']["logs"][logtype]) > 10:
-        del bot.memory['SpiceBot_Logs']["logs"][logtype][0]
+    from sopel_modules.SpiceBot_Logs.Logs import botlogs
+    botlogs.log(logtype, logentry, stdio=False)
 
 
 """
