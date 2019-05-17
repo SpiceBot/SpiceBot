@@ -110,7 +110,7 @@ def trigger_channel_list_recurring(bot, trigger):
             while bot.memory['SpiceBot_Channels']['ProcessLock']:
                 pass
 
-            newlist = [item.lower() for item in oldlist if item.lower() not in bot.memory['SpiceBot_Channels']['channels']]
+            newlist = [item.lower() for item in oldlist if item.lower() not in list(bot.memory['SpiceBot_Channels']['channels'.keys()])]
             if "*" in newlist:
                 newlist.remove("*")
             if len(newlist) and bot.config.SpiceBot_Channels.announcenew:
@@ -133,9 +133,9 @@ def bot_part_empty(bot):
     ignorepartlist = []
     if bot.config.SpiceBot_Logs.logging_channel:
         ignorepartlist.append(bot.config.SpiceBot_Logs.logging_channel)
-    while True:
-        for channel in bot.channels.keys():
-            if len(bot.channels[channel].privileges.keys()) == 1 and channel not in ignorepartlist:
-                bot.part(channel, "Leaving Empty Channel")
-                if channel.lower() in bot.memory['SpiceBot_Channels']['channels']:
-                    del bot.memory['SpiceBot_Channels']['channels'][channel.lower()]
+
+    for channel in bot.channels.keys():
+        if len(bot.channels[channel].privileges.keys()) == 1 and channel not in ignorepartlist:
+            bot.part(channel, "Leaving Empty Channel")
+            if channel.lower() in bot.memory['SpiceBot_Channels']['channels']:
+                del bot.memory['SpiceBot_Channels']['channels'][channel.lower()]
