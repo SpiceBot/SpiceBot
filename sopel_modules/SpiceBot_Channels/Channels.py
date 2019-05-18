@@ -6,11 +6,9 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 from sopel.config.types import StaticSection, ValidatedAttribute, ListAttribute
 
+from sopel_modules.SpiceBot_Logs.Logs import botlogs
 from sopel_modules.SpiceBot_Events.System import botevents
-from sopel_modules.SpiceBot_SBTools import (
-                                            join_all_channels, chanadmin_all_channels, channel_list_current,
-                                            bot_logging
-                                            )
+from sopel_modules.SpiceBot_SBTools import join_all_channels, chanadmin_all_channels, channel_list_current,
 
 import spicemanip
 
@@ -44,7 +42,7 @@ botchannels = BotChannels()
 
 
 def setup(bot):
-    bot_logging(bot, 'SpiceBot_Channels', "Starting setup procedure")
+    botlogs.log('SpiceBot_Channels', "Starting setup procedure")
     botevents.startup_add([botevents.BOT_CHANNELS])
 
     bot.config.define_section("SpiceBot_Channels", SpiceBot_Channels_MainSection, validate=False)
@@ -70,7 +68,7 @@ def trigger_channel_list_initial(bot, trigger):
     bot.write(['LIST'])
     bot.memory['SpiceBot_Channels']['ProcessLock'] = True
 
-    bot_logging(bot, 'SpiceBot_Channels', "Initial Channel list populating")
+    botlogs.log('SpiceBot_Channels', "Initial Channel list populating")
     starttime = time.time()
 
     while not bot.memory['SpiceBot_Channels']['InitialProcess']:
@@ -78,12 +76,12 @@ def trigger_channel_list_initial(bot, trigger):
         if timesince < 60:
             pass
         else:
-            bot_logging(bot, 'SpiceBot_Channels', "Initial Channel list populating Timed Out")
+            botlogs.log('SpiceBot_Channels', "Initial Channel list populating Timed Out")
             bot.memory['SpiceBot_Channels']['InitialProcess'] = True
 
     channel_list_current(bot)
     foundchannelcount = len(bot.memory['SpiceBot_Channels']['channels'].keys())
-    bot_logging(bot, 'SpiceBot_Channels', "Channel listing finished! " + str(foundchannelcount) + " channel(s) found.")
+    botlogs.log('SpiceBot_Channels', "Channel listing finished! " + str(foundchannelcount) + " channel(s) found.")
 
     join_all_channels(bot)
     chanadmin_all_channels(bot)
@@ -131,8 +129,8 @@ def trigger_channel_list_recurring(bot, trigger):
 def bot_part_empty(bot):
     """Don't stay in empty channels"""
     ignorepartlist = []
-    if bot.config.SpiceBot_Logs.logging_channel:
-        ignorepartlist.append(bot.config.SpiceBot_Logs.logging_channel)
+    if bot.config.core.logging_channel:
+        ignorepartlist.append(bot.config.core.logging_channel)
 
     for channel in bot.channels.keys():
         if len(bot.channels[channel].privileges.keys()) == 1 and channel not in ignorepartlist:

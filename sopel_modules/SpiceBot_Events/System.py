@@ -7,8 +7,6 @@ import sopel
 from sopel.trigger import PreTrigger
 import functools
 
-from sopel_modules.SpiceBot_SBTools import bot_logging
-
 
 class BotEvents(object):
     """A dynamic listing of all the notable Bot numeric events.
@@ -109,7 +107,3 @@ class BotEvents(object):
 
 
 botevents = BotEvents()
-
-
-def setup(bot):
-    bot_logging(bot, 'SpiceBot_Events', "Starting setup procedure")

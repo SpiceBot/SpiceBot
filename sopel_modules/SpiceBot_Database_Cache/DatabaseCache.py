@@ -4,11 +4,12 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 # sopel imports
 import sopel.module
-from sopel_modules.SpiceBot_SBTools import bot_logging
+
+from sopel_modules.SpiceBot_Logs.Logs import botlogs
 
 
 def setup(bot):
-    bot_logging(bot, 'SpiceBot_DatabaseCache', "Setting up Database Cache")
+    botlogs.log('SpiceBot_DatabaseCache', "Setting up Database Cache")
     if 'SpiceBot_DatabaseCache' not in bot.memory:
         bot.memory['SpiceBot_DatabaseCache'] = dict()
 

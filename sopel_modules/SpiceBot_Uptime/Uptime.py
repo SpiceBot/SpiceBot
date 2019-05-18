@@ -6,15 +6,14 @@ import sopel.module
 
 import time
 
+from sopel_modules.SpiceBot_Logs.Logs import botlogs
 from sopel_modules.SpiceBot_SBTools import humanized_time
-
-from sopel_modules.SpiceBot_SBTools import bot_logging
 
 
 def setup(bot):
     if 'SpiceBot_Uptime' not in bot.memory:
         now = time.time()
-        bot_logging(bot, 'SpiceBot_Uptime', "Start time set to " + str(time.time()))
+        botlogs.log('SpiceBot_Uptime', "Start time set to " + str(time.time()))
         bot.memory["SpiceBot_Uptime"] = now
 
 

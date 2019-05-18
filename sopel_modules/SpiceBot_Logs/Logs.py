@@ -10,7 +10,7 @@ import os
 import spicemanip
 
 
-class BotLogs():
+class botlogs():
     """This Is a contained source of log information"""
     def __init__(self):
         self.SpiceBot_Logs = {
@@ -101,7 +101,7 @@ class BotLogs():
         return pidnum
 
 
-botlogs = BotLogs()
+botlogs = botlogs.log()
 
 
 @sopel.module.event('001')

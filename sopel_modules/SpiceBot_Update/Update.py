@@ -8,7 +8,8 @@ from sopel.config.types import StaticSection, ValidatedAttribute
 
 import spicemanip
 
-from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check, bot_logging, spicebot_reload, spicebot_update
+from sopel_modules.SpiceBot_Logs.Logs import botlogs
+from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check, spicebot_reload, spicebot_update
 
 
 class SpiceBot_Update_MainSection(StaticSection):
@@ -23,7 +24,7 @@ def configure(config):
 
 
 def setup(bot):
-    bot_logging(bot, 'SpiceBot_Update', "Initial Setup processing")
+    botlogs.log('SpiceBot_Update', "Initial Setup processing")
     bot.config.define_section("SpiceBot_Update", SpiceBot_Update_MainSection, validate=False)
 
 
@@ -48,7 +49,7 @@ def nickname_comand_update(bot, trigger):
     triggerargs = spicemanip.main(triggerargs, '2+', 'list')
 
     quitmessage = "Received command from " + trigger.nick + " to update from Github and restart"
-    bot_logging(bot, 'SpiceBot_Update', quitmessage)
+    botlogs.log('SpiceBot_Update', quitmessage)
     bot.osd(quitmessage, bot.channels.keys())
 
     if commandused == 'nodeps':

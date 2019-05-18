@@ -4,8 +4,9 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.module
 
+from sopel_modules.SpiceBot_Logs.Logs import botlogs
 from sopel_modules.SpiceBot_Events.System import botevents
-from sopel_modules.SpiceBot_SBTools import humanized_time, bot_logging
+from sopel_modules.SpiceBot_SBTools import humanized_time
 
 import time
 
@@ -15,7 +16,7 @@ import time
 def bot_startup_monologue_start(bot, trigger):
 
     # Startup
-    bot_logging(bot, 'SpiceBot_StartupMonologue', bot.nick + " is now starting. Please wait while I load my configuration")
+    botlogs.log('SpiceBot_StartupMonologue', bot.nick + " is now starting. Please wait while I load my configuration")
     bot.osd(" is now starting. Please wait while I load my configuration.", bot.channels.keys(), 'ACTION')
 
     botevents.trigger(bot, botevents.BOT_STARTUPMONOLOGUE_CONNECTED, "SpiceBot_StartupMonologue")
@@ -31,7 +32,7 @@ def bot_startup_monologue_commands(bot, trigger):
     availablecomsfiles += bot.memory['SpiceBot_CommandsQuery']['counts']
 
     bot.memory['SpiceBot_StartupMonologue'].append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
-    bot_logging(bot, 'SpiceBot_StartupMonologue', "There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
+    botlogs.log('SpiceBot_StartupMonologue', "There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
 
     botevents.trigger(bot, botevents.BOT_STARTUPMONOLOGUE_COMMANDSQUERY, "SpiceBot_StartupMonologue")
 
@@ -55,10 +56,10 @@ def bot_startup_monologue_display(bot, trigger):
     bot.memory['SpiceBot_StartupMonologue'].append("Startup took " + timesince)
 
     # Announce to chan, then handle some closing stuff
-    bot_logging(bot, 'SpiceBot_StartupMonologue', bot.nick + " startup complete")
+    botlogs.log('SpiceBot_StartupMonologue', bot.nick + " startup complete")
     bot.memory['SpiceBot_StartupMonologue'].insert(0, " startup complete")
 
     bot.osd(bot.memory['SpiceBot_StartupMonologue'], bot.channels.keys(), 'ACTION')
 
     botevents.trigger(bot, botevents.BOT_STARTUPMONOLOGUE, "SpiceBot_StartupMonologue")
-    bot_logging(bot, 'SpiceBot_StartupMonologue', "Startup Monologue has been issued to all channels.", True)
+    botlogs.log('SpiceBot_StartupMonologue', "Startup Monologue has been issued to all channels.", True)

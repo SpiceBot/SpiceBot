@@ -14,7 +14,7 @@ from sopel import tools, module
 from sopel.tools import Identifier
 from sopel.config.types import StaticSection, ValidatedAttribute
 
-from sopel_modules.SpiceBot_SBTools import bot_logging
+from sopel_modules.SpiceBot_Logs.Logs import botlogs
 
 import time
 from collections import abc
@@ -39,7 +39,7 @@ def configure(config):
 def setup(bot):
 
     # Inject OSD
-    bot_logging(bot, 'SpiceBot_OSD', "Implanting OSD function into bot")
+    botlogs.log('SpiceBot_OSD', "Implanting OSD function into bot")
     bot.osd = SopelOSD.osd
     sopel.bot.SopelWrapper.osd = SopelWrapperOSD.osd
     tools.get_available_message_bytes = ToolsOSD.get_available_message_bytes
@@ -47,7 +47,7 @@ def setup(bot):
     tools.get_message_recipientgroups = ToolsOSD.get_message_recipientgroups
 
     # overwrite default bot messaging
-    bot_logging(bot, 'SpiceBot_OSD', "Overwrite Default Sopel messaging commands")
+    botlogs.log('SpiceBot_OSD', "Overwrite Default Sopel messaging commands")
     bot.osd = SopelOSD.osd
     bot.say = SopelOSD.say
     bot.action = SopelOSD.action
@@ -60,7 +60,7 @@ def setup(bot):
     sopel.bot.SopelWrapper.reply = SopelWrapperOSD.reply
 
     # verify config settings for server
-    bot_logging(bot, 'SpiceBot_OSD', "Checking for config settings")
+    botlogs.log('SpiceBot_OSD', "Checking for config settings")
     bot.config.define_section("SpiceBot_OSD", SpiceBot_OSD, validate=False)
 
 

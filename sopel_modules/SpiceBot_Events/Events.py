@@ -5,8 +5,8 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import sopel.module
 from sopel.trigger import PreTrigger
 
+from sopel_modules.SpiceBot_Logs.Logs import botlogs
 from .System import botevents
-from sopel_modules.SpiceBot_SBTools import bot_logging
 
 import time
 
@@ -23,7 +23,7 @@ def bot_startup_welcome(bot, trigger):
 @sopel.module.rule('.*')
 def bot_events_start(bot, trigger):
     """This stage is redundant, but shows the system is working."""
-    bot_logging(bot, 'SpiceBot_Events', trigger.args[1], True)
+    botlogs.log('SpiceBot_Events', trigger.args[1], True)
     botevents.trigger(bot, botevents.BOT_READY, "Ready To Process module setup procedures")
 
 
@@ -42,7 +42,7 @@ def bot_startup_connection(bot, trigger):
 @sopel.module.rule('.*')
 def bot_events_startup_complete(bot, trigger):
     """All events registered as required for startup have completed"""
-    bot_logging(bot, 'SpiceBot_Events', trigger.args[1], True)
+    botlogs.log('SpiceBot_Events', trigger.args[1], True)
     botevents.trigger(bot, botevents.BOT_LOADED, "All registered modules setup procedures have completed")
 
 
@@ -50,7 +50,7 @@ def bot_events_startup_complete(bot, trigger):
 @sopel.module.rule('.*')
 def bot_events_connected(bot, trigger):
     """For items tossed in a queue, this will trigger then accordingly"""
-    bot_logging(bot, 'SpiceBot_Events', trigger.args[1], True)
+    botlogs.log('SpiceBot_Events', trigger.args[1], True)
 
     while True:
         if len(botevents.SpiceBot_Events["trigger_queue"]):
@@ -72,4 +72,4 @@ def bot_events_connected(bot, trigger):
 @sopel.module.rule('.*')
 def bot_events_complete(bot, trigger):
     """This is here simply to log to stderr that this was recieved."""
-    bot_logging(bot, 'SpiceBot_Events', trigger.args[1], True)
+    botlogs.log('SpiceBot_Events', trigger.args[1], True)
