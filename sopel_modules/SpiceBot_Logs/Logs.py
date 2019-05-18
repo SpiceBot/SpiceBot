@@ -101,7 +101,7 @@ class botlogs():
         return pidnum
 
 
-botlogs = botlogs.log()
+botlogs = botlogs()
 
 
 @sopel.module.event('001')
