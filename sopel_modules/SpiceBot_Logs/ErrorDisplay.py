@@ -5,14 +5,14 @@ import sopel.module
 
 from sopel_modules.SpiceBot_Events.System import botevents
 
-from .Logs import botlogs, stdio_logs_fetch
+from .Logs import botlogs
 
 
 @sopel.module.event(botevents.BOT_STARTUPMONOLOGUE)
 @sopel.module.rule('.*')
 def bot_startup_monologue_start(bot, trigger):
 
-    debuglines = stdio_logs_fetch(bot)
+    debuglines = botlogs.stdio_logs_fetch(bot)
 
     searchphrasefound = []
     for line in debuglines:

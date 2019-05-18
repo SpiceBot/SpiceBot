@@ -5,9 +5,9 @@ import sopel.module
 
 import spicemanip
 
-from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check, inlist, inlist_match, similar_list
+from .Logs import botlogs
 from sopel_modules.SpiceBot_Events.System import botevents
-from .Logs import systemd_logs_fetch, stdio_logs_fetch
+from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check, inlist, inlist_match, similar_list
 
 
 @botevents.check_ready([botevents.BOT_LOGS])
@@ -22,11 +22,11 @@ def bot_command_logs(bot, trigger):
 
     logtype = spicemanip.main(triggerargs, 1) or None
     if not logtype:
-        bot.osd("Current valid log(s) include: " + spicemanip.main(bot.memory['SpiceBot_Logs']["logs"].keys(), 'andlist'), trigger.sender, 'action')
+        bot.osd("Current valid log(s) include: " + spicemanip.main(botlogs.SpiceBot_Logs["list"].keys(), 'andlist'), trigger.sender, 'action')
         return
 
-    if not inlist(bot, logtype, bot.memory['SpiceBot_Logs']["logs"].keys()):
-        closestmatches = similar_list(bot, logtype, bot.memory['SpiceBot_Logs']["logs"].keys(), 10, 'reverse')
+    if not inlist(bot, logtype, botlogs.SpiceBot_Logs["list"].keys()):
+        closestmatches = similar_list(bot, logtype, botlogs.SpiceBot_Logs["list"].keys(), 10, 'reverse')
         if not len(closestmatches):
             bot.notice("No valid logs match " + str(logtype) + ".", trigger.nick)
         else:
@@ -34,14 +34,14 @@ def bot_command_logs(bot, trigger):
 
         return
 
-    logtype = inlist_match(bot, logtype, bot.memory['SpiceBot_Logs']["logs"].keys())
+    logtype = inlist_match(bot, logtype, botlogs.SpiceBot_Logs["list"].keys())
 
     if logtype == "Sopel_systemd":
-        logindex = systemd_logs_fetch(bot)
+        logindex = botlogs.systemd_logs_fetch(bot)
     elif logtype == "Sopel_stdio":
-        logindex = stdio_logs_fetch(bot)
+        logindex = botlogs.stdio_logs_fetch(bot)
     else:
-        logindex = bot.memory['SpiceBot_Logs']["logs"][logtype]
+        logindex = botlogs.SpiceBot_Logs["list"][logtype]
 
     if not len(logindex):
         bot.osd("No logs found for " + str(logtype) + ".")
