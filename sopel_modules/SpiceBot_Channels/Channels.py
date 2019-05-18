@@ -56,9 +56,6 @@ def unkickable_bot(bot, trigger):
 @sopel.module.rule('.*')
 def trigger_channel_list_initial(bot, trigger):
 
-    # Unkickable
-    bot.write(('SAMODE', bot.nick, '+q'))
-
     bot_part_empty(bot)
 
     bot.write(['LIST'])
@@ -104,7 +101,7 @@ def trigger_channel_list_recurring(bot, trigger):
             while bot.memory['SpiceBot_Channels']['ProcessLock']:
                 pass
 
-            newlist = [item.lower() for item in oldlist if item.lower() not in list(bot.memory['SpiceBot_Channels']['channels'.keys()])]
+            newlist = [item.lower() for item in oldlist if item.lower() not in list(bot.memory['SpiceBot_Channels']['channels'].keys())]
             if "*" in newlist:
                 newlist.remove("*")
             if len(newlist) and bot.config.SpiceBot_Channels.announcenew:
