@@ -6,6 +6,13 @@ import sopel.tools
 import sopel.config
 
 from sopel_modules.SpiceBot.Logs import botlogs
+from sopel_modules.SpiceBot.Events import botevents
+
+
+def setup(bot):
+    botlogs.log('SpiceBot_Logs', "Starting Setup Procedure")
+    botevents.startup_add([botevents.BOT_LOGS])
+    botevents.trigger(bot, botevents.BOT_LOGS, "SpiceBot_Logs")
 
 
 @sopel.module.event('001')

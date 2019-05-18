@@ -11,6 +11,10 @@ from sopel_modules.SpiceBot.Events import botevents
 import time
 
 
+def setup(bot):
+    botlogs.log('SpiceBot_Events', "Starting setup procedure")
+
+
 @sopel.module.event(botevents.RPL_WELCOME)
 @sopel.module.rule('.*')
 def bot_startup_welcome(bot, trigger):
