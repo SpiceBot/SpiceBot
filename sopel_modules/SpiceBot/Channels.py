@@ -33,7 +33,6 @@ class BotChannels():
         self.channel_lock = True
 
     def channel_list_recieve_finish(self):
-        self.channel_lock.release()
         if not self.SpiceBot_Channels['InitialProcess']:
             self.SpiceBot_Channels['InitialProcess'] = True
         self.channel_lock = False
