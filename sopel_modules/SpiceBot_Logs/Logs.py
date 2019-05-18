@@ -1,24 +1,5 @@
 # coding=utf-8
-
 from __future__ import unicode_literals, absolute_import, division, print_function
-
-import sopel.module
-from sopel.config.types import StaticSection, ValidatedAttribute
-
-from sopel_modules.SpiceBot_SBTools import bot_logging
-from sopel_modules.SpiceBot_Events.System import botevents
-
-import os
-
-import spicemanip
-
-
-# coding=utf8
-from __future__ import unicode_literals, absolute_import, division, print_function
-
-__author__ = 'Sam Zick'
-__email__ = 'sam@deathbybandaid.net'
-__version__ = '0.1.1'
 
 import sopel.module
 import sopel.tools
@@ -123,10 +104,6 @@ class BotLogs():
 botlogs = BotLogs()
 
 
-def setup(bot):
-    botlogs.log('SpiceBot_Logs', "Starting Setup Procedure")
-
-
 @sopel.module.event('001')
 @sopel.module.rule('.*')
 def join_log_channel(bot, trigger):
@@ -145,12 +122,6 @@ def join_log_channel(bot, trigger):
     else:
         botlogs.sopel_config["logging_channel"] = False
         botlogs.SpiceBot_Logs["queue"] = []
-
-
-def setup(bot):
-    bot_logging(bot, 'SpiceBot_Logs', "Starting Setup Procedure")
-    botevents.startup_add([botevents.BOT_LOGS])
-    botevents.trigger(bot, botevents.BOT_LOGS, "SpiceBot_Logs")
 
 
 def stdio_logs_fetch(bot):
