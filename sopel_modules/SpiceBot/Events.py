@@ -89,6 +89,16 @@ class BotEvents(object):
                 return False
         return True
 
+    def startup_debug(self):
+        not_done = []
+        for number in self.SpiceBot_Events["startup_required"]:
+            if str(number) not in self.SpiceBot_Events["triggers_recieved"].keys():
+                not_done.append(number)
+        reference_not_done = []
+        for item in not_done:
+            reference_not_done.append(str(self.SpiceBot_Events["assigned_IDs"][item]))
+        return reference_not_done
+
     def check_ready(self, checklist):
         def actual_decorator(function):
             @functools.wraps(function)
