@@ -18,7 +18,7 @@ class BotChannels():
                                 "InitialProcess": False
                                 }
 
-    def channel_list_request(bot):
+    def channel_list_request(self, bot):
         bot.write(['LIST'])
 
     def channel_list_recieve_start(self):
@@ -43,7 +43,7 @@ class BotChannels():
         topic = re.sub(actual_topic, r'\1', topic)
         return topic
 
-    def bot_part_empty(bot):
+    def bot_part_empty(self, bot):
         """Don't stay in empty channels"""
         ignorepartlist = []
         if bot.config.core.logging_channel:
@@ -54,7 +54,7 @@ class BotChannels():
                 if channel.lower() in botchannels.SpiceBot_Channels['list']:
                     del botchannels.SpiceBot_Channels['list'][channel.lower()]
 
-    def join_all_channels(bot):
+    def join_all_channels(self, bot):
         if bot.config.SpiceBot_Channels.joinall:
             for channel in botchannels.SpiceBot_Channels['list'].keys():
                 if channel.startswith("#"):
@@ -63,7 +63,7 @@ class BotChannels():
                         if channel not in bot.channels.keys() and bot.config.SpiceBot_Channels.operadmin:
                             bot.write(('SAJOIN', bot.nick, botchannels.SpiceBot_Channels['list'][channel]['name']))
 
-    def chanadmin_all_channels(bot):
+    def chanadmin_all_channels(self, bot):
         # Chan ADMIN +a
         for channel in bot.channels.keys():
             if channel.startswith("#"):
