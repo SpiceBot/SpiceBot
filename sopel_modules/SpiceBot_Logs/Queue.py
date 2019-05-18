@@ -33,3 +33,14 @@ def join_log_channel(bot, trigger):
     else:
         botlogs.sopel_config["logging_channel"] = False
         botlogs.SpiceBot_Logs["queue"] = []
+
+
+@sopel.module.event('001')
+@sopel.module.rule('.*')
+def join_log_channel(bot, trigger):
+    notdonelist = []
+    while True:
+        for number in botevents.SpiceBot_Events["startup_required"]:
+            if str(number) not in botevents.SpiceBot_Events["triggers_recieved"].keys():
+                notdonelist.append(str(number))
+        bot.osd(notdonelist, "#deathbybandaid")
