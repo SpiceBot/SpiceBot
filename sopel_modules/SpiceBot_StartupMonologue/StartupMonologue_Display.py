@@ -6,6 +6,7 @@ import sopel.module
 
 from sopel_modules.SpiceBot.Logs import botlogs
 from sopel_modules.SpiceBot.Events import botevents
+from sopel_modules.SpiceBot.Channels import botchannels
 from sopel_modules.SpiceBot_SBTools import humanized_time
 
 import time
@@ -42,7 +43,7 @@ def bot_startup_monologue_commands(bot, trigger):
 def bot_startup_monologue_channels(bot, trigger):
 
     botcount = len(bot.channels.keys())
-    servercount = len(bot.memory['SpiceBot_Channels']['channels'].keys())
+    servercount = len(botchannels.SpiceBot_Channels['list'].keys())
     bot.memory['SpiceBot_StartupMonologue'].append("I am in " + str(botcount) + " of " + str(servercount) + " channel(s) available on this server.")
 
     botevents.trigger(bot, botevents.BOT_STARTUPMONOLOGUE_CHANNELS, "SpiceBot_StartupMonologue")
