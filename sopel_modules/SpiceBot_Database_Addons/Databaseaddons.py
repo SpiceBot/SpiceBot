@@ -10,7 +10,7 @@ from sopel.db import SopelDB, NickValues, ChannelValues
 from sqlalchemy.exc import SQLAlchemyError
 import json
 
-from sopel_modules.SpiceBot_Logs.Logs import botlogs
+from sopel_modules.SpiceBot.Logs import botlogs
 
 
 def setup(bot):

@@ -6,8 +6,8 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 from sopel.config.types import StaticSection, ValidatedAttribute, ListAttribute
 
-from sopel_modules.SpiceBot_Logs.Logs import botlogs
-from sopel_modules.SpiceBot_Events.System import botevents
+from sopel_modules.SpiceBot.Logs import botlogs
+from sopel_modules.SpiceBot.Events import botevents
 from sopel_modules.SpiceBot_SBTools import join_all_channels, chanadmin_all_channels, channel_list_current
 
 import spicemanip

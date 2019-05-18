@@ -6,7 +6,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel
 import sopel.module
 
-from sopel_modules.SpiceBot_Logs.Logs import botlogs
+from sopel_modules.SpiceBot.Logs import botlogs
 from sopel_modules.SpiceBot_SBTools import stock_modules_begone
 
 

@@ -5,8 +5,8 @@ import sopel.module
 
 import spicemanip
 
-from .Logs import botlogs
-from sopel_modules.SpiceBot_Events.System import botevents
+from sopel_modules.SpiceBot.Logs import botlogs
+from sopel_modules.SpiceBot.Events import botevents
 from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check, inlist, inlist_match, similar_list
 
 

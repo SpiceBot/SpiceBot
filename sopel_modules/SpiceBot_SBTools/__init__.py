@@ -20,7 +20,7 @@ from pygit2 import clone_repository
 
 import spicemanip
 
-from sopel_modules.SpiceBot_Logs.Logs import botlogs
+from sopel_modules.SpiceBot.Logs import botlogs
 
 
 """Variable References"""

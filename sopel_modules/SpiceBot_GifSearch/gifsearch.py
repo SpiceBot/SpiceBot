@@ -5,8 +5,8 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import sopel.module
 from sopel.config.types import StaticSection, ValidatedAttribute
 
-from sopel_modules.SpiceBot_Logs.Logs import botlogs
-from sopel_modules.SpiceBot_Events.System import botevents
+from sopel_modules.SpiceBot.Logs import botlogs
+from sopel_modules.SpiceBot.Events import botevents
 from sopel_modules.SpiceBot_CommandsQuery.CommandsQuery import commandsquery_register
 from sopel_modules.SpiceBot_SBTools import read_directory_json_to_dict
 

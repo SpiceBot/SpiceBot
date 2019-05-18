@@ -1,10 +1,14 @@
-#!/usr/bin/env python
-# coding=utf-8
-from __future__ import unicode_literals, absolute_import, print_function, division
+# coding=utf8
+from __future__ import unicode_literals, absolute_import, division, print_function
+"""
+This is the SpiceBot events system.
 
-# sopel imports
+We utilize the Sopel code for event numbers and
+self-trigger the bot into performing actions
+"""
+
+
 import sopel
-from sopel.trigger import PreTrigger
 import functools
 
 
@@ -45,7 +49,7 @@ class BotEvents(object):
     def trigger(self, bot, number, message="SpiceBot_Events"):
         number = str(number)
         if number in self.defaultevents or self.check(self.BOT_CONNECTED):
-            pretrigger = PreTrigger(
+            pretrigger = sopel.trigger.PreTrigger(
                 bot.nick,
                 ":SpiceBot_Events " + number + " " + str(bot.nick) + " :" + message
             )

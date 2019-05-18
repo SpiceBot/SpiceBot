@@ -4,8 +4,8 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.module
 
-from sopel_modules.SpiceBot_Logs.Logs import botlogs
-from sopel_modules.SpiceBot_Events.System import botevents
+from sopel_modules.SpiceBot.Logs import botlogs
+from sopel_modules.SpiceBot.Events import botevents
 from sopel_modules.SpiceBot_SBTools import humanized_time
 
 import time

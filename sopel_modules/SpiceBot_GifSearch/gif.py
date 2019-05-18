@@ -7,7 +7,7 @@ from sopel import module
 from .gifsearch import getGif
 
 from sopel_modules.SpiceBot_SBTools import sopel_triggerargs
-from sopel_modules.SpiceBot_Events.System import botevents
+from sopel_modules.SpiceBot.Events import botevents
 
 import spicemanip
 
