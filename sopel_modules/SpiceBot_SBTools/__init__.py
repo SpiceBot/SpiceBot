@@ -273,21 +273,23 @@ def channel_privs(bot, channel, privtype):
 def join_all_channels(bot):
     if bot.config.SpiceBot_Channels.joinall:
         for channel in bot.memory['SpiceBot_Channels']['channels'].keys():
-            if channel not in bot.channels.keys() and channel not in bot.config.SpiceBot_Channels.chanignore:
-                bot.write(('JOIN', bot.nick, bot.memory['SpiceBot_Channels']['channels'][channel]['name']))
-                if channel not in bot.channels.keys() and bot.config.SpiceBot_Channels.operadmin:
-                    bot.write(('SAJOIN', bot.nick, bot.memory['SpiceBot_Channels']['channels'][channel]['name']))
+            if channel.startswith("#"):
+                if channel not in bot.channels.keys() and channel not in bot.config.SpiceBot_Channels.chanignore:
+                    bot.write(('JOIN', bot.nick, bot.memory['SpiceBot_Channels']['channels'][channel]['name']))
+                    if channel not in bot.channels.keys() and bot.config.SpiceBot_Channels.operadmin:
+                        bot.write(('SAJOIN', bot.nick, bot.memory['SpiceBot_Channels']['channels'][channel]['name']))
 
 
 def chanadmin_all_channels(bot):
     # Chan ADMIN +a
     for channel in bot.channels.keys():
-        if channel not in bot.config.SpiceBot_Channels.chanignore:
-            if bot.config.SpiceBot_Channels.operadmin:
-                if not bot.channels[channel].privileges[bot.nick] < sopel.module.ADMIN:
-                    bot.write(('SAMODE', channel, "+a", bot.nick))
-        else:
-            bot.part(channel)
+        if channel.startswith("#"):
+            if channel not in bot.config.SpiceBot_Channels.chanignore:
+                if bot.config.SpiceBot_Channels.operadmin:
+                    if not bot.channels[channel].privileges[bot.nick] < sopel.module.ADMIN:
+                        bot.write(('SAMODE', channel, "+a", bot.nick))
+            else:
+                bot.part(channel)
 
 
 def channel_list_current(bot):

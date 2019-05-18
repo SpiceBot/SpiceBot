@@ -133,7 +133,7 @@ def bot_part_empty(bot):
         ignorepartlist.append(bot.config.core.logging_channel)
 
     for channel in bot.channels.keys():
-        if len(bot.channels[channel].privileges.keys()) == 1 and channel not in ignorepartlist:
+        if len(bot.channels[channel].privileges.keys()) == 1 and channel not in ignorepartlist and channel.startswith("#"):
             bot.part(channel, "Leaving Empty Channel")
             if channel.lower() in bot.memory['SpiceBot_Channels']['channels']:
                 del bot.memory['SpiceBot_Channels']['channels'][channel.lower()]
