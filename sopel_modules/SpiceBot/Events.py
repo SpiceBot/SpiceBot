@@ -33,7 +33,7 @@ class BotEvents(object):
         self.BOT_LOADED = '1004'
         self.defaultevents = [self.BOT_WELCOME, self.BOT_READY, self.BOT_CONNECTED, self.BOT_LOADED]
         self.SpiceBot_Events = {
-                                "assigned_IDs": [1000, 1001, 1002, 1003, 1004],
+                                "assigned_IDs": {1000: "Default", 1001: "BOT_WELCOME", 1002: "BOT_READY", 1003: "BOT_CONNECTED", 1004: "BOT_LOADED"},
                                 "triggers_recieved": {},
                                 "trigger_queue": [],
                                 "startup_required": [self.BOT_WELCOME, self.BOT_READY, self.BOT_CONNECTED],
