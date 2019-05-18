@@ -8,7 +8,7 @@ from sopel.config.types import StaticSection, ValidatedAttribute, ListAttribute
 
 from sopel_modules.SpiceBot_Logs.Logs import botlogs
 from sopel_modules.SpiceBot_Events.System import botevents
-from sopel_modules.SpiceBot_SBTools import join_all_channels, chanadmin_all_channels, channel_list_current,
+from sopel_modules.SpiceBot_SBTools import join_all_channels, chanadmin_all_channels, channel_list_current
 
 import spicemanip
 
