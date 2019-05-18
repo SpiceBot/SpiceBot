@@ -35,7 +35,7 @@ def bot_events_start(bot, trigger):
 @sopel.module.rule('.*')
 def bot_startup_connection(bot, trigger):
     """Here, we wait until we are in at least one channel"""
-    while not len(bot.channels.keys()):
+    while not len(bot.channels.keys()) and not botevents.check([botevents.BOT_CHANNELS]):
         pass
     time.sleep(1)
     botevents.trigger(bot, botevents.BOT_CONNECTED, "Bot Connected to IRC")
@@ -53,7 +53,7 @@ def bot_events_startup_complete(bot, trigger):
 @sopel.module.event(botevents.BOT_CONNECTED)
 @sopel.module.rule('.*')
 def bot_events_connected(bot, trigger):
-    """For items tossed in a queue, this will trigger then accordingly"""
+    """For items tossed in a queue, this will trigger them accordingly"""
     botlogs.log('SpiceBot_Events', trigger.args[1], True)
 
     while True:
