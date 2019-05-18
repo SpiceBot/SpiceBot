@@ -30,17 +30,6 @@ def configure(config):
     config.SpiceBot_Channels.configure_setting('chanignore', 'SpiceBot_Channels Ignore JOIN for channels')
 
 
-class BotChannels():
-    """This Logs all channels known to the server"""
-    def __init__(self):
-        self.SpiceBot_Channels = {
-                                "list": {}
-                                }
-
-
-botchannels = BotChannels()
-
-
 def setup(bot):
     botlogs.log('SpiceBot_Channels', "Starting setup procedure")
     botevents.startup_add([botevents.BOT_CHANNELS])

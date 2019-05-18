@@ -8,6 +8,7 @@ This module contains references only for other modules to utilize.
 
 from .Logs import *
 from .Events import *
+from .Channels import *
 
 __author__ = 'Sam Zick'
 __email__ = 'sam@deathbybandaid.net'
