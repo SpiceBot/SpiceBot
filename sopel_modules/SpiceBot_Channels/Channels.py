@@ -47,14 +47,10 @@ def shutdown(bot):
 
 @sopel.module.event(botevents.BOT_CONNECTED)
 @sopel.module.rule('.*')
-def unkickable_bot(bot, trigger):
+def trigger_channel_list_initial(bot, trigger):
+
     if bot.config.SpiceBot_Channels.operadmin:
         bot.write(('SAMODE', bot.nick, '+q'))
-
-
-@sopel.module.event(botevents.BOT_CONNECTED)
-@sopel.module.rule('.*')
-def trigger_channel_list_initial(bot, trigger):
 
     bot_part_empty(bot)
 
