@@ -36,13 +36,13 @@ class BotEvents(object):
                                 "assigned_IDs": [1000, 1001, 1002, 1003, 1004],
                                 "triggers_recieved": {},
                                 "trigger_queue": [],
-                                "startup_required": [self.BOT_WELCOME, self.BOT_READY, self.BOT_CONNECTED]
+                                "startup_required": [self.BOT_WELCOME, self.BOT_READY, self.BOT_CONNECTED],
                                 }
 
     def __getattr__(self, name):
         ''' will only get called for undefined attributes '''
-        eventnumber = max(self.SpiceBot_Events["assigned_IDs"]) + 1
-        self.SpiceBot_Events["assigned_IDs"].append(eventnumber)
+        eventnumber = max(list(self.SpiceBot_Events["assigned_IDs"].keys())) + 1
+        self.SpiceBot_Events["assigned_IDs"][eventnumber] = str(name)
         setattr(self, name, str(eventnumber))
         return str(eventnumber)
 

@@ -42,5 +42,9 @@ def join_log_channel(bot, trigger):
     while True:
         for number in botevents.SpiceBot_Events["startup_required"]:
             if str(number) not in botevents.SpiceBot_Events["triggers_recieved"].keys():
-                notdonelist.append(str(number))
-        bot.osd(notdonelist, "#deathbybandaid")
+                notdonelist.append(number)
+        events_not_done = []
+        for number in notdonelist:
+            if number in botevents.SpiceBot_Events["assigned_IDs"].keys():
+                events_not_done.append(str(eval(botevents.SpiceBot_Events["assigned_IDs"][number])))
+        bot.osd(events_not_done, "#deathbybandaid")
