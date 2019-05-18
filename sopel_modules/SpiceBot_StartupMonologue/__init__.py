@@ -7,6 +7,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 from .StartupMonologue import *
 from .StartupMonologue_Display import *
+from .ErrorDisplay import *
 
 __author__ = 'Sam Zick'
 __email__ = 'sam@deathbybandaid.net'
