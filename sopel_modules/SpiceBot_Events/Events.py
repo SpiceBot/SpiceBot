@@ -35,7 +35,7 @@ def bot_events_start(bot, trigger):
 @sopel.module.rule('.*')
 def bot_startup_connection(bot, trigger):
     """Here, we wait until we are in at least one channel"""
-    while not len(bot.channels.keys()) and not botevents.check([botevents.BOT_CHANNELS]):
+    while not len(bot.channels.keys()):
         pass
     time.sleep(1)
     botevents.trigger(bot, botevents.BOT_CONNECTED, "Bot Connected to IRC")
