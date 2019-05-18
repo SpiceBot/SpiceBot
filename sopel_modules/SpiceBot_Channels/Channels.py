@@ -25,8 +25,8 @@ class SpiceBot_Channels_MainSection(StaticSection):
 def configure(config):
     config.define_section("SpiceBot_Channels", SpiceBot_Channels_MainSection, validate=False)
     config.SpiceBot_Channels.configure_setting('announcenew', 'SpiceBot_Channels Announce New Channels')
-    config.SpiceBot_Channels.configure_setting('announcenew', 'SpiceBot_Channels JOIN New Channels')
-    config.SpiceBot_Channels.configure_setting('announcenew', 'SpiceBot_Channels OPER ADMIN MODE')
+    config.SpiceBot_Channels.configure_setting('joinall', 'SpiceBot_Channels JOIN New Channels')
+    config.SpiceBot_Channels.configure_setting('operadmin', 'SpiceBot_Channels OPER ADMIN MODE')
     config.SpiceBot_Channels.configure_setting('chanignore', 'SpiceBot_Channels Ignore JOIN for channels')
 
 
@@ -43,6 +43,13 @@ def setup(bot):
 def shutdown(bot):
     if "SpiceBot_Channels" in bot.memory:
         del bot.memory["SpiceBot_Channels"]
+
+
+@sopel.module.event(botevents.BOT_CONNECTED)
+@sopel.module.rule('.*')
+def unkickable_bot(bot, trigger):
+    if bot.config.SpiceBot_Channels.operadmin:
+        bot.write(('SAMODE', bot.nick, '+q'))
 
 
 @sopel.module.event(botevents.BOT_CONNECTED)
