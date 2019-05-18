@@ -93,7 +93,7 @@ class BotEvents(object):
         not_done = []
         for number in self.SpiceBot_Events["startup_required"]:
             if str(number) not in self.SpiceBot_Events["triggers_recieved"].keys():
-                not_done.append(number)
+                not_done.append(int(number))
         reference_not_done = []
         for item in not_done:
             reference_not_done.append(str(self.SpiceBot_Events["assigned_IDs"][item]))
