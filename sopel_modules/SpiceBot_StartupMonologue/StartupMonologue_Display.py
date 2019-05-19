@@ -12,9 +12,13 @@ from sopel_modules.SpiceBot_SBTools import humanized_time
 import time
 
 
-@sopel.module.event(botevents.BOT_CONNECTED)
+@sopel.module.event(botevents.BOT_WELCOME)
 @sopel.module.rule('.*')
 def bot_startup_monologue_start(bot, trigger):
+
+    while not len(bot.channels.keys()):
+        pass
+    time.sleep(1)
 
     # Startup
     botlogs.log('SpiceBot_StartupMonologue', bot.nick + " is now starting. Please wait while I load my configuration")
