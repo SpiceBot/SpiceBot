@@ -48,7 +48,7 @@ class BotEvents(object):
 
     def trigger(self, bot, number, message="SpiceBot_Events"):
         pretriggerdict = {"number": str(number), "message": message}
-        if number in self.defaultevents or self.check(self.BOT_CONNECTED):
+        if number in self.defaultevents:
             self.dispatch(bot, pretriggerdict)
         else:
             self.SpiceBot_Events["trigger_queue"].append(pretriggerdict)
