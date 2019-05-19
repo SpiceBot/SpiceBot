@@ -47,17 +47,21 @@ class BotEvents(object):
         return str(eventnumber)
 
     def trigger(self, bot, number, message="SpiceBot_Events"):
-        number = str(number)
+        pretriggerdict = {"number": str(number), "message": message}
         if number in self.defaultevents or self.check(self.BOT_CONNECTED):
-            pretrigger = sopel.trigger.PreTrigger(
-                bot.nick,
-                ":SpiceBot_Events " + number + " " + str(bot.nick) + " :" + message
-            )
-            bot.dispatch(pretrigger)
-            self.recieved({"number": number, "message": message})
+            self.dispatch(bot, pretriggerdict)
         else:
-            pretriggerdict = {"number": number, "message": message}
             self.SpiceBot_Events["trigger_queue"].append(pretriggerdict)
+
+    def dispatch(self, bot, pretriggerdict):
+        number = pretriggerdict["number"]
+        message = pretriggerdict["message"]
+        pretrigger = sopel.trigger.PreTrigger(
+            bot.nick,
+            ":SpiceBot_Events " + str(number) + " " + str(bot.nick) + " :" + message
+        )
+        bot.dispatch(pretrigger)
+        self.recieved({"number": number, "message": message})
 
     def recieved(self, trigger):
         if isinstance(trigger, dict):

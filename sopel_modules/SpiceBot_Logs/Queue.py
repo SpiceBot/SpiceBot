@@ -15,7 +15,7 @@ def setup(bot):
     botevents.trigger(bot, botevents.BOT_LOGS, "SpiceBot_Logs")
 
 
-@sopel.module.event('001')
+@sopel.module.event(botevents.RPL_WELCOME)
 @sopel.module.rule('.*')
 def join_log_channel(bot, trigger):
 

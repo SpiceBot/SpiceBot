@@ -17,7 +17,7 @@ import time
 def bot_startup_monologue_start(bot, trigger):
 
     # Startup
-    botlogs.log('SpiceBot_StartupMonologue', bot.nick + " is now starting. Please wait while I load my configuration", True)
+    botlogs.log('SpiceBot_StartupMonologue', bot.nick + " is now starting. Please wait while I load my configuration")
     bot.osd(" is now starting. Please wait while I load my configuration.", bot.channels.keys(), 'ACTION')
 
     botevents.trigger(bot, botevents.BOT_STARTUPMONOLOGUE_CONNECTED, "SpiceBot_StartupMonologue")
@@ -45,6 +45,7 @@ def bot_startup_monologue_channels(bot, trigger):
     botcount = len(bot.channels.keys())
     servercount = len(botchannels.SpiceBot_Channels['list'].keys())
     bot.memory['SpiceBot_StartupMonologue'].append("I am in " + str(botcount) + " of " + str(servercount) + " channel(s) available on this server.")
+    botlogs.log('SpiceBot_StartupMonologue', "I am in " + str(botcount) + " of " + str(servercount) + " channel(s) available on this server.")
 
     botevents.trigger(bot, botevents.BOT_STARTUPMONOLOGUE_CHANNELS, "SpiceBot_StartupMonologue")
 

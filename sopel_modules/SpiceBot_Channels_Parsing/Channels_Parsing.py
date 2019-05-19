@@ -36,14 +36,14 @@ def setup(bot):
     bot.config.define_section("SpiceBot_Channels", SpiceBot_Channels_MainSection, validate=False)
 
 
-@sopel.module.event('001')
+@sopel.module.event(botevents.RPL_WELCOME)
 @sopel.module.rule('.*')
 def unkickable_bot(bot, trigger):
     if bot.config.SpiceBot_Channels.operadmin:
         bot.write(('SAMODE', bot.nick, '+q'))
 
 
-@sopel.module.event('001')
+@sopel.module.event(botevents.RPL_WELCOME)
 @sopel.module.rule('.*')
 def request_channels_list_initial(bot, trigger):
 
