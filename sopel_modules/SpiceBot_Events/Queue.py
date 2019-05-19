@@ -14,5 +14,5 @@ def bot_events_connected(bot, trigger):
     while True:
         if len(botevents.SpiceBot_Events["trigger_queue"]):
             pretriggerdict = botevents.SpiceBot_Events["trigger_queue"][0]
-            botevents.dispatch(pretriggerdict)
+            botevents.dispatch(bot, pretriggerdict)
             del botevents.SpiceBot_Events["trigger_queue"][0]
