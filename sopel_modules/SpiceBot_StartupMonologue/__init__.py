@@ -6,8 +6,11 @@ Sopel Startup Monologue displays to all channels that the bot is online
 from __future__ import unicode_literals, absolute_import, division, print_function
 
 from .StartupMonologue import *
-from .StartupMonologue_Display import *
-from .ErrorDisplay import *
+from .StartupMonologue_Display_Channels import *
+from .StartupMonologue_Display_Commands import *
+from .StartupMonologue_Display_Connected import *
+from .StartupMonologue_Display_Loaded import *
+from .StartupMonologue_Display_Errors import *
 
 __author__ = 'Sam Zick'
 __email__ = 'sam@deathbybandaid.net'
