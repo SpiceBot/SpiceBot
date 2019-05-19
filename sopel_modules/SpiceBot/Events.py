@@ -31,12 +31,14 @@ class BotEvents(object):
         self.BOT_READY = '1002'
         self.BOT_CONNECTED = '1003'
         self.BOT_LOADED = '1004'
-        self.defaultevents = [self.BOT_WELCOME, self.BOT_READY, self.BOT_CONNECTED, self.BOT_LOADED]
+        self.BOT_RECONNECTED = '1005'
+        self.defaultevents = [self.BOT_WELCOME, self.BOT_READY, self.BOT_CONNECTED, self.BOT_LOADED, self.BOT_RECONNECTED]
         self.SpiceBot_Events = {
-                                "assigned_IDs": {1000: "Default", 1001: "BOT_WELCOME", 1002: "BOT_READY", 1003: "BOT_CONNECTED", 1004: "BOT_LOADED"},
+                                "assigned_IDs": {1000: "Default", 1001: "BOT_WELCOME", 1002: "BOT_READY", 1003: "BOT_CONNECTED", 1004: "BOT_LOADED", 1005: "BOT_RECONNECTED"},
                                 "triggers_recieved": {},
                                 "trigger_queue": [],
                                 "startup_required": [self.BOT_WELCOME, self.BOT_READY, self.BOT_CONNECTED],
+                                "RPL_WELCOME_Count": 0
                                 }
 
     def __getattr__(self, name):

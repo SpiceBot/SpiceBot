@@ -10,8 +10,5 @@ from sopel_modules.SpiceBot.Events import botevents
 @sopel.module.event(botevents.RPL_WELCOME)
 @sopel.module.rule('.*')
 def bot_startup_welcome(bot, trigger):
-    """The Bot events system does not start until RPL_WELCOME 001 is recieved
-    from the server"""
-    if botevents.check(botevents.BOT_WELCOME):
-        return
-    botevents.trigger(bot, botevents.BOT_WELCOME, "Welcome to the SpiceBot Events System")
+    botevents.SpiceBot_Events["RPL_WELCOME_Count"] += 1
+    botevents.trigger(bot, botevents.BOT_RECONNECTED, "Bot Connected to IRC")
