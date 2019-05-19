@@ -7,7 +7,7 @@ import sopel.module
 from sopel_modules.SpiceBot.Events import botevents
 
 
-@sopel.module.event(botevents.RPL_WELCOME)
+@sopel.module.event(botevents.BOT_WELCOME)
 @sopel.module.rule('.*')
 def bot_events_connected(bot, trigger):
     """For items tossed in a queue, this will trigger them accordingly"""
