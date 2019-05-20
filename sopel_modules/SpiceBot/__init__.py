@@ -1,12 +1,14 @@
 # coding=utf8
 from __future__ import unicode_literals, absolute_import, division, print_function
+"""
+These are the core SpiceBot Classes
 
-from .Welcome import *
-from .Ready import *
-from .Connected import *
-from .Loaded import *
-from .Queue import *
-from .Logging import *
+This module contains references only for other modules to utilize.
+"""
+
+from .Logs import *
+from .Events import *
+from .Channels import *
 
 __author__ = 'Sam Zick'
 __email__ = 'sam@deathbybandaid.net'

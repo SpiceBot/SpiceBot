@@ -5,21 +5,22 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 # sopel imports
 import sopel.module
 from sopel.tools import Identifier
-from sopel_modules.SpiceBot_SBTools import bot_logging
 from sopel.db import SopelDB, NickValues, ChannelValues
-from sqlalchemy.exc import SQLAlchemyError
 
+from sqlalchemy.exc import SQLAlchemyError
 import json
+
+from sopel_modules.SpiceBot.Logs import botlogs
 
 
 def setup(bot):
     pass
     # Inject Database Functions
-    bot_logging(bot, 'SpiceBot_Databaseaddons', "Implanting Database functions into bot")
+    botlogs.log('SpiceBot_Databaseaddons', "Implanting Database functions into bot")
     SopelDB.delete_nick_value = SopelDBCache.delete_nick_value
-    # SopelDB.adjust_nick_value = SopelDBCache.adjust_nick_value
+    SopelDB.adjust_nick_value = SopelDBCache.adjust_nick_value
     SopelDB.delete_channel_value = SopelDBCache.delete_channel_value
-    # SopelDB.adjust_channel_value = SopelDBCache.adjust_channel_value
+    SopelDB.adjust_channel_value = SopelDBCache.adjust_channel_value
 
 
 class SopelDBCache:
@@ -38,7 +39,7 @@ class SopelDBCache:
                 .one_or_none()
             # NickValue exists, delete
             if result:
-                session.delete(result.value)
+                session.delete(result)
                 session.commit()
         except SQLAlchemyError:
             session.rollback()
@@ -85,7 +86,7 @@ class SopelDBCache:
                 .one_or_none()
             # ChannelValue exists, update
             if result:
-                session.delete(result.value)
+                session.delete(result)
                 session.commit()
         except SQLAlchemyError:
             session.rollback()

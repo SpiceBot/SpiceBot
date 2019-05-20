@@ -7,15 +7,15 @@ import sopel.module
 
 import os
 
-from sopel_modules.SpiceBot_Events.System import bot_events_startup_register, bot_events_recieved, bot_events_trigger, botevents
-from sopel_modules.SpiceBot_SBTools import bot_logging
+from sopel_modules.SpiceBot.Logs import botlogs
+from sopel_modules.SpiceBot.Events import botevents
 
 import spicemanip
 
 
 def setup(bot):
-    bot_logging(bot, 'SpiceBot_CommandsQuery', "Starting setup procedure")
-    bot_events_startup_register(bot, [botevents.BOT_COMMANDSQUERY])
+    botlogs.log('SpiceBot_CommandsQuery', "Starting setup procedure")
+    botevents.startup_add([botevents.BOT_COMMANDSQUERY])
 
     if 'SpiceBot_CommandsQuery' not in bot.memory:
         bot.memory['SpiceBot_CommandsQuery'] = {"counts": 0, "commands": {}, "nickrules": []}
@@ -44,7 +44,7 @@ def setup(bot):
                 pypi_modules_dir = os.path.join(plugin_dir, pathname)
                 filepathlisting.append(pypi_modules_dir)
     except Exception as e:
-        bot_logging(bot, 'SpiceBot_CommandsQuery', "sopel_modules not loaded :" + str(e))
+        botlogs.log('SpiceBot_CommandsQuery', "sopel_modules not loaded :" + str(e))
 
     # Extra directories
     filepathlist = []
@@ -154,7 +154,7 @@ def setup(bot):
                             bot.memory['SpiceBot_CommandsQuery']['commands'][comtype][comalias] = {"aliasfor": maincom}
 
     for comtype in ['module', 'nickname', 'rule']:
-        bot_logging(bot, 'SpiceBot_CommandsQuery', "Found " + str(len(bot.memory['SpiceBot_CommandsQuery']['commands'][comtype].keys())) + " " + comtype + " commands.", True)
+        botlogs.log('SpiceBot_CommandsQuery', "Found " + str(len(bot.memory['SpiceBot_CommandsQuery']['commands'][comtype].keys())) + " " + comtype + " commands.", True)
 
     for command in bot.memory['SpiceBot_CommandsQuery']['commands']['rule'].keys():
         if command.startswith("$nickname"):
@@ -162,7 +162,7 @@ def setup(bot):
             if command not in bot.memory['SpiceBot_CommandsQuery']['nickrules']:
                 bot.memory['SpiceBot_CommandsQuery']['nickrules'].append(command)
 
-    bot_events_trigger(bot, botevents.BOT_COMMANDSQUERY, "SpiceBot_CommandsQuery")
+    botevents.trigger(bot, botevents.BOT_COMMANDSQUERY, "SpiceBot_CommandsQuery")
 
 
 def shutdown(bot):
@@ -173,11 +173,10 @@ def shutdown(bot):
 @sopel.module.event(botevents.BOT_LOADED)
 @sopel.module.rule('.*')
 def bot_events_complete(bot, trigger):
-    bot_events_recieved(bot, trigger.event)
 
     for comtype in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
         if comtype not in ['module', 'nickname', 'rule']:
-            bot_logging(bot, 'SpiceBot_CommandsQuery', "Found " + str(len(bot.memory['SpiceBot_CommandsQuery']['commands'][comtype].keys())) + " " + comtype + " commands.", True)
+            botlogs.log('SpiceBot_CommandsQuery', "Found " + str(len(bot.memory['SpiceBot_CommandsQuery']['commands'][comtype].keys())) + " " + comtype + " commands.", True)
 
 
 def commandsquery_register(bot, command_type, validcoms, aliasfor=None):
@@ -212,9 +211,3 @@ def commandsquery_register(bot, command_type, validcoms, aliasfor=None):
     for comalias in comaliases:
         if comalias not in bot.memory['SpiceBot_CommandsQuery']['commands'][command_type].keys():
             bot.memory['SpiceBot_CommandsQuery']['commands'][command_type][comalias] = {"aliasfor": aliasfor}
-
-
-@sopel.module.event(botevents.BOT_COMMANDSQUERY)
-@sopel.module.rule('.*')
-def bot_events_setup(bot, trigger):
-    bot_events_recieved(bot, trigger.event)

@@ -10,6 +10,8 @@ from .AI_Lazy import *
 from .AI_InsultHandler import *
 from .AI_Ping import *
 from .AI_Love import *
+from .AI_Really import *
+from .AI_Welcomeback import *
 
 __author__ = 'Sam Zick'
 __email__ = 'sam@deathbybandaid.net'
