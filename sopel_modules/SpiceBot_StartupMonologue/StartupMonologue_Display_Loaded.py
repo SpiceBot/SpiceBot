@@ -6,7 +6,6 @@ import sopel.module
 
 from sopel_modules.SpiceBot.Logs import botlogs
 from sopel_modules.SpiceBot.Events import botevents
-from sopel_modules.SpiceBot.Channels import botchannels
 from sopel_modules.SpiceBot_SBTools import humanized_time
 
 import time
@@ -16,8 +15,9 @@ import time
 @sopel.module.rule('.*')
 def bot_startup_monologue_display(bot, trigger):
 
-    timesince = humanized_time(time.time() - bot.memory["SpiceBot_Uptime"])
-    bot.memory['SpiceBot_StartupMonologue'].append("Startup took " + timesince)
+    if botevents.SpiceBot_Events["RPL_WELCOME_Count"] == 1:
+        timesince = humanized_time(time.time() - bot.memory["SpiceBot_Uptime"])
+        bot.memory['SpiceBot_StartupMonologue'].append("Startup took " + timesince)
 
     # Announce to chan, then handle some closing stuff
     botlogs.log('SpiceBot_StartupMonologue', bot.nick + " startup complete")
