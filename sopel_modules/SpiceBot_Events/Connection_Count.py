@@ -11,4 +11,5 @@ from sopel_modules.SpiceBot.Events import botevents
 @sopel.module.rule('.*')
 def bot_startup_welcome(bot, trigger):
     botevents.SpiceBot_Events["RPL_WELCOME_Count"] += 1
-    botevents.trigger(bot, botevents.BOT_RECONNECTED, "Bot Connected to IRC")
+    if botevents.SpiceBot_Events["RPL_WELCOME_Count"] > 1:
+        botevents.trigger(bot, botevents.BOT_RECONNECTED, "Bot ReConnected to IRC")
