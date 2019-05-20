@@ -9,14 +9,12 @@ import sopel.module
 import spicemanip
 
 from sopel_modules.SpiceBot_SBTools import sopel_triggerargs
-from sopel_modules.SpiceBot_Events.System import bot_events_check, botevents
+from sopel_modules.SpiceBot.Events import botevents
 
 
+@botevents.check_ready([botevents.BOT_GIFSEARCH])
 @sopel.module.commands('(.*)')
 def gifapi_triggers(bot, trigger):
-
-    while not bot_events_check(bot, botevents.BOT_GIFSEARCH):
-        pass
 
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'prefix_command')
 

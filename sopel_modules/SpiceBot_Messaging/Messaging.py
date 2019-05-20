@@ -6,6 +6,7 @@ import sopel.module
 
 import spicemanip
 
+from sopel_modules.SpiceBot.Channels import botchannels
 from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check, inlist
 
 
@@ -41,7 +42,7 @@ def bot_command_process(bot, trigger):
 
     target = spicemanip.main(triggerargs, 1)
     if (target not in ['allchans', 'allnicks']
-            and not inlist(bot, target.lower(), bot.memory['SpiceBot_Channels']['channels'].keys())
+            and not inlist(bot, target.lower(), botchannels.SpiceBot_Channels['list'].keys())
             and not inlist(bot, target.lower(), bot.users)):
         bot.osd("Channel/nick name {} not valid.".format(target))
         return

@@ -5,18 +5,16 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import sopel
 import sopel.module
 
-from sopel_modules.SpiceBot_Events.System import bot_events_check, botevents
+from sopel_modules.SpiceBot.Events import botevents
 from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, similar_list, letters_in_string
 
 
 import spicemanip
 
 
+@botevents.check_ready([botevents.BOT_COMMANDSQUERY])
 @sopel.module.nickname_commands('(.*)')
 def query_detection_nick(bot, trigger):
-
-    while not bot_events_check(bot, botevents.BOT_COMMANDSQUERY):
-        pass
 
     triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
 
