@@ -33,7 +33,8 @@ def configure(config):
     config.SpiceBot_OSD.configure_setting('flood_burst_lines', 'How many messages can be sent in burst mode.')
     config.SpiceBot_OSD.configure_setting('flood_empty_wait', 'How long to wait between sending messages when not in burst mode, in seconds.')
     config.SpiceBot_OSD.configure_setting('flood_refill_rate', 'How quickly burst mode recovers, in messages per second.')
-    config.SpiceBot_OSD.configure_setting('flood_dots', 'Display dots instead of spam.')
+    config.SpiceBot_OSD.configure_setting('flood_throttle', 'Whether messages will be throttled if too many are sent in a short time.')
+    config.SpiceBot_OSD.configure_setting('flood_dots', "Whether repeated messages will be replaced with '...', then dropped.")
 
 
 def setup(bot):
@@ -104,8 +105,11 @@ class SpiceBot_OSD(StaticSection):
     flood_refill_rate = ValidatedAttribute('flood_refill_rate', int, default=1)
     """How quickly burst mode recovers, in messages per second."""
 
-    flood_dots = ValidatedAttribute('flood_dots', default=True)
-    """Display dots instead of spam."""
+    flood_throttle = ValidatedAttribute('flood_throttle', bool, default=True)
+    """Whether messages will be throttled if too many are sent in a short time."""
+
+    flood_dots = ValidatedAttribute('flood_dots', bool, default=True)
+    """Whether repeated messages will be replaced with '...', then dropped."""
 
 
 class ToolsOSD:
@@ -303,7 +307,7 @@ class SopelOSD:
                         penalty = float(max(0, len(text) - 50)) / 70
                         # Never wait more than 2 seconds
                         wait = min(self.config.SpiceBot_OSD.flood_empty_wait + penalty, 2)
-                        if elapsed < wait:
+                        if elapsed < wait and self.config.SpiceBot_OSD.flood_throttle:
                             time.sleep(wait - elapsed)
 
                         # Loop detection
