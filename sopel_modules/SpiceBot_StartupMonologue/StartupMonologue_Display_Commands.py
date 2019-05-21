@@ -6,6 +6,7 @@ import sopel.module
 
 from sopel_modules.SpiceBot.Logs import botlogs
 from sopel_modules.SpiceBot.Events import botevents
+from sopel_modules.SpiceBot.Commands import botcommands
 
 
 @sopel.module.event(botevents.BOT_COMMANDSQUERY)
@@ -13,9 +14,9 @@ from sopel_modules.SpiceBot.Events import botevents
 def bot_startup_monologue_commands(bot, trigger):
 
     availablecomsnum, availablecomsfiles = 0, 0
-    for commandstype in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
-        availablecomsnum += len(bot.memory['SpiceBot_CommandsQuery']['commands'][commandstype].keys())
-    availablecomsfiles += bot.memory['SpiceBot_CommandsQuery']['counts']
+    for commandstype in botcommands.SpiceBot_Commands['commands'].keys():
+        availablecomsnum += len(botcommands.SpiceBot_Commands['commands'][commandstype].keys())
+    availablecomsfiles += botcommands.SpiceBot_Commands['counts']
 
     bot.memory['SpiceBot_StartupMonologue'].append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
     botlogs.log('SpiceBot_StartupMonologue', "There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")

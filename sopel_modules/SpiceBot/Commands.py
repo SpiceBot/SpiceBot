@@ -1,0 +1,56 @@
+# coding=utf8
+from __future__ import unicode_literals, absolute_import, division, print_function
+"""
+This is the SpiceBot Logs system.
+
+This Class stores logs in an easy to access manner
+"""
+
+import spicemanip
+
+
+class BotCommandss():
+    """This Logs all channels known to the server"""
+    def __init__(self):
+        self.SpiceBot_Commands = {
+                                "counts": 0,
+                                "commands": {
+                                            'module': {},
+                                            'nickname': {},
+                                            'rule': {}
+                                            },
+                                "nickrules": []
+                                }
+
+    def commandsquery_register(self, bot, command_type, validcoms, aliasfor=None):
+
+        if not isinstance(validcoms, list):
+            validcoms = [validcoms]
+
+        if command_type not in self.SpiceBot_Commands['commands'].keys():
+            self.SpiceBot_Commands['commands'][command_type] = dict()
+        self.SpiceBot_Commands['counts'] += 1
+
+        dict_from_file = dict()
+
+        # default command to filename
+        if "validcoms" not in dict_from_file.keys():
+            dict_from_file["validcoms"] = validcoms
+
+        if not aliasfor:
+
+            maincom = dict_from_file["validcoms"][0]
+            if len(dict_from_file["validcoms"]) > 1:
+                comaliases = spicemanip.main(dict_from_file["validcoms"], '2+', 'list')
+            else:
+                comaliases = []
+            self.SpiceBot_Commands['commands'][command_type][maincom] = dict_from_file
+        else:
+            comaliases = validcoms
+
+        for comalias in comaliases:
+            if comalias not in self.SpiceBot_Commands['commands'][command_type].keys():
+                self.SpiceBot_Commands['commands'][command_type][comalias] = {"aliasfor": aliasfor}
+
+
+botcommands = BotCommandss()

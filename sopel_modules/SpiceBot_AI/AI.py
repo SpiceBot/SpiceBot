@@ -8,6 +8,7 @@ import spicemanip
 
 from sopel_modules.SpiceBot.Tools import sopel_triggerargs, googlesearch, bot_privs, inlist, inlist_match, similar_list
 from sopel_modules.SpiceBot.Events import botevents
+from sopel_modules.SpiceBot.Commands import botcommands
 
 
 @botevents.check_ready([botevents.BOT_LOADED, botevents.BOT_COMMANDSQUERY])
@@ -22,13 +23,13 @@ def bot_command_nick(bot, trigger):
     if triggercommand[0] == "?":
         return
 
-    if triggercommand in bot.memory['SpiceBot_CommandsQuery']['commands']["nickname"].keys():
+    if triggercommand in botcommands.SpiceBot_Commands['commands']["nickname"].keys():
         return
     triggerargs.insert(0, triggercommand)
 
     fulltrigger = spicemanip.main(triggerargs, 0).lower()
 
-    if fulltrigger in bot.memory['SpiceBot_CommandsQuery']['nickrules']:
+    if fulltrigger in botcommands.SpiceBot_Commands['nickrules']:
         return
 
     if fulltrigger.lower().startswith("what is"):
@@ -155,7 +156,7 @@ def bot_command_nick(bot, trigger):
 
     else:
 
-        closestmatches = similar_list(bot, triggercommand, bot.memory['SpiceBot_CommandsQuery']['commands']["nickname"].keys(), 3, 'reverse')
+        closestmatches = similar_list(bot, triggercommand, botcommands.SpiceBot_Commands['commands']["nickname"].keys(), 3, 'reverse')
 
         if len(closestmatches):
             closestmatches = spicemanip.main(closestmatches, "andlist")

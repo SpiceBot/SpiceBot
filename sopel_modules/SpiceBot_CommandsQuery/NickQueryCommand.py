@@ -6,6 +6,7 @@ import sopel
 import sopel.module
 
 from sopel_modules.SpiceBot.Events import botevents
+from sopel_modules.SpiceBot.Commands import botcommands
 from sopel_modules.SpiceBot.Tools import sopel_triggerargs, similar_list, letters_in_string
 
 
@@ -30,9 +31,9 @@ def query_detection_nick(bot, trigger):
         return
 
     commands_list = dict()
-    for com in bot.memory['SpiceBot_CommandsQuery']['commands']['nickname'].keys():
+    for com in botcommands.SpiceBot_Commands['commands']['nickname'].keys():
         if com not in commands_list.keys():
-            commands_list[com] = bot.memory['SpiceBot_CommandsQuery']['commands']['nickname'][com]
+            commands_list[com] = botcommands.SpiceBot_Commands['commands']['nickname'][com]
 
     if triggercommand.endswith("+"):
 

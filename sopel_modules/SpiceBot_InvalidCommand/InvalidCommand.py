@@ -6,6 +6,7 @@ import sopel.module
 
 from sopel_modules.SpiceBot.Tools import sopel_triggerargs
 from sopel_modules.SpiceBot.Events import botevents
+from sopel_modules.SpiceBot.Commands import botcommands
 
 
 def setup(bot):
@@ -21,8 +22,8 @@ def shutdown(bot):
 @sopel.module.event(botevents.BOT_LOADED)
 @sopel.module.rule('.*')
 def bot_events_complete(bot, trigger):
-    for comtype in bot.memory['SpiceBot_CommandsQuery']['commands'].keys():
-        bot.memory["SpiceBot_InvalidCommand"]["valid"].extend(bot.memory['SpiceBot_CommandsQuery']['commands'][comtype].keys())
+    for comtype in botcommands.SpiceBot_Commands['commands'].keys():
+        bot.memory["SpiceBot_InvalidCommand"]["valid"].extend(botcommands.SpiceBot_Commands['commands'][comtype].keys())
 
 
 @botevents.check_ready([botevents.BOT_LOADED, botevents.BOT_COMMANDSQUERY])

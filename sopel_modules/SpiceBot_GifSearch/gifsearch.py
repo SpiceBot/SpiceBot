@@ -7,7 +7,7 @@ from sopel.config.types import StaticSection, ValidatedAttribute
 
 from sopel_modules.SpiceBot.Logs import botlogs
 from sopel_modules.SpiceBot.Events import botevents
-from sopel_modules.SpiceBot_CommandsQuery.CommandsQuery import commandsquery_register
+from sopel_modules.SpiceBot.Commands import botcommands
 from sopel_modules.SpiceBot.Tools import read_directory_json_to_dict
 
 import spicemanip
@@ -73,7 +73,7 @@ def setup(bot):
         bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'][gif_api] = valid_gif_api_dict[gif_api]
 
     for validgifapi in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
-        commandsquery_register(bot, "prefix", validgifapi)
+        botcommands.commandsquery_register(bot, "prefix", validgifapi)
 
         if validgifapi not in bot.memory["SpiceBot_GifSearch"]['cache'].keys():
             bot.memory["SpiceBot_GifSearch"]['cache'][validgifapi] = dict()
