@@ -6,6 +6,7 @@ These are the core SpiceBot Classes
 This module contains references only for other modules to utilize.
 """
 
+from .Tools import *
 from .Logs import *
 from .Events import *
 from .Channels import *

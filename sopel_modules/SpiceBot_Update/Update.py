@@ -9,7 +9,7 @@ from sopel.config.types import StaticSection, ValidatedAttribute
 import spicemanip
 
 from sopel_modules.SpiceBot.Logs import botlogs
-from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check, spicebot_reload, spicebot_update
+from sopel_modules.SpiceBot.Tools import sopel_triggerargs, command_permissions_check, spicebot_reload, spicebot_update
 
 
 class SpiceBot_Update_MainSection(StaticSection):

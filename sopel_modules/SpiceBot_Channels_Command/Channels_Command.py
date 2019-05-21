@@ -8,7 +8,7 @@ import spicemanip
 
 from sopel_modules.SpiceBot.Events import botevents
 from sopel_modules.SpiceBot.Channels import botchannels
-from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, inlist, channel_privs
+from sopel_modules.SpiceBot.Tools import sopel_triggerargs, inlist, channel_privs
 
 
 @botevents.check_ready([botevents.BOT_LOADED])

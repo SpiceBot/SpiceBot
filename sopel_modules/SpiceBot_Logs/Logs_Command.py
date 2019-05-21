@@ -7,7 +7,7 @@ import spicemanip
 
 from sopel_modules.SpiceBot.Logs import botlogs
 from sopel_modules.SpiceBot.Events import botevents
-from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, command_permissions_check, inlist, inlist_match, similar_list
+from sopel_modules.SpiceBot.Tools import sopel_triggerargs, command_permissions_check, inlist, inlist_match, similar_list
 
 
 @botevents.check_ready([botevents.BOT_LOGS])

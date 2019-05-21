@@ -6,7 +6,7 @@ import sopel
 import sopel.module
 
 from sopel_modules.SpiceBot.Events import botevents
-from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, similar_list, letters_in_string
+from sopel_modules.SpiceBot.Tools import sopel_triggerargs, similar_list, letters_in_string
 
 
 import spicemanip

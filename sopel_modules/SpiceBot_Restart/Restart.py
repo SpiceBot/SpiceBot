@@ -6,7 +6,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 
 from sopel_modules.SpiceBot.Logs import botlogs
-from sopel_modules.SpiceBot_SBTools import spicebot_reload
+from sopel_modules.SpiceBot.Tools import spicebot_reload
 
 
 @sopel.module.nickname_commands('restart')

@@ -6,7 +6,7 @@ import sopel.module
 
 from sopel_modules.SpiceBot.Logs import botlogs
 from sopel_modules.SpiceBot.Events import botevents
-from sopel_modules.SpiceBot_SBTools import humanized_time
+from sopel_modules.SpiceBot.Tools import humanized_time
 
 import time
 

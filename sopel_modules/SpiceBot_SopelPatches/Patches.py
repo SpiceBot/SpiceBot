@@ -7,7 +7,7 @@ import sopel
 import sopel.module
 
 from sopel_modules.SpiceBot.Logs import botlogs
-from sopel_modules.SpiceBot_SBTools import stock_modules_begone
+from sopel_modules.SpiceBot.Tools import stock_modules_begone
 
 
 def setup(bot):

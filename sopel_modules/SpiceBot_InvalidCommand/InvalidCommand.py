@@ -4,7 +4,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.module
 
-from sopel_modules.SpiceBot_SBTools import sopel_triggerargs
+from sopel_modules.SpiceBot.Tools import sopel_triggerargs
 from sopel_modules.SpiceBot.Events import botevents
 
 

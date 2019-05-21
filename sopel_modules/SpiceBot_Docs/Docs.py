@@ -4,7 +4,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.module
 
-from sopel_modules.SpiceBot_SBTools import github_dict
+from sopel_modules.SpiceBot.Tools import github_dict
 
 
 @sopel.module.nickname_commands('help', 'docs', 'wiki')

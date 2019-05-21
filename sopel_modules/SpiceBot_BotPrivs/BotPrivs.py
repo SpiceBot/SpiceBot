@@ -6,7 +6,7 @@ import sopel.module
 
 import spicemanip
 
-from sopel_modules.SpiceBot_SBTools import sopel_triggerargs, bot_privs
+from sopel_modules.SpiceBot.Tools import sopel_triggerargs, bot_privs
 
 
 @sopel.module.nickname_commands('owners', 'owner')
