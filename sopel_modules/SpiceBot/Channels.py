@@ -50,17 +50,17 @@ class BotChannels():
         for channel in bot.channels.keys():
             if len(bot.channels[channel].privileges.keys()) == 1 and channel not in ignorepartlist and channel.startswith("#"):
                 bot.part(channel, "Leaving Empty Channel")
-                if channel.lower() in botchannels.SpiceBot_Channels['list']:
-                    del botchannels.SpiceBot_Channels['list'][channel.lower()]
+                if channel.lower() in self.SpiceBot_Channels['list']:
+                    del self.SpiceBot_Channels['list'][channel.lower()]
 
     def join_all_channels(self, bot):
         if bot.config.SpiceBot_Channels.joinall:
-            for channel in botchannels.SpiceBot_Channels['list'].keys():
+            for channel in self.SpiceBot_Channels['list'].keys():
                 if channel.startswith("#"):
                     if channel not in bot.channels.keys() and channel not in bot.config.SpiceBot_Channels.chanignore:
-                        bot.write(('JOIN', bot.nick, botchannels.SpiceBot_Channels['list'][channel]['name']))
+                        bot.write(('JOIN', bot.nick, self.SpiceBot_Channels['list'][channel]['name']))
                         if channel not in bot.channels.keys() and bot.config.SpiceBot_Channels.operadmin:
-                            bot.write(('SAJOIN', bot.nick, botchannels.SpiceBot_Channels['list'][channel]['name']))
+                            bot.write(('SAJOIN', bot.nick, self.SpiceBot_Channels['list'][channel]['name']))
 
     def chanadmin_all_channels(self, bot):
         # Chan ADMIN +a
