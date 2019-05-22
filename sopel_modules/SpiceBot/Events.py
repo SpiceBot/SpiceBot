@@ -7,10 +7,11 @@ We utilize the Sopel code for event numbers and
 self-trigger the bot into performing actions
 """
 
-
 import sopel
 import functools
 import threading
+
+from .Logs import logs
 
 
 class BotEvents(object):
@@ -71,12 +72,14 @@ class BotEvents(object):
 
     def recieved(self, trigger):
         self.lock.acquire()
+
         if isinstance(trigger, dict):
             eventnumber = str(trigger["number"])
             message = str(trigger["message"])
         else:
             eventnumber = str(trigger.event)
             message = trigger.args[1]
+        logs.log('SpiceBot_Events', str(eventnumber) + "    " + str(message))
         if eventnumber not in self.dict["triggers_recieved"]:
             self.dict["triggers_recieved"][eventnumber] = []
         self.dict["triggers_recieved"][eventnumber].append(message)
