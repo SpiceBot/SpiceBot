@@ -101,3 +101,6 @@ class BotLogs():
             pidnum = e
             pidnum = str(os.popen("systemctl show " + str(bot.nick) + " --property=MainPID").read()).split("=")[-1]
         return pidnum
+
+
+botlogs = BotLogs()

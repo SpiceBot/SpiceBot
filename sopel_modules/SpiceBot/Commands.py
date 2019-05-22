@@ -51,3 +51,6 @@ class BotCommands():
         for comalias in comaliases:
             if comalias not in self.SpiceBot_Commands['commands'][command_type].keys():
                 self.SpiceBot_Commands['commands'][command_type][comalias] = {"aliasfor": aliasfor}
+
+
+botcommands = BotCommands()
