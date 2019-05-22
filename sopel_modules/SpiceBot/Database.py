@@ -50,11 +50,9 @@ class BotDatabase():
 
         if nick_id not in self.SpiceBot_Database["nicks"].keys():
             self.SpiceBot_Database["nicks"][nick_id] = {}
-            self.lock.release()
 
         if sorting_key not in self.SpiceBot_Database["nicks"][nick_id].keys():
             self.SpiceBot_Database["nicks"][nick_id][sorting_key] = bot.db.get_nick_value(nick, sorting_key) or dict()
-            self.lock.release()
 
         self.SpiceBot_Database["nicks"][nick_id][sorting_key][key] = value
 
