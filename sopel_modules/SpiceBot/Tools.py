@@ -7,7 +7,6 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel
 
 import collections
-import re
 import os
 import sys
 import codecs
@@ -244,12 +243,6 @@ def letters_in_string(text):
 
 
 """Channel Functions"""
-
-
-def topic_compile(topic):
-    actual_topic = re.compile(r'^\[\+[a-zA-Z]+\] (.*)')
-    topic = re.sub(actual_topic, r'\1', topic)
-    return topic
 
 
 def channel_privs(bot, channel, privtype):
