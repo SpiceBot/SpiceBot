@@ -15,10 +15,10 @@ import spicemanip
 class BotLogs():
     """This Is a contained source of log information"""
     def __init__(self):
-        self.SpiceBot_Logs = {
-                                "list": {"Sopel_systemd": [], "Sopel_stdio": []},
-                                "queue": []
-                                }
+        self.dict = {
+                    "list": {"Sopel_systemd": [], "Sopel_stdio": []},
+                    "queue": []
+                    }
         self.sopel_config = {
                                 "logging_channel": True
                                 }

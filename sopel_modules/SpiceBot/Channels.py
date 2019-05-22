@@ -11,10 +11,10 @@ class BotChannels():
     """This Logs all channels known to the server"""
     def __init__(self):
         self.channel_lock = False
-        self.SpiceBot_Channels = {
-                                "list": {},
-                                "InitialProcess": False
-                                }
+        self.dict = {
+                    "list": {},
+                    "InitialProcess": False
+                    }
 
     def channel_list_request(self, bot):
         bot.write(['LIST'])

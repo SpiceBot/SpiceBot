@@ -12,15 +12,15 @@ import spicemanip
 class BotCommands():
     """This Logs all commands known to the bot"""
     def __init__(self):
-        self.SpiceBot_Commands = {
-                                "counts": 0,
-                                "commands": {
-                                            'module': {},
-                                            'nickname': {},
-                                            'rule': {}
-                                            },
-                                "nickrules": []
-                                }
+        self.dict = {
+                    "counts": 0,
+                    "commands": {
+                                'module': {},
+                                'nickname': {},
+                                'rule': {}
+                                },
+                    "nickrules": []
+                    }
 
     def commandsquery_register(self, bot, command_type, validcoms, aliasfor=None):
 

@@ -14,10 +14,10 @@ class BotDatabase():
 
     def __init__(self):
         self.lock = threading.Lock()
-        self.SpiceBot_Database = {
-                                "nicks": {},
-                                "channels": {},
-                                }
+        self.dict = {
+                    "nicks": {},
+                    "channels": {},
+                    }
 
     """Nick"""
 
