@@ -35,12 +35,12 @@ def configure(config):
 def setup(bot):
 
     # Inject KICK
-    SpiceBot.botlogs.log('SpiceBot_Kick', "Implanting Kick function into bot")
+    SpiceBot.logs.log('SpiceBot_Kick', "Implanting Kick function into bot")
     bot.kick = SopelKICK.kick
     sopel.bot.SopelWrapper.kick = SopelWrapperKICK.kick
 
     # verify config settings for server
-    SpiceBot.botlogs.log('SpiceBot_Kick', "Checking for config settings")
+    SpiceBot.logs.log('SpiceBot_Kick', "Checking for config settings")
     bot.config.define_section("SpiceBot_Kick", SpiceBot_Kick, validate=False)
 
 

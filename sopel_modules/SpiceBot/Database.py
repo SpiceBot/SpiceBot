@@ -28,18 +28,18 @@ class BotDatabase():
         nick = Identifier(nick)
         nick_id = bot.db.get_nick_id(nick, create=True)
 
-        if nick_id not in self.SpiceBot_Database["nicks"].keys():
-            self.SpiceBot_Database["nicks"][nick_id] = {}
+        if nick_id not in self.dict["nicks"].keys():
+            self.dict["nicks"][nick_id] = {}
 
-        if sorting_key not in self.SpiceBot_Database["nicks"][nick_id].keys():
-            self.SpiceBot_Database["nicks"][nick_id][sorting_key] = bot.db.get_nick_value(nick, sorting_key) or dict()
+        if sorting_key not in self.dict["nicks"][nick_id].keys():
+            self.dict["nicks"][nick_id][sorting_key] = bot.db.get_nick_value(nick, sorting_key) or dict()
 
         self.lock.release()
 
-        if key not in self.SpiceBot_Database["nicks"][nick_id][sorting_key].keys():
+        if key not in self.dict["nicks"][nick_id][sorting_key].keys():
             return None
         else:
-            return self.SpiceBot_Database["nicks"][nick_id][sorting_key][key]
+            return self.dict["nicks"][nick_id][sorting_key][key]
 
     def set_nick_value(self, bot, nick, key, value, sorting_key='unsorted'):
 
@@ -48,15 +48,15 @@ class BotDatabase():
         nick = Identifier(nick)
         nick_id = bot.db.get_nick_id(nick, create=True)
 
-        if nick_id not in self.SpiceBot_Database["nicks"].keys():
-            self.SpiceBot_Database["nicks"][nick_id] = {}
+        if nick_id not in self.dict["nicks"].keys():
+            self.dict["nicks"][nick_id] = {}
 
-        if sorting_key not in self.SpiceBot_Database["nicks"][nick_id].keys():
-            self.SpiceBot_Database["nicks"][nick_id][sorting_key] = bot.db.get_nick_value(nick, sorting_key) or dict()
+        if sorting_key not in self.dict["nicks"][nick_id].keys():
+            self.dict["nicks"][nick_id][sorting_key] = bot.db.get_nick_value(nick, sorting_key) or dict()
 
-        self.SpiceBot_Database["nicks"][nick_id][sorting_key][key] = value
+        self.dict["nicks"][nick_id][sorting_key][key] = value
 
-        bot.db.set_nick_value(nick, sorting_key, self.SpiceBot_Database["nicks"][nick_id][sorting_key])
+        bot.db.set_nick_value(nick, sorting_key, self.dict["nicks"][nick_id][sorting_key])
 
         self.lock.release()
 
@@ -67,14 +67,14 @@ class BotDatabase():
         nick = Identifier(nick)
         nick_id = bot.db.get_nick_id(nick, create=True)
 
-        if nick_id not in self.SpiceBot_Database["nicks"].keys():
-            self.SpiceBot_Database["nicks"][nick_id] = {}
+        if nick_id not in self.dict["nicks"].keys():
+            self.dict["nicks"][nick_id] = {}
 
-        if sorting_key not in self.SpiceBot_Database["nicks"][nick_id].keys():
-            self.SpiceBot_Database["nicks"][nick_id][sorting_key] = bot.db.get_nick_value(nick, sorting_key) or dict()
+        if sorting_key not in self.dict["nicks"][nick_id].keys():
+            self.dict["nicks"][nick_id][sorting_key] = bot.db.get_nick_value(nick, sorting_key) or dict()
 
-        del self.SpiceBot_Database["nicks"][nick_id][sorting_key][key]
-        bot.db.set_nick_value(nick, sorting_key, self.SpiceBot_Database["nicks"][nick_id][sorting_key])
+        del self.dict["nicks"][nick_id][sorting_key][key]
+        bot.db.set_nick_value(nick, sorting_key, self.dict["nicks"][nick_id][sorting_key])
 
         self.lock.release()
 
@@ -85,22 +85,22 @@ class BotDatabase():
         nick = Identifier(nick)
         nick_id = bot.db.get_nick_id(nick, create=True)
 
-        if nick_id not in self.SpiceBot_Database["nicks"].keys():
-            self.SpiceBot_Database["nicks"][nick_id] = {}
+        if nick_id not in self.dict["nicks"].keys():
+            self.dict["nicks"][nick_id] = {}
 
-        if sorting_key not in self.SpiceBot_Database["nicks"][nick_id].keys():
-            self.SpiceBot_Database["nicks"][nick_id][sorting_key] = bot.db.get_nick_value(nick, sorting_key) or dict()
+        if sorting_key not in self.dict["nicks"][nick_id].keys():
+            self.dict["nicks"][nick_id][sorting_key] = bot.db.get_nick_value(nick, sorting_key) or dict()
 
-        if key not in self.SpiceBot_Database["nicks"][nick_id][sorting_key].keys():
+        if key not in self.dict["nicks"][nick_id][sorting_key].keys():
             oldvalue = []
         else:
-            oldvalue = self.SpiceBot_Database["nicks"][nick_id][sorting_key][key]
+            oldvalue = self.dict["nicks"][nick_id][sorting_key][key]
 
         if not oldvalue:
-            self.SpiceBot_Database["nicks"][nick_id][sorting_key][key] = value
+            self.dict["nicks"][nick_id][sorting_key][key] = value
         else:
-            self.SpiceBot_Database["nicks"][nick_id][sorting_key][key] = oldvalue + value
-        bot.db.set_nick_value(nick, sorting_key, self.SpiceBot_Database["nicks"][nick_id][sorting_key])
+            self.dict["nicks"][nick_id][sorting_key][key] = oldvalue + value
+        bot.db.set_nick_value(nick, sorting_key, self.dict["nicks"][nick_id][sorting_key])
 
         self.lock.release()
 
@@ -114,24 +114,24 @@ class BotDatabase():
         nick = Identifier(nick)
         nick_id = bot.db.get_nick_id(nick, create=True)
 
-        if nick_id not in self.SpiceBot_Database["nicks"].keys():
-            self.SpiceBot_Database["nicks"][nick_id] = {}
+        if nick_id not in self.dict["nicks"].keys():
+            self.dict["nicks"][nick_id] = {}
 
-        if sorting_key not in self.SpiceBot_Database["nicks"][nick_id].keys():
-            self.SpiceBot_Database["nicks"][nick_id][sorting_key] = bot.db.get_nick_value(nick, sorting_key) or dict()
+        if sorting_key not in self.dict["nicks"][nick_id].keys():
+            self.dict["nicks"][nick_id][sorting_key] = bot.db.get_nick_value(nick, sorting_key) or dict()
 
-        if key not in self.SpiceBot_Database["nicks"][nick_id][sorting_key].keys():
-            self.SpiceBot_Database["nicks"][nick_id][sorting_key][key] = []
+        if key not in self.dict["nicks"][nick_id][sorting_key].keys():
+            self.dict["nicks"][nick_id][sorting_key][key] = []
 
         if adjustmentdirection == 'add':
             for entry in entries:
-                if entry not in self.SpiceBot_Database["nicks"][nick_id][sorting_key][key]:
-                    self.SpiceBot_Database["nicks"][nick_id][sorting_key][key].append(entry)
+                if entry not in self.dict["nicks"][nick_id][sorting_key][key]:
+                    self.dict["nicks"][nick_id][sorting_key][key].append(entry)
         elif adjustmentdirection == 'del':
             for entry in entries:
-                while entry in self.SpiceBot_Database["nicks"][nick_id][sorting_key][key]:
-                    self.SpiceBot_Database["nicks"][nick_id][sorting_key][key].remove(entry)
-        bot.db.set_nick_value(nick, sorting_key, self.SpiceBot_Database["nicks"][nick_id][sorting_key])
+                while entry in self.dict["nicks"][nick_id][sorting_key][key]:
+                    self.dict["nicks"][nick_id][sorting_key][key].remove(entry)
+        bot.db.set_nick_value(nick, sorting_key, self.dict["nicks"][nick_id][sorting_key])
 
         self.lock.release()
 
@@ -143,18 +143,18 @@ class BotDatabase():
 
         channel = Identifier(channel)
 
-        if channel not in self.SpiceBot_Database["channels"].keys():
-            self.SpiceBot_Database["channels"][channel] = {}
+        if channel not in self.dict["channels"].keys():
+            self.dict["channels"][channel] = {}
 
-        if sorting_key not in self.SpiceBot_Database["channels"][channel].keys():
-            self.SpiceBot_Database["channels"][channel][sorting_key] = bot.db.get_channel_value(channel, sorting_key) or dict()
+        if sorting_key not in self.dict["channels"][channel].keys():
+            self.dict["channels"][channel][sorting_key] = bot.db.get_channel_value(channel, sorting_key) or dict()
 
         self.lock.release()
 
-        if key not in self.SpiceBot_Database["channels"][channel][sorting_key].keys():
+        if key not in self.dict["channels"][channel][sorting_key].keys():
             return None
         else:
-            return self.SpiceBot_Database["channels"][channel][sorting_key][key]
+            return self.dict["channels"][channel][sorting_key][key]
 
     def set_channel_value(self, bot, channel, key, value, sorting_key='unsorted'):
 
@@ -162,14 +162,14 @@ class BotDatabase():
 
         channel = Identifier(channel)
 
-        if channel not in self.SpiceBot_Database["channels"].keys():
-            self.SpiceBot_Database["channels"][channel] = {}
+        if channel not in self.dict["channels"].keys():
+            self.dict["channels"][channel] = {}
 
-        if sorting_key not in self.SpiceBot_Database["channels"][channel].keys():
-            self.SpiceBot_Database["channels"][channel][sorting_key] = bot.db.get_channel_value(channel, sorting_key) or dict()
+        if sorting_key not in self.dict["channels"][channel].keys():
+            self.dict["channels"][channel][sorting_key] = bot.db.get_channel_value(channel, sorting_key) or dict()
 
-        self.SpiceBot_Database["channels"][channel][sorting_key][key] = value
-        bot.db.set_channel_value(channel, sorting_key, self.SpiceBot_Database["channels"][channel][sorting_key])
+        self.dict["channels"][channel][sorting_key][key] = value
+        bot.db.set_channel_value(channel, sorting_key, self.dict["channels"][channel][sorting_key])
 
         self.lock.release()
 
@@ -179,14 +179,14 @@ class BotDatabase():
 
         channel = Identifier(channel)
 
-        if channel not in self.SpiceBot_Database["channels"].keys():
-            self.SpiceBot_Database["channels"][channel] = {}
+        if channel not in self.dict["channels"].keys():
+            self.dict["channels"][channel] = {}
 
-        if sorting_key not in self.SpiceBot_Database["channels"][channel].keys():
-            self.SpiceBot_Database["channels"][channel][sorting_key] = bot.db.get_channel_value(channel, sorting_key) or dict()
+        if sorting_key not in self.dict["channels"][channel].keys():
+            self.dict["channels"][channel][sorting_key] = bot.db.get_channel_value(channel, sorting_key) or dict()
 
-        del self.SpiceBot_Database["channels"][channel][sorting_key][key]
-        bot.db.set_channel_value(channel, sorting_key, self.SpiceBot_Database["channels"][channel][sorting_key])
+        del self.dict["channels"][channel][sorting_key][key]
+        bot.db.set_channel_value(channel, sorting_key, self.dict["channels"][channel][sorting_key])
 
         self.lock.release()
 
@@ -196,22 +196,22 @@ class BotDatabase():
 
         channel = Identifier(channel)
 
-        if channel not in self.SpiceBot_Database["channels"].keys():
-            self.SpiceBot_Database["channels"][channel] = {}
+        if channel not in self.dict["channels"].keys():
+            self.dict["channels"][channel] = {}
 
-        if sorting_key not in self.SpiceBot_Database["channels"][channel].keys():
-            self.SpiceBot_Database["channels"][channel][sorting_key] = bot.db.get_channel_value(channel, sorting_key) or dict()
+        if sorting_key not in self.dict["channels"][channel].keys():
+            self.dict["channels"][channel][sorting_key] = bot.db.get_channel_value(channel, sorting_key) or dict()
 
-        if key not in self.SpiceBot_Database["channels"][channel][sorting_key].keys():
+        if key not in self.dict["channels"][channel][sorting_key].keys():
             oldvalue = None
         else:
-            oldvalue = self.SpiceBot_Database["channels"][channel][sorting_key][key]
+            oldvalue = self.dict["channels"][channel][sorting_key][key]
 
         if not oldvalue:
-            self.SpiceBot_Database["channels"][channel][sorting_key][key] = value
+            self.dict["channels"][channel][sorting_key][key] = value
         else:
-            self.SpiceBot_Database["channels"][channel][sorting_key][key] = oldvalue + value
-        bot.db.set_channel_value(channel, sorting_key, self.SpiceBot_Database["channels"][channel][sorting_key])
+            self.dict["channels"][channel][sorting_key][key] = oldvalue + value
+        bot.db.set_channel_value(channel, sorting_key, self.dict["channels"][channel][sorting_key])
 
         self.lock.release()
 
@@ -224,26 +224,26 @@ class BotDatabase():
 
         channel = Identifier(channel)
 
-        if channel not in self.SpiceBot_Database["channels"].keys():
-            self.SpiceBot_Database["channels"][channel] = {}
+        if channel not in self.dict["channels"].keys():
+            self.dict["channels"][channel] = {}
 
-        if sorting_key not in self.SpiceBot_Database["channels"][channel].keys():
-            self.SpiceBot_Database["channels"][channel][sorting_key] = bot.db.get_channel_value(channel, sorting_key) or dict()
+        if sorting_key not in self.dict["channels"][channel].keys():
+            self.dict["channels"][channel][sorting_key] = bot.db.get_channel_value(channel, sorting_key) or dict()
 
-        if key not in self.SpiceBot_Database["channels"][channel][sorting_key].keys():
-            self.SpiceBot_Database["channels"][channel][sorting_key][key] = []
+        if key not in self.dict["channels"][channel][sorting_key].keys():
+            self.dict["channels"][channel][sorting_key][key] = []
 
         if adjustmentdirection == 'add':
             for entry in entries:
-                if entry not in self.SpiceBot_Database["channels"][channel][sorting_key][key]:
-                    self.SpiceBot_Database["channels"][channel][sorting_key][key].append(entry)
+                if entry not in self.dict["channels"][channel][sorting_key][key]:
+                    self.dict["channels"][channel][sorting_key][key].append(entry)
         elif adjustmentdirection == 'del':
             for entry in entries:
-                while entry in self.SpiceBot_Database["channels"][channel][sorting_key][key]:
-                    self.SpiceBot_Database["channels"][channel][sorting_key][key].remove(entry)
-        bot.db.set_channel_value(channel, sorting_key, self.SpiceBot_Database["channels"][channel][sorting_key])
+                while entry in self.dict["channels"][channel][sorting_key][key]:
+                    self.dict["channels"][channel][sorting_key][key].remove(entry)
+        bot.db.set_channel_value(channel, sorting_key, self.dict["channels"][channel][sorting_key])
 
         self.lock.release()
 
 
-botdb = BotDatabase()
+db = BotDatabase()

@@ -10,7 +10,7 @@ import sopel_modules.SpiceBot as SpiceBot
 import spicemanip
 
 
-@SpiceBot.botevents.check_ready([SpiceBot.botevents.BOT_COMMANDSQUERY])
+@SpiceBot.events.check_ready([SpiceBot.events.BOT_COMMANDSQUERY])
 @sopel.module.rule('^\?(.*)')
 def query_detection(bot, trigger):
 
@@ -24,11 +24,11 @@ def query_detection(bot, trigger):
         return
 
     commands_list = dict()
-    for commandstype in SpiceBot.botcommands.SpiceBot_Commands['commands'].keys():
+    for commandstype in SpiceBot.commands.dict['commands'].keys():
         if commandstype not in ['rule', 'nickname']:
-            for com in SpiceBot.botcommands.SpiceBot_Commands['commands'][commandstype].keys():
+            for com in SpiceBot.commands.dict['commands'][commandstype].keys():
                 if com not in commands_list.keys():
-                    commands_list[com] = SpiceBot.botcommands.SpiceBot_Commands['commands'][commandstype][com]
+                    commands_list[com] = SpiceBot.commands.dict['commands'][commandstype][com]
 
     if triggercommand[:-1] == "+":
 

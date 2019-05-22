@@ -42,8 +42,8 @@ def configure(config):
 
 
 def setup(bot):
-    SpiceBot.botlogs.log('SpiceBot_GifSearch', "Starting Setup Procedure")
-    SpiceBot.botevents.startup_add([SpiceBot.botevents.BOT_GIFSEARCH])
+    SpiceBot.logs.log('SpiceBot_GifSearch', "Starting Setup Procedure")
+    SpiceBot.events.startup_add([SpiceBot.events.BOT_GIFSEARCH])
 
     if 'SpiceBot_GifSearch' not in bot.memory:
         bot.memory["SpiceBot_GifSearch"] = {"cache": {}, "badgiflinks": [], 'valid_gif_api_dict': {}}
@@ -70,12 +70,12 @@ def setup(bot):
         bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'][gif_api] = valid_gif_api_dict[gif_api]
 
     for validgifapi in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
-        SpiceBot.botcommands.commandsquery_register(bot, "prefix", validgifapi)
+        SpiceBot.commands.commandsquery_register(bot, "prefix", validgifapi)
 
         if validgifapi not in bot.memory["SpiceBot_GifSearch"]['cache'].keys():
             bot.memory["SpiceBot_GifSearch"]['cache'][validgifapi] = dict()
 
-    SpiceBot.botevents.trigger(bot, SpiceBot.botevents.BOT_GIFSEARCH, "SpiceBot_GifSearch")
+    SpiceBot.events.trigger(bot, SpiceBot.events.BOT_GIFSEARCH, "SpiceBot_GifSearch")
 
 
 def shutdown(bot):

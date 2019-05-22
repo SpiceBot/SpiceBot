@@ -15,7 +15,7 @@ def nickname_comand_restart(bot, trigger):
         bot.say("You are not authorized to perform this function.")
 
     quitmessage = "Received command from " + trigger.nick + " to restart. Be Back Soon!"
-    SpiceBot.botlogs.log('SpiceBot_Restart', quitmessage)
+    SpiceBot.logs.log('SpiceBot_Restart', quitmessage)
     bot.osd(quitmessage, bot.channels.keys())
 
     # service_manip(bot, bot.nick, 'restart', 'SpiceBot_Restart')

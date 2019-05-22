@@ -17,7 +17,7 @@ class BotEvents(object):
 
     Events will be assigned a 4-digit number above 1000.
 
-    This allows you to do, ``@module.event(botevents.BOT_WELCOME)````
+    This allows you to do, ``@module.event(events.BOT_WELCOME)````
 
     Triggers handled by this module will be processed immediately.
     Others will be placed into a queue.
@@ -43,8 +43,8 @@ class BotEvents(object):
 
     def __getattr__(self, name):
         ''' will only get called for undefined attributes '''
-        eventnumber = max(list(self.SpiceBot_Events["assigned_IDs"].keys())) + 1
-        self.SpiceBot_Events["assigned_IDs"][eventnumber] = str(name)
+        eventnumber = max(list(self.dict["assigned_IDs"].keys())) + 1
+        self.dict["assigned_IDs"][eventnumber] = str(name)
         setattr(self, name, str(eventnumber))
         return str(eventnumber)
 
@@ -53,7 +53,7 @@ class BotEvents(object):
         if number in self.defaultevents:
             self.dispatch(bot, pretriggerdict)
         else:
-            self.SpiceBot_Events["trigger_queue"].append(pretriggerdict)
+            self.dict["trigger_queue"].append(pretriggerdict)
 
     def dispatch(self, bot, pretriggerdict):
         number = pretriggerdict["number"]
@@ -72,37 +72,37 @@ class BotEvents(object):
         else:
             eventnumber = str(trigger.event)
             message = trigger.args[1]
-        if eventnumber not in self.SpiceBot_Events["triggers_recieved"]:
-            self.SpiceBot_Events["triggers_recieved"][eventnumber] = []
-        self.SpiceBot_Events["triggers_recieved"][eventnumber].append(message)
+        if eventnumber not in self.dict["triggers_recieved"]:
+            self.dict["triggers_recieved"][eventnumber] = []
+        self.dict["triggers_recieved"][eventnumber].append(message)
 
     def check(self, checklist):
         if not isinstance(checklist, list):
             checklist = [str(checklist)]
         for number in checklist:
-            if str(number) not in self.SpiceBot_Events["triggers_recieved"].keys():
+            if str(number) not in self.dict["triggers_recieved"].keys():
                 return False
         return True
 
     def startup_add(self, startlist):
         if not isinstance(startlist, list):
             startlist = [str(startlist)]
-        self.SpiceBot_Events["startup_required"].extend(startlist)
+        self.dict["startup_required"].extend(startlist)
 
     def startup_check(self):
-        for number in self.SpiceBot_Events["startup_required"]:
-            if str(number) not in self.SpiceBot_Events["triggers_recieved"].keys():
+        for number in self.dict["startup_required"]:
+            if str(number) not in self.dict["triggers_recieved"].keys():
                 return False
         return True
 
     def startup_debug(self):
         not_done = []
-        for number in self.SpiceBot_Events["startup_required"]:
-            if str(number) not in self.SpiceBot_Events["triggers_recieved"].keys():
+        for number in self.dict["startup_required"]:
+            if str(number) not in self.dict["triggers_recieved"].keys():
                 not_done.append(int(number))
         reference_not_done = []
         for item in not_done:
-            reference_not_done.append(str(self.SpiceBot_Events["assigned_IDs"][item]))
+            reference_not_done.append(str(self.dict["assigned_IDs"][item]))
         return reference_not_done
 
     def check_ready(self, checklist):
@@ -126,4 +126,4 @@ class BotEvents(object):
         return actual_decorator
 
 
-botevents = BotEvents()
+events = BotEvents()

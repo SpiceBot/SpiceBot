@@ -23,7 +23,7 @@ def configure(config):
 
 
 def setup(bot):
-    SpiceBot.botlogs.log('SpiceBot_Update', "Initial Setup processing")
+    SpiceBot.logs.log('SpiceBot_Update', "Initial Setup processing")
     bot.config.define_section("SpiceBot_Update", SpiceBot_Update_MainSection, validate=False)
 
 
@@ -48,7 +48,7 @@ def nickname_comand_update(bot, trigger):
     triggerargs = spicemanip.main(triggerargs, '2+', 'list')
 
     quitmessage = "Received command from " + trigger.nick + " to update from Github and restart"
-    SpiceBot.botlogs.log('SpiceBot_Update', quitmessage)
+    SpiceBot.logs.log('SpiceBot_Update', quitmessage)
     bot.osd(quitmessage, bot.channels.keys())
 
     if commandused == 'nodeps':

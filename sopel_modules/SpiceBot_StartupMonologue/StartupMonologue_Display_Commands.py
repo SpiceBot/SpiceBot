@@ -7,16 +7,16 @@ import sopel.module
 import sopel_modules.SpiceBot as SpiceBot
 
 
-@sopel.module.event(SpiceBot.botevents.BOT_COMMANDSQUERY)
+@sopel.module.event(SpiceBot.events.BOT_COMMANDSQUERY)
 @sopel.module.rule('.*')
 def bot_startup_monologue_commands(bot, trigger):
 
     availablecomsnum, availablecomsfiles = 0, 0
-    for commandstype in SpiceBot.botcommands.SpiceBot_Commands['commands'].keys():
-        availablecomsnum += len(SpiceBot.botcommands.SpiceBot_Commands['commands'][commandstype].keys())
-    availablecomsfiles += SpiceBot.botcommands.SpiceBot_Commands['counts']
+    for commandstype in SpiceBot.commands.dict['commands'].keys():
+        availablecomsnum += len(SpiceBot.commands.dict['commands'][commandstype].keys())
+    availablecomsfiles += SpiceBot.commands.dict['counts']
 
     bot.memory['SpiceBot_StartupMonologue'].append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
-    SpiceBot.botlogs.log('SpiceBot_StartupMonologue', "There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
+    SpiceBot.logs.log('SpiceBot_StartupMonologue', "There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
 
-    SpiceBot.botevents.trigger(bot, SpiceBot.botevents.BOT_STARTUPMONOLOGUE_COMMANDSQUERY, "SpiceBot_StartupMonologue")
+    SpiceBot.events.trigger(bot, SpiceBot.events.BOT_STARTUPMONOLOGUE_COMMANDSQUERY, "SpiceBot_StartupMonologue")

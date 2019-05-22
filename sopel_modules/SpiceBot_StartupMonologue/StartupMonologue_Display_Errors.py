@@ -6,11 +6,11 @@ import sopel.module
 import sopel_modules.SpiceBot as SpiceBot
 
 
-@sopel.module.event(SpiceBot.botevents.BOT_STARTUPMONOLOGUE)
+@sopel.module.event(SpiceBot.events.BOT_STARTUPMONOLOGUE)
 @sopel.module.rule('.*')
 def bot_startup_monologue_start(bot, trigger):
 
-    debuglines = SpiceBot.botlogs.stdio_logs_fetch(bot)
+    debuglines = SpiceBot.logs.stdio_logs_fetch(bot)
 
     searchphrasefound = []
     for line in debuglines:
@@ -19,9 +19,9 @@ def bot_startup_monologue_start(bot, trigger):
 
     if len(searchphrasefound):
         for foundphase in searchphrasefound:
-            SpiceBot.botlogs.log('SpiceBot_Logs', str(foundphase))
+            SpiceBot.logs.log('SpiceBot_Logs', str(foundphase))
         searchphrasefound.insert(0, "Notice to Bot Admins: ")
         searchphrasefound.append("Run the debug command for more information.")
         bot.osd(searchphrasefound, bot.channels.keys())
     else:
-        SpiceBot.botlogs.log('SpiceBot_Logs', "No issues found at bot startup!", True)
+        SpiceBot.logs.log('SpiceBot_Logs', "No issues found at bot startup!", True)

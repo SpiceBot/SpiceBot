@@ -24,15 +24,15 @@ class BotChannels():
 
     def channel_list_recieve_input(self, trigger):
         channel, _, topic = trigger.args[1:]
-        if channel.lower() not in self.SpiceBot_Channels['list'].keys():
-            self.SpiceBot_Channels['list'][channel.lower()] = dict()
-        self.SpiceBot_Channels['list'][channel.lower()]['name'] = channel
-        self.SpiceBot_Channels['list'][channel.lower()]['topic'] = self.topic_compile(topic)
+        if channel.lower() not in self.dict['list'].keys():
+            self.dict['list'][channel.lower()] = dict()
+        self.dict['list'][channel.lower()]['name'] = channel
+        self.dict['list'][channel.lower()]['topic'] = self.topic_compile(topic)
         self.channel_lock = True
 
     def channel_list_recieve_finish(self):
-        if not self.SpiceBot_Channels['InitialProcess']:
-            self.SpiceBot_Channels['InitialProcess'] = True
+        if not self.dict['InitialProcess']:
+            self.dict['InitialProcess'] = True
         self.channel_lock = False
 
     def topic_compile(self, topic):
@@ -48,17 +48,17 @@ class BotChannels():
         for channel in bot.channels.keys():
             if len(bot.channels[channel].privileges.keys()) == 1 and channel not in ignorepartlist and channel.startswith("#"):
                 bot.part(channel, "Leaving Empty Channel")
-                if channel.lower() in self.SpiceBot_Channels['list']:
-                    del self.SpiceBot_Channels['list'][channel.lower()]
+                if channel.lower() in self.dict['list']:
+                    del self.dict['list'][channel.lower()]
 
     def join_all_channels(self, bot):
         if bot.config.SpiceBot_Channels.joinall:
-            for channel in self.SpiceBot_Channels['list'].keys():
+            for channel in self.dict['list'].keys():
                 if channel.startswith("#"):
                     if channel not in bot.channels.keys() and channel not in bot.config.SpiceBot_Channels.chanignore:
-                        bot.write(('JOIN', bot.nick, self.SpiceBot_Channels['list'][channel]['name']))
+                        bot.write(('JOIN', bot.nick, self.dict['list'][channel]['name']))
                         if channel not in bot.channels.keys() and bot.config.SpiceBot_Channels.operadmin:
-                            bot.write(('SAJOIN', bot.nick, self.SpiceBot_Channels['list'][channel]['name']))
+                            bot.write(('SAJOIN', bot.nick, self.dict['list'][channel]['name']))
 
     def chanadmin_all_channels(self, bot):
         # Chan ADMIN +a
@@ -72,4 +72,4 @@ class BotChannels():
                     bot.part(channel)
 
 
-botchannels = BotChannels()
+channels = BotChannels()

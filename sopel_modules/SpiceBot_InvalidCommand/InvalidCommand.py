@@ -17,14 +17,14 @@ def shutdown(bot):
         del bot.memory["SpiceBot_InvalidCommand"]
 
 
-@sopel.module.event(SpiceBot.botevents.BOT_LOADED)
+@sopel.module.event(SpiceBot.events.BOT_LOADED)
 @sopel.module.rule('.*')
 def bot_events_complete(bot, trigger):
-    for comtype in SpiceBot.botcommands.SpiceBot_Commands['commands'].keys():
-        bot.memory["SpiceBot_InvalidCommand"]["valid"].extend(SpiceBot.botcommands.SpiceBot_Commands['commands'][comtype].keys())
+    for comtype in SpiceBot.commands.dict['commands'].keys():
+        bot.memory["SpiceBot_InvalidCommand"]["valid"].extend(SpiceBot.commands.dict['commands'][comtype].keys())
 
 
-@SpiceBot.botevents.check_ready([SpiceBot.botevents.BOT_LOADED, SpiceBot.botevents.BOT_COMMANDSQUERY])
+@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED, SpiceBot.events.BOT_COMMANDSQUERY])
 @sopel.module.commands('(.*)')
 def InvalidCommand_triggers(bot, trigger):
     return

@@ -9,7 +9,7 @@ import spicemanip
 import sopel_modules.SpiceBot as SpiceBot
 
 
-@SpiceBot.botevents.check_ready([SpiceBot.botevents.BOT_LOADED, SpiceBot.botevents.BOT_COMMANDSQUERY])
+@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED, SpiceBot.events.BOT_COMMANDSQUERY])
 @sopel.module.nickname_commands('(.*)')
 def bot_command_nick(bot, trigger):
 
@@ -21,13 +21,13 @@ def bot_command_nick(bot, trigger):
     if triggercommand[0] == "?":
         return
 
-    if triggercommand in SpiceBot.botcommands.SpiceBot_Commands['commands']["nickname"].keys():
+    if triggercommand in SpiceBot.commands.dict['commands']["nickname"].keys():
         return
     triggerargs.insert(0, triggercommand)
 
     fulltrigger = spicemanip.main(triggerargs, 0).lower()
 
-    if fulltrigger in SpiceBot.botcommands.SpiceBot_Commands['nickrules']:
+    if fulltrigger in SpiceBot.commands.dict['nickrules']:
         return
 
     if fulltrigger.lower().startswith("what is"):
@@ -154,7 +154,7 @@ def bot_command_nick(bot, trigger):
 
     else:
 
-        closestmatches = SpiceBot.similar_list(bot, triggercommand, SpiceBot.botcommands.SpiceBot_Commands['commands']["nickname"].keys(), 3, 'reverse')
+        closestmatches = SpiceBot.similar_list(bot, triggercommand, SpiceBot.commands.dict['commands']["nickname"].keys(), 3, 'reverse')
 
         if len(closestmatches):
             closestmatches = spicemanip.main(closestmatches, "andlist")

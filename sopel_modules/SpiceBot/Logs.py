@@ -28,14 +28,14 @@ class BotLogs():
         logmessage = logtitle + "    " + logentry
 
         if self.sopel_config["logging_channel"]:
-            self.SpiceBot_Logs["queue"].append(logmessage)
+            self.dict["queue"].append(logmessage)
 
         if stdio:
             sopel.tools.stderr(logmessage)
 
-        if logtype not in self.SpiceBot_Logs["list"].keys():
-            self.SpiceBot_Logs["list"][logtype] = []
-        self.SpiceBot_Logs["list"][logtype].append(logentry)
+        if logtype not in self.dict["list"].keys():
+            self.dict["list"][logtype] = []
+        self.dict["list"][logtype].append(logentry)
 
     def get_logs(self):
         return []
@@ -43,7 +43,7 @@ class BotLogs():
     def stdio_logs_fetch(self, bot):
 
         stdio_ignore = []
-        for logtype in self.SpiceBot_Logs["list"].keys():
+        for logtype in self.dict["list"].keys():
             stdio_ignore.append("[" + logtype + "]")
 
         logfile = os.path.os.path.join(bot.config.core.logdir, 'stdio.log')
@@ -103,4 +103,4 @@ class BotLogs():
         return pidnum
 
 
-botlogs = BotLogs()
+logs = BotLogs()

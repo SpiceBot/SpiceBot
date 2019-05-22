@@ -8,7 +8,7 @@ import spicemanip
 import sopel_modules.SpiceBot as SpiceBot
 
 
-@SpiceBot.botevents.check_ready([SpiceBot.botevents.BOT_LOGS])
+@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOGS])
 @sopel.module.nickname_commands('logs', 'debug')
 def bot_command_logs(bot, trigger):
 
@@ -20,11 +20,11 @@ def bot_command_logs(bot, trigger):
 
     logtype = spicemanip.main(triggerargs, 1) or None
     if not logtype:
-        bot.osd("Current valid log(s) include: " + spicemanip.main(SpiceBot.botlogs.SpiceBot_Logs["list"].keys(), 'andlist'), trigger.sender, 'action')
+        bot.osd("Current valid log(s) include: " + spicemanip.main(SpiceBot.logs.dict["list"].keys(), 'andlist'), trigger.sender, 'action')
         return
 
-    if not SpiceBot.inlist(logtype, SpiceBot.botlogs.SpiceBot_Logs["list"].keys()):
-        closestmatches = SpiceBot.similar_list(bot, logtype, SpiceBot.botlogs.SpiceBot_Logs["list"].keys(), 10, 'reverse')
+    if not SpiceBot.inlist(logtype, SpiceBot.logs.dict["list"].keys()):
+        closestmatches = SpiceBot.similar_list(bot, logtype, SpiceBot.logs.dict["list"].keys(), 10, 'reverse')
         if not len(closestmatches):
             bot.notice("No valid logs match " + str(logtype) + ".", trigger.nick)
         else:
@@ -32,14 +32,14 @@ def bot_command_logs(bot, trigger):
 
         return
 
-    logtype = SpiceBot.inlist_match(logtype, SpiceBot.botlogs.SpiceBot_Logs["list"].keys())
+    logtype = SpiceBot.inlist_match(logtype, SpiceBot.logs.dict["list"].keys())
 
     if logtype == "Sopel_systemd":
-        logindex = SpiceBot.botlogs.systemd_logs_fetch(bot)
+        logindex = SpiceBot.logs.systemd_logs_fetch(bot)
     elif logtype == "Sopel_stdio":
-        logindex = SpiceBot.botlogs.stdio_logs_fetch(bot)
+        logindex = SpiceBot.logs.stdio_logs_fetch(bot)
     else:
-        logindex = SpiceBot.botlogs.SpiceBot_Logs["list"][logtype]
+        logindex = SpiceBot.logs.dict["list"][logtype]
 
     if not len(logindex):
         bot.osd("No logs found for " + str(logtype) + ".")

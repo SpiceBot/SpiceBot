@@ -12,7 +12,7 @@ import sopel_modules.SpiceBot as SpiceBot
 def setup(bot):
     if 'SpiceBot_Uptime' not in bot.memory:
         now = time.time()
-        SpiceBot.botlogs.log('SpiceBot_Uptime', "Start time set to " + str(time.time()))
+        SpiceBot.logs.log('SpiceBot_Uptime', "Start time set to " + str(time.time()))
         bot.memory["SpiceBot_Uptime"] = now
 
 

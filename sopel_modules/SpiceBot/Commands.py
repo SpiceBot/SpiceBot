@@ -27,9 +27,9 @@ class BotCommands():
         if not isinstance(validcoms, list):
             validcoms = [validcoms]
 
-        if command_type not in self.SpiceBot_Commands['commands'].keys():
-            self.SpiceBot_Commands['commands'][command_type] = dict()
-        self.SpiceBot_Commands['counts'] += 1
+        if command_type not in self.dict['commands'].keys():
+            self.dict['commands'][command_type] = dict()
+        self.dict['counts'] += 1
 
         dict_from_file = dict()
 
@@ -44,13 +44,13 @@ class BotCommands():
                 comaliases = spicemanip.main(dict_from_file["validcoms"], '2+', 'list')
             else:
                 comaliases = []
-            self.SpiceBot_Commands['commands'][command_type][maincom] = dict_from_file
+            self.dict['commands'][command_type][maincom] = dict_from_file
         else:
             comaliases = validcoms
 
         for comalias in comaliases:
-            if comalias not in self.SpiceBot_Commands['commands'][command_type].keys():
-                self.SpiceBot_Commands['commands'][command_type][comalias] = {"aliasfor": aliasfor}
+            if comalias not in self.dict['commands'][command_type].keys():
+                self.dict['commands'][command_type][comalias] = {"aliasfor": aliasfor}
 
 
-botcommands = BotCommands()
+commands = BotCommands()

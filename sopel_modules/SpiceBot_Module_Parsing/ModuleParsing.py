@@ -13,8 +13,8 @@ import spicemanip
 
 
 def setup(bot):
-    SpiceBot.botlogs.log('SpiceBot_CommandsQuery', "Starting setup procedure")
-    SpiceBot.botevents.startup_add([SpiceBot.botevents.BOT_COMMANDSQUERY])
+    SpiceBot.logs.log('SpiceBot_CommandsQuery', "Starting setup procedure")
+    SpiceBot.events.startup_add([SpiceBot.events.BOT_COMMANDSQUERY])
 
     filepathlisting = []
 
@@ -36,7 +36,7 @@ def setup(bot):
                 pypi_modules_dir = os.path.join(plugin_dir, pathname)
                 filepathlisting.append(pypi_modules_dir)
     except Exception as e:
-        SpiceBot.botlogs.log('SpiceBot_CommandsQuery', "sopel_modules not loaded :" + str(e))
+        SpiceBot.logs.log('SpiceBot_CommandsQuery', "sopel_modules not loaded :" + str(e))
 
     # Extra directories
     filepathlist = []
@@ -120,7 +120,7 @@ def setup(bot):
                     currentsuccesslines += 1
 
             if currentsuccesslines:
-                SpiceBot.botcommands.SpiceBot_Commands['counts'] += 1
+                SpiceBot.commands.dict['counts'] += 1
 
             if len(filelinelist):
                 for atlinefound in filelinelist:
@@ -140,27 +140,27 @@ def setup(bot):
                     else:
                         comaliases = []
 
-                    SpiceBot.botcommands.SpiceBot_Commands['commands'][comtype][maincom] = dict_from_file
+                    SpiceBot.commands.dict['commands'][comtype][maincom] = dict_from_file
                     for comalias in comaliases:
-                        if comalias not in SpiceBot.botcommands.SpiceBot_Commands['commands'][comtype].keys():
-                            SpiceBot.botcommands.SpiceBot_Commands['commands'][comtype][comalias] = {"aliasfor": maincom}
+                        if comalias not in SpiceBot.commands.dict['commands'][comtype].keys():
+                            SpiceBot.commands.dict['commands'][comtype][comalias] = {"aliasfor": maincom}
 
     for comtype in ['module', 'nickname', 'rule']:
-        SpiceBot.botlogs.log('SpiceBot_CommandsQuery', "Found " + str(len(SpiceBot.botcommands.SpiceBot_Commands['commands'][comtype].keys())) + " " + comtype + " commands.", True)
+        SpiceBot.logs.log('SpiceBot_CommandsQuery', "Found " + str(len(SpiceBot.commands.dict['commands'][comtype].keys())) + " " + comtype + " commands.", True)
 
-    for command in SpiceBot.botcommands.SpiceBot_Commands['commands']['rule'].keys():
+    for command in SpiceBot.commands.dict['commands']['rule'].keys():
         if command.startswith("$nickname"):
             command = command.split("$nickname")[-1]
-            if command not in SpiceBot.botcommands.SpiceBot_Commands['nickrules']:
-                SpiceBot.botcommands.SpiceBot_Commands['nickrules'].append(command)
+            if command not in SpiceBot.commands.dict['nickrules']:
+                SpiceBot.commands.dict['nickrules'].append(command)
 
-    SpiceBot.botevents.trigger(bot, SpiceBot.botevents.BOT_COMMANDSQUERY, "SpiceBot_CommandsQuery")
+    SpiceBot.events.trigger(bot, SpiceBot.events.BOT_COMMANDSQUERY, "SpiceBot_CommandsQuery")
 
 
-@sopel.module.event(SpiceBot.botevents.BOT_LOADED)
+@sopel.module.event(SpiceBot.events.BOT_LOADED)
 @sopel.module.rule('.*')
 def bot_events_complete(bot, trigger):
 
-    for comtype in SpiceBot.botcommands.SpiceBot_Commands['commands'].keys():
+    for comtype in SpiceBot.commands.dict['commands'].keys():
         if comtype not in ['module', 'nickname', 'rule']:
-            SpiceBot.botlogs.log('SpiceBot_CommandsQuery', "Found " + str(len(SpiceBot.botcommands.SpiceBot_Commands['commands'][comtype].keys())) + " " + comtype + " commands.", True)
+            SpiceBot.logs.log('SpiceBot_CommandsQuery', "Found " + str(len(SpiceBot.commands.dict['commands'][comtype].keys())) + " " + comtype + " commands.", True)

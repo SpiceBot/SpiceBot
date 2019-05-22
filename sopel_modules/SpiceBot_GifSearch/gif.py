@@ -11,7 +11,7 @@ import sopel_modules.SpiceBot as SpiceBot
 import spicemanip
 
 
-@SpiceBot.botevents.check_ready([SpiceBot.botevents.BOT_GIFSEARCH])
+@SpiceBot.events.check_ready([SpiceBot.events.BOT_GIFSEARCH])
 @module.commands('gif')
 def gif_trigger(bot, trigger):
 
