@@ -1,16 +1,16 @@
 # coding=utf8
 from __future__ import unicode_literals, absolute_import, division, print_function
 """
-This is the SpiceBot Logs system.
+This is the SpiceBot Commands system.
 
-This Class stores logs in an easy to access manner
+This Class stores commands in an easy to access manner
 """
 
 import spicemanip
 
 
-class BotCommandss():
-    """This Logs all channels known to the server"""
+class BotCommands():
+    """This Logs all commands known to the bot"""
     def __init__(self):
         self.SpiceBot_Commands = {
                                 "counts": 0,
@@ -53,4 +53,4 @@ class BotCommandss():
                 self.SpiceBot_Commands['commands'][command_type][comalias] = {"aliasfor": aliasfor}
 
 
-botcommands = BotCommandss()
+botcommands = BotCommands()
