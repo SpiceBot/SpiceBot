@@ -305,7 +305,7 @@ def spicebot_update(bot, deps=False):
     if not os.path.exists(clonepath) or not os.path.isdir(clonepath):
         os.system(clonepath)
 
-    SpiceBot.botlogs.log('SpiceBot_Update', "Cloning  to " + clonepath, True)
+    botlogs.log('SpiceBot_Update', "Cloning  to " + clonepath, True)
 
     clone_repository(str(bot.config.SpiceBot_Update.gitrepo + ".git"), clonepath, checkout_branch=bot.config.SpiceBot_Update.gitbranch)
 
@@ -316,12 +316,12 @@ def spicebot_update(bot, deps=False):
     # pipcommand += " git+" + str(bot.config.SpiceBot_Update.gitrepo) + "@" + str(bot.config.SpiceBot_Update.gitbranch)
     pipcommand += " /tmp/SpiceBot/"
 
-    SpiceBot.botlogs.log('SpiceBot_Update', "Running `" + pipcommand + "`", True)
+    botlogs.log('SpiceBot_Update', "Running `" + pipcommand + "`", True)
     # for line in os.popen(pipcommand).read().split('\n'):
-    #    SpiceBot.botlogs.log('SpiceBot_Update', "    " + line)
+    #    botlogs.log('SpiceBot_Update', "    " + line)
     os.system(pipcommand)
 
-    SpiceBot.botlogs.log('SpiceBot_Update', "Deleting " + clonepath, True)
+    botlogs.log('SpiceBot_Update', "Deleting " + clonepath, True)
 
     os.system("sudo rm -r /tmp/SpiceBot")
 
@@ -337,10 +337,10 @@ def service_manip(bot, servicename, dowhat, log_from='service_manip'):
     if str(dowhat) not in ["start", "stop", "restart"]:
         return
     try:
-        SpiceBot.botlogs.log(log_from, str(dowhat).title() + "ing " + str(servicename) + ".service.")
+        botlogs.log(log_from, str(dowhat).title() + "ing " + str(servicename) + ".service.")
         os.system("sudo service " + str(servicename) + " " + str(dowhat))
     except Exception as e:
-        SpiceBot.botlogs.log(log_from, str(dowhat).title() + "ing " + str(servicename) + ".service Failed: " + str(e))
+        botlogs.log(log_from, str(dowhat).title() + "ing " + str(servicename) + ".service Failed: " + str(e))
 
 
 """Config Reading Functions"""
@@ -372,7 +372,7 @@ def read_directory_json_to_dict(bot, directories, configtypename="Config File", 
         except Exception as e:
             filereadgood = False
             if bot:
-                SpiceBot.botlogs.log(log_from, "Error loading %s: %s (%s)" % (configtypename, e, filepath))
+                botlogs.log(log_from, "Error loading %s: %s (%s)" % (configtypename, e, filepath))
             dict_from_file = dict()
         # Close File
         inf.close()
@@ -387,10 +387,10 @@ def read_directory_json_to_dict(bot, directories, configtypename="Config File", 
 
     if filecount:
         if bot:
-            SpiceBot.botlogs.log(log_from, 'Registered %d %s dict files,' % (filecount, configtypename))
-            SpiceBot.botlogs.log(log_from, '%d %s dict files failed to load' % (fileopenfail, configtypename), True)
+            botlogs.log(log_from, 'Registered %d %s dict files,' % (filecount, configtypename))
+            botlogs.log(log_from, '%d %s dict files failed to load' % (fileopenfail, configtypename), True)
     else:
         if bot:
-            SpiceBot.botlogs.log(log_from, "Warning: Couldn't load any %s dict files" % (configtypename))
+            botlogs.log(log_from, "Warning: Couldn't load any %s dict files" % (configtypename))
 
     return configs_dict
