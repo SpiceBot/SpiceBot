@@ -6,8 +6,8 @@ This is the SpiceBot Logs system.
 This Class stores logs in an easy to access manner
 """
 
-
 import sopel
+import threading
 import os
 import spicemanip
 
@@ -15,6 +15,7 @@ import spicemanip
 class BotLogs():
     """This Is a contained source of log information"""
     def __init__(self):
+        self.lock = threading.Lock()
         self.dict = {
                     "list": {"Sopel_systemd": [], "Sopel_stdio": []},
                     "queue": []
@@ -24,6 +25,9 @@ class BotLogs():
                                 }
 
     def log(self, logtype, logentry, stdio=False):
+
+        self.lock.acquire()
+
         logtitle = "[" + logtype + "]"
         logmessage = logtitle + "    " + logentry
 
@@ -37,8 +41,16 @@ class BotLogs():
             self.dict["list"][logtype] = []
         self.dict["list"][logtype].append(logentry)
 
-    def get_logs(self):
-        return []
+        self.lock.release()
+
+    def get_logs(self, bot, logtype):
+        if logtype == "Sopel_systemd":
+            logindex = self.systemd_logs_fetch(bot)
+        elif logtype == "Sopel_stdio":
+            logindex = self.stdio_logs_fetch(bot)
+        else:
+            logindex = self.dict["list"][logtype]
+        return logindex
 
     def stdio_logs_fetch(self, bot):
 

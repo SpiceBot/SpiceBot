@@ -10,6 +10,7 @@ self-trigger the bot into performing actions
 
 import sopel
 import functools
+import threading
 
 
 class BotEvents(object):
@@ -26,6 +27,7 @@ class BotEvents(object):
     """
 
     def __init__(self):
+        self.lock = threading.Lock()
         self.RPL_WELCOME = '001'  # This is a defined IRC event
         self.BOT_WELCOME = '1001'
         self.BOT_READY = '1002'
@@ -43,9 +45,11 @@ class BotEvents(object):
 
     def __getattr__(self, name):
         ''' will only get called for undefined attributes '''
+        self.lock.acquire()
         eventnumber = max(list(self.dict["assigned_IDs"].keys())) + 1
         self.dict["assigned_IDs"][eventnumber] = str(name)
         setattr(self, name, str(eventnumber))
+        self.lock.release()
         return str(eventnumber)
 
     def trigger(self, bot, number, message="SpiceBot_Events"):
@@ -66,6 +70,7 @@ class BotEvents(object):
         self.recieved({"number": number, "message": message})
 
     def recieved(self, trigger):
+        self.lock.acquire()
         if isinstance(trigger, dict):
             eventnumber = str(trigger["number"])
             message = str(trigger["message"])
@@ -75,6 +80,7 @@ class BotEvents(object):
         if eventnumber not in self.dict["triggers_recieved"]:
             self.dict["triggers_recieved"][eventnumber] = []
         self.dict["triggers_recieved"][eventnumber].append(message)
+        self.lock.release()
 
     def check(self, checklist):
         if not isinstance(checklist, list):
@@ -85,9 +91,11 @@ class BotEvents(object):
         return True
 
     def startup_add(self, startlist):
+        self.lock.acquire()
         if not isinstance(startlist, list):
             startlist = [str(startlist)]
         self.dict["startup_required"].extend(startlist)
+        self.lock.release()
 
     def startup_check(self):
         for number in self.dict["startup_required"]:

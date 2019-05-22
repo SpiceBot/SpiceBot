@@ -70,7 +70,12 @@ def setup(bot):
         bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'][gif_api] = valid_gif_api_dict[gif_api]
 
     for validgifapi in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
-        SpiceBot.commands.commandsquery_register(bot, "prefix", validgifapi)
+        command_dict = {
+                        "comtype": "prefix",
+                        "validcoms": validgifapi
+                        }
+        SpiceBot.commands.dict['counts'] += 1
+        SpiceBot.commands.register(bot, command_dict)
 
         if validgifapi not in bot.memory["SpiceBot_GifSearch"]['cache'].keys():
             bot.memory["SpiceBot_GifSearch"]['cache'][validgifapi] = dict()

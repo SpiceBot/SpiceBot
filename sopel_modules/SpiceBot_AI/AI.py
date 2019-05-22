@@ -27,9 +27,6 @@ def bot_command_nick(bot, trigger):
 
     fulltrigger = spicemanip.main(triggerargs, 0).lower()
 
-    if fulltrigger in SpiceBot.commands.dict['nickrules']:
-        return
-
     if fulltrigger.lower().startswith("what is"):
         searchterm = spicemanip.main(triggerargs, "3+") or None
         if searchterm:
@@ -151,15 +148,3 @@ def bot_command_nick(bot, trigger):
                 #    bot.osd("I have never seen " + str(target) + ".")
                 # TODO
         return
-
-    else:
-
-        closestmatches = SpiceBot.similar_list(bot, triggercommand, SpiceBot.commands.dict['commands']["nickname"].keys(), 3, 'reverse')
-
-        if len(closestmatches):
-            closestmatches = spicemanip.main(closestmatches, "andlist")
-            bot.osd("I don't know what you are asking me to do! Did you mean: " + str(closestmatches) + "?")
-            return
-        else:
-            bot.osd("I don't know what you are asking me to do!")
-            return

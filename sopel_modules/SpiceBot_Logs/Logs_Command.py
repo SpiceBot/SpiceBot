@@ -34,12 +34,7 @@ def bot_command_logs(bot, trigger):
 
     logtype = SpiceBot.inlist_match(logtype, SpiceBot.logs.dict["list"].keys())
 
-    if logtype == "Sopel_systemd":
-        logindex = SpiceBot.logs.systemd_logs_fetch(bot)
-    elif logtype == "Sopel_stdio":
-        logindex = SpiceBot.logs.stdio_logs_fetch(bot)
-    else:
-        logindex = SpiceBot.logs.dict["list"][logtype]
+    logindex = SpiceBot.logs.get_logs(bot, logtype)
 
     if not len(logindex):
         bot.osd("No logs found for " + str(logtype) + ".")
