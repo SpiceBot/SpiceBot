@@ -11,6 +11,7 @@ from .Logs import *
 from .Commands import *
 from .Events import *
 from .Channels import *
+from .Database import *
 
 __author__ = 'Sam Zick'
 __email__ = 'sam@deathbybandaid.net'
