@@ -4,9 +4,13 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.module
 
-from sopel_modules.SpiceBot.Tools import github_dict
+import sopel_modules.SpiceBot as SpiceBot
 
 
 @sopel.module.nickname_commands('help', 'docs', 'wiki')
 def bot_command_owners(bot, trigger):
-    bot.osd(["IRC Modules Repository", str(github_dict["url_main"] + github_dict["repo_owner"] + "/" + github_dict["repo_name"] + github_dict["url_path_wiki"])])
+    bot.osd(["IRC Modules Repository",
+                                        str(SpiceBot.github_dict["url_main"] +
+                                        SpiceBot.github_dict["repo_owner"] + "/" +
+                                        SpiceBot.github_dict["repo_name"] +
+                                        SpiceBot.github_dict["url_path_wiki"])])

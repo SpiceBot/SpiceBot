@@ -14,7 +14,7 @@ from sopel import tools, module
 from sopel.tools import Identifier
 from sopel.config.types import StaticSection, ValidatedAttribute
 
-from sopel_modules.SpiceBot.Logs import botlogs
+import sopel_modules.SpiceBot as SpiceBot
 
 
 import time
@@ -35,12 +35,12 @@ def configure(config):
 def setup(bot):
 
     # Inject KICK
-    botlogs.log('SpiceBot_Kick', "Implanting Kick function into bot")
+    SpiceBot.botlogs.log('SpiceBot_Kick', "Implanting Kick function into bot")
     bot.kick = SopelKICK.kick
     sopel.bot.SopelWrapper.kick = SopelWrapperKICK.kick
 
     # verify config settings for server
-    botlogs.log('SpiceBot_Kick', "Checking for config settings")
+    SpiceBot.botlogs.log('SpiceBot_Kick', "Checking for config settings")
     bot.config.define_section("SpiceBot_Kick", SpiceBot_Kick, validate=False)
 
 

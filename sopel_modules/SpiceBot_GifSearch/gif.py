@@ -6,17 +6,16 @@ from sopel import module
 
 from .gifsearch import getGif
 
-from sopel_modules.SpiceBot.Tools import sopel_triggerargs
-from sopel_modules.SpiceBot.Events import botevents
+import sopel_modules.SpiceBot as SpiceBot
 
 import spicemanip
 
 
-@botevents.check_ready([botevents.BOT_GIFSEARCH])
+@SpiceBot.botevents.check_ready([SpiceBot.botevents.BOT_GIFSEARCH])
 @module.commands('gif')
 def gif_trigger(bot, trigger):
 
-    triggerargs, triggercommand = sopel_triggerargs(bot, trigger)
+    triggerargs, triggercommand = SpiceBot.sopel_triggerargs(bot, trigger)
     if not len(triggerargs):
         return bot.osd("Please present a query to search.")
 

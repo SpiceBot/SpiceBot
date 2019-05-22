@@ -5,19 +5,16 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import sopel
 import sopel.module
 
-from sopel_modules.SpiceBot.Events import botevents
-from sopel_modules.SpiceBot.Commands import botcommands
-from sopel_modules.SpiceBot.Tools import sopel_triggerargs, similar_list, letters_in_string
-
+import sopel_modules.SpiceBot as SpiceBot
 
 import spicemanip
 
 
-@botevents.check_ready([botevents.BOT_COMMANDSQUERY])
+@SpiceBot.botevents.check_ready([SpiceBot.botevents.BOT_COMMANDSQUERY])
 @sopel.module.nickname_commands('(.*)')
 def query_detection_nick(bot, trigger):
 
-    triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
+    triggerargs, triggercommand = SpiceBot.sopel_triggerargs(bot, trigger, 'nickname_command')
 
     # command issued, check if valid
     if not triggercommand or not len(triggercommand):
@@ -27,13 +24,13 @@ def query_detection_nick(bot, trigger):
         return
     triggercommand = triggercommand[1:]
 
-    if not letters_in_string(triggercommand):
+    if not SpiceBot.letters_in_string(triggercommand):
         return
 
     commands_list = dict()
-    for com in botcommands.SpiceBot_Commands['commands']['nickname'].keys():
+    for com in SpiceBot.botcommands.SpiceBot_Commands['commands']['nickname'].keys():
         if com not in commands_list.keys():
-            commands_list[com] = botcommands.SpiceBot_Commands['commands']['nickname'][com]
+            commands_list[com] = SpiceBot.botcommands.SpiceBot_Commands['commands']['nickname'][com]
 
     if triggercommand.endswith("+"):
 
@@ -43,7 +40,7 @@ def query_detection_nick(bot, trigger):
 
         if triggercommand.lower() not in list(commands_list.keys()):
             dispmsg = ["Cannot find any alias " + bot.nick + " commands: No valid commands match " + str(triggercommand) + "."]
-            closestmatches = similar_list(bot, triggercommand, list(commands_list.keys()), 10, 'reverse')
+            closestmatches = SpiceBot.similar_list(bot, triggercommand, list(commands_list.keys()), 10, 'reverse')
             if len(closestmatches):
                 dispmsg.append("The following " + bot.nick + " commands match " + str(triggercommand) + ": " + spicemanip.main(closestmatches, 'andlist') + ".")
             bot.notice(dispmsg, trigger.nick)
@@ -62,7 +59,7 @@ def query_detection_nick(bot, trigger):
         if not triggercommand or not len(triggercommand):
             return
 
-        closestmatches = similar_list(bot, triggercommand, list(commands_list.keys()), 10, 'reverse')
+        closestmatches = SpiceBot.similar_list(bot, triggercommand, list(commands_list.keys()), 10, 'reverse')
         if not len(closestmatches):
             bot.notice("Cannot find any similar " + bot.nick + " commands for " + str(triggercommand) + ".", trigger.nick)
         else:

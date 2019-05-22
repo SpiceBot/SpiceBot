@@ -4,16 +4,15 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.module
 
-from sopel_modules.SpiceBot.Logs import botlogs
-from sopel_modules.SpiceBot.Events import botevents
+import sopel_modules.SpiceBot as SpiceBot
 
 
-@sopel.module.event(botevents.BOT_CONNECTED)
+@sopel.module.event(SpiceBot.botevents.BOT_CONNECTED)
 @sopel.module.rule('.*')
 def bot_startup_monologue_start(bot, trigger):
 
     # Startup
-    botlogs.log('SpiceBot_StartupMonologue', bot.nick + " is now starting. Please wait while I load my configuration")
+    SpiceBot.botlogs.log('SpiceBot_StartupMonologue', bot.nick + " is now starting. Please wait while I load my configuration")
     bot.osd(" is now starting. Please wait while I load my configuration.", bot.channels.keys(), 'ACTION')
 
-    botevents.trigger(bot, botevents.BOT_STARTUPMONOLOGUE_CONNECTED, "SpiceBot_StartupMonologue")
+    SpiceBot.botevents.trigger(bot, SpiceBot.botevents.BOT_STARTUPMONOLOGUE_CONNECTED, "SpiceBot_StartupMonologue")

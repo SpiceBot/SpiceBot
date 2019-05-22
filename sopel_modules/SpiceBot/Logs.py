@@ -12,7 +12,7 @@ import os
 import spicemanip
 
 
-class botlogs():
+class BotLogs():
     """This Is a contained source of log information"""
     def __init__(self):
         self.SpiceBot_Logs = {
@@ -43,7 +43,7 @@ class botlogs():
     def stdio_logs_fetch(self, bot):
 
         stdio_ignore = []
-        for logtype in botlogs.SpiceBot_Logs["list"].keys():
+        for logtype in self.SpiceBot_Logs["list"].keys():
             stdio_ignore.append("[" + logtype + "]")
 
         logfile = os.path.os.path.join(bot.config.core.logdir, 'stdio.log')
@@ -101,6 +101,3 @@ class botlogs():
             pidnum = e
             pidnum = str(os.popen("systemctl show " + str(bot.nick) + " --property=MainPID").read()).split("=")[-1]
         return pidnum
-
-
-botlogs = botlogs()

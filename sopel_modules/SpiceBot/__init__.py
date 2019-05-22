@@ -16,3 +16,10 @@ from .Database import *
 __author__ = 'Sam Zick'
 __email__ = 'sam@deathbybandaid.net'
 __version__ = '0.1.1'
+
+
+botdb = BotDatabase()
+botchannels = BotChannels()
+botcommands = BotCommands()
+botevents = BotEvents()
+botlogs = BotLogs()

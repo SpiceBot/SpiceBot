@@ -8,15 +8,14 @@ import sopel.module
 
 import spicemanip
 
-from sopel_modules.SpiceBot.Tools import sopel_triggerargs
-from sopel_modules.SpiceBot.Events import botevents
+import sopel_modules.SpiceBot as SpiceBot
 
 
-@botevents.check_ready([botevents.BOT_GIFSEARCH])
+@SpiceBot.botevents.check_ready([SpiceBot.botevents.BOT_GIFSEARCH])
 @sopel.module.commands('(.*)')
 def gifapi_triggers(bot, trigger):
 
-    triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'prefix_command')
+    triggerargs, triggercommand = SpiceBot.sopel_triggerargs(bot, trigger, 'prefix_command')
 
     if triggercommand not in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
         return

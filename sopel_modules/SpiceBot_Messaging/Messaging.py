@@ -6,8 +6,7 @@ import sopel.module
 
 import spicemanip
 
-from sopel_modules.SpiceBot.Channels import botchannels
-from sopel_modules.SpiceBot.Tools import sopel_triggerargs, command_permissions_check, inlist
+import sopel_modules.SpiceBot as SpiceBot
 
 
 @sopel.module.nickname_commands('action')
@@ -27,11 +26,11 @@ def bot_command_privmsg(bot, trigger):
 
 def bot_command_process(bot, trigger):
 
-    if not command_permissions_check(bot, trigger, ['admins', 'owner']):
+    if not SpiceBot.command_permissions_check(bot, trigger, ['admins', 'owner']):
         bot.say("I was unable to process this Bot Nick command due to privilege issues.")
         return
 
-    triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
+    triggerargs, triggercommand = SpiceBot.sopel_triggerargs(bot, trigger, 'nickname_command')
 
     if triggercommand in ['say', 'msg']:
         triggercommand = 'privmsg'
@@ -42,8 +41,8 @@ def bot_command_process(bot, trigger):
 
     target = spicemanip.main(triggerargs, 1)
     if (target not in ['allchans', 'allnicks']
-            and not inlist(target.lower(), botchannels.SpiceBot_Channels['list'].keys())
-            and not inlist(target.lower(), bot.users)):
+            and not SpiceBot.inlist(target.lower(), SpiceBot.botchannels.SpiceBot_Channels['list'].keys())
+            and not SpiceBot.inlist(target.lower(), bot.users)):
         bot.osd("Channel/nick name {} not valid.".format(target))
         return
 

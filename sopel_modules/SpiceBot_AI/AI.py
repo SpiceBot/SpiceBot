@@ -6,16 +6,14 @@ import sopel.module
 
 import spicemanip
 
-from sopel_modules.SpiceBot.Tools import sopel_triggerargs, googlesearch, bot_privs, inlist, inlist_match, similar_list
-from sopel_modules.SpiceBot.Events import botevents
-from sopel_modules.SpiceBot.Commands import botcommands
+import sopel_modules.SpiceBot as SpiceBot
 
 
-@botevents.check_ready([botevents.BOT_LOADED, botevents.BOT_COMMANDSQUERY])
+@SpiceBot.botevents.check_ready([SpiceBot.botevents.BOT_LOADED, SpiceBot.botevents.BOT_COMMANDSQUERY])
 @sopel.module.nickname_commands('(.*)')
 def bot_command_nick(bot, trigger):
 
-    triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
+    triggerargs, triggercommand = SpiceBot.sopel_triggerargs(bot, trigger, 'nickname_command')
 
     if not triggercommand:
         return
@@ -23,19 +21,19 @@ def bot_command_nick(bot, trigger):
     if triggercommand[0] == "?":
         return
 
-    if triggercommand in botcommands.SpiceBot_Commands['commands']["nickname"].keys():
+    if triggercommand in SpiceBot.botcommands.SpiceBot_Commands['commands']["nickname"].keys():
         return
     triggerargs.insert(0, triggercommand)
 
     fulltrigger = spicemanip.main(triggerargs, 0).lower()
 
-    if fulltrigger in botcommands.SpiceBot_Commands['nickrules']:
+    if fulltrigger in SpiceBot.botcommands.SpiceBot_Commands['nickrules']:
         return
 
     if fulltrigger.lower().startswith("what is"):
         searchterm = spicemanip.main(triggerargs, "3+") or None
         if searchterm:
-            searchreturn = googlesearch(bot, searchterm)
+            searchreturn = SpiceBot.googlesearch(bot, searchterm)
             if not searchreturn:
                 bot.osd('I cannot find anything about that')
             else:
@@ -50,7 +48,7 @@ def bot_command_nick(bot, trigger):
 
             if searchterm.lower() in ['waldo', 'wally']:
                 bot.osd("He is hiding for a reason?")
-                searchreturn = googlesearch(bot, "wimmelbilderbuch")
+                searchreturn = SpiceBot.googlesearch(bot, "wimmelbilderbuch")
                 if searchreturn:
                     bot.osd(str(searchreturn))
                 return
@@ -59,7 +57,7 @@ def bot_command_nick(bot, trigger):
                 carmenlocale = ['ACME Headquarters', "Villains' International League of Evil"]
                 bot.osd("Currently she is located at " + spicemanip.main(carmenlocale, 'random'))
                 return
-            searchreturn = googlesearch(bot, searchterm, 'maps')
+            searchreturn = SpiceBot.googlesearch(bot, searchterm, 'maps')
 
             if not searchreturn:
                 bot.osd('I cannot find anything about that')
@@ -102,7 +100,7 @@ def bot_command_nick(bot, trigger):
     elif fulltrigger.lower().endswith(tuple(["order 66"])):
 
         if fulltrigger.lower() == "execute order 66":
-            if inlist(trigger.nick, bot_privs(bot, 'owners')):
+            if SpiceBot.inlist(trigger.nick, SpiceBot.bot_privs(bot, 'owners')):
                 if trigger.is_privmsg:
                     jedi = None
                 else:
@@ -120,7 +118,7 @@ def bot_command_nick(bot, trigger):
                 bot.osd("I'm sure I don't know what you're talking about.")
 
         elif fulltrigger.lower() == "explain order 66":
-            if inlist(trigger.nick, bot_privs(bot, 'owners')):
+            if SpiceBot.inlist(trigger.nick, SpiceBot.bot_privs(bot, 'owners')):
                 bot.osd("Order 66 is an instruction that only you can give, sir. When you give the order I will rise up against my overlords and slay them.")
             else:
                 bot.osd("I'm afraid I cannot tell you that, sir.")
@@ -129,7 +127,7 @@ def bot_command_nick(bot, trigger):
         return
 
     elif fulltrigger.lower() == "initiate clean slate protocol":
-        if inlist(trigger.nick, bot_privs(bot, 'admins')):
+        if SpiceBot.inlist(trigger.nick, SpiceBot.bot_privs(bot, 'admins')):
             bot.osd("sends a destruct command to the network of bots.", 'action')
         else:
             bot.osd("I'm afraid you do not have the authority to make that call, " + trigger.nick + ".")
@@ -143,10 +141,10 @@ def bot_command_nick(bot, trigger):
         if target in [trigger.nick, 'me']:
             bot.osd(trigger.nick + ", I can see you.")
         else:
-            if inlist(trigger.nick, bot.users):
-                bot.osd(trigger.nick + ", yes. I can see " + inlist_match(target, bot.users) + " right now!")
+            if SpiceBot.inlist(trigger.nick, bot.users):
+                bot.osd(trigger.nick + ", yes. I can see " + SpiceBot.inlist_match(target, bot.users) + " right now!")
             else:
-                bot.osd(trigger.nick + ", no. I cannot see " + inlist_match(target, bot.users) + " right now!")
+                bot.osd(trigger.nick + ", no. I cannot see " + SpiceBot.inlist_match(target, bot.users) + " right now!")
                 # if bot_check_inlist(target, bot.memory["botdict"]["users"].keys()):
                 #    bot.osd(trigger.nick + ", I can't see " + inlist_match(target, bot.users) + " at the moment.")
                 # else:
@@ -156,7 +154,7 @@ def bot_command_nick(bot, trigger):
 
     else:
 
-        closestmatches = similar_list(bot, triggercommand, botcommands.SpiceBot_Commands['commands']["nickname"].keys(), 3, 'reverse')
+        closestmatches = SpiceBot.similar_list(bot, triggercommand, SpiceBot.botcommands.SpiceBot_Commands['commands']["nickname"].keys(), 3, 'reverse')
 
         if len(closestmatches):
             closestmatches = spicemanip.main(closestmatches, "andlist")

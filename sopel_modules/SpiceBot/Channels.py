@@ -70,6 +70,3 @@ class BotChannels():
                             bot.write(('SAMODE', channel, "+a", bot.nick))
                 else:
                     bot.part(channel)
-
-
-botchannels = BotChannels()

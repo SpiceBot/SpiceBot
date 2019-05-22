@@ -4,12 +4,12 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.module
 
-from sopel_modules.SpiceBot.Events import botevents
+import sopel_modules.SpiceBot as SpiceBot
 
 
-@sopel.module.event(botevents.RPL_WELCOME)
+@sopel.module.event(SpiceBot.botevents.RPL_WELCOME)
 @sopel.module.rule('.*')
 def bot_startup_welcome(bot, trigger):
-    botevents.SpiceBot_Events["RPL_WELCOME_Count"] += 1
-    if botevents.SpiceBot_Events["RPL_WELCOME_Count"] > 1:
-        botevents.trigger(bot, botevents.BOT_RECONNECTED, "Bot ReConnected to IRC")
+   SpiceBot.botevents.SpiceBot_Events["RPL_WELCOME_Count"] += 1
+   if SpiceBot.botevents.SpiceBot_Events["RPL_WELCOME_Count"] > 1:
+       SpiceBot.botevents.trigger(bot, SpiceBot.botevents.BOT_RECONNECTED, "Bot ReConnected to IRC")

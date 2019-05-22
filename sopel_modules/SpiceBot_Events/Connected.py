@@ -4,13 +4,13 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.module
 
-from sopel_modules.SpiceBot.Events import botevents
+import sopel_modules.SpiceBot as SpiceBot
 
 
-@sopel.module.event(botevents.BOT_WELCOME)
+@sopel.module.event(SpiceBot.botevents.BOT_WELCOME)
 @sopel.module.rule('.*')
 def bot_events_Connected(bot, trigger):
     """Here, we wait until we are in at least one channel"""
     while not len(bot.channels.keys()) > 0:
         pass
-    botevents.trigger(bot, botevents.BOT_CONNECTED, "Bot Connected to IRC")
+    SpiceBot.botevents.trigger(bot, SpiceBot.botevents.BOT_CONNECTED, "Bot Connected to IRC")

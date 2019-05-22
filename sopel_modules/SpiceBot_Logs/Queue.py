@@ -5,17 +5,16 @@ import sopel.module
 import sopel.tools
 import sopel.config
 
-from sopel_modules.SpiceBot.Logs import botlogs
-from sopel_modules.SpiceBot.Events import botevents
+import sopel_modules.SpiceBot as SpiceBot
 
 
 def setup(bot):
-    botlogs.log('SpiceBot_Logs', "Starting Setup Procedure")
-    botevents.startup_add([botevents.BOT_LOGS])
-    botevents.trigger(bot, botevents.BOT_LOGS, "SpiceBot_Logs")
+    SpiceBot.botlogs.log('SpiceBot_Logs', "Starting Setup Procedure")
+    SpiceBot.botevents.startup_add([SpiceBot.botevents.BOT_LOGS])
+    SpiceBot.botevents.trigger(bot, SpiceBot.botevents.BOT_LOGS, "SpiceBot_Logs")
 
 
-@sopel.module.event(botevents.RPL_WELCOME)
+@sopel.module.event(SpiceBot.botevents.RPL_WELCOME)
 @sopel.module.rule('.*')
 def join_log_channel(bot, trigger):
 
@@ -27,9 +26,9 @@ def join_log_channel(bot, trigger):
                 bot.write(('SAJOIN', bot.nick, channel))
 
         while True:
-            if len(botlogs.SpiceBot_Logs["queue"]):
-                bot.say(str(botlogs.SpiceBot_Logs["queue"][0]), channel)
-                del botlogs.SpiceBot_Logs["queue"][0]
+            if len(SpiceBot.botlogs.SpiceBot_Logs["queue"]):
+                bot.say(str(SpiceBot.botlogs.SpiceBot_Logs["queue"][0]), channel)
+                del SpiceBot.botlogs.SpiceBot_Logs["queue"][0]
     else:
-        botlogs.sopel_config["logging_channel"] = False
-        botlogs.SpiceBot_Logs["queue"] = []
+        SpiceBot.botlogs.sopel_config["logging_channel"] = False
+        SpiceBot.botlogs.SpiceBot_Logs["queue"] = []

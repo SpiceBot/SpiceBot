@@ -5,8 +5,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 # sopel imports
 import sopel.module
 
-from sopel_modules.SpiceBot.Logs import botlogs
-from sopel_modules.SpiceBot.Tools import spicebot_reload
+import sopel_modules.SpiceBot as SpiceBot
 
 
 @sopel.module.nickname_commands('restart')
@@ -16,8 +15,8 @@ def nickname_comand_restart(bot, trigger):
         bot.say("You are not authorized to perform this function.")
 
     quitmessage = "Received command from " + trigger.nick + " to restart. Be Back Soon!"
-    botlogs.log('SpiceBot_Restart', quitmessage)
+    SpiceBot.botlogs.log('SpiceBot_Restart', quitmessage)
     bot.osd(quitmessage, bot.channels.keys())
 
     # service_manip(bot, bot.nick, 'restart', 'SpiceBot_Restart')
-    spicebot_reload(bot, 'SpiceBot_Restart', quitmessage)
+    SpiceBot.spicebot_reload(bot, 'SpiceBot_Restart', quitmessage)

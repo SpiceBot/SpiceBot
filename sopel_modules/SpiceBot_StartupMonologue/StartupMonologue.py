@@ -4,13 +4,12 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.module
 
-from sopel_modules.SpiceBot.Logs import botlogs
-from sopel_modules.SpiceBot.Events import botevents
+import sopel_modules.SpiceBot as SpiceBot
 
 
 def setup(bot):
-    botlogs.log('SpiceBot_StartupMonologue', "Starting setup procedure")
-    botevents.startup_add([botevents.BOT_STARTUPMONOLOGUE_CHANNELS, botevents.BOT_STARTUPMONOLOGUE_COMMANDSQUERY])  # , botevents.BOT_STARTUPMONOLOGUE_CONNECTED])
+    SpiceBot.botlogs.log('SpiceBot_StartupMonologue', "Starting setup procedure")
+    SpiceBot.botevents.startup_add([SpiceBot.botevents.BOT_STARTUPMONOLOGUE_CHANNELS, SpiceBot.botevents.BOT_STARTUPMONOLOGUE_COMMANDSQUERY])  # ,SpiceBot.botevents.BOT_STARTUPMONOLOGUE_CONNECTED])
 
     if 'SpiceBot_StartupMonologue' not in bot.memory:
         bot.memory['SpiceBot_StartupMonologue'] = []

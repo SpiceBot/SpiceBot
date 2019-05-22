@@ -5,28 +5,26 @@ import sopel.module
 
 import spicemanip
 
-from sopel_modules.SpiceBot.Logs import botlogs
-from sopel_modules.SpiceBot.Events import botevents
-from sopel_modules.SpiceBot.Tools import sopel_triggerargs, command_permissions_check, inlist, inlist_match, similar_list
+import sopel_modules.SpiceBot as SpiceBot
 
 
-@botevents.check_ready([botevents.BOT_LOGS])
+@SpiceBot.botevents.check_ready([SpiceBot.botevents.BOT_LOGS])
 @sopel.module.nickname_commands('logs', 'debug')
 def bot_command_logs(bot, trigger):
 
-    if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
+    if not SpiceBot.command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
         bot.say("I was unable to process this Bot Nick command due to privilege issues.")
         return
 
-    triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
+    triggerargs, triggercommand = SpiceBot.sopel_triggerargs(bot, trigger, 'nickname_command')
 
     logtype = spicemanip.main(triggerargs, 1) or None
     if not logtype:
-        bot.osd("Current valid log(s) include: " + spicemanip.main(botlogs.SpiceBot_Logs["list"].keys(), 'andlist'), trigger.sender, 'action')
+        bot.osd("Current valid log(s) include: " + spicemanip.main(SpiceBot.botlogs.SpiceBot_Logs["list"].keys(), 'andlist'), trigger.sender, 'action')
         return
 
-    if not inlist(logtype, botlogs.SpiceBot_Logs["list"].keys()):
-        closestmatches = similar_list(bot, logtype, botlogs.SpiceBot_Logs["list"].keys(), 10, 'reverse')
+    if not SpiceBot.inlist(logtype, SpiceBot.botlogs.SpiceBot_Logs["list"].keys()):
+        closestmatches = SpiceBot.similar_list(bot, logtype, SpiceBot.botlogs.SpiceBot_Logs["list"].keys(), 10, 'reverse')
         if not len(closestmatches):
             bot.notice("No valid logs match " + str(logtype) + ".", trigger.nick)
         else:
@@ -34,14 +32,14 @@ def bot_command_logs(bot, trigger):
 
         return
 
-    logtype = inlist_match(logtype, botlogs.SpiceBot_Logs["list"].keys())
+    logtype = SpiceBot.inlist_match(logtype, SpiceBot.botlogs.SpiceBot_Logs["list"].keys())
 
     if logtype == "Sopel_systemd":
-        logindex = botlogs.systemd_logs_fetch(bot)
+        logindex = SpiceBot.botlogs.systemd_logs_fetch(bot)
     elif logtype == "Sopel_stdio":
-        logindex = botlogs.stdio_logs_fetch(bot)
+        logindex = SpiceBot.botlogs.stdio_logs_fetch(bot)
     else:
-        logindex = botlogs.SpiceBot_Logs["list"][logtype]
+        logindex = SpiceBot.botlogs.SpiceBot_Logs["list"][logtype]
 
     if not len(logindex):
         bot.osd("No logs found for " + str(logtype) + ".")

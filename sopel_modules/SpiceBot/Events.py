@@ -124,6 +124,3 @@ class BotEvents(object):
                 return function(*args, **kwargs)
             return _nop
         return actual_decorator
-
-
-botevents = BotEvents()

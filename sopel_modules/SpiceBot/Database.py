@@ -246,6 +246,3 @@ class BotDatabase():
         bot.db.set_channel_value(channel, sorting_key, self.SpiceBot_Database["channels"][channel][sorting_key])
 
         self.lock.release()
-
-
-botdb = BotDatabase()

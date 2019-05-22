@@ -10,13 +10,13 @@ from sopel.db import SopelDB, NickValues, ChannelValues
 from sqlalchemy.exc import SQLAlchemyError
 import json
 
-from sopel_modules.SpiceBot.Logs import botlogs
+import sopel_modules.SpiceBot as SpiceBot
 
 
 def setup(bot):
 
     # Inject Database Functions
-    botlogs.log('SpiceBot_Databaseaddons', "Implanting Database functions into bot")
+    SpiceBot.botlogs.log('SpiceBot_Databaseaddons', "Implanting Database functions into bot")
     SopelDB.delete_nick_value = SopelDBCache.delete_nick_value
     SopelDB.adjust_nick_value = SopelDBCache.adjust_nick_value
     SopelDB.delete_channel_value = SopelDBCache.delete_channel_value

@@ -6,7 +6,7 @@ import sopel.module
 
 import spicemanip
 
-from sopel_modules.SpiceBot.Tools import sopel_triggerargs, bot_privs
+import sopel_modules.SpiceBot as SpiceBot
 
 
 @sopel.module.nickname_commands('owners', 'owner')
@@ -20,10 +20,10 @@ def bot_command_admins(bot, trigger):
 
 
 def bot_command_process(bot, trigger):
-    triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'nickname_command')
+    triggerargs, triggercommand = SpiceBot.sopel_triggerargs(bot, trigger, 'nickname_command')
 
     if triggercommand == 'owner':
         triggercommand = 'owners'
 
-    privlist = spicemanip.main(bot_privs(bot, triggercommand), 'andlist')
+    privlist = spicemanip.main(SpiceBot.bot_privs(bot, triggercommand), 'andlist')
     bot.osd(str(bot.nick) + " " + triggercommand + ": " + privlist)

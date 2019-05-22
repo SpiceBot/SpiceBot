@@ -4,9 +4,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.module
 
-from sopel_modules.SpiceBot.Tools import sopel_triggerargs
-from sopel_modules.SpiceBot.Events import botevents
-from sopel_modules.SpiceBot.Commands import botcommands
+import sopel_modules.SpiceBot as SpiceBot
 
 
 def setup(bot):
@@ -19,19 +17,19 @@ def shutdown(bot):
         del bot.memory["SpiceBot_InvalidCommand"]
 
 
-@sopel.module.event(botevents.BOT_LOADED)
+@sopel.module.event(SpiceBot.botevents.BOT_LOADED)
 @sopel.module.rule('.*')
 def bot_events_complete(bot, trigger):
-    for comtype in botcommands.SpiceBot_Commands['commands'].keys():
-        bot.memory["SpiceBot_InvalidCommand"]["valid"].extend(botcommands.SpiceBot_Commands['commands'][comtype].keys())
+    for comtype in SpiceBot.botcommands.SpiceBot_Commands['commands'].keys():
+        bot.memory["SpiceBot_InvalidCommand"]["valid"].extend(SpiceBot.botcommands.SpiceBot_Commands['commands'][comtype].keys())
 
 
-@botevents.check_ready([botevents.BOT_LOADED, botevents.BOT_COMMANDSQUERY])
+@SpiceBot.botevents.check_ready([SpiceBot.botevents.BOT_LOADED, SpiceBot.botevents.BOT_COMMANDSQUERY])
 @sopel.module.commands('(.*)')
 def InvalidCommand_triggers(bot, trigger):
     return
 
-    triggerargs, triggercommand = sopel_triggerargs(bot, trigger, 'prefix_command')
+    triggerargs, triggercommand = SpiceBot.sopel_triggerargs(bot, trigger, 'prefix_command')
 
     # patch for people typing "...", maybe other stuff, but this verifies that there is still a command here
     if triggercommand.startswith("."):
