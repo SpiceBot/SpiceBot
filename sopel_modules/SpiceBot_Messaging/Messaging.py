@@ -42,8 +42,8 @@ def bot_command_process(bot, trigger):
 
     target = spicemanip.main(triggerargs, 1)
     if (target not in ['allchans', 'allnicks']
-            and not inlist(bot, target.lower(), botchannels.SpiceBot_Channels['list'].keys())
-            and not inlist(bot, target.lower(), bot.users)):
+            and not inlist(target.lower(), botchannels.SpiceBot_Channels['list'].keys())
+            and not inlist(target.lower(), bot.users)):
         bot.osd("Channel/nick name {} not valid.".format(target))
         return
 

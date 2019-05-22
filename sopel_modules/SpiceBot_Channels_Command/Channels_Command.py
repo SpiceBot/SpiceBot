@@ -66,7 +66,7 @@ def nickname_comand_channels(bot, trigger):
             bot.osd("Channel name input missing.")
             return
         channel = spicemanip.main(triggerargs, 1)
-        if not inlist(bot, channel.lower(), botchannels.SpiceBot_Channels['list'].keys()):
+        if not inlist(channel.lower(), botchannels.SpiceBot_Channels['list'].keys()):
             bot.osd("Channel name {} not valid.".format(channel))
             return
         topic = botchannels.SpiceBot_Channels['list'][channel.lower()]['topic']
@@ -83,10 +83,10 @@ def nickname_comand_channels(bot, trigger):
                 channel = trigger.sender
         else:
             channel = spicemanip.main(triggerargs, 1)
-            if not inlist(bot, channel.lower(), botchannels.SpiceBot_Channels['list'].keys()):
+            if not inlist(channel.lower(), botchannels.SpiceBot_Channels['list'].keys()):
                 bot.osd("Channel name {} not valid.".format(channel))
                 return
-            if not inlist(bot, channel.lower(), bot.channels.keys()):
+            if not inlist(channel.lower(), bot.channels.keys()):
                 bot.osd("I need to be in {} to see nick privileges.".format(channel))
                 return
 
@@ -103,10 +103,10 @@ def nickname_comand_channels(bot, trigger):
     # Users List
     if commandused == 'users':
         channel = spicemanip.main(triggerargs, 1)
-        if not inlist(bot, channel.lower(), botchannels.SpiceBot_Channels['list'].keys()):
+        if not inlist(channel.lower(), botchannels.SpiceBot_Channels['list'].keys()):
             bot.osd("Channel name {} not valid.".format(channel))
             return
-        if not inlist(bot, channel.lower(), bot.channels.keys()):
+        if not inlist(channel.lower(), bot.channels.keys()):
             bot.osd("I need to be in {} to see user list.".format(channel))
             return
         dispmsg = []

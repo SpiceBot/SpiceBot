@@ -102,7 +102,7 @@ def bot_command_nick(bot, trigger):
     elif fulltrigger.lower().endswith(tuple(["order 66"])):
 
         if fulltrigger.lower() == "execute order 66":
-            if inlist(bot, trigger.nick, bot_privs(bot, 'owners')):
+            if inlist(trigger.nick, bot_privs(bot, 'owners')):
                 if trigger.is_privmsg:
                     jedi = None
                 else:
@@ -120,7 +120,7 @@ def bot_command_nick(bot, trigger):
                 bot.osd("I'm sure I don't know what you're talking about.")
 
         elif fulltrigger.lower() == "explain order 66":
-            if inlist(bot, trigger.nick, bot_privs(bot, 'owners')):
+            if inlist(trigger.nick, bot_privs(bot, 'owners')):
                 bot.osd("Order 66 is an instruction that only you can give, sir. When you give the order I will rise up against my overlords and slay them.")
             else:
                 bot.osd("I'm afraid I cannot tell you that, sir.")
@@ -129,7 +129,7 @@ def bot_command_nick(bot, trigger):
         return
 
     elif fulltrigger.lower() == "initiate clean slate protocol":
-        if inlist(bot, trigger.nick, bot_privs(bot, 'admins')):
+        if inlist(trigger.nick, bot_privs(bot, 'admins')):
             bot.osd("sends a destruct command to the network of bots.", 'action')
         else:
             bot.osd("I'm afraid you do not have the authority to make that call, " + trigger.nick + ".")
@@ -143,12 +143,12 @@ def bot_command_nick(bot, trigger):
         if target in [trigger.nick, 'me']:
             bot.osd(trigger.nick + ", I can see you.")
         else:
-            if inlist(bot, trigger.nick, bot.users):
-                bot.osd(trigger.nick + ", yes. I can see " + inlist_match(bot, target, bot.users) + " right now!")
+            if inlist(trigger.nick, bot.users):
+                bot.osd(trigger.nick + ", yes. I can see " + inlist_match(target, bot.users) + " right now!")
             else:
-                bot.osd(trigger.nick + ", no. I cannot see " + inlist_match(bot, target, bot.users) + " right now!")
-                # if bot_check_inlist(bot, target, bot.memory["botdict"]["users"].keys()):
-                #    bot.osd(trigger.nick + ", I can't see " + inlist_match(bot, target, bot.users) + " at the moment.")
+                bot.osd(trigger.nick + ", no. I cannot see " + inlist_match(target, bot.users) + " right now!")
+                # if bot_check_inlist(target, bot.memory["botdict"]["users"].keys()):
+                #    bot.osd(trigger.nick + ", I can't see " + inlist_match(target, bot.users) + " at the moment.")
                 # else:
                 #    bot.osd("I have never seen " + str(target) + ".")
                 # TODO

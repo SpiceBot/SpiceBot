@@ -25,7 +25,7 @@ def bot_command_logs(bot, trigger):
         bot.osd("Current valid log(s) include: " + spicemanip.main(botlogs.SpiceBot_Logs["list"].keys(), 'andlist'), trigger.sender, 'action')
         return
 
-    if not inlist(bot, logtype, botlogs.SpiceBot_Logs["list"].keys()):
+    if not inlist(logtype, botlogs.SpiceBot_Logs["list"].keys()):
         closestmatches = similar_list(bot, logtype, botlogs.SpiceBot_Logs["list"].keys(), 10, 'reverse')
         if not len(closestmatches):
             bot.notice("No valid logs match " + str(logtype) + ".", trigger.nick)
@@ -34,7 +34,7 @@ def bot_command_logs(bot, trigger):
 
         return
 
-    logtype = inlist_match(bot, logtype, botlogs.SpiceBot_Logs["list"].keys())
+    logtype = inlist_match(logtype, botlogs.SpiceBot_Logs["list"].keys())
 
     if logtype == "Sopel_systemd":
         logindex = botlogs.systemd_logs_fetch(bot)

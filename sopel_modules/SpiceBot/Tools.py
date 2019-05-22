@@ -72,7 +72,7 @@ def command_permissions_check(bot, trigger, privslist):
     for botpriv in ["admins", "owner"]:
         if botpriv in privslist:
             botpriveval = bot_privs(bot, botpriv)
-            if not inlist(bot, trigger.nick, botpriveval):
+            if not inlist(trigger.nick, botpriveval):
                 commandrunconsensus.append('False')
             else:
                 commandrunconsensus.append('True')
@@ -81,7 +81,7 @@ def command_permissions_check(bot, trigger, privslist):
         for chanpriv in ['OP', 'HOP', 'VOICE', 'OWNER', 'ADMIN']:
             if chanpriv in privslist:
                 chanpriveval = channel_privs(bot, trigger.sender, chanpriv)
-                if not inlist(bot, trigger.nick, chanpriveval):
+                if not inlist(trigger.nick, chanpriveval):
                     commandrunconsensus.append('False')
                 else:
                     commandrunconsensus.append('True')
@@ -157,7 +157,7 @@ def googlesearch(bot, searchterm, searchtype=None):
 """List Manipulation Functions"""
 
 
-def inlist(bot, searchterm, searchlist):
+def inlist(searchterm, searchlist):
 
     # verify we are searching a list
     if isinstance(searchlist, collections.abc.KeysView) or isinstance(searchlist, dict):
@@ -178,7 +178,7 @@ def inlist(bot, searchterm, searchlist):
         return False
 
 
-def inlist_match(bot, searchterm, searchlist):
+def inlist_match(searchterm, searchlist):
     # verify we are searching a list
     if isinstance(searchlist, collections.abc.KeysView) or isinstance(searchlist, dict):
         searchlist = [x for x in searchlist]
