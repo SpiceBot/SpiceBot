@@ -29,10 +29,10 @@ class BotPrerun():
         trigger_args = spicemanip.main(trigger.args[1], 'create')
         if trigger_command_type in ['nickname', 'nickname_command', 'nickname_commands']:
             trigger_command = spicemanip.main(trigger_args, 2).lower()
-            trigger_args = spicemanip.main(trigger_args, '2+', 'list')
+            trigger_args = spicemanip.main(trigger_args, '3+', 'list')
         else:
             trigger_command = spicemanip.main(trigger_args, 1).lower()[1:]
-            trigger_args = spicemanip.main(trigger_args, '1+', 'list')
+            trigger_args = spicemanip.main(trigger_args, '2+', 'list')
 
         # Handle && splittings
         trigger_args_list_split = spicemanip.main(trigger_args, "split_&&")
