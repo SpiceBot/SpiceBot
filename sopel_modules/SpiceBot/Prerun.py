@@ -129,7 +129,7 @@ class BotPrerun():
                 bot.notice("This command must be run in a channel you which to enable it in.", trigger.nick)
                 return
 
-            if not commands.check_disabled_commands(self, bot, argsdict["realcom"], trigger.sender):
+            if not commands.check_disabled_commands(bot, argsdict["realcom"], trigger.sender):
                 bot.notice(argsdict["com"] + " is already enabled in " + str(trigger.sender), trigger.nick)
                 return
 
@@ -147,14 +147,14 @@ class BotPrerun():
                 bot.notice("This command must be run in a channel you which to disable it in.", trigger.nick)
                 return
 
-            if commands.check_disabled_commands(self, bot, argsdict["realcom"], trigger.sender):
+            if commands.check_disabled_commands(bot, argsdict["realcom"], trigger.sender):
                 bot.notice(argsdict["com"] + " is already disabled in " + str(trigger.sender), trigger.nick)
                 return
 
             trailingmessage = spicemanip.main(argsdict["args"], 0) or "No reason given."
             timestamp = str(datetime.datetime.utcnow())
 
-            commands.set_command_disabled(self, bot, argsdict["realcom"], trigger.sender, timestamp, trailingmessage, trigger.nick)
+            commands.set_command_disabled(bot, argsdict["realcom"], trigger.sender, timestamp, trailingmessage, trigger.nick)
             bot.say(argsdict["com"] + " is now disabled in " + str(trigger.sender))
             return
 
