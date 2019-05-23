@@ -83,12 +83,14 @@ class BotPrerun():
 
     def argsdict_list(self, argsdict_default, and_split):
         prerun_split = []
-        for trigger_args_list in and_split:
+        for trigger_args_part in and_split:
+
             argsdict_part = copy.deepcopy(argsdict_default)
-            trigger_args_part = spicemanip.main(trigger_args_list, 'create')
-            trigger_args_part, hyphen_args = self.hyphen_args(trigger_args_part)
-            argsdict_part["hyphen_args"] = hyphen_args
-            argsdict_part["args"] = trigger_args_part
+
+            trigger_args_part_list = spicemanip.main(trigger_args_part, 'create')
+
+            argsdict_part["args"], argsdict_part["hyphen_args"] = self.hyphen_args(trigger_args_part_list)
+
             prerun_split.append(argsdict_part)
         return prerun_split
 
