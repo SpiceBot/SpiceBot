@@ -58,6 +58,7 @@ class BotPrerun():
                     if len(argsdict["hyphen_args"]):
                         self.hyphen_arg_handler(bot, trigger, argsdict)
 
+                    # check if anything prohibits the nick from running the command
                     if self.runstatus(bot, trigger, argsdict):
                         function(bot, trigger, *args, **kwargs)
                 return
@@ -80,15 +81,15 @@ class BotPrerun():
             trigger_args_list_split.append([])
         return trigger_args_list_split
 
-    def argsdict_list(self, argsdict_default, prerun_and_split):
+    def argsdict_list(self, argsdict_default, and_split):
         prerun_split = []
-        for trigger_args_list in prerun_and_split:
-            argsdict = copy.deepcopy(argsdict_default)
+        for trigger_args_list in and_split:
+            argsdict_part = copy.deepcopy(argsdict_default)
             trigger_args_part = spicemanip.main(trigger_args_list, 'create')
             trigger_args_part, hyphen_args = self.hyphen_args(trigger_args_part)
-            argsdict["hyphen_args"] = hyphen_args
-            argsdict["args"] = trigger_args_part
-            prerun_split.append(argsdict)
+            argsdict_part["hyphen_args"] = hyphen_args
+            argsdict_part["args"] = trigger_args_part
+            prerun_split.append(argsdict_part)
         return prerun_split
 
     def hyphen_args(self, trigger_args_part):
@@ -98,8 +99,10 @@ class BotPrerun():
         hyphen_args = []
         trigger_args_unhyphend = []
         for worditem in trigger_args_part:
-            if str(worditem).startswith("--") and worditem[2:] in valid_hyphen_args:
-                hyphen_args.append(worditem[2:])
+            if str(worditem).startswith("--"):
+                hyphencom = worditem[2:]
+                if hyphencom in valid_hyphen_args:
+                    hyphen_args.append(hyphencom)
             else:
                 trigger_args_unhyphend.append(worditem)
         return trigger_args_unhyphend, hyphen_args
@@ -168,9 +171,9 @@ class BotPrerun():
         if not trigger.is_privmsg:
             disabled_list = spicedb.get_channel_value(bot, trigger.sender, 'disabled_commands', 'commands') or {}
             if argsdict["realcom"] in disabled_list.keys():
-                reason = disabled_list["disabled_commands"][argsdict["realcom"]]["reason"]
-                timestamp = disabled_list["disabled_commands"][argsdict["realcom"]]["timestamp"]
-                bywhom = disabled_list["disabled_commands"][argsdict["realcom"]]["disabledby"]
+                reason = disabled_list[argsdict["realcom"]]["reason"]
+                timestamp = disabled_list[argsdict["realcom"]]["timestamp"]
+                bywhom = disabled_list[argsdict["realcom"]]["disabledby"]
                 bot.notice("The " + str(argsdict["com"]) + " command was disabled by " + bywhom + " in " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason), trigger.nick)
                 return False
 
