@@ -24,7 +24,7 @@ class BotPrerun():
         def actual_decorator(function):
             @functools.wraps(function)
             def internal_prerun(bot, trigger, *args, **kwargs):
-                trigger.sb["args"], trigger.sb["hyphen_arg"] = self.trigger_hyphen_args(self, trigger.sb)
+                trigger.sb["args"], trigger.sb["hyphen_arg"] = self.trigger_hyphen_args(trigger.sb)
                 if trigger.sb["hyphen_arg"]:
                     return self.trigger_hyphen_arg_handler(bot, trigger, trigger.sb)
                 else:
