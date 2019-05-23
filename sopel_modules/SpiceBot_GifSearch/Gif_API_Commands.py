@@ -12,19 +12,18 @@ import sopel_modules.SpiceBot as SpiceBot
 
 
 @SpiceBot.events.check_ready([SpiceBot.events.BOT_GIFSEARCH])
+@SpiceBot.prerun.args('prefix_command')
 @sopel.module.commands('(.*)')
 def gifapi_triggers(bot, trigger):
 
-    triggerargs, triggercommand, command_type = SpiceBot.sopel_triggerargs(bot, trigger, 'prefix_command')
-
-    if triggercommand not in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
+    if trigger.sb['com'] not in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
         return
 
-    if not len(triggerargs):
+    if not len(trigger.sb['args']):
         return bot.osd("Please present a query to search.")
 
-    query = spicemanip.main(triggerargs, 0)
-    searchdict = {"query": query, "gifsearch": triggercommand}
+    query = spicemanip.main(trigger.sb['args'], 0)
+    searchdict = {"query": query, "gifsearch": trigger.sb['com']}
 
     gifdict = getGif(bot, searchdict)
 

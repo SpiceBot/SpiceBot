@@ -9,6 +9,7 @@ import sopel_modules.SpiceBot as SpiceBot
 
 
 @SpiceBot.events.check_ready([SpiceBot.events.BOT_LOGS])
+@SpiceBot.prerun.args('nickname_command')
 @sopel.module.nickname_commands('logs', 'debug')
 def bot_command_logs(bot, trigger):
 
@@ -16,9 +17,7 @@ def bot_command_logs(bot, trigger):
         bot.say("I was unable to process this Bot Nick command due to privilege issues.")
         return
 
-    triggerargs, triggercommand, command_type = SpiceBot.sopel_triggerargs(bot, trigger, 'nickname_command')
-
-    logtype = spicemanip.main(triggerargs, 1) or None
+    logtype = spicemanip.main(trigger.sb['args'], 1) or None
     if not logtype:
         bot.osd("Current valid log(s) include: " + spicemanip.main(SpiceBot.logs.dict["list"].keys(), 'andlist'), trigger.sender, 'action')
         return

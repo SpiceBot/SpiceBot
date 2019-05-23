@@ -38,23 +38,6 @@ github_dict = {
 """Sopel Wrapping Tools"""
 
 
-def sopel_triggerargs(bot, trigger, command_type='module_command'):
-    triggerargs = []
-
-    if len(trigger.args) > 1:
-        triggerargs = spicemanip.main(trigger.args[1], 'create')
-    triggerargs = spicemanip.main(triggerargs, 'create')
-
-    if command_type in ['nickname_command']:
-        command = spicemanip.main(triggerargs, 2).lower()
-        triggerargs = spicemanip.main(triggerargs, '3+', 'list')
-    else:
-        command = spicemanip.main(triggerargs, 1).lower()[1:]
-        triggerargs = spicemanip.main(triggerargs, '2+', 'list')
-
-    return triggerargs, command, command_type
-
-
 def bot_privs(bot, privtype):
     if privtype == 'owners':
         privtype = 'owner'

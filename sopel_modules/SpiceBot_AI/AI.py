@@ -10,25 +10,24 @@ import sopel_modules.SpiceBot as SpiceBot
 
 
 @SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED, SpiceBot.events.BOT_COMMANDSQUERY])
+@SpiceBot.prerun.args('nickname_command')
 @sopel.module.nickname_commands('(.*)')
 def bot_command_nick(bot, trigger):
 
-    triggerargs, triggercommand, command_type = SpiceBot.sopel_triggerargs(bot, trigger, 'nickname_command')
-
-    if not triggercommand:
+    if not trigger.sb['com']:
         return
 
-    if triggercommand[0] == "?":
+    if trigger.sb['com'][0] == "?":
         return
 
-    if triggercommand in SpiceBot.commands.dict['commands']["nickname"].keys():
+    if trigger.sb['com'] in SpiceBot.commands.dict['commands']["nickname"].keys():
         return
-    triggerargs.insert(0, triggercommand)
+    trigger.sb['args'].insert(0, trigger.sb['com'])
 
-    fulltrigger = spicemanip.main(triggerargs, 0).lower()
+    fulltrigger = spicemanip.main(trigger.sb['args'], 0).lower()
 
     if fulltrigger.lower().startswith("what is"):
-        searchterm = spicemanip.main(triggerargs, "3+") or None
+        searchterm = spicemanip.main(trigger.sb['args'], "3+") or None
         if searchterm:
             searchreturn = SpiceBot.googlesearch(bot, searchterm)
             if not searchreturn:
@@ -40,7 +39,7 @@ def bot_command_nick(bot, trigger):
         return
 
     elif fulltrigger.lower().startswith("where is"):
-        searchterm = spicemanip.main(triggerargs, "3+") or None
+        searchterm = spicemanip.main(trigger.sb['args'], "3+") or None
         if searchterm:
 
             if searchterm.lower() in ['waldo', 'wally']:
@@ -68,14 +67,14 @@ def bot_command_nick(bot, trigger):
     # TODO
 
     # elif fulltrigger.lower().startswith(tuple(["have you seen"])):
-    #    posstarget = spicemanip.main(triggerargs, 4) or 0
+    #    posstarget = spicemanip.main(trigger.sb['args'], 4) or 0
     #    message = seen_search(bot, botcom, posstarget)
     #    bot.osd(message)
     #    return
     # TODO
 
     elif fulltrigger.lower().startswith(tuple(["make me a", "beam me a"])):
-        makemea = spicemanip.main(triggerargs, "4+") or None
+        makemea = spicemanip.main(trigger.sb['args'], "4+") or None
         if makemea:
             bot.osd("beams " + trigger.nick + " a " + makemea, trigger.sender, 'action')
         else:
@@ -83,7 +82,7 @@ def bot_command_nick(bot, trigger):
         return
 
     elif fulltrigger.lower().startswith("beam me to"):
-        location = spicemanip.main(triggerargs, "4+") or None
+        location = spicemanip.main(trigger.sb['args'], "4+") or None
         if location:
             bot.osd("locks onto " + trigger.nick + "s coordinates and transports them to " + location, 'action')
         else:
@@ -131,7 +130,7 @@ def bot_command_nick(bot, trigger):
         return
 
     elif fulltrigger.lower().startswith("can you see"):
-        target = spicemanip.main(triggerargs, "4+") or None
+        target = spicemanip.main(trigger.sb['args'], "4+") or None
         if not target:
             bot.osd(trigger.nick + ", I can see clearly.")
             return

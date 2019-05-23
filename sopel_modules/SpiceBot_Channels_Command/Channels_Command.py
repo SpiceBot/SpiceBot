@@ -10,17 +10,16 @@ import sopel_modules.SpiceBot as SpiceBot
 
 
 @SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
+@SpiceBot.prerun.args('nickname_command')
 @sopel.module.nickname_commands('channels', 'channel')
 def nickname_comand_channels(bot, trigger):
 
-    triggerargs, triggercommand, command_type = SpiceBot.sopel_triggerargs(bot, trigger, 'nickname_command')
-
-    if not len(triggerargs):
+    if not len(trigger.sb['args']):
         commandused = 'list'
     else:
-        commandused = spicemanip.main(triggerargs, 1).lower()
+        commandused = spicemanip.main(trigger.sb['args'], 1).lower()
 
-    triggerargs = spicemanip.main(triggerargs, '2+', 'list')
+    trigger.sb['args'] = spicemanip.main(trigger.sb['args'], '2+', 'list')
 
     if commandused == 'list':
         chanlist = spicemanip.main(bot.channels.keys(), 'andlist')
@@ -60,10 +59,10 @@ def nickname_comand_channels(bot, trigger):
         return
 
     elif commandused == 'topic':
-        if not len(triggerargs):
+        if not len(trigger.sb['args']):
             bot.osd("Channel name input missing.")
             return
-        channel = spicemanip.main(triggerargs, 1)
+        channel = spicemanip.main(trigger.sb['args'], 1)
         if not SpiceBot.inlist(channel.lower(), SpiceBot.channels.dict['list'].keys()):
             bot.osd("Channel name {} not valid.".format(channel))
             return
@@ -73,14 +72,14 @@ def nickname_comand_channels(bot, trigger):
         return
 
     if commandused.upper() in ['OP', 'HOP', 'VOICE', 'OWNER', 'ADMIN']:
-        if not len(triggerargs):
+        if not len(trigger.sb['args']):
             if trigger.is_privmsg:
                 bot.osd("Channel name required.")
                 return
             else:
                 channel = trigger.sender
         else:
-            channel = spicemanip.main(triggerargs, 1)
+            channel = spicemanip.main(trigger.sb['args'], 1)
             if not SpiceBot.inlist(channel.lower(), SpiceBot.channels.dict['list'].keys()):
                 bot.osd("Channel name {} not valid.".format(channel))
                 return
@@ -100,7 +99,7 @@ def nickname_comand_channels(bot, trigger):
 
     # Users List
     if commandused == 'users':
-        channel = spicemanip.main(triggerargs, 1)
+        channel = spicemanip.main(trigger.sb['args'], 1)
         if not SpiceBot.inlist(channel.lower(), SpiceBot.channels.dict['list'].keys()):
             bot.osd("Channel name {} not valid.".format(channel))
             return

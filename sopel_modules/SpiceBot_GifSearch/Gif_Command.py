@@ -12,14 +12,14 @@ import spicemanip
 
 
 @SpiceBot.events.check_ready([SpiceBot.events.BOT_GIFSEARCH])
+@SpiceBot.prerun.args('prefix_command')
 @module.commands('gif')
 def gif_trigger(bot, trigger):
 
-    triggerargs, triggercommand, command_type = SpiceBot.sopel_triggerargs(bot, trigger)
-    if not len(triggerargs):
+    if not len(trigger.sb['args']):
         return bot.osd("Please present a query to search.")
 
-    query = spicemanip.main(triggerargs, 0)
+    query = spicemanip.main(trigger.sb['args'], 0)
     searchapis = bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys()
     searchdict = {"query": query, "gifsearch": searchapis}
 

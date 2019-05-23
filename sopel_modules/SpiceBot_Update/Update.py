@@ -27,6 +27,7 @@ def setup(bot):
     bot.config.define_section("SpiceBot_Update", SpiceBot_Update_MainSection, validate=False)
 
 
+@SpiceBot.prerun.args('nickname_command')
 @sopel.module.nickname_commands('update')
 def nickname_comand_update(bot, trigger):
 
@@ -34,18 +35,16 @@ def nickname_comand_update(bot, trigger):
         bot.say("I was unable to process this Bot Nick command due to privilege issues.")
         return
 
-    triggerargs, triggercommand, command_type = SpiceBot.sopel_triggerargs(bot, trigger, 'nickname_command')
-
-    if not len(triggerargs):
+    if not len(trigger.sb['args']):
         commandused = 'nodeps'
     else:
-        commandused = spicemanip.main(triggerargs, 1).lower()
+        commandused = spicemanip.main(trigger.sb['args'], 1).lower()
 
     if commandused not in ['deps', 'nodeps']:
         bot.say("Please specify deps or nodeps")
         return
 
-    triggerargs = spicemanip.main(triggerargs, '2+', 'list')
+    trigger.sb['args'] = spicemanip.main(trigger.sb['args'], '2+', 'list')
 
     quitmessage = "Received command from " + trigger.nick + " to update from Github and restart"
     SpiceBot.logs.log('SpiceBot_Update', quitmessage)
