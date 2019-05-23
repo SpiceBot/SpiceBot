@@ -20,6 +20,18 @@ class BotPrerun():
     def __init__(self):
         self.dict = {}
 
+    def hyphenargs(self, trigger_command_type='module'):
+        def actual_decorator(function):
+            @functools.wraps(function)
+            def internal_prerun(bot, trigger, *args, **kwargs):
+                trigger.sb["args"], trigger.sb["hyphen_arg"] = self.trigger_hyphen_args(self, trigger.sb)
+                if trigger.sb["hyphen_arg"]:
+                    return self.trigger_hyphen_arg_handler(bot, trigger, trigger.sb)
+                else:
+                    return function(bot, trigger, *args, **kwargs)
+            return internal_prerun
+        return actual_decorator
+
     def prerun(self, trigger_command_type='module'):
         def actual_decorator(function):
             @functools.wraps(function)
@@ -52,21 +64,12 @@ class BotPrerun():
                 argsdict_list = self.trigger_argsdict_list(argsdict_default, and_split)
 
                 # Run the function for all splits
-                while len(argsdict_list):
-
-                    if argsdict_list[0]["hyphen_arg"]:
-                        self.trigger_hyphen_arg_handler(bot, trigger, argsdict_list[0])
-                        del argsdict_list[0]
-                        pass
-
+                for argsdict in argsdict_list:
                     # check if anything prohibits the nick from running the command
                     if self.trigger_runstatus(bot, trigger, argsdict_list[0]):
-                        trigger.sb = argsdict_list[0]
+                        trigger.sb = argsdict
                         function(bot, trigger, *args, **kwargs)
-                        del argsdict_list[0]
-                    else:
-                        del argsdict_list[0]
-                        pass
+                return
             return internal_prerun
         return actual_decorator
 
@@ -89,13 +92,8 @@ class BotPrerun():
     def trigger_argsdict_list(self, argsdict_default, and_split):
         prerun_split = []
         for trigger_args_part in and_split:
-
             argsdict_part = copy.deepcopy(argsdict_default)
-
-            trigger_args_part_list = spicemanip.main(trigger_args_part, 'create')
-
-            argsdict_part["args"], argsdict_part["hyphen_arg"] = self.trigger_hyphen_args(trigger_args_part_list)
-
+            argsdict_part["args"] = spicemanip.main(trigger_args_part, 'create')
             prerun_split.append(argsdict_part)
         return prerun_split
 
@@ -119,9 +117,6 @@ class BotPrerun():
         return trigger_args_unhyphend, hyphenarg
 
     def trigger_hyphen_arg_handler(self, bot, trigger, argsdict):
-
-        if not argsdict["hyphen_arg"]:
-            return
 
         # Commands that cannot run via privmsg
         if argsdict["hyphen_arg"] in ['enable']:
