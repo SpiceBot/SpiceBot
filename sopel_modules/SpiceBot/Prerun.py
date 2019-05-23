@@ -63,7 +63,10 @@ class BotPrerun():
                     if self.trigger_runstatus(bot, trigger, argsdict_list[0]):
                         trigger.sb = argsdict_list[0]
                         function(bot, trigger, *args, **kwargs)
-                    del argsdict_list[0]
+                        del argsdict_list[0]
+                    else:
+                        del argsdict_list[0]
+                        pass
                 return
             return internal_prerun
         return actual_decorator
