@@ -115,10 +115,11 @@ class BotPrerun():
 
     def hyphen_arg_handler(self, bot, trigger, argsdict):
 
-        hyphenarg = argsdict["hyphen_arg"]
+        if not argsdict["hyphen_arg"]:
+            return
 
         # Commands that cannot run via privmsg
-        if hyphenarg in ['enable']:
+        if argsdict["hyphen_arg"] in ['enable']:
 
             if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
                 bot.say("I was unable to disable this command due to privilege issues.")
@@ -136,7 +137,7 @@ class BotPrerun():
             bot.say(argsdict["com"] + " is now enabled in " + str(trigger.sender))
             return
 
-        elif hyphenarg in ['disable']:
+        elif argsdict["hyphen_arg"] in ['disable']:
 
             if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
                 bot.say("I was unable to disable this command due to privilege issues.")
