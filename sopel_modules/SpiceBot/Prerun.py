@@ -54,9 +54,8 @@ class BotPrerun():
                 # Run the function for all splits
                 for argsdict in argsdict_list:
 
-                    if len(argsdict["hyphen_args"]):
+                    if argsdict["hyphen_arg"]:
                         self.hyphen_arg_handler(bot, trigger, argsdict)
-                        argsdict["hyphen_args"] = []
 
                     # check if anything prohibits the nick from running the command
                     if self.runstatus(bot, trigger, argsdict):
@@ -90,7 +89,7 @@ class BotPrerun():
 
             trigger_args_part_list = spicemanip.main(trigger_args_part, 'create')
 
-            argsdict_part["args"], argsdict_part["hyphen_args"] = self.hyphen_args(trigger_args_part_list)
+            argsdict_part["args"], argsdict_part["hyphen_arg"] = self.hyphen_args(trigger_args_part_list)
 
             prerun_split.append(argsdict_part)
         return prerun_split
@@ -108,11 +107,15 @@ class BotPrerun():
                     hyphen_args.append(hyphencom)
             else:
                 trigger_args_unhyphend.append(worditem)
-        return trigger_args_unhyphend, hyphen_args
+        if len(hyphen_args):
+            hyphenarg = hyphen_args[0]
+        else:
+            hyphenarg = None
+        return trigger_args_unhyphend, hyphenarg
 
     def hyphen_arg_handler(self, bot, trigger, argsdict):
 
-        hyphenarg = argsdict["hyphen_args"][0]
+        hyphenarg = argsdict["hyphen_arg"]
 
         # Commands that cannot run via privmsg
         if hyphenarg in ['enable']:
@@ -159,7 +162,7 @@ class BotPrerun():
     def runstatus(self, bot, trigger, argsdict):
 
         # Hyphen args can only be used one per && split
-        if len(argsdict["hyphen_args"]):
+        if argsdict["hyphen_arg"]:
             return False
 
         # don't run commands that are disabled in channels
