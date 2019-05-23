@@ -162,10 +162,6 @@ class BotPrerun():
 
     def trigger_runstatus(self, bot, trigger, argsdict):
 
-        # Hyphen args can only be used one per && split
-        if argsdict["hyphen_arg"]:
-            return False
-
         # don't run commands that are disabled in channels
         if not trigger.is_privmsg:
             disabled_list = spicedb.get_channel_value(bot, trigger.sender, 'disabled_commands', 'commands') or {}
