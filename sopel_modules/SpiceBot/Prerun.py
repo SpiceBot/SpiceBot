@@ -17,8 +17,8 @@ class BotPrerun():
             @functools.wraps(function)
             def internal_prerun(bot, trigger, *args, **kwargs):
                 prerun_split = self.sopel_trigger_args(bot, trigger, trigger_command_type)
-                for prerun in prerun_split:
-                    trigger.sb = prerun
+                for argsdict in prerun_split:
+                    trigger.sb = argsdict
                     function(bot, trigger, *args, **kwargs)
                 return
             return internal_prerun
@@ -41,7 +41,7 @@ class BotPrerun():
 
         prerun_split = []
         for trigger_args_list in trigger_args_list_split:
-            trigger_args_part = spicemanip.main(trigger_args, 'create')
+            trigger_args_part = spicemanip.main(trigger_args_list, 'create')
             argsdict = {"com": trigger_command, "args": trigger_args_part, "type": trigger_command_type}
             prerun_split.append(argsdict)
 
