@@ -10,7 +10,7 @@ import sopel_modules.SpiceBot as SpiceBot
 
 
 @SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
-@SpiceBot.prerun.args('nickname_command')
+@SpiceBot.prerun.prerun('nickname_command')
 @sopel.module.nickname_commands('channels', 'channel')
 def nickname_comand_channels(bot, trigger):
 
