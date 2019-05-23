@@ -52,15 +52,16 @@ class BotPrerun():
                 argsdict_list = self.argsdict_list(argsdict_default, and_split)
 
                 # Run the function for all splits
-                for argsdict in argsdict_list:
+                while len(argsdict_list):
 
-                    if argsdict["hyphen_arg"]:
-                        self.hyphen_arg_handler(bot, trigger, argsdict)
+                    if argsdict_list[0]["hyphen_arg"]:
+                        self.hyphen_arg_handler(bot, trigger, argsdict_list[0])
 
                     # check if anything prohibits the nick from running the command
-                    if self.runstatus(bot, trigger, argsdict):
-                        trigger.sb = argsdict
+                    if self.runstatus(bot, trigger, argsdict_list[0]):
+                        trigger.sb = argsdict_list[0]
                         function(bot, trigger, *args, **kwargs)
+                    del argsdict_list[0]
                 return
             return internal_prerun
         return actual_decorator
