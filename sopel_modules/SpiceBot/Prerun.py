@@ -29,7 +29,7 @@ class BotPrerun():
                 and_split = self.and_split(trigger_args)
 
                 # Create dict listings for trigger.sb
-                argsdict_list = self.argsdict_create(argsdict_default, and_split)
+                argsdict_list = self.argsdict_list(argsdict_default, and_split)
 
                 # Run the function for all splits
                 for argsdict in argsdict_list:
