@@ -12,20 +12,24 @@ class BotPrerun():
     def __init__(self):
         self.dict = {}
 
-    def args(level, message=None, reply=False):
+    def args(self, command_type='module_command'):
         def actual_decorator(function):
             @functools.wraps(function)
             def argsbuilder(bot, trigger, *args, **kwargs):
-                triggerargs = spicemanip.main(trigger.args[1], 'create')
-                if triggerargs[0].lower() == bot.nick.lower():
-                    trigger.command = spicemanip.main(triggerargs, 2).lower()
-                    trigger.arglist = spicemanip.main(triggerargs, '3+', 'list')
-                else:
-                    trigger.command = spicemanip.main(triggerargs, 1).lower()[1:]
-                    trigger.arglist = spicemanip.main(triggerargs, '2+', 'list')
+                trigger.argcommand, trigger.arglist = self.sopel_triggerargs(bot, trigger, command_type)
                 return function(bot, trigger, *args, **kwargs)
             return argsbuilder
         return actual_decorator
+
+    def sopel_triggerargs(self, bot, trigger, command_type='module_command'):
+        triggerargs = spicemanip.main(trigger.args[1], 'create')
+        if command_type in ['nickname', 'nickname_command', 'nickname_commands']:
+            command = spicemanip.main(triggerargs, 2).lower()
+            triggerargs = spicemanip.main(triggerargs, '3+', 'list')
+        else:
+            command = spicemanip.main(triggerargs, 1).lower()[1:]
+            triggerargs = spicemanip.main(triggerargs, '2+', 'list')
+        return triggerargs, command
 
 
 prerun = BotPrerun()
