@@ -46,19 +46,21 @@ class BotPrerun():
                 argsdict_default["realcom"] = realcom
 
                 # split into && groupings
-                and_split = self.and_split(trigger_args)
+                and_split = self.trigger_and_split(trigger_args)
 
                 # Create dict listings for trigger.sb
-                argsdict_list = self.argsdict_list(argsdict_default, and_split)
+                argsdict_list = self.trigger_argsdict_list(argsdict_default, and_split)
 
                 # Run the function for all splits
                 while len(argsdict_list):
 
                     if argsdict_list[0]["hyphen_arg"]:
-                        self.hyphen_arg_handler(bot, trigger, argsdict_list[0])
+                        self.trigger_hyphen_arg_handler(bot, trigger, argsdict_list[0])
+                        del argsdict_list[0]
+                        pass
 
                     # check if anything prohibits the nick from running the command
-                    if self.runstatus(bot, trigger, argsdict_list[0]):
+                    if self.trigger_runstatus(bot, trigger, argsdict_list[0]):
                         trigger.sb = argsdict_list[0]
                         function(bot, trigger, *args, **kwargs)
                     del argsdict_list[0]
@@ -76,13 +78,13 @@ class BotPrerun():
             trigger_args = spicemanip.main(trigger_args, '2+', 'list')
         return trigger_args, trigger_command
 
-    def and_split(self, trigger_args):
+    def trigger_and_split(self, trigger_args):
         trigger_args_list_split = spicemanip.main(trigger_args, "split_&&")
         if not len(trigger_args_list_split):
             trigger_args_list_split.append([])
         return trigger_args_list_split
 
-    def argsdict_list(self, argsdict_default, and_split):
+    def trigger_argsdict_list(self, argsdict_default, and_split):
         prerun_split = []
         for trigger_args_part in and_split:
 
@@ -90,12 +92,12 @@ class BotPrerun():
 
             trigger_args_part_list = spicemanip.main(trigger_args_part, 'create')
 
-            argsdict_part["args"], argsdict_part["hyphen_arg"] = self.hyphen_args(trigger_args_part_list)
+            argsdict_part["args"], argsdict_part["hyphen_arg"] = self.trigger_hyphen_args(trigger_args_part_list)
 
             prerun_split.append(argsdict_part)
         return prerun_split
 
-    def hyphen_args(self, trigger_args_part):
+    def trigger_hyphen_args(self, trigger_args_part):
         valid_hyphen_args = [
                             'enable', 'disable'
                             ]
@@ -114,7 +116,7 @@ class BotPrerun():
             hyphenarg = None
         return trigger_args_unhyphend, hyphenarg
 
-    def hyphen_arg_handler(self, bot, trigger, argsdict):
+    def trigger_hyphen_arg_handler(self, bot, trigger, argsdict):
 
         if not argsdict["hyphen_arg"]:
             return
@@ -161,7 +163,7 @@ class BotPrerun():
 
         return
 
-    def runstatus(self, bot, trigger, argsdict):
+    def trigger_runstatus(self, bot, trigger, argsdict):
 
         # Hyphen args can only be used one per && split
         if argsdict["hyphen_arg"]:
