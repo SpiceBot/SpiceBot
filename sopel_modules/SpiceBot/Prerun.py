@@ -67,7 +67,6 @@ class BotPrerun():
                     else:
                         del argsdict_list[0]
                         pass
-                return
             return internal_prerun
         return actual_decorator
 
