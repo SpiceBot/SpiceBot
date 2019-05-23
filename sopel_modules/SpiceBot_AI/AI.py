@@ -13,7 +13,7 @@ import sopel_modules.SpiceBot as SpiceBot
 @sopel.module.nickname_commands('(.*)')
 def bot_command_nick(bot, trigger):
 
-    triggerargs, triggercommand = SpiceBot.sopel_triggerargs(bot, trigger, 'nickname_command')
+    triggerargs, triggercommand, command_type = SpiceBot.sopel_triggerargs(bot, trigger, 'nickname_command')
 
     if not triggercommand:
         return

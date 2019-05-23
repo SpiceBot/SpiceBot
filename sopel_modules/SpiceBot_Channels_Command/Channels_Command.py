@@ -13,7 +13,7 @@ import sopel_modules.SpiceBot as SpiceBot
 @sopel.module.nickname_commands('channels', 'channel')
 def nickname_comand_channels(bot, trigger):
 
-    triggerargs, triggercommand = SpiceBot.sopel_triggerargs(bot, trigger, 'nickname_command')
+    triggerargs, triggercommand, command_type = SpiceBot.sopel_triggerargs(bot, trigger, 'nickname_command')
 
     if not len(triggerargs):
         commandused = 'list'

@@ -16,7 +16,7 @@ class BotPrerun():
         def actual_decorator(function):
             @functools.wraps(function)
             def argsbuilder(bot, trigger, *args, **kwargs):
-                trigger.argcommand, trigger.arglist = self.sopel_triggerargs(bot, trigger, command_type)
+                trigger.argcommand, trigger.arglist, trigger.command_type = self.sopel_triggerargs(bot, trigger, command_type)
                 return function(bot, trigger, *args, **kwargs)
             return argsbuilder
         return actual_decorator
@@ -29,7 +29,7 @@ class BotPrerun():
         else:
             command = spicemanip.main(triggerargs, 1).lower()[1:]
             triggerargs = spicemanip.main(triggerargs, '2+', 'list')
-        return triggerargs, command
+        return triggerargs, command, command_type
 
 
 prerun = BotPrerun()

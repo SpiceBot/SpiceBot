@@ -30,7 +30,7 @@ def bot_command_process(bot, trigger):
         bot.say("I was unable to process this Bot Nick command due to privilege issues.")
         return
 
-    triggerargs, triggercommand = SpiceBot.sopel_triggerargs(bot, trigger, 'nickname_command')
+    triggerargs, triggercommand, command_type = SpiceBot.sopel_triggerargs(bot, trigger, 'nickname_command')
 
     if triggercommand in ['say', 'msg']:
         triggercommand = 'privmsg'

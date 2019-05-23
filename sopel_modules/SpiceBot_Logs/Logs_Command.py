@@ -16,7 +16,7 @@ def bot_command_logs(bot, trigger):
         bot.say("I was unable to process this Bot Nick command due to privilege issues.")
         return
 
-    triggerargs, triggercommand = SpiceBot.sopel_triggerargs(bot, trigger, 'nickname_command')
+    triggerargs, triggercommand, command_type = SpiceBot.sopel_triggerargs(bot, trigger, 'nickname_command')
 
     logtype = spicemanip.main(triggerargs, 1) or None
     if not logtype:

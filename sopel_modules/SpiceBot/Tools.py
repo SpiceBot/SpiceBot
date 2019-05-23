@@ -52,7 +52,7 @@ def sopel_triggerargs(bot, trigger, command_type='module_command'):
         command = spicemanip.main(triggerargs, 1).lower()[1:]
         triggerargs = spicemanip.main(triggerargs, '2+', 'list')
 
-    return triggerargs, command
+    return triggerargs, command, command_type
 
 
 def bot_privs(bot, privtype):

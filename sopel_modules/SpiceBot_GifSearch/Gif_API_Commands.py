@@ -15,7 +15,7 @@ import sopel_modules.SpiceBot as SpiceBot
 @sopel.module.commands('(.*)')
 def gifapi_triggers(bot, trigger):
 
-    triggerargs, triggercommand = SpiceBot.sopel_triggerargs(bot, trigger, 'prefix_command')
+    triggerargs, triggercommand, command_type = SpiceBot.sopel_triggerargs(bot, trigger, 'prefix_command')
 
     if triggercommand not in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
         return

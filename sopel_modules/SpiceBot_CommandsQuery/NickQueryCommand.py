@@ -14,7 +14,7 @@ import spicemanip
 @sopel.module.nickname_commands('(.*)')
 def query_detection_nick(bot, trigger):
 
-    triggerargs, triggercommand = SpiceBot.sopel_triggerargs(bot, trigger, 'nickname_command')
+    triggerargs, triggercommand, command_type = SpiceBot.sopel_triggerargs(bot, trigger, 'nickname_command')
 
     # command issued, check if valid
     if not triggercommand or not len(triggercommand):

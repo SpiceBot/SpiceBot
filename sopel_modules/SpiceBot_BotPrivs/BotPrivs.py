@@ -20,7 +20,7 @@ def bot_command_admins(bot, trigger):
 
 
 def bot_command_process(bot, trigger):
-    triggerargs, triggercommand = SpiceBot.sopel_triggerargs(bot, trigger, 'nickname_command')
+    triggerargs, triggercommand, command_type = SpiceBot.sopel_triggerargs(bot, trigger, 'nickname_command')
 
     if triggercommand == 'owner':
         triggercommand = 'owners'
