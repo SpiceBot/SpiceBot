@@ -43,7 +43,7 @@ class BotCommands():
         return self.dict['disabled']
 
     def check_disabled_commands(self, bot, command, channel):
-        if command in self.get_disabled_commands(self, bot, channel).keys():
+        if command in self.get_disabled_commands(bot, channel).keys():
             return True
         else:
             return False
