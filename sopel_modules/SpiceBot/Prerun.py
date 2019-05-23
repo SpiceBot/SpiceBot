@@ -53,13 +53,14 @@ class BotPrerun():
 
                 # Run the function for all splits
                 for argsdict in argsdict_list:
-                    trigger.sb = argsdict
 
                     if len(argsdict["hyphen_args"]):
                         self.hyphen_arg_handler(bot, trigger, argsdict)
+                        argsdict["hyphen_args"] = []
 
                     # check if anything prohibits the nick from running the command
                     if self.runstatus(bot, trigger, argsdict):
+                        trigger.sb = argsdict
                         function(bot, trigger, *args, **kwargs)
                 return
             return internal_prerun
@@ -124,14 +125,11 @@ class BotPrerun():
                 bot.notice("This command must be run in a channel you which to enable it in.", trigger.nick)
                 return
 
-            disabled_list = spicedb.get_channel_value(bot, trigger.sender, 'disabled_commands', 'commands') or {}
-
-            if argsdict["realcom"] not in disabled_list.keys():
+            if not commands.check_disabled_commands(self, bot, argsdict["realcom"], trigger.sender):
                 bot.notice(argsdict["com"] + " is already enabled in " + str(trigger.sender), trigger.nick)
                 return
 
-            del disabled_list[argsdict["realcom"]]
-            spicedb.set_channel_value(bot, trigger.sender, 'disabled_commands', disabled_list, 'commands')
+            commands.unset_command_disabled(bot, argsdict["realcom"], trigger.sender)
             bot.say(argsdict["com"] + " is now enabled in " + str(trigger.sender))
             return
 
@@ -145,19 +143,14 @@ class BotPrerun():
                 bot.notice("This command must be run in a channel you which to disable it in.", trigger.nick)
                 return
 
-            disabled_list = spicedb.get_channel_value(bot, trigger.sender, 'disabled_commands', 'commands') or {}
-
-            if argsdict["realcom"] in disabled_list.keys():
+            if commands.check_disabled_commands(self, bot, argsdict["realcom"], trigger.sender):
                 bot.notice(argsdict["com"] + " is already disabled in " + str(trigger.sender), trigger.nick)
                 return
 
             trailingmessage = spicemanip.main(argsdict["args"], 0) or "No reason given."
             timestamp = str(datetime.datetime.utcnow())
 
-            disabled_list[argsdict["realcom"]] = {"reason": trailingmessage, "timestamp": timestamp, "disabledby": trigger.nick}
-            spicedb.set_channel_value(bot, trigger.sender, 'disabled_commands', disabled_list, 'commands')
-
-            spicedb.adjust_channel_list(bot, trigger.sender, 'disabled_commands', argsdict["realcom"], 'add', 'commands')
+            commands.set_command_disabled(self, bot, argsdict["realcom"], trigger.sender, timestamp, trailingmessage, trigger.nick)
             bot.say(argsdict["com"] + " is now disabled in " + str(trigger.sender))
             return
 
