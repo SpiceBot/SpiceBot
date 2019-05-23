@@ -11,7 +11,7 @@ import spicemanip
 
 
 @SpiceBot.events.check_ready([SpiceBot.events.BOT_COMMANDSQUERY])
-@SpiceBot.prerun.prerun('query_command')
+@SpiceBot.prerun.prerun('query')
 @sopel.module.rule('^\?(.*)')
 def query_detection(bot, trigger):
 

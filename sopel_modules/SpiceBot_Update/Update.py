@@ -27,7 +27,7 @@ def setup(bot):
     bot.config.define_section("SpiceBot_Update", SpiceBot_Update_MainSection, validate=False)
 
 
-@SpiceBot.prerun.prerun('nickname_command')
+@SpiceBot.prerun.prerun('nickname')
 @sopel.module.nickname_commands('update')
 def nickname_comand_update(bot, trigger):
 

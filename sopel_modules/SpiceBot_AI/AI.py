@@ -10,7 +10,7 @@ import sopel_modules.SpiceBot as SpiceBot
 
 
 @SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED, SpiceBot.events.BOT_COMMANDSQUERY])
-@SpiceBot.prerun.prerun('nickname_command')
+@SpiceBot.prerun.prerun('nickname')
 @sopel.module.nickname_commands('(.*)')
 def bot_command_nick(bot, trigger):
 

@@ -11,7 +11,7 @@ import spicemanip
 
 
 @SpiceBot.events.check_ready([SpiceBot.events.BOT_COMMANDSQUERY])
-@SpiceBot.prerun.prerun('nickname_command')
+@SpiceBot.prerun.prerun('nickname')
 @sopel.module.nickname_commands('(.*)')
 def query_detection_nick(bot, trigger):
 

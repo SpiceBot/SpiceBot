@@ -12,7 +12,7 @@ import sopel_modules.SpiceBot as SpiceBot
 
 
 @SpiceBot.events.check_ready([SpiceBot.events.BOT_GIFSEARCH])
-@SpiceBot.prerun.prerun('prefix_command')
+@SpiceBot.prerun.prerun('prefix')
 @sopel.module.commands('(.*)')
 def gifapi_triggers(bot, trigger):
 

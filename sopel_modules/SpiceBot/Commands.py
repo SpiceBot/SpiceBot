@@ -27,6 +27,14 @@ class BotCommands():
                                 },
                     }
 
+    def find_command_type(self, command):
+        for commandstype in self.dict['commands'].keys():
+            if commandstype not in ['rule']:
+                for com in self.dict['commands'][commandstype].keys():
+                    if com.lower() == command.lower():
+                        return commandstype
+        return None
+
     def register(self, bot, command_dict):
 
         self.lock.acquire()

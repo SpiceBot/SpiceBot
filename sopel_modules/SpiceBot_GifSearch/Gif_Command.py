@@ -12,7 +12,7 @@ import spicemanip
 
 
 @SpiceBot.events.check_ready([SpiceBot.events.BOT_GIFSEARCH])
-@SpiceBot.prerun.prerun('prefix_command')
+@SpiceBot.prerun.prerun('prefix')
 @module.commands('gif')
 def gif_trigger(bot, trigger):
 

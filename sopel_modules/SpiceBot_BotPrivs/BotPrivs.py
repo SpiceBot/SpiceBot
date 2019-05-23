@@ -9,13 +9,13 @@ import spicemanip
 import sopel_modules.SpiceBot as SpiceBot
 
 
-@SpiceBot.prerun.prerun('nickname_command')
+@SpiceBot.prerun.prerun('nickname')
 @sopel.module.nickname_commands('owners', 'owner')
 def bot_command_owners(bot, trigger):
     bot_command_process(bot, trigger)
 
 
-@SpiceBot.prerun.prerun('nickname_command')
+@SpiceBot.prerun.prerun('nickname')
 @sopel.module.nickname_commands('admins')
 def bot_command_admins(bot, trigger):
     bot_command_process(bot, trigger)
