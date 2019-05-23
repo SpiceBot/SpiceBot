@@ -16,7 +16,7 @@ class BotPrerun():
         def actual_decorator(function):
             @functools.wraps(function)
             def internal_prerun(bot, trigger, *args, **kwargs):
-                prerun_split = self.sopel_trigger_args(bot, trigger, trigger_command_type)
+                prerun_split = self.trigger_args(bot, trigger, trigger_command_type)
                 for argsdict in prerun_split:
                     trigger.sb = argsdict
                     function(bot, trigger, *args, **kwargs)
@@ -24,7 +24,7 @@ class BotPrerun():
             return internal_prerun
         return actual_decorator
 
-    def sopel_trigger_args(self, bot, trigger, trigger_command_type='module_command'):
+    def trigger_args(self, bot, trigger, trigger_command_type='module_command'):
 
         trigger_args = spicemanip.main(trigger.args[1], 'create')
         if trigger_command_type in ['nickname', 'nickname_command', 'nickname_commands']:
