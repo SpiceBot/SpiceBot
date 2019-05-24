@@ -118,6 +118,11 @@ class BotPrerun():
             bot.notice("You however are authorized to bypass this warning with the (-a) admin switch.", trigger.nick)
         return False
 
+
+prerun = BotPrerun()
+
+
+class defunct():
     """Hyphenargs"""
 
     def hyphenargs(self):
@@ -202,113 +207,13 @@ class BotPrerun():
         return
 
 
-prerun = BotPrerun()
-
-
-class defunct():
-    def prerun(self, trigger_command_type='module'):
-        def actual_decorator(function):
-
-            @functools.wraps(function)
-            def internal_prerun(bot, trigger, *args, **kwargs):
-
-                # Primary command used for trigger, and a list of all words
-                trigger_args, trigger_command = self.trigger_args(trigger.args[1], trigger_command_type)
-
-                # Argsdict Defaults
-                argsdict_default = {}
-                argsdict_default["type"] = trigger_command_type
-                argsdict_default["com"] = trigger_command
-
-                realcom = commands.get_realcom(argsdict_default["com"], trigger_command_type)
-                argsdict_default["realcom"] = realcom
-
-                # split into && groupings
-                and_split = self.trigger_and_split(trigger_args)
-
-                # Create dict listings for trigger.sb
-                argsdict_list = self.trigger_argsdict_list(argsdict_default, and_split)
-
-                # Run the function for all splits
-                for argsdict in argsdict_list:
-                    trigger.sb = copy.deepcopy(argsdict)
-                    trigger.sb["args"], trigger.sb["hyphen_arg"] = self.trigger_hyphen_args(trigger.sb["args"])
-
-                    if not trigger.sb["hyphen_arg"]:
-                        # check if anything prohibits the nick from running the command
-                        if self.trigger_runstatus(bot, trigger):
-                            function(bot, trigger, *args, **kwargs)
-                    else:
-                        self.trigger_hyphen_arg_handler(bot, trigger)
-
-            return internal_prerun
-        return actual_decorator
-
-    def trigger_hyphen_args(self, trigger_args_part):
-        valid_hyphen_args = [
-                            'check',
-                            'enable', 'disable'
-                            ]
-        hyphen_args = []
-        trigger_args_unhyphend = []
-        for worditem in trigger_args_part:
-            if str(worditem).startswith("--") and worditem[2:] in valid_hyphen_args:
-                hyphen_args.append(worditem[2:])
+def require_owner():
+    def actual_decorator(function):
+        @functools.wraps(function)
+        def guarded(bot, trigger, *args, **kwargs):
+            if not trigger.owner:
+                bot.say(trigger.nick + " is not the owner")
             else:
-                trigger_args_unhyphend.append(worditem)
-        if len(hyphen_args):
-            hyphenarg = hyphen_args[0]
-        else:
-            hyphenarg = None
-        return trigger_args_unhyphend, hyphenarg
-
-    def trigger_hyphen_arg_handler(self, bot, trigger):
-
-        # Commands that cannot run via privmsg
-        if trigger.sb["hyphen_arg"] in ['check']:
-            if trigger.sb["com"].lower() != trigger.sb["realcom"]:
-                bot.say(trigger.sb["com"] + " is a valid alias command for " + trigger.sb["realcom"])
-            else:
-                bot.say(trigger.sb["com"] + " is a valid command")
-            return
-
-        elif trigger.sb["hyphen_arg"] in ['enable']:
-
-            if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
-                bot.say("I was unable to disable this command due to privilege issues.")
-                return
-
-            if trigger.is_privmsg:
-                bot.notice("This command must be run in a channel you which to enable it in.", trigger.nick)
-                return
-
-            if not commands.check_disabled_commands(bot, trigger.sb["realcom"], trigger.sender):
-                bot.notice(trigger.sb["com"] + " is already enabled in " + str(trigger.sender), trigger.nick)
-                return
-
-            commands.unset_command_disabled(bot, trigger.sb["realcom"], trigger.sender)
-            bot.say(trigger.sb["com"] + " is now enabled in " + str(trigger.sender))
-            return
-
-        elif trigger.sb["hyphen_arg"] in ['disable']:
-
-            if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
-                bot.say("I was unable to disable this command due to privilege issues.")
-                return
-
-            if trigger.is_privmsg:
-                bot.notice("This command must be run in a channel you which to disable it in.", trigger.nick)
-                return
-
-            if commands.check_disabled_commands(bot, trigger.sb["realcom"], trigger.sender):
-                bot.notice(trigger.sb["com"] + " is already disabled in " + str(trigger.sender), trigger.nick)
-                return
-
-            trailingmessage = spicemanip.main(trigger.sb["args"], 0) or "No reason given."
-            timestamp = str(datetime.datetime.utcnow())
-
-            commands.set_command_disabled(bot, trigger.sb["realcom"], trigger.sender, timestamp, trailingmessage, trigger.nick)
-            bot.say(trigger.sb["com"] + " is now disabled in " + str(trigger.sender))
-            return
-
-        return
+                return function(bot, trigger, *args, **kwargs)
+        return guarded
+    return actual_decorator
