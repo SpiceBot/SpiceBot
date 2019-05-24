@@ -48,6 +48,17 @@ class BotCommands():
         else:
             return False
 
+    def get_realcom(self, command, trigger_command_type):
+        commands_list = dict()
+        for commandstype in self.dict['commands'][trigger_command_type].keys():
+            for com in self.dict['commands'][commandstype].keys():
+                if com not in commands_list.keys():
+                    commands_list[com] = self.dict['commands'][commandstype][com]
+        realcom = command
+        if "aliasfor" in commands_list[command['com']].keys():
+            realcom = commands_list[command['com']]["aliasfor"]
+        return realcom
+
     def set_command_disabled(self, bot, command, channel, timestamp, reason, bywhom):
         if not len(list(self.dict['disabled'])):
             self.dict['disabled'] = spicedb.get_channel_value(bot, channel, 'disabled_commands', 'commands') or {}

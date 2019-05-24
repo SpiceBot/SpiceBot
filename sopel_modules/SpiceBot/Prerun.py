@@ -32,17 +32,12 @@ class BotPrerun():
                 # Primary command used for trigger, and a list of all words
                 trigger_args, trigger_command = self.trigger_args(trigger.args[1], trigger_command_type)
 
-                command_lookup = commands.find_command_type(trigger_command)
-
                 # Argsdict Defaults
                 argsdict_default = {}
                 argsdict_default["type"] = trigger_command_type
                 argsdict_default["com"] = trigger_command
 
-                if command_lookup and "aliasfor" in commands.dict["commands"][command_lookup].keys():
-                    realcom = commands.dict["commands"][command_lookup]["aliasfor"]
-                else:
-                    realcom = trigger_command
+                realcom = commands.get_realcom(argsdict_default["com"], trigger_command_type)
                 argsdict_default["realcom"] = realcom
 
                 # split into && groupings
