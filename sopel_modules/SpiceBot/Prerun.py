@@ -48,9 +48,10 @@ class BotPrerun():
 
                 # Run the function for all splits
                 for argsdict in argsdict_list:
+                    trigger.sb = copy.deepcopy(argsdict)
+                    trigger.sb["args"], trigger.sb["hyphen_arg"] = self.trigger_hyphen_args(trigger.sb["args"])
+
                     def newfunc(bot, trigger, *args, **kwargs):
-                        trigger.sb = copy.deepcopy(argsdict)
-                        trigger.sb["args"], trigger.sb["hyphen_arg"] = self.trigger_hyphen_args(trigger.sb["args"])
                         if not trigger.sb["hyphen_arg"]:
                             # check if anything prohibits the nick from running the command
                             if self.trigger_runstatus(bot, trigger):
