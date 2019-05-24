@@ -9,7 +9,6 @@ from sopel.tools import Identifier
 import functools
 import copy
 import datetime
-import uuid
 import spicemanip
 
 from .Tools import command_permissions_check
@@ -19,8 +18,6 @@ from .Database import db as spicedb
 
 class BotPrerun():
     def __init__(self):
-        self.usedids = [0]
-        self.utilizedids = []
         self.dict = {}
 
     def prerun(self, trigger_command_type='module'):
@@ -57,18 +54,13 @@ class BotPrerun():
                 # Run the function for all splits
                 for argsdict in argsdict_list:
                     trigger.sb = copy.deepcopy(argsdict)
-                    trigger.sb["uuid"] = self.unique_id_create()
                     trigger.sb["args"], trigger.sb["hyphen_arg"] = self.trigger_hyphen_args(trigger.sb["args"])
                     if not trigger.sb["hyphen_arg"]:
                         # check if anything prohibits the nick from running the command
                         if self.trigger_runstatus(bot, trigger):
-                            if trigger.sb["uuid"] not in self.utilizedids:
-                                function(bot, trigger, *args, **kwargs)
-                                self.utilizedids.append(trigger.sb["uuid"])
+                            function(bot, trigger, *args, **kwargs)
                     else:
-                        if trigger.sb["uuid"] not in self.utilizedids:
-                            self.trigger_hyphen_arg_handler(bot, trigger)
-                            self.utilizedids.append(trigger.sb["uuid"])
+                        self.trigger_hyphen_arg_handler(bot, trigger)
 
             return internal_prerun
         return actual_decorator
@@ -179,13 +171,6 @@ class BotPrerun():
                 return False
 
         return True
-
-    def unique_id_create(self):
-        unique_id = 0
-        while unique_id in self.usedids:
-            unique_id = uuid.uuid4()
-        self.usedids.append(unique_id)
-        return unique_id
 
 
 prerun = BotPrerun()
