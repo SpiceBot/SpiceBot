@@ -53,15 +53,15 @@ class BotPrerun():
 
                 # Run the function for all splits
                 for argsdict in argsdict_list:
-                    trigger.sb = argsdict
+                    trigger.sb = copy.deepcopy(argsdict)
                     trigger.sb["args"], trigger.sb["hyphen_arg"] = self.trigger_hyphen_args(trigger.sb["args"])
                     if not trigger.sb["hyphen_arg"]:
                         # check if anything prohibits the nick from running the command
-                        if self.trigger_runstatus(bot, trigger, argsdict):
+                        if self.trigger_runstatus(bot, trigger):
                             function(bot, trigger, *args, **kwargs)
                     else:
                         self.trigger_hyphen_arg_handler(bot, trigger)
-                return function(bot, trigger, *args, **kwargs)
+
             return internal_prerun
         return actual_decorator
 
@@ -115,38 +115,46 @@ class BotPrerun():
                 bot.say(trigger.sb["com"] + " is a valid alias command for " + trigger.sb["realcom"])
             else:
                 bot.say(trigger.sb["com"] + " is a valid command")
+            trigger.sb["hyphen_arg"] = None
             return
 
         elif trigger.sb["hyphen_arg"] in ['enable']:
 
             if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
                 bot.say("I was unable to disable this command due to privilege issues.")
+                trigger.sb["hyphen_arg"] = None
                 return
 
             if trigger.is_privmsg:
                 bot.notice("This command must be run in a channel you which to enable it in.", trigger.nick)
+                trigger.sb["hyphen_arg"] = None
                 return
 
             if not commands.check_disabled_commands(bot, trigger.sb["realcom"], trigger.sender):
                 bot.notice(trigger.sb["com"] + " is already enabled in " + str(trigger.sender), trigger.nick)
+                trigger.sb["hyphen_arg"] = None
                 return
 
             commands.unset_command_disabled(bot, trigger.sb["realcom"], trigger.sender)
             bot.say(trigger.sb["com"] + " is now enabled in " + str(trigger.sender))
+            trigger.sb["hyphen_arg"] = None
             return
 
         elif trigger.sb["hyphen_arg"] in ['disable']:
 
             if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
                 bot.say("I was unable to disable this command due to privilege issues.")
+                trigger.sb["hyphen_arg"] = None
                 return
 
             if trigger.is_privmsg:
                 bot.notice("This command must be run in a channel you which to disable it in.", trigger.nick)
+                trigger.sb["hyphen_arg"] = None
                 return
 
             if commands.check_disabled_commands(bot, trigger.sb["realcom"], trigger.sender):
                 bot.notice(trigger.sb["com"] + " is already disabled in " + str(trigger.sender), trigger.nick)
+                trigger.sb["hyphen_arg"] = None
                 return
 
             trailingmessage = spicemanip.main(trigger.sb["args"], 0) or "No reason given."
@@ -154,20 +162,22 @@ class BotPrerun():
 
             commands.set_command_disabled(bot, trigger.sb["realcom"], trigger.sender, timestamp, trailingmessage, trigger.nick)
             bot.say(trigger.sb["com"] + " is now disabled in " + str(trigger.sender))
+            trigger.sb["hyphen_arg"] = None
             return
 
+        trigger.sb["hyphen_arg"] = None
         return
 
-    def trigger_runstatus(self, bot, trigger, argsdict):
+    def trigger_runstatus(self, bot, trigger):
 
         # don't run commands that are disabled in channels
         if not trigger.is_privmsg:
             disabled_list = spicedb.get_channel_value(bot, trigger.sender, 'disabled_commands', 'commands') or {}
-            if argsdict["realcom"] in disabled_list.keys():
-                reason = disabled_list[argsdict["realcom"]]["reason"]
-                timestamp = disabled_list[argsdict["realcom"]]["timestamp"]
-                bywhom = disabled_list[argsdict["realcom"]]["disabledby"]
-                bot.notice("The " + str(argsdict["com"]) + " command was disabled by " + bywhom + " in " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason), trigger.nick)
+            if trigger.sb["realcom"] in disabled_list.keys():
+                reason = disabled_list[trigger.sb["realcom"]]["reason"]
+                timestamp = disabled_list[trigger.sb["realcom"]]["timestamp"]
+                bywhom = disabled_list[trigger.sb["realcom"]]["disabledby"]
+                bot.notice("The " + str(trigger.sb["com"]) + " command was disabled by " + bywhom + " in " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason), trigger.nick)
                 return False
 
         return True
