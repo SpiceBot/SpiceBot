@@ -25,27 +25,6 @@ class BotPrerun():
 
             @functools.wraps(function)
             def internal_prerun(bot, trigger, *args, **kwargs):
-                trigger.sb = {}
-                # Primary command used for trigger, and a list of all words
-                trigger.sb["args"], trigger.sb["com"] = self.trigger_args(trigger.args[1], trigger_command_type)
-                trigger.sb["type"] = trigger_command_type
-                realcom = commands.get_realcom(trigger.sb["com"], trigger_command_type)
-                trigger.sb["realcom"] = realcom
-                trigger.sb["args"], trigger.sb["hyphen_arg"] = self.trigger_hyphen_args(trigger.sb["args"])
-                if not trigger.sb["hyphen_arg"]:
-                    # check if anything prohibits the nick from running the command
-                    if self.trigger_runstatus(bot, trigger):
-                        function(bot, trigger, *args, **kwargs)
-                else:
-                    self.trigger_hyphen_arg_handler(bot, trigger)
-            return internal_prerun
-        return actual_decorator
-
-    def prerun_old(self, trigger_command_type='module'):
-        def actual_decorator(function):
-
-            @functools.wraps(function)
-            def internal_prerun(bot, trigger, *args, **kwargs):
 
                 # Primary command used for trigger, and a list of all words
                 trigger_args, trigger_command = self.trigger_args(trigger.args[1], trigger_command_type)
@@ -67,7 +46,10 @@ class BotPrerun():
                 # Run the function for all splits
                 for argsdict in argsdict_list:
                     trigger.sb = copy.deepcopy(argsdict)
-                    function(bot, trigger, *args, **kwargs)
+
+                    # check if anything prohibits the nick from running the command
+                    if self.trigger_runstatus(bot, trigger):
+                        function(bot, trigger, *args, **kwargs)
 
             return internal_prerun
         return actual_decorator
