@@ -48,14 +48,17 @@ class BotPrerun():
 
                 # Run the function for all splits
                 for argsdict in argsdict_list:
-                    trigger.sb = copy.deepcopy(argsdict)
-                    trigger.sb["args"], trigger.sb["hyphen_arg"] = self.trigger_hyphen_args(trigger.sb["args"])
-                    if not trigger.sb["hyphen_arg"]:
-                        # check if anything prohibits the nick from running the command
-                        if self.trigger_runstatus(bot, trigger):
-                            function(bot, trigger, *args, **kwargs)
-                    else:
-                        self.trigger_hyphen_arg_handler(bot, trigger)
+                    @functools.partial(function)
+                    def internal_split(bot, trigger, *args, **kwargs):
+                        trigger.sb = copy.deepcopy(argsdict)
+                        trigger.sb["args"], trigger.sb["hyphen_arg"] = self.trigger_hyphen_args(trigger.sb["args"])
+                        if not trigger.sb["hyphen_arg"]:
+                            # check if anything prohibits the nick from running the command
+                            if self.trigger_runstatus(bot, trigger):
+                                function(bot, trigger, *args, **kwargs)
+                        else:
+                            self.trigger_hyphen_arg_handler(bot, trigger)
+                    internal_split(bot, trigger, *args, **kwargs)
 
             return internal_prerun
         return actual_decorator
