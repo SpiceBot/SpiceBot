@@ -97,10 +97,8 @@ class BotPrerun():
         hyphen_args = []
         trigger_args_unhyphend = []
         for worditem in trigger_args_part:
-            if str(worditem).startswith("--"):
-                hyphencom = worditem[2:]
-                if hyphencom in valid_hyphen_args:
-                    hyphen_args.append(hyphencom)
+            if str(worditem).startswith("--") and worditem[2:] in valid_hyphen_args:
+                hyphen_args.append(worditem[2:])
             else:
                 trigger_args_unhyphend.append(worditem)
         if len(hyphen_args):
