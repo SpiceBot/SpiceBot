@@ -22,9 +22,9 @@ class BotPrerun():
 
     def prerun(self, trigger_command_type='module'):
         def actual_decorator(function):
-            @functools.wraps(function)
-            def internal_prerun(bot, trigger, *args, **kwargs):
 
+            @functools.wraps(function)
+            def argsdict_creator(bot, trigger, *args, **kwargs):
                 # Bots can't run commands
                 if Identifier(trigger.nick) == bot.nick:
                     return
@@ -45,23 +45,26 @@ class BotPrerun():
 
                 # Create dict listings for trigger.sb
                 argsdict_list = self.trigger_argsdict_list(argsdict_default, and_split)
+                return argsdict_list
+
+            @functools.wraps(function)
+            def internal_prerun(bot, trigger, argsdict_list=[], *args, **kwargs):
 
                 # Run the function for all splits
                 for argsdict in argsdict_list:
                     trigger.sb = copy.deepcopy(argsdict)
                     trigger.sb["args"], trigger.sb["hyphen_arg"] = self.trigger_hyphen_args(trigger.sb["args"])
 
-                    def newfunc(bot, trigger, *args, **kwargs):
-                        if not trigger.sb["hyphen_arg"]:
-                            # check if anything prohibits the nick from running the command
-                            if self.trigger_runstatus(bot, trigger):
-                                function(bot, trigger, *args, **kwargs)
-                        else:
-                            self.trigger_hyphen_arg_handler(bot, trigger)
-                    partiter = functools.partial(newfunc)
-                    partiter()
+                    if not trigger.sb["hyphen_arg"]:
+                        # check if anything prohibits the nick from running the command
+                        if self.trigger_runstatus(bot, trigger):
+                            function(bot, trigger, *args, **kwargs)
+                    else:
+                        self.trigger_hyphen_arg_handler(bot, trigger)
 
-            return internal_prerun
+            argsdictlist = functools.partial(argsdict_creator)()
+            functools.partial(internal_prerun)(argsdict_list=argsdictlist)
+
         return actual_decorator
 
     def trigger_args(self, triggerargs_one, trigger_command_type='module'):
