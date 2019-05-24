@@ -61,7 +61,7 @@ class BotPrerun():
                             function(bot, trigger, *args, **kwargs)
                     else:
                         self.trigger_hyphen_arg_handler(bot, trigger)
-                return
+                return function(bot, trigger, *args, **kwargs)
             return internal_prerun
         return actual_decorator
 
