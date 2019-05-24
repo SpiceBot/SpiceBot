@@ -106,14 +106,12 @@ class BotPrerun():
                 reason = disabled_list[trigger.sb["realcom"]]["reason"]
                 timestamp = disabled_list[trigger.sb["realcom"]]["timestamp"]
                 bywhom = disabled_list[trigger.sb["realcom"]]["disabledby"]
-                bot.notice("The " + str(trigger.sb["com"]) + " command was disabled by " + bywhom + " in " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason), trigger.nick)
-                if command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
-                    bot.notice("You however are authorized to bypass this warning with the (-a) admin switch.", trigger.nick)
-                return False
+                message = "The " + str(trigger.sb["com"]) + " command was disabled by " + bywhom + " in " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
+                return self.trigger_cant_run(bot, trigger, message)
 
         return True
 
-    def trigger_cant_run(bot, trigger, message=None):
+    def trigger_cant_run(self, bot, trigger, message=None):
         if message:
             bot.notice(message, trigger.nick)
         if command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
@@ -128,9 +126,7 @@ class BotPrerun():
             def internal_prerun(bot, trigger, *args, **kwargs):
                 trigger.sb["args"], trigger.sb["hyphen_arg"] = self.trigger_hyphen_args(trigger.sb["args"])
                 if not trigger.sb["hyphen_arg"]:
-                    # check if anything prohibits the nick from running the command
-                    if self.trigger_runstatus(bot, trigger):
-                        return function(bot, trigger, *args, **kwargs)
+                    return function(bot, trigger, *args, **kwargs)
                 else:
                     return self.trigger_hyphen_arg_handler(bot, trigger)
             return internal_prerun
