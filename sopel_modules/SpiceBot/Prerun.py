@@ -91,6 +91,7 @@ class BotPrerun():
 
     def trigger_hyphen_args(self, trigger_args_part):
         valid_hyphen_args = [
+                            'check',
                             'enable', 'disable'
                             ]
         hyphen_args = []
