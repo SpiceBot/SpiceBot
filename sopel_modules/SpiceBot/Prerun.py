@@ -110,7 +110,7 @@ class BotPrerun():
 
         return True
 
-    def trigger_cant_run(bot, trigger, message=None):
+    def trigger_cant_run(self, bot, trigger, message=None):
         if message:
             bot.notice(message, trigger.nick)
         if command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
