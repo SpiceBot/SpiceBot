@@ -77,6 +77,11 @@ class BotPrerun():
         for trigger_args_part in and_split:
             argsdict_part = copy.deepcopy(argsdict_default)
             argsdict_part["args"] = spicemanip.main(trigger_args_part, 'create')
+            if len(argsdict_part["args"]) and argsdict_part["args"][0] == "-a":
+                argsdict_part["adminswitch"] = True
+                argsdict_part["args"] = spicemanip.main(argsdict_part["args"], '2+', 'list')
+            else:
+                argsdict_part["adminswitch"] = False
             prerun_split.append(argsdict_part)
         return prerun_split
 
@@ -86,6 +91,14 @@ class BotPrerun():
         if Identifier(trigger.nick) == bot.nick:
             return False
 
+        # Allow permissions for enabling and disabling commands via hyphenargs
+        if trigger.sb["adminswitch"]:
+            if command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
+                return True
+            else:
+                bot.notice("The admin switch (-a) is for use by authorized nicks ONLY.")
+                return False
+
         # don't run commands that are disabled in channels
         if not trigger.is_privmsg:
             disabled_list = spicedb.get_channel_value(bot, trigger.sender, 'disabled_commands', 'commands') or {}
@@ -93,10 +106,16 @@ class BotPrerun():
                 reason = disabled_list[trigger.sb["realcom"]]["reason"]
                 timestamp = disabled_list[trigger.sb["realcom"]]["timestamp"]
                 bywhom = disabled_list[trigger.sb["realcom"]]["disabledby"]
-                bot.notice("The " + str(trigger.sb["com"]) + " command was disabled by " + bywhom + " in " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason), trigger.nick)
-                return False
+                return self.trigger_cant_run(bot, trigger, "The " + str(trigger.sb["com"]) + " command was disabled by " + bywhom + " in " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason))
 
         return True
+
+    def trigger_cant_run(bot, trigger, message=None):
+        if message:
+            bot.notice(message, trigger.nick)
+        if command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
+            bot.notice("You however are authorized to bypass this warning with the (-a) admin switch.", trigger.nick)
+        return False
 
     """Hyphenargs"""
 
