@@ -24,8 +24,13 @@ class BotPrerun():
         def actual_decorator(function):
             @functools.wraps(function)
             def internal_prerun(bot, trigger, *args, **kwargs):
-                bot.say("here")
-                return function(bot, trigger, *args, **kwargs)
+                trigger.sb["args"], trigger.sb["hyphen_arg"] = self.trigger_hyphen_args(trigger.sb["args"])
+                if not trigger.sb["hyphen_arg"]:
+                    # check if anything prohibits the nick from running the command
+                    if self.trigger_runstatus(bot, trigger):
+                        return function(bot, trigger, *args, **kwargs)
+                else:
+                    return self.trigger_hyphen_arg_handler(bot, trigger)
             return internal_prerun
         return actual_decorator
 
