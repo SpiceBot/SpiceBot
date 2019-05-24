@@ -59,7 +59,7 @@ class BotPrerun():
                         else:
                             self.trigger_hyphen_arg_handler(bot, trigger)
                     partiter = functools.partial(newfunc)
-                    partiter(bot, trigger, *args, **kwargs)
+                    partiter()
 
             return internal_prerun
         return actual_decorator
