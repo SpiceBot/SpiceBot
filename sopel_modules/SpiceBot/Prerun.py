@@ -106,11 +106,14 @@ class BotPrerun():
                 reason = disabled_list[trigger.sb["realcom"]]["reason"]
                 timestamp = disabled_list[trigger.sb["realcom"]]["timestamp"]
                 bywhom = disabled_list[trigger.sb["realcom"]]["disabledby"]
-                return self.trigger_cant_run(bot, trigger, "The " + str(trigger.sb["com"]) + " command was disabled by " + bywhom + " in " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason))
+                bot.notice("The " + str(trigger.sb["com"]) + " command was disabled by " + bywhom + " in " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason), trigger.nick)
+                if command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
+                    bot.notice("You however are authorized to bypass this warning with the (-a) admin switch.", trigger.nick)
+                return False
 
         return True
 
-    def trigger_cant_run(self, bot, trigger, message=None):
+    def trigger_cant_run(bot, trigger, message=None):
         if message:
             bot.notice(message, trigger.nick)
         if command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
