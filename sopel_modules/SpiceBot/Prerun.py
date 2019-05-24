@@ -48,8 +48,7 @@ class BotPrerun():
 
                 # Run the function for all splits
                 for argsdict in argsdict_list:
-                    @functools.partial(function)
-                    def internal_split(bot, trigger, *args, **kwargs):
+                    def newfunc(bot, trigger, *args, **kwargs):
                         trigger.sb = copy.deepcopy(argsdict)
                         trigger.sb["args"], trigger.sb["hyphen_arg"] = self.trigger_hyphen_args(trigger.sb["args"])
                         if not trigger.sb["hyphen_arg"]:
@@ -58,7 +57,7 @@ class BotPrerun():
                                 function(bot, trigger, *args, **kwargs)
                         else:
                             self.trigger_hyphen_arg_handler(bot, trigger)
-                    internal_split(bot, trigger, *args, **kwargs)
+                    functools.partial(newfunc, bot, trigger, *args, **kwargs)
 
             return internal_prerun
         return actual_decorator
