@@ -55,14 +55,12 @@ class BotPrerun():
                 for argsdict in argsdict_list:
                     trigger.sb = argsdict
                     trigger.sb["args"], trigger.sb["hyphen_arg"] = self.trigger_hyphen_args(trigger.sb["args"])
-                    # if trigger.sb["hyphen_arg"]:
-                    #    self.trigger_hyphen_arg_handler(bot, trigger)
-                    # else:
-                    #    # check if anything prohibits the nick from running the command
-                    #    if self.trigger_runstatus(bot, trigger, argsdict):
-                    #        function(bot, trigger, *args, **kwargs)
-                    if self.trigger_runstatus(bot, trigger, argsdict):
-                        function(bot, trigger, *args, **kwargs)
+                    if not trigger.sb["hyphen_arg"]:
+                        # check if anything prohibits the nick from running the command
+                        if self.trigger_runstatus(bot, trigger, argsdict):
+                            function(bot, trigger, *args, **kwargs)
+                    else:
+                        self.trigger_hyphen_arg_handler(bot, trigger)
                 return
             return internal_prerun
         return actual_decorator
@@ -113,7 +111,14 @@ class BotPrerun():
     def trigger_hyphen_arg_handler(self, bot, trigger):
 
         # Commands that cannot run via privmsg
-        if trigger.sb["hyphen_arg"] in ['enable']:
+        if trigger.sb["hyphen_arg"] in ['check']:
+            if trigger.sb["com"].lower() != trigger.sb["realcom"]:
+                bot.say(trigger.sb["com"] + " is a valid alias command for " + trigger.sb["realcom"])
+            else:
+                bot.say(trigger.sb["com"] + " is a valid command")
+            return
+
+        elif trigger.sb["hyphen_arg"] in ['enable']:
 
             if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
                 bot.say("I was unable to disable this command due to privilege issues.")
