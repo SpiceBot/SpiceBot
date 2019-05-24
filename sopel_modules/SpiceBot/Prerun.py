@@ -55,12 +55,14 @@ class BotPrerun():
                 for argsdict in argsdict_list:
                     trigger.sb = argsdict
                     trigger.sb["args"], trigger.sb["hyphen_arg"] = self.trigger_hyphen_args(trigger.sb["args"])
-                    if trigger.sb["hyphen_arg"]:
-                        self.trigger_hyphen_arg_handler(bot, trigger)
-                    else:
-                        # check if anything prohibits the nick from running the command
-                        if self.trigger_runstatus(bot, trigger, argsdict):
-                            function(bot, trigger, *args, **kwargs)
+                    # if trigger.sb["hyphen_arg"]:
+                    #    self.trigger_hyphen_arg_handler(bot, trigger)
+                    # else:
+                    #    # check if anything prohibits the nick from running the command
+                    #    if self.trigger_runstatus(bot, trigger, argsdict):
+                    #        function(bot, trigger, *args, **kwargs)
+                    if self.trigger_runstatus(bot, trigger, argsdict):
+                        function(bot, trigger, *args, **kwargs)
                 return
             return internal_prerun
         return actual_decorator
