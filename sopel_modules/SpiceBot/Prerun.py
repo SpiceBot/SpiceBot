@@ -20,7 +20,7 @@ class BotPrerun():
     def __init__(self):
         self.dict = {}
 
-    def hyphenargs(self, trigger_command_type='module'):
+    def hyphenargs(self):
         def actual_decorator(function):
             @functools.wraps(function)
             def internal_prerun(bot, trigger, *args, **kwargs):
