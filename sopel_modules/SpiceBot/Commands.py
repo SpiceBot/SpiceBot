@@ -55,8 +55,9 @@ class BotCommands():
                 if com not in commands_list.keys():
                     commands_list[com] = self.dict['commands'][commandstype][com]
         realcom = command
-        if "aliasfor" in commands_list[command['com']].keys():
-            realcom = commands_list[command['com']]["aliasfor"]
+        if command in commands_list.keys():
+            if "aliasfor" in commands_list[command['com']].keys():
+                realcom = commands_list[command['com']]["aliasfor"]
         return realcom
 
     def set_command_disabled(self, bot, command, channel, timestamp, reason, bywhom):
