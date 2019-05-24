@@ -25,27 +25,6 @@ class BotPrerun():
 
             @functools.wraps(function)
             def internal_prerun(bot, trigger, *args, **kwargs):
-                trigger.sb = {}
-                # Primary command used for trigger, and a list of all words
-                trigger.sb["args"], trigger.sb["com"] = self.trigger_args(trigger.args[1], trigger_command_type)
-                trigger.sb["type"] = trigger_command_type
-                realcom = commands.get_realcom(trigger.sb["com"], trigger_command_type)
-                trigger.sb["realcom"] = realcom
-                trigger.sb["args"], trigger.sb["hyphen_arg"] = self.trigger_hyphen_args(trigger.sb["args"])
-                if not trigger.sb["hyphen_arg"]:
-                    # check if anything prohibits the nick from running the command
-                    if self.trigger_runstatus(bot, trigger):
-                        function(bot, trigger, *args, **kwargs)
-                else:
-                    self.trigger_hyphen_arg_handler(bot, trigger)
-            return internal_prerun
-        return actual_decorator
-
-    def prerun_old(self, trigger_command_type='module'):
-        def actual_decorator(function):
-
-            @functools.wraps(function)
-            def internal_prerun(bot, trigger, *args, **kwargs):
 
                 # Primary command used for trigger, and a list of all words
                 trigger_args, trigger_command = self.trigger_args(trigger.args[1], trigger_command_type)
@@ -67,7 +46,10 @@ class BotPrerun():
                 # Run the function for all splits
                 for argsdict in argsdict_list:
                     trigger.sb = copy.deepcopy(argsdict)
-                    function(bot, trigger, *args, **kwargs)
+
+                    # check if anything prohibits the nick from running the command
+                    if self.trigger_runstatus(bot, trigger):
+                        function(bot, trigger, *args, **kwargs)
 
             return internal_prerun
         return actual_decorator
@@ -95,6 +77,67 @@ class BotPrerun():
             argsdict_part["args"] = spicemanip.main(trigger_args_part, 'create')
             prerun_split.append(argsdict_part)
         return prerun_split
+
+    def trigger_runstatus(self, bot, trigger):
+
+        # Bots can't run commands
+        if Identifier(trigger.nick) == bot.nick:
+            return False
+
+        # don't run commands that are disabled in channels
+        if not trigger.is_privmsg:
+            disabled_list = spicedb.get_channel_value(bot, trigger.sender, 'disabled_commands', 'commands') or {}
+            if trigger.sb["realcom"] in disabled_list.keys():
+                reason = disabled_list[trigger.sb["realcom"]]["reason"]
+                timestamp = disabled_list[trigger.sb["realcom"]]["timestamp"]
+                bywhom = disabled_list[trigger.sb["realcom"]]["disabledby"]
+                bot.notice("The " + str(trigger.sb["com"]) + " command was disabled by " + bywhom + " in " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason), trigger.nick)
+                return False
+
+        return True
+
+
+prerun = BotPrerun()
+
+
+class defunct():
+    def prerun(self, trigger_command_type='module'):
+        def actual_decorator(function):
+
+            @functools.wraps(function)
+            def internal_prerun(bot, trigger, *args, **kwargs):
+
+                # Primary command used for trigger, and a list of all words
+                trigger_args, trigger_command = self.trigger_args(trigger.args[1], trigger_command_type)
+
+                # Argsdict Defaults
+                argsdict_default = {}
+                argsdict_default["type"] = trigger_command_type
+                argsdict_default["com"] = trigger_command
+
+                realcom = commands.get_realcom(argsdict_default["com"], trigger_command_type)
+                argsdict_default["realcom"] = realcom
+
+                # split into && groupings
+                and_split = self.trigger_and_split(trigger_args)
+
+                # Create dict listings for trigger.sb
+                argsdict_list = self.trigger_argsdict_list(argsdict_default, and_split)
+
+                # Run the function for all splits
+                for argsdict in argsdict_list:
+                    trigger.sb = copy.deepcopy(argsdict)
+                    trigger.sb["args"], trigger.sb["hyphen_arg"] = self.trigger_hyphen_args(trigger.sb["args"])
+
+                    if not trigger.sb["hyphen_arg"]:
+                        # check if anything prohibits the nick from running the command
+                        if self.trigger_runstatus(bot, trigger):
+                            function(bot, trigger, *args, **kwargs)
+                    else:
+                        self.trigger_hyphen_arg_handler(bot, trigger)
+
+            return internal_prerun
+        return actual_decorator
 
     def trigger_hyphen_args(self, trigger_args_part):
         valid_hyphen_args = [
@@ -164,24 +207,3 @@ class BotPrerun():
             return
 
         return
-
-    def trigger_runstatus(self, bot, trigger):
-
-        # Bots can't run commands
-        if Identifier(trigger.nick) == bot.nick:
-            return False
-
-        # don't run commands that are disabled in channels
-        if not trigger.is_privmsg:
-            disabled_list = spicedb.get_channel_value(bot, trigger.sender, 'disabled_commands', 'commands') or {}
-            if trigger.sb["realcom"] in disabled_list.keys():
-                reason = disabled_list[trigger.sb["realcom"]]["reason"]
-                timestamp = disabled_list[trigger.sb["realcom"]]["timestamp"]
-                bywhom = disabled_list[trigger.sb["realcom"]]["disabledby"]
-                bot.notice("The " + str(trigger.sb["com"]) + " command was disabled by " + bywhom + " in " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason), trigger.nick)
-                return False
-
-        return True
-
-
-prerun = BotPrerun()
