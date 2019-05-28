@@ -50,10 +50,16 @@ class BotCommands():
 
     def get_realcom(self, command, trigger_command_type):
         realcom = command
-        commands_list = list(self.dict['commands'][trigger_command_type].keys())
-        if command in commands_list:
-            if "aliasfor" in self.dict['commands'][trigger_command_type][command].keys():
-                realcom = self.dict['commands'][trigger_command_type][command]
+
+        if trigger_command_type not in self.dict['commands'].keys():
+            return realcom
+
+        if command not in self.dict['commands'][trigger_command_type].keys():
+            return realcom
+
+        if "aliasfor" in self.dict['commands'][trigger_command_type][command].keys():
+            realcom = self.dict['commands'][trigger_command_type][command]
+
         return realcom
 
     def set_command_disabled(self, bot, command, channel, timestamp, reason, bywhom):
