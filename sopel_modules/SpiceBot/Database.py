@@ -158,7 +158,7 @@ class SpiceDB(object):
                 .one_or_none()
             # ChannelValue exists, update
             if result:
-                result.value = result.value + float(value)
+                result.value = float(result.value) + float(value)
                 session.commit()
             # DNE - Insert
             else:
