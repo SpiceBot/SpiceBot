@@ -16,7 +16,7 @@ class BotConfig():
         self.config_dict = self.config_file_to_dict()
 
     def load_config(self):
-        if len(sys.argv[1:]):
+        if not len(sys.argv[1:]):
             argv = ['legacy']
         else:
             argv = sys.argv[1:]
