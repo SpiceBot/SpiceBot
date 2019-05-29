@@ -68,11 +68,11 @@ class SpiceDB(object):
                 .one_or_none()
             # NickValue exists, update
             if result:
-                result.value = result.value + value
+                result.value = float(result.value) + float(value)
                 session.commit()
             # DNE - Insert
             else:
-                new_nickvalue = NickValues(nick_id=nick_id, key=key, value=value)
+                new_nickvalue = NickValues(nick_id=nick_id, key=key, value=float(value))
                 session.add(new_nickvalue)
                 session.commit()
         except SQLAlchemyError:
@@ -158,11 +158,11 @@ class SpiceDB(object):
                 .one_or_none()
             # ChannelValue exists, update
             if result:
-                result.value = result.value + value
+                result.value = result.value + float(value)
                 session.commit()
             # DNE - Insert
             else:
-                new_channelvalue = ChannelValues(channel=channel, key=key, value=value)
+                new_channelvalue = ChannelValues(channel=channel, key=key, value=float(value))
                 session.add(new_channelvalue)
                 session.commit()
         except SQLAlchemyError:
@@ -290,11 +290,11 @@ class SpiceDB(object):
                 .one_or_none()
             # ChannelValue exists, update
             if result:
-                result.value = result.value + value
+                result.value = float(result.value) + float(value)
                 session.commit()
             # DNE - Insert
             else:
-                new_pluginvalue = PluginValues(plugin=plugin, key=key, value=value)
+                new_pluginvalue = PluginValues(plugin=plugin, key=key, value=float(value))
                 session.add(new_pluginvalue)
                 session.commit()
         except SQLAlchemyError:
