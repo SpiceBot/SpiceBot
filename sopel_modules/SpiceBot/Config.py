@@ -12,11 +12,6 @@ class BotConfig():
 
     def __init__(self):
         self.dict = {}
-        self.config = None
-        self.filename = None
-        self.load_config()
-
-    def load_config(self):
 
         # Load config
         parser = build_parser()
@@ -31,19 +26,14 @@ class BotConfig():
         self.filename = self.config.filename
 
         # load as dict
-        self.dict = self.config_file_to_dict()
-
-    def config_file_to_dict(self):
-        configdict = dict()
         config = configparser.ConfigParser()
         config.read(self.filename)
         for each_section in config.sections():
-            if each_section not in configdict.keys():
-                configdict[each_section] = dict()
-                for (each_key, each_val) in config.items(each_section):
-                    if each_key not in configdict[each_section].keys():
-                        configdict[each_section][each_key] = each_val
-        return configdict
+            if each_section not in self.dict.keys():
+                self.dict[each_section] = dict()
+            for (each_key, each_val) in config.items(each_section):
+                if each_key not in self.dict[each_section].keys():
+                    self.dict[each_section][each_key] = each_val
 
 
 botconfig = BotConfig()
