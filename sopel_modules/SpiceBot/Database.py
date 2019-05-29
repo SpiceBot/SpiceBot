@@ -12,7 +12,7 @@ from sopel.db import SopelDB, Nicknames, _deserialize
 import threading
 from .Config import config as botconfig
 
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String, PrimaryKeyConstraint
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -27,9 +27,12 @@ class PluginValues(BASE):
     PluginValues SQLAlchemy Class
     """
     __tablename__ = 'plugin_values'
-    plugin = Column(String(255), primary_key=True)
-    sortingkey = Column(String(255), primary_key=True)
-    key = Column(String(255), primary_key=True)
+    __table_args__ = (
+        PrimaryKeyConstraint('plugin', 'sortingkey', 'key'),
+    )
+    plugin = Column(String(255))
+    sortingkey = Column(String(255))
+    key = Column(String(255))
     value = Column(String(255))
 
 
@@ -38,9 +41,12 @@ class NickValues(BASE):
     NickValues SQLAlchemy Class
     """
     __tablename__ = 'nick_values'
-    nick_id = Column(Integer, ForeignKey('nick_ids.nick_id'), primary_key=True)
-    sortingkey = Column(String(255), primary_key=True)
-    key = Column(String(255), primary_key=True)
+    __table_args__ = (
+        PrimaryKeyConstraint('nick_id', 'sortingkey', 'key'),
+    )
+    nick_id = Column(Integer, ForeignKey('nick_ids.nick_id'))
+    sortingkey = Column(String(255))
+    key = Column(String(255))
     value = Column(String(255))
 
 
@@ -49,9 +55,12 @@ class ChannelValues(BASE):
     ChannelValues SQLAlchemy Class
     """
     __tablename__ = 'channel_values'
-    channel = Column(String(255), primary_key=True)
-    sortingkey = Column(String(255), primary_key=True)
-    key = Column(String(255), primary_key=True)
+    __table_args__ = (
+        PrimaryKeyConstraint('channel', 'sortingkey', 'key'),
+    )
+    channel = Column(String(255))
+    sortingkey = Column(String(255))
+    key = Column(String(255))
     value = Column(String(255))
 
 
