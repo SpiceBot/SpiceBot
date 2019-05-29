@@ -6,6 +6,7 @@ This is the SpiceBot Database
 
 # sopel imports
 from sopel.tools import Identifier
+import sopel.db
 from sopel.db import SopelDB, Nicknames, _deserialize
 
 import threading
@@ -369,22 +370,26 @@ class BotDatabase():
                     "nicks": {},
                     "channels": {},
                     }
+
+        sopel.db.NickValues = NickValues
+        SopelDB.get_nick_value = SpiceDB.get_nick_value
+        SopelDB.set_nick_value = SpiceDB.set_nick_value
+        SopelDB.delete_nick_value = SpiceDB.delete_nick_value
+        SopelDB.adjust_nick_value = SpiceDB.adjust_nick_value
+
+        sopel.db.ChannelValues = ChannelValues
+        SopelDB.get_channel_value = SpiceDB.get_channel_value
+        SopelDB.set_channel_value = SpiceDB.set_channel_value
+        SopelDB.delete_channel_value = SpiceDB.delete_channel_value
+        SopelDB.adjust_channel_value = SpiceDB.adjust_channel_value
+
+        sopel.db.PluginValues = PluginValues
+        SopelDB.get_plugin_value = SpiceDB.get_plugin_value
+        SopelDB.set_plugin_value = SpiceDB.set_plugin_value
+        SopelDB.delete_plugin_value = SpiceDB.delete_plugin_value
+        SopelDB.adjust_plugin_value = SpiceDB.adjust_plugin_value
+
         self.db = SopelDB(botconfig.config)
-
-        self.db.get_nick_value = SpiceDB.get_nick_value
-        self.db.set_nick_value = SpiceDB.set_nick_value
-        self.db.delete_nick_value = SpiceDB.delete_nick_value
-        self.db.adjust_nick_value = SpiceDB.adjust_nick_value
-
-        self.db.get_channel_value = SpiceDB.get_channel_value
-        self.db.set_channel_value = SpiceDB.set_channel_value
-        self.db.delete_channel_value = SpiceDB.delete_channel_value
-        self.db.adjust_channel_value = SpiceDB.adjust_channel_value
-
-        self.db.get_plugin_value = SpiceDB.get_plugin_value
-        self.db.set_plugin_value = SpiceDB.set_plugin_value
-        self.db.delete_plugin_value = SpiceDB.delete_plugin_value
-        self.db.adjust_plugin_value = SpiceDB.adjust_plugin_value
 
     """Nick"""
 
