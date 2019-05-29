@@ -59,7 +59,7 @@ class SpiceDB(object):
 
     # NICK FUNCTIONS
 
-    def set_nick_value(self, nick, key, value, indexkey='unsorted'):
+    def set_nick_value(self, nick, key, value, indexkey='defaultindex'):
         """Sets the value for a given key to be associated with the nick."""
         nick = Identifier(nick)
         value = json.dumps(value, ensure_ascii=False)
@@ -86,7 +86,7 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def get_nick_value(self, nick, key, indexkey='unsorted'):
+    def get_nick_value(self, nick, key, indexkey='defaultindex'):
         """Retrieves the value for a given key associated with a nick."""
         nick = Identifier(nick)
         session = self.ssession()
@@ -106,7 +106,7 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def delete_nick_value(self, nick, key, indexkey='unsorted'):
+    def delete_nick_value(self, nick, key, indexkey='defaultindex'):
         """Deletes the value for a given key to be associated with the nick."""
         nick = Identifier(nick)
         nick_id = self.get_nick_id(nick)
@@ -127,7 +127,7 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def adjust_nick_value(self, nick, key, value, indexkey='unsorted'):
+    def adjust_nick_value(self, nick, key, value, indexkey='defaultindex'):
         """Sets the value for a given key to be associated with the nick."""
         nick = Identifier(nick)
         value = json.dumps(value, ensure_ascii=False)
@@ -156,7 +156,7 @@ class SpiceDB(object):
 
     # CHANNEL FUNCTIONS
 
-    def set_channel_value(self, channel, key, value, indexkey='unsorted'):
+    def set_channel_value(self, channel, key, value, indexkey='defaultindex'):
         """Sets the value for a given key to be associated with the channel."""
         channel = Identifier(channel).lower()
         value = json.dumps(value, ensure_ascii=False)
@@ -182,7 +182,7 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def get_channel_value(self, channel, key, indexkey='unsorted'):
+    def get_channel_value(self, channel, key, indexkey='defaultindex'):
         """Retrieves the value for a given key associated with a channel."""
         channel = Identifier(channel).lower()
         session = self.ssession()
@@ -201,7 +201,7 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def delete_channel_value(self, channel, key, indexkey='unsorted'):
+    def delete_channel_value(self, channel, key, indexkey='defaultindex'):
         """Sets the value for a given key to be associated with the channel."""
         channel = Identifier(channel).lower()
         session = self.ssession()
@@ -221,7 +221,7 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def adjust_channel_value(self, channel, key, value, indexkey='unsorted'):
+    def adjust_channel_value(self, channel, key, value, indexkey='defaultindex'):
         """Sets the value for a given key to be associated with the channel."""
         channel = Identifier(channel).lower()
         value = json.dumps(value, ensure_ascii=False)
@@ -249,7 +249,7 @@ class SpiceDB(object):
 
     # NICK AND CHANNEL FUNCTIONS
 
-    def get_nick_or_channel_value(self, name, key, indexkey='unsorted'):
+    def get_nick_or_channel_value(self, name, key, indexkey='defaultindex'):
         """Gets the value `key` associated to the nick or channel  `name`."""
         name = Identifier(name)
         if name.is_nick():
@@ -257,7 +257,7 @@ class SpiceDB(object):
         else:
             return self.get_channel_value(name, key, indexkey)
 
-    def get_preferred_value(self, names, key, indexkey='unsorted'):
+    def get_preferred_value(self, names, key, indexkey='defaultindex'):
         """Gets the value for the first name which has it set.
 
         `names` is a list of channel and/or user names. Returns None if none of
@@ -269,7 +269,7 @@ class SpiceDB(object):
 
     # PLUGIN FUNCTIONS
 
-    def set_plugin_value(self, plugin, key, value, indexkey='unsorted'):
+    def set_plugin_value(self, plugin, key, value, indexkey='defaultindex'):
         """Sets the value for a given key to be associated with the plugin."""
         plugin = Identifier(plugin).lower()
         value = json.dumps(value, ensure_ascii=False)
@@ -295,7 +295,7 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def get_plugin_value(self, plugin, key, indexkey='unsorted'):
+    def get_plugin_value(self, plugin, key, indexkey='defaultindex'):
         """Retrieves the value for a given key associated with a plugin."""
         plugin = Identifier(plugin).lower()
         session = self.ssession()
@@ -314,7 +314,7 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def adjust_plugin_value(self, plugin, key, value, indexkey='unsorted'):
+    def adjust_plugin_value(self, plugin, key, value, indexkey='defaultindex'):
         """Sets the value for a given key to be associated with the plugin."""
         plugin = Identifier(plugin).lower()
         value = json.dumps(value, ensure_ascii=False)
@@ -340,7 +340,7 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def delete_plugin_value(self, plugin, key, indexkey='unsorted'):
+    def delete_plugin_value(self, plugin, key, indexkey='defaultindex'):
         """Deletes the value for a given key to be associated with the plugin."""
         plugin = Identifier(plugin).lower()
         session = self.ssession()
@@ -393,7 +393,7 @@ class BotDatabase():
 
     """Nick"""
 
-    def get_nick_value(self, nick, key, sorting_key='unsorted'):
+    def get_nick_value(self, nick, key, sorting_key='defaultindex'):
 
         self.lock.acquire()
 
@@ -413,7 +413,7 @@ class BotDatabase():
         else:
             return self.dict["nicks"][nick_id][sorting_key][key]
 
-    def set_nick_value(self, nick, key, value, sorting_key='unsorted'):
+    def set_nick_value(self, nick, key, value, sorting_key='defaultindex'):
 
         self.lock.acquire()
 
@@ -432,7 +432,7 @@ class BotDatabase():
 
         self.lock.release()
 
-    def delete_nick_value(self, nick, key, sorting_key='unsorted'):
+    def delete_nick_value(self, nick, key, sorting_key='defaultindex'):
 
         self.lock.acquire()
 
@@ -450,7 +450,7 @@ class BotDatabase():
 
         self.lock.release()
 
-    def adjust_nick_value(self, nick, key, value, sorting_key='unsorted'):
+    def adjust_nick_value(self, nick, key, value, sorting_key='defaultindex'):
 
         self.lock.acquire()
 
@@ -476,7 +476,7 @@ class BotDatabase():
 
         self.lock.release()
 
-    def adjust_nick_list(self, nick, key, entries, adjustmentdirection, sorting_key='unsorted'):
+    def adjust_nick_list(self, nick, key, entries, adjustmentdirection, sorting_key='defaultindex'):
 
         self.lock.acquire()
 
@@ -509,16 +509,16 @@ class BotDatabase():
 
     """Bot"""
 
-    def get_bot_value(self, key, sorting_key='unsorted'):
+    def get_bot_value(self, key, sorting_key='defaultindex'):
         return self.get_nick_value(botconfig.nick, key, sorting_key)
 
-    def set_bot_value(self, key, value, sorting_key='unsorted'):
+    def set_bot_value(self, key, value, sorting_key='defaultindex'):
         return self.set_nick_value(botconfig.nick, key, value, sorting_key)
 
-    def delete_bot_value(self, key, sorting_key='unsorted'):
+    def delete_bot_value(self, key, sorting_key='defaultindex'):
         return self.delete_nick_value(botconfig.nick, key, sorting_key)
 
-    def adjust_bot_value(self, key, value, sorting_key='unsorted'):
+    def adjust_bot_value(self, key, value, sorting_key='defaultindex'):
         return self.adjust_nick_value(botconfig.nick, key, value, sorting_key)
 
     def adjust_bot_list(self, key, entries, adjustmentdirection, sorting_key):
@@ -526,7 +526,7 @@ class BotDatabase():
 
     """Channels"""
 
-    def get_channel_value(self, channel, key, sorting_key='unsorted'):
+    def get_channel_value(self, channel, key, sorting_key='defaultindex'):
 
         self.lock.acquire()
 
@@ -545,7 +545,7 @@ class BotDatabase():
         else:
             return self.dict["channels"][channel][sorting_key][key]
 
-    def set_channel_value(self, channel, key, value, sorting_key='unsorted'):
+    def set_channel_value(self, channel, key, value, sorting_key='defaultindex'):
 
         self.lock.acquire()
 
@@ -562,7 +562,7 @@ class BotDatabase():
 
         self.lock.release()
 
-    def delete_channel_value(self, channel, key, sorting_key='unsorted'):
+    def delete_channel_value(self, channel, key, sorting_key='defaultindex'):
 
         self.lock.acquire()
 
@@ -579,7 +579,7 @@ class BotDatabase():
 
         self.lock.release()
 
-    def adjust_channel_value(self, channel, key, value, sorting_key='unsorted'):
+    def adjust_channel_value(self, channel, key, value, sorting_key='defaultindex'):
 
         self.lock.acquire()
 
@@ -604,7 +604,7 @@ class BotDatabase():
 
         self.lock.release()
 
-    def adjust_channel_list(self, channel, key, entries, adjustmentdirection, sorting_key='unsorted'):
+    def adjust_channel_list(self, channel, key, entries, adjustmentdirection, sorting_key='defaultindex'):
 
         self.lock.acquire()
 
@@ -636,7 +636,7 @@ class BotDatabase():
 
     """Plugins"""
 
-    def get_plugin_value(self, plugin, key, sorting_key='unsorted'):
+    def get_plugin_value(self, plugin, key, sorting_key='defaultindex'):
 
         self.lock.acquire()
 
@@ -655,7 +655,7 @@ class BotDatabase():
         else:
             return self.dict["plugins"][plugin][sorting_key][key]
 
-    def set_plugin_value(self, plugin, key, value, sorting_key='unsorted'):
+    def set_plugin_value(self, plugin, key, value, sorting_key='defaultindex'):
 
         self.lock.acquire()
 
@@ -672,7 +672,7 @@ class BotDatabase():
 
         self.lock.release()
 
-    def delete_plugin_value(self, plugin, key, sorting_key='unsorted'):
+    def delete_plugin_value(self, plugin, key, sorting_key='defaultindex'):
 
         self.lock.acquire()
 
@@ -689,7 +689,7 @@ class BotDatabase():
 
         self.lock.release()
 
-    def adjust_plugin_value(self, plugin, key, value, sorting_key='unsorted'):
+    def adjust_plugin_value(self, plugin, key, value, sorting_key='defaultindex'):
 
         self.lock.acquire()
 
@@ -714,7 +714,7 @@ class BotDatabase():
 
         self.lock.release()
 
-    def adjust_plugin_list(self, plugin, key, entries, adjustmentdirection, sorting_key='unsorted'):
+    def adjust_plugin_list(self, plugin, key, entries, adjustmentdirection, sorting_key='defaultindex'):
 
         self.lock.acquire()
 
