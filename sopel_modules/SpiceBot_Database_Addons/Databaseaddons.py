@@ -30,13 +30,12 @@ def setup(bot):
     SopelDB.delete_channel_value = SopelDBAddon.delete_channel_value
     SopelDB.adjust_channel_value = SopelDBAddon.adjust_channel_value
 
-    SopelDB.adjust_plugin_value = SopelDBAddon.adjust_plugin_value
-    SopelDB.delete_plugin_value = SopelDBAddon.delete_plugin_value
     SopelDB.get_plugin_value = SopelDBAddon.get_plugin_value
     SopelDB.set_plugin_value = SopelDBAddon.set_plugin_value
+    SopelDB.delete_plugin_value = SopelDBAddon.delete_plugin_value
+    SopelDB.adjust_plugin_value = SopelDBAddon.adjust_plugin_value
 
 
-# TODO use this as a template for dynamic tablenames
 class PluginValues(BASE):
     """
     PluginValues SQLAlchemy Class

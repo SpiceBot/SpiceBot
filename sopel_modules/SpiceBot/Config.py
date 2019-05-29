@@ -38,4 +38,4 @@ class BotConfig():
         return configdict
 
 
-db = BotConfig()
+botconfig = BotConfig()

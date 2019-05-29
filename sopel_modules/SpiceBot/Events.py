@@ -14,6 +14,10 @@ import threading
 from .Logs import logs
 
 
+# TODO
+# full_message = ':{} PRIVMSG {} :{}'.format(hostmask, sender, msg)
+
+
 class BotEvents(object):
     """A dynamic listing of all the notable Bot numeric events.
 

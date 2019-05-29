@@ -12,7 +12,7 @@ import threading
 import spicemanip
 
 from .Logs import logs
-from .Database import db as spicedb
+from .Database import botdb
 
 
 class BotCommands():
@@ -39,7 +39,7 @@ class BotCommands():
 
     def get_disabled_commands(self, bot, channel):
         if not len(list(self.dict['disabled'])):
-            self.dict['disabled'] = spicedb.get_channel_value(bot, channel, 'disabled_commands', 'commands') or {}
+            self.dict['disabled'] = botdb.get_channel_value(bot, channel, 'disabled_commands', 'commands') or {}
         return self.dict['disabled']
 
     def check_disabled_commands(self, bot, command, channel):
@@ -64,16 +64,16 @@ class BotCommands():
 
     def set_command_disabled(self, bot, command, channel, timestamp, reason, bywhom):
         if not len(list(self.dict['disabled'])):
-            self.dict['disabled'] = spicedb.get_channel_value(bot, channel, 'disabled_commands', 'commands') or {}
+            self.dict['disabled'] = botdb.get_channel_value(bot, channel, 'disabled_commands', 'commands') or {}
         self.dict['disabled'][command] = {"reason": reason, "timestamp": timestamp, "disabledby": bywhom}
-        spicedb.set_channel_value(bot, channel, 'disabled_commands', self.dict['disabled'], 'commands')
+        botdb.set_channel_value(bot, channel, 'disabled_commands', self.dict['disabled'], 'commands')
 
     def unset_command_disabled(self, bot, command, channel):
         if not len(list(self.dict['disabled'])):
-            self.dict['disabled'] = spicedb.get_channel_value(bot, channel, 'disabled_commands', 'commands') or {}
+            self.dict['disabled'] = botdb.get_channel_value(bot, channel, 'disabled_commands', 'commands') or {}
         if command in self.dict['disabled'].keys():
             del self.dict['disabled'][command]
-        spicedb.set_channel_value(bot, channel, 'disabled_commands', self.dict['disabled'], 'commands')
+        botdb.set_channel_value(bot, channel, 'disabled_commands', self.dict['disabled'], 'commands')
 
     def register(self, bot, command_dict):
 

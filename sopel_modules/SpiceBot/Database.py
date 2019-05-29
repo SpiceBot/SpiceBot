@@ -14,6 +14,7 @@ class BotDatabase():
 
     def __init__(self):
         self.lock = threading.Lock()
+        self.db = None
         self.dict = {
                     "nicks": {},
                     "channels": {},
@@ -246,4 +247,4 @@ class BotDatabase():
         self.lock.release()
 
 
-db = BotDatabase()
+botdb = BotDatabase()

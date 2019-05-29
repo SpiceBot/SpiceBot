@@ -13,7 +13,7 @@ import spicemanip
 
 from .Tools import command_permissions_check
 from .Commands import commands
-from .Database import db as spicedb
+from .Database import botdb
 
 
 class BotPrerun():
@@ -106,7 +106,7 @@ class BotPrerun():
 
         # don't run commands that are disabled in channels
         if not trigger.is_privmsg:
-            disabled_list = spicedb.get_channel_value(bot, trigger.sender, 'disabled_commands', 'commands') or {}
+            disabled_list = botdb.get_channel_value(bot, trigger.sender, 'disabled_commands', 'commands') or {}
             if trigger.sb["realcom"] in disabled_list.keys():
                 reason = disabled_list[trigger.sb["realcom"]]["reason"]
                 timestamp = disabled_list[trigger.sb["realcom"]]["timestamp"]
