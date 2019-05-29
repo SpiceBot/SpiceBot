@@ -17,17 +17,17 @@ class BotConfig():
     def load_config(self):
 
         # Load config
+        parser = build_parser()
         if not len(sys.argv[1:]):
             argv = ['legacy']
         else:
             argv = sys.argv[1:]
-        parser = build_parser()
         opts = parser.parse_args(argv)
         config_module = get_configuration(opts)
 
         # load dict
         config = configparser.ConfigParser()
-        config.read(self.config.filename)
+        config.read(config_module.filename)
         for each_section in config.sections():
             if each_section not in self.dict.keys():
                 self.dict[each_section] = dict()
