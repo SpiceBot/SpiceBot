@@ -4,8 +4,9 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 This is the SpiceBot Database
 """
 
-from sopel.db import SopelDB
+# sopel imports
 from sopel.tools import Identifier
+from sopel.db import SopelDB
 
 import threading
 from .Config import config as botconfig
@@ -16,11 +17,11 @@ class BotDatabase():
 
     def __init__(self):
         self.lock = threading.Lock()
-        self.db = SopelDB(botconfig.config)
         self.dict = {
                     "nicks": {},
                     "channels": {},
                     }
+        self.db = SopelDB(botconfig.config)
 
     """Nick"""
 
@@ -137,6 +138,23 @@ class BotDatabase():
         self.db.set_nick_value(nick, sorting_key, self.dict["nicks"][nick_id][sorting_key])
 
         self.lock.release()
+
+    """Bot"""
+
+    def get_bot_value(self, key, sorting_key='unsorted'):
+        return self.get_nick_value(botconfig.nick, key, sorting_key)
+
+    def set_bot_value(self, key, value, sorting_key='unsorted'):
+        return self.set_nick_value(botconfig.nick, key, value, sorting_key)
+
+    def delete_bot_value(self, key, sorting_key='unsorted'):
+        return self.delete_nick_value(botconfig.nick, key, sorting_key)
+
+    def adjust_bot_value(self, key, value, sorting_key='unsorted'):
+        return self.adjust_nick_value(botconfig.nick, key, value, sorting_key)
+
+    def adjust_bot_list(self, key, entries, adjustmentdirection, sorting_key):
+        return self.adjust_nick_list(botconfig.nick, key, entries, adjustmentdirection, sorting_key)
 
     """Channels"""
 
