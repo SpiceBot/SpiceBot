@@ -12,8 +12,9 @@ class BotConfig():
 
     def __init__(self):
         self.dict = {}
+        self.config = None
         self.filename = None
-        self.config = self.load_config()
+        self.load_config()
 
     def load_config(self):
 
@@ -24,15 +25,13 @@ class BotConfig():
         else:
             argv = sys.argv[1:]
         opts = parser.parse_args(argv)
-        config_module = get_configuration(opts)
+        self.config = get_configuration(opts)
 
         # Filename
-        self.filename = config_module.filename
+        self.filename = self.config.filename
 
         # load as dict
         self.dict = self.config_file_to_dict()
-
-        return config_module
 
     def config_file_to_dict(self):
         configdict = dict()
