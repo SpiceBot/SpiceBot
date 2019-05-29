@@ -106,7 +106,7 @@ class BotPrerun():
 
         # don't run commands that are disabled in channels
         if not trigger.is_privmsg:
-            disabled_list = botdb.get_channel_value(trigger.sender, 'disabled_commands', 'commands') or {}
+            disabled_list = botdb.get_channel_value(trigger.sender, 'commands_disabled') or {}
             if trigger.sb["realcom"] in disabled_list.keys():
                 reason = disabled_list[trigger.sb["realcom"]]["reason"]
                 timestamp = disabled_list[trigger.sb["realcom"]]["timestamp"]
@@ -161,7 +161,7 @@ class BotPrerun():
                 bot.osd("This command must be run in a channel you which to enable it in.", trigger.nick, 'notice')
                 return
 
-            if not commands.check_disabled_commands(bot, trigger.sb["realcom"], trigger.sender):
+            if not commands.check_commands_disabled(bot, trigger.sb["realcom"], trigger.sender):
                 bot.osd(trigger.sb["com"] + " is already enabled in " + str(trigger.sender), trigger.nick, 'notice')
                 return
 
@@ -179,7 +179,7 @@ class BotPrerun():
                 bot.osd("This command must be run in a channel you which to disable it in.", trigger.nick, 'notice')
                 return
 
-            if commands.check_disabled_commands(bot, trigger.sb["realcom"], trigger.sender):
+            if commands.check_commands_disabled(bot, trigger.sb["realcom"], trigger.sender):
                 bot.osd(trigger.sb["com"] + " is already disabled in " + str(trigger.sender), trigger.nick, 'notice')
                 return
 

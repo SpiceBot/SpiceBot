@@ -37,13 +37,13 @@ class BotCommands():
                         return commandstype
         return None
 
-    def get_disabled_commands(self, bot, channel):
+    def get_commands_disabled(self, bot, channel):
         if not len(list(self.dict['disabled'])):
-            self.dict['disabled'] = botdb.get_channel_value(bot, channel, 'disabled_commands', 'commands') or {}
+            self.dict['disabled'] = botdb.get_channel_value(bot, channel, 'commands_disabled') or {}
         return self.dict['disabled']
 
-    def check_disabled_commands(self, bot, command, channel):
-        if command in self.get_disabled_commands(bot, channel).keys():
+    def check_commands_disabled(self, bot, command, channel):
+        if command in self.get_commands_disabled(bot, channel).keys():
             return True
         else:
             return False
@@ -64,16 +64,16 @@ class BotCommands():
 
     def set_command_disabled(self, bot, command, channel, timestamp, reason, bywhom):
         if not len(list(self.dict['disabled'])):
-            self.dict['disabled'] = botdb.get_channel_value(bot, channel, 'disabled_commands', 'commands') or {}
+            self.dict['disabled'] = botdb.get_channel_value(bot, channel, 'commands_disabled') or {}
         self.dict['disabled'][command] = {"reason": reason, "timestamp": timestamp, "disabledby": bywhom}
-        botdb.set_channel_value(bot, channel, 'disabled_commands', self.dict['disabled'], 'commands')
+        botdb.set_channel_value(bot, channel, 'commands_disabled', self.dict['disabled'])
 
     def unset_command_disabled(self, bot, command, channel):
         if not len(list(self.dict['disabled'])):
-            self.dict['disabled'] = botdb.get_channel_value(bot, channel, 'disabled_commands', 'commands') or {}
+            self.dict['disabled'] = botdb.get_channel_value(bot, channel, 'commands_disabled') or {}
         if command in self.dict['disabled'].keys():
             del self.dict['disabled'][command]
-        botdb.set_channel_value(bot, channel, 'disabled_commands', self.dict['disabled'], 'commands')
+        botdb.set_channel_value(bot, channel, 'commands_disabled', self.dict['disabled'])
 
     def register(self, bot, command_dict):
 
