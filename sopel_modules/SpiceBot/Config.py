@@ -29,11 +29,19 @@ class BotConfig():
         config = configparser.ConfigParser()
         config.read(self.filename)
         for each_section in config.sections():
-            if each_section not in self.dict.keys():
-                self.dict[each_section] = dict()
+            if each_section.lower() not in self.dict.keys():
+                self.dict[each_section.lower()] = dict()
             for (each_key, each_val) in config.items(each_section):
-                if each_key not in self.dict[each_section].keys():
-                    self.dict[each_section][each_key] = each_val
+                if each_key.lower() not in self.dict[each_section.lower()].keys():
+                    self.dict[each_section.lower()][each_key.lower()] = each_val
+
+    def __getattr__(self, name):
+        ''' will only get called for undefined attributes '''
+        """We will try to find a core value, or return None"""
+        if name.lower() in self.dict["core"].keys():
+            return self.dict["core"][str(name).lower()]
+        else:
+            return None
 
 
 botconfig = BotConfig()
