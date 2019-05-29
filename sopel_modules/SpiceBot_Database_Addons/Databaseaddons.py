@@ -5,25 +5,49 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 # sopel imports
 import sopel.module
 from sopel.tools import Identifier
-from sopel.db import SopelDB, NickValues, ChannelValues
+import sopel.db
+from sopel.db import SopelDB, NickValues, ChannelValues, _deserialize
 
+from sqlalchemy import Column, String
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.ext.declarative import declarative_base
 import json
 
 import sopel_modules.SpiceBot as SpiceBot
+
+BASE = declarative_base()
 
 
 def setup(bot):
 
     # Inject Database Functions
     SpiceBot.logs.log('SpiceBot_Databaseaddons', "Implanting Database functions into bot")
-    SopelDB.delete_nick_value = SopelDBCache.delete_nick_value
-    SopelDB.adjust_nick_value = SopelDBCache.adjust_nick_value
-    SopelDB.delete_channel_value = SopelDBCache.delete_channel_value
-    SopelDB.adjust_channel_value = SopelDBCache.adjust_channel_value
+    sopel.db.PluginValues = PluginValues
+
+    SopelDB.delete_nick_value = SopelDBAddon.delete_nick_value
+    SopelDB.adjust_nick_value = SopelDBAddon.adjust_nick_value
+
+    SopelDB.delete_channel_value = SopelDBAddon.delete_channel_value
+    SopelDB.adjust_channel_value = SopelDBAddon.adjust_channel_value
+
+    SopelDB.adjust_plugin_value = SopelDBAddon.adjust_plugin_value
+    SopelDB.delete_plugin_value = SopelDBAddon.delete_plugin_value
+    SopelDB.get_plugin_value = SopelDBAddon.get_plugin_value
+    SopelDB.set_plugin_value = SopelDBAddon.set_plugin_value
 
 
-class SopelDBCache:
+# TODO use this as a template for dynamic tablenames
+class PluginValues(BASE):
+    """
+    PluginValues SQLAlchemy Class
+    """
+    __tablename__ = 'plugin_values'
+    plugin = Column(String(255), primary_key=True)
+    key = Column(String(255), primary_key=True)
+    value = Column(String(255))
+
+
+class SopelDBAddon:
 
     """Nicks"""
 
@@ -84,7 +108,7 @@ class SopelDBCache:
                 .filter(ChannelValues.channel == channel)\
                 .filter(ChannelValues.key == key) \
                 .one_or_none()
-            # ChannelValue exists, update
+            # ChannelValue exists, delete
             if result:
                 session.delete(result)
                 session.commit()
@@ -112,6 +136,95 @@ class SopelDBCache:
             else:
                 new_channelvalue = ChannelValues(channel=channel, key=key, value=value)
                 session.add(new_channelvalue)
+                session.commit()
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
+    # PLUGIN FUNCTIONS
+
+    def set_plugin_value(self, plugin, key, value):
+        """Sets the value for a given key to be associated with the plugin."""
+        plugin = Identifier(plugin).lower()
+        value = json.dumps(value, ensure_ascii=False)
+        session = self.ssession()
+        try:
+            result = session.query(PluginValues) \
+                .filter(PluginValues.plugin == plugin)\
+                .filter(PluginValues.key == key) \
+                .one_or_none()
+            # PluginValues exists, update
+            if result:
+                result.value = value
+                session.commit()
+            # DNE - Insert
+            else:
+                new_pluginvalue = PluginValues(plugin=plugin, key=key, value=value)
+                session.add(new_pluginvalue)
+                session.commit()
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
+    def get_plugin_value(self, plugin, key):
+        """Retrieves the value for a given key associated with a plugin."""
+        plugin = Identifier(plugin).lower()
+        session = self.ssession()
+        try:
+            result = session.query(PluginValues) \
+                .filter(PluginValues.plugin == plugin)\
+                .filter(PluginValues.key == key) \
+                .one_or_none()
+            if result is not None:
+                result = result.value
+            return _deserialize(result)
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
+    def adjust_plugin_value(self, plugin, key, value):
+        """Sets the value for a given key to be associated with the plugin."""
+        plugin = Identifier(plugin).lower()
+        value = json.dumps(value, ensure_ascii=False)
+        session = self.ssession()
+        try:
+            result = session.query(PluginValues) \
+                .filter(PluginValues.plugin == plugin)\
+                .filter(PluginValues.key == key) \
+                .one_or_none()
+            # ChannelValue exists, update
+            if result:
+                result.value = result.value + value
+                session.commit()
+            # DNE - Insert
+            else:
+                new_pluginvalue = PluginValues(plugin=plugin, key=key, value=value)
+                session.add(new_pluginvalue)
+                session.commit()
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
+    def delete_plugin_value(self, plugin, key):
+        """Deletes the value for a given key to be associated with the plugin."""
+        plugin = Identifier(plugin).lower()
+        session = self.ssession()
+        try:
+            result = session.query(PluginValues) \
+                .filter(PluginValues.plugin == plugin)\
+                .filter(PluginValues.key == key) \
+                .one_or_none()
+            # PluginValues exists, delete
+            if result:
+                session.delete(result)
                 session.commit()
         except SQLAlchemyError:
             session.rollback()
