@@ -6,10 +6,19 @@ This is the SpiceBot Database
 
 # sopel imports
 from sopel.tools import Identifier
-from sopel.db import SopelDB
+from sopel.db import SopelDB, Nicknames, _deserialize
 
 import threading
 from .Config import config as botconfig
+
+from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.exc import SQLAlchemyError
+
+import json
+
+
+BASE = declarative_base()
 
 
 class BotDatabase():
@@ -22,6 +31,21 @@ class BotDatabase():
                     "channels": {},
                     }
         self.db = SopelDB(botconfig.config)
+
+        self.db.get_nick_value = SpiceDB.get_nick_value
+        self.db.set_nick_value = SpiceDB.set_nick_value
+        self.db.delete_nick_value = SpiceDB.delete_nick_value
+        self.db.adjust_nick_value = SpiceDB.adjust_nick_value
+
+        self.db.get_channel_value = SpiceDB.get_channel_value
+        self.db.set_channel_value = SpiceDB.set_channel_value
+        self.db.delete_channel_value = SpiceDB.delete_channel_value
+        self.db.adjust_channel_value = SpiceDB.adjust_channel_value
+
+        self.db.get_plugin_value = SpiceDB.get_plugin_value
+        self.db.set_plugin_value = SpiceDB.set_plugin_value
+        self.db.delete_plugin_value = SpiceDB.delete_plugin_value
+        self.db.adjust_plugin_value = SpiceDB.adjust_plugin_value
 
     """Nick"""
 
@@ -378,3 +402,342 @@ class BotDatabase():
 
 
 db = BotDatabase()
+
+
+class PluginValues(BASE):
+    """
+    PluginValues SQLAlchemy Class
+    """
+    __tablename__ = 'plugin_values'
+    plugin = Column(String(255), primary_key=True)
+    sortingkey = Column(String(255), primary_key=True)
+    key = Column(String(255), primary_key=True)
+    value = Column(String(255))
+
+
+class NickValues(BASE):
+    """
+    NickValues SQLAlchemy Class
+    """
+    __tablename__ = 'nick_values'
+    nick_id = Column(Integer, ForeignKey('nick_ids.nick_id'), primary_key=True)
+    sortingkey = Column(String(255), primary_key=True)
+    key = Column(String(255), primary_key=True)
+    value = Column(String(255))
+
+
+class ChannelValues(BASE):
+    """
+    ChannelValues SQLAlchemy Class
+    """
+    __tablename__ = 'channel_values'
+    channel = Column(String(255), primary_key=True)
+    sortingkey = Column(String(255), primary_key=True)
+    key = Column(String(255), primary_key=True)
+    value = Column(String(255))
+
+
+class SpiceDB(object):
+
+    # NICK FUNCTIONS
+
+    def set_nick_value(self, nick, key, value, sortingkey='unsorted'):
+        """Sets the value for a given key to be associated with the nick."""
+        nick = Identifier(nick)
+        value = json.dumps(value, ensure_ascii=False)
+        nick_id = self.get_nick_id(nick)
+        session = self.ssession()
+        try:
+            result = session.query(NickValues) \
+                .filter(NickValues.nick_id == nick_id) \
+                .filter(NickValues.sortingkey == sortingkey) \
+                .filter(NickValues.key == key) \
+                .one_or_none()
+            # NickValue exists, update
+            if result:
+                result.value = value
+                session.commit()
+            # DNE - Insert
+            else:
+                new_nickvalue = NickValues(nick_id=nick_id, sortingkey=sortingkey, key=key, value=value)
+                session.add(new_nickvalue)
+                session.commit()
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
+    def get_nick_value(self, nick, key, sortingkey='unsorted'):
+        """Retrieves the value for a given key associated with a nick."""
+        nick = Identifier(nick)
+        session = self.ssession()
+        try:
+            result = session.query(NickValues) \
+                .filter(Nicknames.nick_id == NickValues.nick_id) \
+                .filter(Nicknames.slug == nick.lower()) \
+                .filter(NickValues.sortingkey == sortingkey) \
+                .filter(NickValues.key == key) \
+                .one_or_none()
+            if result is not None:
+                result = result.value
+            return _deserialize(result)
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
+    def delete_nick_value(self, nick, key, sortingkey='unsorted'):
+        """Deletes the value for a given key to be associated with the nick."""
+        nick = Identifier(nick)
+        nick_id = self.get_nick_id(nick)
+        session = self.ssession()
+        try:
+            result = session.query(NickValues) \
+                .filter(NickValues.nick_id == nick_id) \
+                .filter(NickValues.sortingkey == sortingkey) \
+                .filter(NickValues.key == key) \
+                .one_or_none()
+            # NickValue exists, delete
+            if result:
+                session.delete(result)
+                session.commit()
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
+    def adjust_nick_value(self, nick, key, value, sortingkey='unsorted'):
+        """Sets the value for a given key to be associated with the nick."""
+        nick = Identifier(nick)
+        value = json.dumps(value, ensure_ascii=False)
+        nick_id = self.get_nick_id(nick)
+        session = self.ssession()
+        try:
+            result = session.query(NickValues) \
+                .filter(NickValues.nick_id == nick_id) \
+                .filter(NickValues.sortingkey == sortingkey) \
+                .filter(NickValues.key == key) \
+                .one_or_none()
+            # NickValue exists, update
+            if result:
+                result.value = result.value + value
+                session.commit()
+            # DNE - Insert
+            else:
+                new_nickvalue = NickValues(nick_id=nick_id, sortingkey=sortingkey, key=key, value=value)
+                session.add(new_nickvalue)
+                session.commit()
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
+    # CHANNEL FUNCTIONS
+
+    def set_channel_value(self, channel, key, value, sortingkey='unsorted'):
+        """Sets the value for a given key to be associated with the channel."""
+        channel = Identifier(channel).lower()
+        value = json.dumps(value, ensure_ascii=False)
+        session = self.ssession()
+        try:
+            result = session.query(ChannelValues) \
+                .filter(ChannelValues.channel == channel)\
+                .filter(ChannelValues.sortingkey == sortingkey) \
+                .filter(ChannelValues.key == key) \
+                .one_or_none()
+            # ChannelValue exists, update
+            if result:
+                result.value = value
+                session.commit()
+            # DNE - Insert
+            else:
+                new_channelvalue = ChannelValues(channel=channel, sortingkey=sortingkey, key=key, value=value)
+                session.add(new_channelvalue)
+                session.commit()
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
+    def get_channel_value(self, channel, key, sortingkey='unsorted'):
+        """Retrieves the value for a given key associated with a channel."""
+        channel = Identifier(channel).lower()
+        session = self.ssession()
+        try:
+            result = session.query(ChannelValues) \
+                .filter(ChannelValues.channel == channel)\
+                .filter(ChannelValues.sortingkey == sortingkey) \
+                .filter(ChannelValues.key == key) \
+                .one_or_none()
+            if result is not None:
+                result = result.value
+            return _deserialize(result)
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
+    def delete_channel_value(self, channel, key, sortingkey='unsorted'):
+        """Sets the value for a given key to be associated with the channel."""
+        channel = Identifier(channel).lower()
+        session = self.ssession()
+        try:
+            result = session.query(ChannelValues) \
+                .filter(ChannelValues.channel == channel)\
+                .filter(ChannelValues.sortingkey == sortingkey) \
+                .filter(ChannelValues.key == key) \
+                .one_or_none()
+            # ChannelValue exists, delete
+            if result:
+                session.delete(result)
+                session.commit()
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
+    def adjust_channel_value(self, channel, key, value, sortingkey='unsorted'):
+        """Sets the value for a given key to be associated with the channel."""
+        channel = Identifier(channel).lower()
+        value = json.dumps(value, ensure_ascii=False)
+        session = self.ssession()
+        try:
+            result = session.query(ChannelValues) \
+                .filter(ChannelValues.channel == channel)\
+                .filter(ChannelValues.sortingkey == sortingkey) \
+                .filter(ChannelValues.key == key) \
+                .one_or_none()
+            # ChannelValue exists, update
+            if result:
+                result.value = result.value + value
+                session.commit()
+            # DNE - Insert
+            else:
+                new_channelvalue = ChannelValues(channel=channel, sortingkey=sortingkey, key=key, value=value)
+                session.add(new_channelvalue)
+                session.commit()
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
+    # NICK AND CHANNEL FUNCTIONS
+
+    def get_nick_or_channel_value(self, name, key, sortingkey='unsorted'):
+        """Gets the value `key` associated to the nick or channel  `name`."""
+        name = Identifier(name)
+        if name.is_nick():
+            return self.get_nick_value(name, key, sortingkey)
+        else:
+            return self.get_channel_value(name, key, sortingkey)
+
+    def get_preferred_value(self, names, key, sortingkey='unsorted'):
+        """Gets the value for the first name which has it set.
+
+        `names` is a list of channel and/or user names. Returns None if none of
+        the names have the key set."""
+        for name in names:
+            value = self.get_nick_or_channel_value(name, key, sortingkey)
+            if value is not None:
+                return value
+
+    # PLUGIN FUNCTIONS
+
+    def set_plugin_value(self, plugin, key, value, sortingkey='unsorted'):
+        """Sets the value for a given key to be associated with the plugin."""
+        plugin = Identifier(plugin).lower()
+        value = json.dumps(value, ensure_ascii=False)
+        session = self.ssession()
+        try:
+            result = session.query(PluginValues) \
+                .filter(PluginValues.plugin == plugin)\
+                .filter(PluginValues.sortingkey == sortingkey) \
+                .filter(PluginValues.key == key) \
+                .one_or_none()
+            # PluginValues exists, update
+            if result:
+                result.value = value
+                session.commit()
+            # DNE - Insert
+            else:
+                new_pluginvalue = PluginValues(plugin=plugin, sortingkey=sortingkey, key=key, value=value)
+                session.add(new_pluginvalue)
+                session.commit()
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
+    def get_plugin_value(self, plugin, key, sortingkey='unsorted'):
+        """Retrieves the value for a given key associated with a plugin."""
+        plugin = Identifier(plugin).lower()
+        session = self.ssession()
+        try:
+            result = session.query(PluginValues) \
+                .filter(PluginValues.plugin == plugin)\
+                .filter(PluginValues.sortingkey == sortingkey) \
+                .filter(PluginValues.key == key) \
+                .one_or_none()
+            if result is not None:
+                result = result.value
+            return _deserialize(result)
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
+    def adjust_plugin_value(self, plugin, key, value, sortingkey='unsorted'):
+        """Sets the value for a given key to be associated with the plugin."""
+        plugin = Identifier(plugin).lower()
+        value = json.dumps(value, ensure_ascii=False)
+        session = self.ssession()
+        try:
+            result = session.query(PluginValues) \
+                .filter(PluginValues.plugin == plugin)\
+                .filter(PluginValues.sortingkey == sortingkey) \
+                .filter(PluginValues.key == key) \
+                .one_or_none()
+            # ChannelValue exists, update
+            if result:
+                result.value = result.value + value
+                session.commit()
+            # DNE - Insert
+            else:
+                new_pluginvalue = PluginValues(plugin=plugin, sortingkey=sortingkey, key=key, value=value)
+                session.add(new_pluginvalue)
+                session.commit()
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
+    def delete_plugin_value(self, plugin, key, sortingkey='unsorted'):
+        """Deletes the value for a given key to be associated with the plugin."""
+        plugin = Identifier(plugin).lower()
+        session = self.ssession()
+        try:
+            result = session.query(PluginValues) \
+                .filter(PluginValues.plugin == plugin)\
+                .filter(PluginValues.sortingkey == sortingkey) \
+                .filter(PluginValues.key == key) \
+                .one_or_none()
+            # PluginValues exists, delete
+            if result:
+                session.delete(result)
+                session.commit()
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
