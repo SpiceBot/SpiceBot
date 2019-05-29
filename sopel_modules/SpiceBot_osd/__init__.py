@@ -252,6 +252,9 @@ class SopelOSD:
         will default to ``1``.
         """
 
+        if not hasattr(self, 'osdstack'):
+            self.osdstack = {}
+
         text_method = text_method.upper()
         if text_method == 'SAY' or text_method not in ['NOTICE', 'ACTION']:
             text_method = 'PRIVMSG'
