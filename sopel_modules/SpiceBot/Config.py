@@ -44,4 +44,4 @@ class BotConfig():
             return None
 
 
-botconfig = BotConfig()
+config = BotConfig()

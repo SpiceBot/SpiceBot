@@ -12,7 +12,7 @@ import threading
 import spicemanip
 
 from .Logs import logs
-from .Database import botdb
+from .Database import db as botdb
 
 
 class BotCommands():
