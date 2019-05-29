@@ -13,9 +13,10 @@ class BotConfig():
     def __init__(self):
         self.dict = {}
         self.config = self.load_config()
-        self.config_dict = self.config_file_to_dict()
 
     def load_config(self):
+
+        # Load config
         if not len(sys.argv[1:]):
             argv = ['legacy']
         else:
@@ -23,19 +24,18 @@ class BotConfig():
         parser = build_parser()
         opts = parser.parse_args(argv)
         config_module = get_configuration(opts)
-        return config_module
 
-    def config_file_to_dict(self):
-        configdict = dict()
+        # load dict
         config = configparser.ConfigParser()
         config.read(self.config.filename)
         for each_section in config.sections():
-            if each_section not in configdict.keys():
-                configdict[each_section] = dict()
+            if each_section not in self.dict.keys():
+                self.dict[each_section] = dict()
                 for (each_key, each_val) in config.items(each_section):
-                    if each_key not in configdict[each_section].keys():
-                        configdict[each_section][each_key] = each_val
-        return configdict
+                    if each_key not in self.dict[each_section].keys():
+                        self.dict[each_section][each_key] = each_val
+
+        return config_module
 
 
 botconfig = BotConfig()
