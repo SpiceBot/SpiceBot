@@ -32,7 +32,7 @@ def setup(bot):
 def nickname_comand_update(bot, trigger):
 
     if not SpiceBot.command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
-        bot.say("I was unable to process this Bot Nick command due to privilege issues.")
+        bot.osd("I was unable to process this Bot Nick command due to privilege issues.")
         return
 
     if not len(trigger.sb['args']):
@@ -41,7 +41,7 @@ def nickname_comand_update(bot, trigger):
         commandused = spicemanip.main(trigger.sb['args'], 1).lower()
 
     if commandused not in ['deps', 'nodeps']:
-        bot.say("Please specify deps or nodeps")
+        bot.osd("Please specify deps or nodeps")
         return
 
     trigger.sb['args'] = spicemanip.main(trigger.sb['args'], '2+', 'list')

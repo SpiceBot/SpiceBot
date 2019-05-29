@@ -11,7 +11,7 @@ import spicemanip
 def bot_command_goodbye(bot, trigger):
     byemsg = spicemanip.main(['Bye', 'Goodbye', 'Seeya', 'Auf Wiedersehen', 'Au revoir', 'Ttyl'], "random")
     punctuation = spicemanip.main(['!', ''], "random")
-    bot.say(byemsg + ' ' + trigger.nick + punctuation)
+    bot.osd(byemsg + ' ' + trigger.nick + punctuation)
 
 
 @sopel.module.nickname_commands("bye", "goodbye", "gtg", "seeya", "cya", "ttyl", "g2g", "gnight", "goodnight")

@@ -7,7 +7,7 @@ import sopel.module
 
 @sopel.module.rule(r'(?i)(I love you|loveya),? $nickname[ \t]*$')
 def bot_command_love(bot, trigger):
-    bot.reply("I love you too.")
+    bot.osd(trigger.nick + ", I love you too.")
 
 
 @sopel.module.rule('$nickname (loveya|I love you)')
@@ -27,7 +27,7 @@ def bot_command_love_d(bot, trigger):
 
 @sopel.module.rule(r'(?i)(I like you),? $nickname[ \t]*$')
 def bot_command_like(bot, trigger):
-    bot.reply("I like you too.")
+    bot.osd(trigger.nick + ", I like you too.")
 
 
 @sopel.module.rule('$nickname (I like you)')

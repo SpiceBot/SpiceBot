@@ -10,4 +10,4 @@ import spicemanip
 @sopel.module.rule(r'(?i)(welcome back),? $nickname\?')
 def bot_command_really(bot, trigger):
     reply = spicemanip.main(['Thank you', 'thanks'], "random")
-    bot.reply(reply)
+    bot.osd(trigger.nick + ", " + reply)

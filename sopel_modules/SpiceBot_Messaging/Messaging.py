@@ -30,14 +30,14 @@ def bot_command_privmsg(bot, trigger):
 def bot_command_process(bot, trigger):
 
     if not SpiceBot.command_permissions_check(bot, trigger, ['admins', 'owner']):
-        bot.say("I was unable to process this Bot Nick command due to privilege issues.")
+        bot.osd("I was unable to process this Bot Nick command due to privilege issues.")
         return
 
     if trigger.sb['com'] in ['say', 'msg']:
         trigger.sb['com'] = 'privmsg'
 
     if not len(trigger.sb['args']):
-        bot.say("You must specify a channel or nick.")
+        bot.osd("You must specify a channel or nick.")
         return
 
     target = spicemanip.main(trigger.sb['args'], 1)
@@ -58,7 +58,7 @@ def bot_command_process(bot, trigger):
 
     botmessage = spicemanip.main(trigger.sb['args'], 0)
     if not botmessage:
-        bot.say("You must specify a message to send.")
+        bot.osd("You must specify a message to send.")
         return
 
     bot.osd(botmessage, targetsendlist, trigger.sb['com'].upper())

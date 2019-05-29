@@ -14,7 +14,7 @@ import sopel_modules.SpiceBot as SpiceBot
 def bot_command_logs(bot, trigger):
 
     if not SpiceBot.command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
-        bot.say("I was unable to process this Bot Nick command due to privilege issues.")
+        bot.osd("I was unable to process this Bot Nick command due to privilege issues.")
         return
 
     logtype = spicemanip.main(trigger.sb['args'], 1) or None
@@ -25,9 +25,9 @@ def bot_command_logs(bot, trigger):
     if not SpiceBot.inlist(logtype, SpiceBot.logs.dict["list"].keys()):
         closestmatches = SpiceBot.similar_list(bot, logtype, SpiceBot.logs.dict["list"].keys(), 10, 'reverse')
         if not len(closestmatches):
-            bot.notice("No valid logs match " + str(logtype) + ".", trigger.nick)
+            bot.osd("No valid logs match " + str(logtype) + ".", trigger.nick, 'notice')
         else:
-            bot.notice("The following commands may match " + str(logtype) + ": " + spicemanip.main(closestmatches, 'andlist') + ".", trigger.nick)
+            bot.osd("The following commands may match " + str(logtype) + ": " + spicemanip.main(closestmatches, 'andlist') + ".", trigger.nick, 'notice')
 
         return
 

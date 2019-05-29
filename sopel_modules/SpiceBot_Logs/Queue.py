@@ -27,7 +27,7 @@ def join_log_channel(bot, trigger):
 
         while True:
             if len(SpiceBot.logs.dict["queue"]):
-                bot.say(str(SpiceBot.logs.dict["queue"][0]), channel)
+                bot.osd(str(SpiceBot.logs.dict["queue"][0]), channel)
                 del SpiceBot.logs.dict["queue"][0]
     else:
         SpiceBot.logs.sopel_config["logging_channel"] = False

@@ -40,14 +40,14 @@ def query_detection(bot, trigger):
             closestmatches = SpiceBot.similar_list(bot, trigger.sb['com'], list(commands_list.keys()), 10, 'reverse')
             if len(closestmatches):
                 dispmsg.append("The following commands match " + str(trigger.sb['com']) + ": " + spicemanip.main(closestmatches, 'andlist') + ".")
-            bot.notice(dispmsg, trigger.nick)
+            bot.osd(dispmsg, trigger.nick, 'notice')
             return
 
         realcom = trigger.sb['com']
         if "aliasfor" in commands_list[trigger.sb['com']].keys():
             realcom = commands_list[trigger.sb['com']]["aliasfor"]
         validcomlist = commands_list[realcom]["validcoms"]
-        bot.notice("The following commands match " + str(trigger.sb['com']) + ": " + spicemanip.main(validcomlist, 'andlist') + ".", trigger.nick)
+        bot.osd("The following commands match " + str(trigger.sb['com']) + ": " + spicemanip.main(validcomlist, 'andlist') + ".", trigger.nick, 'notice')
         return
 
     if trigger.sb['com'][:-1] == "?":
@@ -58,9 +58,9 @@ def query_detection(bot, trigger):
 
         closestmatches = SpiceBot.similar_list(bot, trigger.sb['com'], list(commands_list.keys()), 10, 'reverse')
         if not len(closestmatches):
-            bot.notice("Cannot find any similar commands for " + str(trigger.sb['com']) + ".", trigger.nick)
+            bot.osd("Cannot find any similar commands for " + str(trigger.sb['com']) + ".", trigger.nick, 'notice')
         else:
-            bot.notice("The following commands may match " + str(trigger.sb['com']) + ": " + spicemanip.main(closestmatches, 'andlist') + ".", trigger.nick)
+            bot.osd("The following commands may match " + str(trigger.sb['com']) + ": " + spicemanip.main(closestmatches, 'andlist') + ".", trigger.nick, 'notice')
         return
 
     commandlist = []
@@ -69,6 +69,6 @@ def query_detection(bot, trigger):
             commandlist.append(command)
 
     if not len(commandlist):
-        bot.notice("No commands start with " + str(trigger.sb['com']) + ".", trigger.nick)
+        bot.osd("No commands start with " + str(trigger.sb['com']) + ".", trigger.nick, 'notice')
     else:
-        bot.notice("The following commands start with " + str(trigger.sb['com']) + ": " + spicemanip.main(commandlist, 'andlist') + ".", trigger.nick)
+        bot.osd("The following commands start with " + str(trigger.sb['com']) + ": " + spicemanip.main(commandlist, 'andlist') + ".", trigger.nick, 'notice')

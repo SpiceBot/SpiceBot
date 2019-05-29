@@ -7,9 +7,9 @@ import sopel.module
 
 @sopel.module.rule('$nickname!')
 def exclaim(bot, trigger):
-    bot.say(trigger.nick + '!')
+    bot.osd(trigger.nick + '!')
 
 
 @sopel.module.rule('$nickname\?')
 def imhere(bot, trigger):
-    bot.say("I'm here, " + trigger.nick)
+    bot.osd("I'm here, " + trigger.nick)

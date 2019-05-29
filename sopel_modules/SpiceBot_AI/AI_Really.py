@@ -10,7 +10,7 @@ import spicemanip
 @sopel.module.rule(r'(?i)(really),? $nickname\?')
 def bot_command_really(bot, trigger):
     really = spicemanip.main(["Yes, really.", "Really really"], "random")
-    bot.reply(really)
+    bot.osd(trigger.nick + ", " + really)
 
 
 @sopel.module.rule('$nickname really\?')

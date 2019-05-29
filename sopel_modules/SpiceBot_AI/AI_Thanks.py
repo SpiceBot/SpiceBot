@@ -7,7 +7,7 @@ import sopel.module
 
 @sopel.module.rule(r'(?i)(thank you|thanks),? $nickname[ \t]*$')
 def bot_command_thanks(bot, trigger):
-    bot.reply("You're welcome.")
+    bot.osd(trigger.nick + ",You're welcome.")
 
 
 @sopel.module.rule('$nickname (thank you)')

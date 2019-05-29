@@ -47,19 +47,6 @@ def setup(bot):
     tools.get_sendable_message_list = ToolsOSD.get_sendable_message_list
     tools.get_message_recipientgroups = ToolsOSD.get_message_recipientgroups
 
-    # overwrite default bot messaging
-    SpiceBot.logs.log('SpiceBot_OSD', "Overwrite Default Sopel messaging commands")
-    bot.osd = SopelOSD.osd
-    bot.say = SopelOSD.say
-    bot.action = SopelOSD.action
-    bot.notice = SopelOSD.notice
-    bot.reply = SopelOSD.reply
-    bot.msg = SopelOSD.msg
-    sopel.bot.SopelWrapper.say = SopelWrapperOSD.say
-    sopel.bot.SopelWrapper.action = SopelWrapperOSD.action
-    sopel.bot.SopelWrapper.notice = SopelWrapperOSD.notice
-    sopel.bot.SopelWrapper.reply = SopelWrapperOSD.reply
-
     # verify config settings for server
     SpiceBot.logs.log('SpiceBot_OSD', "Checking for config settings")
     bot.config.define_section("SpiceBot_OSD", SpiceBot_OSD, validate=False)
@@ -283,7 +270,7 @@ class SopelOSD:
 
             recipient_id = Identifier(recipientgroup)
 
-            recipient_stack = self.stack.setdefault(recipient_id, {
+            recipient_stack = self.osdstack.setdefault(recipient_id, {
                 'messages': [],
                 'flood_left': self.config.SpiceBot_OSD.flood_burst_lines,
                 'dots': 0,
@@ -343,61 +330,6 @@ class SopelOSD:
                 finally:
                     self.sending.release()
 
-    def say(self, text, recipient, max_messages=1):
-        """Send ``text`` as a PRIVMSG to ``recipient``.
-        In the context of a triggered callable, the ``recipient`` defaults to
-        the channel (or nickname, if a private message) from which the message
-        was received.
-        """
-        self.osd(text, recipient, 'PRIVMSG', max_messages)
-
-    def notice(self, text, dest, max_messages=1):
-        """Send an IRC NOTICE to a user or a channel.
-
-        Within the context of a triggered callable, ``dest`` will default to
-        the channel (or nickname, if a private message), in which the trigger
-        happened.
-        """
-        self.osd(text, dest, 'NOTICE', max_messages)
-
-    def action(self, text, dest, max_messages=1):
-        """Send ``text`` as a CTCP ACTION PRIVMSG to ``dest``.
-
-        The same loop detection and length restrictions apply as with
-        :func:`say`, though automatic message splitting is not available.
-
-        Within the context of a triggered callable, ``dest`` will default to
-        the channel (or nickname, if a private message), in which the trigger
-        happened.
-        """
-        self.osd(text, dest, 'ACTION', max_messages)
-
-    def reply(self, text, dest, reply_to, notice=False, max_messages=1):
-        """Prepend ``reply_to`` to ``text``, and send as a PRIVMSG to ``dest``.
-
-        If ``notice`` is ``True``, send a NOTICE rather than a PRIVMSG.
-
-        The same loop detection and length restrictions apply as with
-        :func:`say`, though automatic message splitting is not available.
-
-        Within the context of a triggered callable, ``reply_to`` will default to
-        the nickname of the user who triggered the call, and ``dest`` to the
-        channel (or nickname, if a private message), in which the trigger
-        happened.
-        """
-        text = '%s: %s' % (reply_to, text)
-        if notice:
-            self.osd(text, dest, 'NOTICE', max_messages)
-        else:
-            self.osd(text, dest, 'PRIVMSG', max_messages)
-
-    def msg(self, recipient, text, max_messages=1):
-        """
-        .. deprecated:: 6.0
-            Use :meth:`say` instead. Will be removed in Sopel 8.
-        """
-        self.osd(text, recipient, 'PRIVMSG', max_messages)
-
 
 class SopelWrapperOSD(object):
 
@@ -405,29 +337,3 @@ class SopelWrapperOSD(object):
         if recipients is None:
             recipients = self._trigger.sender
         self._bot.osd(self, messages, recipients, text_method, max_messages)
-
-    def say(self, message, destination=None, max_messages=1):
-        if destination is None:
-            destination = self._trigger.sender
-        self._bot.osd(self, message, destination, 'PRIVMSG', 1)
-
-    def action(self, message, destination=None, max_messages=1):
-        if destination is None:
-            destination = self._trigger.sender
-        self._bot.osd(self, message, destination, 'ACTION', 1)
-
-    def notice(self, message, destination=None, max_messages=1):
-        if destination is None:
-            destination = self._trigger.sender
-        self._bot.osd(self, message, destination, 'NOTICE', 1)
-
-    def reply(self, message, destination=None, reply_to=None, notice=False, max_messages=1):
-        if destination is None:
-            destination = self._trigger.sender
-        if reply_to is None:
-            reply_to = self._trigger.nick
-        message = '%s: %s' % (reply_to, message)
-        if notice:
-            self._bot.osd(self, message, destination, 'NOTICE', 1)
-        else:
-            self._bot.osd(self, message, destination, 'PRIVMSG', 1)

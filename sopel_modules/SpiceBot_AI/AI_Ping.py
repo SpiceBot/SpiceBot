@@ -7,7 +7,7 @@ import sopel.module
 
 @sopel.module.rule(r'(?i)(ping),? $nickname[ \t]*$')
 def bot_command_ping(bot, trigger):
-    bot.say("Pong")
+    bot.osd("Pong")
 
 
 @sopel.module.nickname_commands('ping')

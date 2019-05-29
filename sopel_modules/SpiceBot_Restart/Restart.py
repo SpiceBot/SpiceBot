@@ -12,7 +12,7 @@ import sopel_modules.SpiceBot as SpiceBot
 def nickname_comand_restart(bot, trigger):
 
     if not trigger.admin:
-        bot.say("You are not authorized to perform this function.")
+        bot.osd("You are not authorized to perform this function.")
 
     quitmessage = "Received command from " + trigger.nick + " to restart. Be Back Soon!"
     SpiceBot.logs.log('SpiceBot_Restart', quitmessage)

@@ -101,7 +101,7 @@ class BotPrerun():
             if command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
                 return True
             else:
-                bot.notice("The admin switch (-a) is for use by authorized nicks ONLY.")
+                bot.osd("The admin switch (-a) is for use by authorized nicks ONLY.", 'notice')
                 return False
 
         # don't run commands that are disabled in channels
@@ -118,9 +118,9 @@ class BotPrerun():
 
     def trigger_cant_run(self, bot, trigger, message=None):
         if message:
-            bot.notice(message, trigger.nick)
+            bot.osd(message, trigger.nick, 'notice')
         if command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
-            bot.notice("You however are authorized to bypass this warning with the (-a) admin switch.", trigger.nick)
+            bot.osd("You however are authorized to bypass this warning with the (-a) admin switch.", trigger.nick, 'notice')
         return False
 
     def trigger_hyphen_args(self, trigger_args_part):
@@ -146,48 +146,48 @@ class BotPrerun():
         # Commands that cannot run via privmsg
         if trigger.sb["hyphen_arg"] in ['check']:
             if trigger.sb["com"].lower() != trigger.sb["realcom"]:
-                bot.say(trigger.sb["com"] + " is a valid alias command for " + trigger.sb["realcom"])
+                bot.osd(trigger.sb["com"] + " is a valid alias command for " + trigger.sb["realcom"])
             else:
-                bot.say(trigger.sb["com"] + " is a valid command")
+                bot.osd(trigger.sb["com"] + " is a valid command")
             return
 
         elif trigger.sb["hyphen_arg"] in ['enable']:
 
             if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
-                bot.say("I was unable to disable this command due to privilege issues.")
+                bot.osd("I was unable to disable this command due to privilege issues.")
                 return
 
             if trigger.is_privmsg:
-                bot.notice("This command must be run in a channel you which to enable it in.", trigger.nick)
+                bot.osd("This command must be run in a channel you which to enable it in.", trigger.nick, 'notice')
                 return
 
             if not commands.check_disabled_commands(bot, trigger.sb["realcom"], trigger.sender):
-                bot.notice(trigger.sb["com"] + " is already enabled in " + str(trigger.sender), trigger.nick)
+                bot.osd(trigger.sb["com"] + " is already enabled in " + str(trigger.sender), trigger.nick, 'notice')
                 return
 
             commands.unset_command_disabled(bot, trigger.sb["realcom"], trigger.sender)
-            bot.say(trigger.sb["com"] + " is now enabled in " + str(trigger.sender))
+            bot.osd(trigger.sb["com"] + " is now enabled in " + str(trigger.sender))
             return
 
         elif trigger.sb["hyphen_arg"] in ['disable']:
 
             if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
-                bot.say("I was unable to disable this command due to privilege issues.")
+                bot.osd("I was unable to disable this command due to privilege issues.")
                 return
 
             if trigger.is_privmsg:
-                bot.notice("This command must be run in a channel you which to disable it in.", trigger.nick)
+                bot.osd("This command must be run in a channel you which to disable it in.", trigger.nick, 'notice')
                 return
 
             if commands.check_disabled_commands(bot, trigger.sb["realcom"], trigger.sender):
-                bot.notice(trigger.sb["com"] + " is already disabled in " + str(trigger.sender), trigger.nick)
+                bot.osd(trigger.sb["com"] + " is already disabled in " + str(trigger.sender), trigger.nick, 'notice')
                 return
 
             trailingmessage = spicemanip.main(trigger.sb["args"], 0) or "No reason given."
             timestamp = str(datetime.datetime.utcnow())
 
             commands.set_command_disabled(bot, trigger.sb["realcom"], trigger.sender, timestamp, trailingmessage, trigger.nick)
-            bot.say(trigger.sb["com"] + " is now disabled in " + str(trigger.sender))
+            bot.osd(trigger.sb["com"] + " is now disabled in " + str(trigger.sender))
             return
 
         return
