@@ -17,7 +17,7 @@ class BotConfig():
 
     def load_config(self):
         if len(sys.argv[1:]):
-            argv = []
+            argv = ['legacy']
         else:
             argv = sys.argv[1:]
         parser = build_parser()
