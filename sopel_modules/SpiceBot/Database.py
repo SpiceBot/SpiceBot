@@ -551,7 +551,7 @@ class BotDatabase():
     def delete_bot_value(self, key, category='default'):
         return self.db.delete_nick_value(botconfig.nick, key, category)
 
-    def adjust_bot_value(self, key, value, category='default', category):
+    def adjust_bot_value(self, key, value, category='default'):
         return self.db.adjust_nick_value(botconfig.nick, key, value, category)
 
     def adjust_bot_list(self, key, entries, adjustmentdirection, category='default'):
