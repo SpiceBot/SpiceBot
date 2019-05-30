@@ -2,6 +2,7 @@
 from __future__ import unicode_literals, absolute_import, division, print_function
 """A way to read the bot's config without bot"""
 
+from sopel.tools import stderr
 from sopel.cli.run import build_parser, get_configuration
 
 import sys
@@ -39,6 +40,7 @@ class BotConfig():
         return self.config.define_section(name, cls_, validate)
 
     def __getattr__(self, name):
+        stderr(str(name))
         ''' will only get called for undefined attributes '''
         """We will try to find a core value, or return None"""
         if hasattr(self.config.core, name):
