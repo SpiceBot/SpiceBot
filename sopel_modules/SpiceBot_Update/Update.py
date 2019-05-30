@@ -25,6 +25,7 @@ def configure(config):
 def setup(bot):
     SpiceBot.logs.log('SpiceBot_Update', "Initial Setup processing")
     bot.config.define_section("SpiceBot_Update", SpiceBot_Update_MainSection, validate=False)
+    SpiceBot.config.config.define_section("SpiceBot_Update", SpiceBot_Update_MainSection, validate=False)
 
 
 @SpiceBot.prerun.prerun('nickname')
@@ -51,9 +52,9 @@ def nickname_comand_update(bot, trigger):
     bot.osd(quitmessage, bot.channels.keys())
 
     if commandused == 'nodeps':
-        SpiceBot.spicebot_update(bot, False)
+        SpiceBot.spicebot_update(False)
     if commandused == 'deps':
-        SpiceBot.spicebot_update(bot, True)
+        SpiceBot.spicebot_update(True)
 
-    # service_manip(bot, bot.nick, 'restart', 'SpiceBot_Update')
+    # service_manip(bot.nick, 'restart', 'SpiceBot_Update')
     SpiceBot.spicebot_reload(bot, 'SpiceBot_Update', quitmessage)

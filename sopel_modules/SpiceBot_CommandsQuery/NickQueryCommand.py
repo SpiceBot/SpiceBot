@@ -39,7 +39,7 @@ def query_detection_nick(bot, trigger):
 
         if trigger.sb['com'].lower() not in list(commands_list.keys()):
             dispmsg = ["Cannot find any alias " + bot.nick + " commands: No valid commands match " + str(trigger.sb['com']) + "."]
-            closestmatches = SpiceBot.similar_list(bot, trigger.sb['com'], list(commands_list.keys()), 10, 'reverse')
+            closestmatches = SpiceBot.similar_list(trigger.sb['com'], list(commands_list.keys()), 10, 'reverse')
             if len(closestmatches):
                 dispmsg.append("The following " + bot.nick + " commands match " + str(trigger.sb['com']) + ": " + spicemanip.main(closestmatches, 'andlist') + ".")
             bot.osd(dispmsg, trigger.nick, 'notice')
@@ -58,7 +58,7 @@ def query_detection_nick(bot, trigger):
         if not trigger.sb['com'] or not len(trigger.sb['com']):
             return
 
-        closestmatches = SpiceBot.similar_list(bot, trigger.sb['com'], list(commands_list.keys()), 10, 'reverse')
+        closestmatches = SpiceBot.similar_list(trigger.sb['com'], list(commands_list.keys()), 10, 'reverse')
         if not len(closestmatches):
             bot.osd("Cannot find any similar " + bot.nick + " commands for " + str(trigger.sb['com']) + ".", trigger.nick, 'notice')
         else:

@@ -16,4 +16,4 @@ def setup(bot):
         bot.memory['url_callbacks'] = sopel.tools.SopelMemory()
 
     SpiceBot.logs.log('Sopel_Patch', "Removing Stock Modules and verifying Dummy Command is present.")
-    SpiceBot.stock_modules_begone(bot)
+    SpiceBot.stock_modules_begone()

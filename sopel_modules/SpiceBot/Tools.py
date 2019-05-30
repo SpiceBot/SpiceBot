@@ -20,6 +20,7 @@ from pygit2 import clone_repository
 import spicemanip
 
 from .Logs import logs
+from .Config import config as botconfig
 
 
 """Variable References"""
@@ -38,10 +39,10 @@ github_dict = {
 """Sopel Wrapping Tools"""
 
 
-def bot_privs(bot, privtype):
+def bot_privs(privtype):
     if privtype == 'owners':
         privtype = 'owner'
-    botpriveval = eval("bot.config.core." + privtype)
+    botpriveval = eval("botconfig.config.config.core." + privtype)
     if not isinstance(botpriveval, list):
         botpriveval = [botpriveval]
     return botpriveval
@@ -53,7 +54,7 @@ def command_permissions_check(bot, trigger, privslist):
 
     for botpriv in ["admins", "owner"]:
         if botpriv in privslist:
-            botpriveval = bot_privs(bot, botpriv)
+            botpriveval = bot_privs(botpriv)
             if not inlist(trigger.nick, botpriveval):
                 commandrunconsensus.append('False')
             else:
@@ -117,7 +118,7 @@ def humanized_time(countdownseconds):
 """Online Information Requests"""
 
 
-def googlesearch(bot, searchterm, searchtype=None):
+def googlesearch(searchterm, searchtype=None):
     header = {'User-Agent': str(UserAgent().chrome)}
     data = searchterm.replace(' ', '+')
     lookfor = data.replace(':', '%3A')
@@ -184,7 +185,7 @@ def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
 
 
-def similar_list(bot, searchitem, searchlist, matchcount=1, searchorder='reverse'):
+def similar_list(searchitem, searchlist, matchcount=1, searchorder='reverse'):
 
     if sys.version_info.major >= 3:
         if isinstance(searchlist, abc.KeysView):
@@ -213,7 +214,7 @@ def similar_list(bot, searchitem, searchlist, matchcount=1, searchorder='reverse
     return sim_listitems
 
 
-def array_arrangesort(bot, sortbyarray, arrayb):
+def array_arrangesort(sortbyarray, arrayb):
     sortbyarray, arrayb = (list(x) for x in zip(*sorted(zip(sortbyarray, arrayb), key=itemgetter(0))))
     return sortbyarray, arrayb
 
@@ -249,7 +250,7 @@ def channel_privs(bot, channel, privtype):
 """Environment Functions"""
 
 
-def stock_modules_begone(bot):
+def stock_modules_begone():
 
     # Remove stock modules, if present
     main_sopel_dir = os.path.dirname(os.path.abspath(sopel.__file__))
@@ -273,7 +274,7 @@ def stock_modules_begone(bot):
                 os.system("sudo mv " + path + " " + stockdir)
 
 
-def spicebot_update(bot, deps=False):
+def spicebot_update(deps=False):
 
     if not os.path.exists("/tmp") or not os.path.isdir("/tmp"):
         os.system("sudo mkdir /tmp")
@@ -283,13 +284,13 @@ def spicebot_update(bot, deps=False):
 
     logs.log('SpiceBot_Update', "Cloning  to " + clonepath, True)
 
-    clone_repository(str(bot.config.SpiceBot_Update.gitrepo + ".git"), clonepath, checkout_branch=bot.config.SpiceBot_Update.gitbranch)
+    clone_repository(str(botconfig.config.config.SpiceBot_Update.gitrepo + ".git"), clonepath, checkout_branch=botconfig.config.config.SpiceBot_Update.gitbranch)
 
     pipcommand = "sudo pip3 install --upgrade"
     if not deps:
          pipcommand += " --no-deps"
     pipcommand += " --force-reinstall"
-    # pipcommand += " git+" + str(bot.config.SpiceBot_Update.gitrepo) + "@" + str(bot.config.SpiceBot_Update.gitbranch)
+    # pipcommand += " git+" + str(botconfig.config.config.SpiceBot_Update.gitrepo) + "@" + str(botconfig.config.config.SpiceBot_Update.gitbranch)
     pipcommand += " /tmp/SpiceBot/"
 
     logs.log('SpiceBot_Update', "Running `" + pipcommand + "`", True)
@@ -301,15 +302,15 @@ def spicebot_update(bot, deps=False):
 
     os.system("sudo rm -r /tmp/SpiceBot")
 
-    stock_modules_begone(bot)
+    stock_modules_begone()
 
 
 def spicebot_reload(bot, log_from='service_manip', quitmessage='Recieved QUIT'):
-    # service_manip(bot, bot.nick, 'restart', log_from)
+    # service_manip(bot.nick, 'restart', log_from)
     bot.restart(quitmessage)
 
 
-def service_manip(bot, servicename, dowhat, log_from='service_manip'):
+def service_manip(servicename, dowhat, log_from='service_manip'):
     if str(dowhat) not in ["start", "stop", "restart"]:
         return
     try:
@@ -322,7 +323,7 @@ def service_manip(bot, servicename, dowhat, log_from='service_manip'):
 """Config Reading Functions"""
 
 
-def read_directory_json_to_dict(bot, directories, configtypename="Config File", log_from='read_directory_json_to_dict'):
+def read_directory_json_to_dict(directories, configtypename="Config File", log_from='read_directory_json_to_dict', logging=True):
 
     if not isinstance(directories, list):
         directories = [directories]
@@ -347,7 +348,7 @@ def read_directory_json_to_dict(bot, directories, configtypename="Config File", 
             dict_from_file = eval(infread)
         except Exception as e:
             filereadgood = False
-            if bot:
+            if logging:
                 logs.log(log_from, "Error loading %s: %s (%s)" % (configtypename, e, filepath))
             dict_from_file = dict()
         # Close File
@@ -362,11 +363,11 @@ def read_directory_json_to_dict(bot, directories, configtypename="Config File", 
             fileopenfail += 1
 
     if filecount:
-        if bot:
+        if logging:
             logs.log(log_from, 'Registered %d %s dict files,' % (filecount, configtypename))
             logs.log(log_from, '%d %s dict files failed to load' % (fileopenfail, configtypename), True)
     else:
-        if bot:
+        if logging:
             logs.log(log_from, "Warning: Couldn't load any %s dict files" % (configtypename))
 
     return configs_dict

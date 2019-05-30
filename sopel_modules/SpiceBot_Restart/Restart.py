@@ -18,5 +18,5 @@ def nickname_comand_restart(bot, trigger):
     SpiceBot.logs.log('SpiceBot_Restart', quitmessage)
     bot.osd(quitmessage, bot.channels.keys())
 
-    # service_manip(bot, bot.nick, 'restart', 'SpiceBot_Restart')
+    # service_manip(bot.nick, 'restart', 'SpiceBot_Restart')
     SpiceBot.spicebot_reload(bot, 'SpiceBot_Restart', quitmessage)

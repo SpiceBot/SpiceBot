@@ -32,6 +32,7 @@ def setup(bot):
     SpiceBot.logs.log('SpiceBot_Channels', "Starting setup procedure")
     SpiceBot.events.startup_add([SpiceBot.events.BOT_CHANNELS])
     bot.config.define_section("SpiceBot_Channels", SpiceBot_Channels_MainSection, validate=False)
+    SpiceBot.config.config.define_section("SpiceBot_Channels", SpiceBot_Channels_MainSection, validate=False)
 
 
 @sopel.module.event(SpiceBot.events.RPL_WELCOME)

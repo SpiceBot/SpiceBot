@@ -29,7 +29,7 @@ class GifAPISection(StaticSection):
 def configure(config):
     moduledir = os.path.dirname(os.path.abspath(__file__))
     api_dir = os.path.join(moduledir, 'gifapi')
-    valid_gif_api_dict = SpiceBot.read_directory_json_to_dict(None, [api_dir], "Gif API", "SpiceBot_GifSearch")
+    valid_gif_api_dict = SpiceBot.read_directory_json_to_dict([api_dir], "Gif API", "SpiceBot_GifSearch", logging=True)
 
     config.define_section("SopelGifSearch", GifAPIMainSection, validate=False)
     config.SopelGifSearch.configure_setting('extra', 'SpiceBot_GifSearch API Extra directory')
@@ -55,13 +55,15 @@ def setup(bot):
     dir_to_scan.append(api_dir)
 
     bot.config.define_section("SopelGifSearch", GifAPIMainSection, validate=False)
+    SpiceBot.config.config.define_section("SopelGifSearch", GifAPIMainSection, validate=False)
     if bot.config.SopelGifSearch.extra:
         dir_to_scan.append(bot.config.SopelGifSearch.extra)
 
-    valid_gif_api_dict = SpiceBot.read_directory_json_to_dict(bot, dir_to_scan, "Gif API", "SpiceBot_GifSearch")
+    valid_gif_api_dict = SpiceBot.read_directory_json_to_dict(dir_to_scan, "Gif API", "SpiceBot_GifSearch", logging=True)
 
     for gif_api in valid_gif_api_dict.keys():
         bot.config.define_section(gif_api, GifAPISection, validate=False)
+        SpiceBot.config.config.define_section(gif_api, GifAPISection, validate=False)
         apikey = eval("bot.config." + gif_api + ".apikey")
         if apikey:
             valid_gif_api_dict[gif_api]["apikey"] = apikey

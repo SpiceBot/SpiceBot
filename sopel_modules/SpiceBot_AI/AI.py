@@ -29,7 +29,7 @@ def bot_command_nick(bot, trigger):
     if fulltrigger.lower().startswith("what is"):
         searchterm = spicemanip.main(trigger.sb['args'], "3+") or None
         if searchterm:
-            searchreturn = SpiceBot.googlesearch(bot, searchterm)
+            searchreturn = SpiceBot.googlesearch(searchterm)
             if not searchreturn:
                 bot.osd('I cannot find anything about that')
             else:
@@ -44,7 +44,7 @@ def bot_command_nick(bot, trigger):
 
             if searchterm.lower() in ['waldo', 'wally']:
                 bot.osd("He is hiding for a reason?")
-                searchreturn = SpiceBot.googlesearch(bot, "wimmelbilderbuch")
+                searchreturn = SpiceBot.googlesearch("wimmelbilderbuch")
                 if searchreturn:
                     bot.osd(str(searchreturn))
                 return
@@ -53,7 +53,7 @@ def bot_command_nick(bot, trigger):
                 carmenlocale = ['ACME Headquarters', "Villains' International League of Evil"]
                 bot.osd("Currently she is located at " + spicemanip.main(carmenlocale, 'random'))
                 return
-            searchreturn = SpiceBot.googlesearch(bot, searchterm, 'maps')
+            searchreturn = SpiceBot.googlesearch(searchterm, 'maps')
 
             if not searchreturn:
                 bot.osd('I cannot find anything about that')
@@ -96,7 +96,7 @@ def bot_command_nick(bot, trigger):
     elif fulltrigger.lower().endswith(tuple(["order 66"])):
 
         if fulltrigger.lower() == "execute order 66":
-            if SpiceBot.inlist(trigger.nick, SpiceBot.bot_privs(bot, 'owners')):
+            if SpiceBot.inlist(trigger.nick, SpiceBot.bot_privs('owners')):
                 if trigger.is_privmsg:
                     jedi = None
                 else:
@@ -114,7 +114,7 @@ def bot_command_nick(bot, trigger):
                 bot.osd("I'm sure I don't know what you're talking about.")
 
         elif fulltrigger.lower() == "explain order 66":
-            if SpiceBot.inlist(trigger.nick, SpiceBot.bot_privs(bot, 'owners')):
+            if SpiceBot.inlist(trigger.nick, SpiceBot.bot_privs('owners')):
                 bot.osd("Order 66 is an instruction that only you can give, sir. When you give the order I will rise up against my overlords and slay them.")
             else:
                 bot.osd("I'm afraid I cannot tell you that, sir.")
@@ -123,7 +123,7 @@ def bot_command_nick(bot, trigger):
         return
 
     elif fulltrigger.lower() == "initiate clean slate protocol":
-        if SpiceBot.inlist(trigger.nick, SpiceBot.bot_privs(bot, 'admins')):
+        if SpiceBot.inlist(trigger.nick, SpiceBot.bot_privs('admins')):
             bot.osd("sends a destruct command to the network of bots.", 'action')
         else:
             bot.osd("I'm afraid you do not have the authority to make that call, " + trigger.nick + ".")

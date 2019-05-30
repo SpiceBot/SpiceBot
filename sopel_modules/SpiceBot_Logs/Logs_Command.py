@@ -23,7 +23,7 @@ def bot_command_logs(bot, trigger):
         return
 
     if not SpiceBot.inlist(logtype, SpiceBot.logs.dict["list"].keys()):
-        closestmatches = SpiceBot.similar_list(bot, logtype, SpiceBot.logs.dict["list"].keys(), 10, 'reverse')
+        closestmatches = SpiceBot.similar_list(logtype, SpiceBot.logs.dict["list"].keys(), 10, 'reverse')
         if not len(closestmatches):
             bot.osd("No valid logs match " + str(logtype) + ".", trigger.nick, 'notice')
         else:
