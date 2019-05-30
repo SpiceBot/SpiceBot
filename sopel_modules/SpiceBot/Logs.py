@@ -11,6 +11,8 @@ import threading
 import os
 import spicemanip
 
+from .Config import config as botconfig
+
 
 class BotLogs():
     """This Is a contained source of log information"""
@@ -20,9 +22,6 @@ class BotLogs():
                     "list": {"Sopel_systemd": [], "Sopel_stdio": []},
                     "queue": []
                     }
-        self.sopel_config = {
-                                "logging_channel": True
-                                }
 
     def log(self, logtype, logentry, stdio=False):
 
@@ -31,7 +30,7 @@ class BotLogs():
         logtitle = "[" + logtype + "]"
         logmessage = logtitle + "    " + logentry
 
-        if self.sopel_config["logging_channel"]:
+        if botconfig.config.core.logging_channel:
             self.dict["queue"].append(logmessage)
 
         if stdio:
@@ -43,22 +42,22 @@ class BotLogs():
 
         self.lock.release()
 
-    def get_logs(self, bot, logtype):
+    def get_logs(self, logtype):
         if logtype == "Sopel_systemd":
-            logindex = self.systemd_logs_fetch(bot)
+            logindex = self.systemd_logs_fetch()
         elif logtype == "Sopel_stdio":
-            logindex = self.stdio_logs_fetch(bot)
+            logindex = self.stdio_logs_fetch()
         else:
             logindex = self.dict["list"][logtype]
         return logindex
 
-    def stdio_logs_fetch(self, bot):
+    def stdio_logs_fetch(self):
 
         stdio_ignore = []
         for logtype in self.dict["list"].keys():
             stdio_ignore.append("[" + logtype + "]")
 
-        logfile = os.path.os.path.join(bot.config.core.logdir, 'stdio.log')
+        logfile = os.path.os.path.join(botconfig.config.core.logdir, 'stdio.log')
 
         try:
             log_file_lines = []
@@ -92,8 +91,8 @@ class BotLogs():
 
         return debuglines
 
-    def systemd_logs_fetch(self, bot):
-        servicepid = self.get_running_pid(bot)
+    def systemd_logs_fetch(self):
+        servicepid = self.get_running_pid()
         debuglines = []
         for line in os.popen(str("sudo journalctl _PID=" + str(servicepid))).read().split('\n'):
             line = str(line).split(str(os.uname()[1] + " "))[-1]
@@ -104,14 +103,14 @@ class BotLogs():
                 debuglines.append(str(line))
         return debuglines
 
-    def get_running_pid(self, bot):
+    def get_running_pid(self):
         try:
-            filename = "/run/sopel/sopel-" + str(bot.nick) + ".pid"
+            filename = "/run/sopel/sopel-" + str(botconfig.config.core.nick) + ".pid"
             with open(filename, 'r') as pid_file:
                 pidnum = int(pid_file.read())
         except Exception as e:
             pidnum = e
-            pidnum = str(os.popen("systemctl show " + str(bot.nick) + " --property=MainPID").read()).split("=")[-1]
+            pidnum = str(os.popen("systemctl show " + str(botconfig.config.core.nick) + " --property=MainPID").read()).split("=")[-1]
         return pidnum
 
 

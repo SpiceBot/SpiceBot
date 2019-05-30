@@ -33,7 +33,7 @@ def bot_command_logs(bot, trigger):
 
     logtype = SpiceBot.inlist_match(logtype, SpiceBot.logs.dict["list"].keys())
 
-    logindex = SpiceBot.logs.get_logs(bot, logtype)
+    logindex = SpiceBot.logs.get_logs(logtype)
 
     if not len(logindex):
         bot.osd("No logs found for " + str(logtype) + ".")

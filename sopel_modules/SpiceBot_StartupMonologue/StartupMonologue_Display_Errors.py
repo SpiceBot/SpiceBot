@@ -10,7 +10,7 @@ import sopel_modules.SpiceBot as SpiceBot
 @sopel.module.rule('.*')
 def bot_startup_monologue_start(bot, trigger):
 
-    debuglines = SpiceBot.logs.stdio_logs_fetch(bot)
+    debuglines = SpiceBot.logs.stdio_logs_fetch()
 
     searchphrasefound = []
     for line in debuglines:

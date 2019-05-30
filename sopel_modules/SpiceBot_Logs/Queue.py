@@ -18,7 +18,7 @@ def setup(bot):
 @sopel.module.rule('.*')
 def join_log_channel(bot, trigger):
 
-    if bot.config.core.logging_channel:
+    if SpiceBot.config.config.core.logging_channel:
         channel = bot.config.core.logging_channel
         if channel not in bot.channels.keys():
             bot.write(('JOIN', bot.nick, channel))
@@ -30,5 +30,4 @@ def join_log_channel(bot, trigger):
                 bot.osd(str(SpiceBot.logs.dict["queue"][0]), channel)
                 del SpiceBot.logs.dict["queue"][0]
     else:
-        SpiceBot.logs.sopel_config["logging_channel"] = False
         SpiceBot.logs.dict["queue"] = []
