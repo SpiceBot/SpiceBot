@@ -28,7 +28,6 @@ class PluginValues(BASE):
     __tablename__ = 'plugin_values'
     plugin = Column(String(255), primary_key=True)
     key = Column(String(255), primary_key=True)
-    category = Column(String(255))
     value = Column(String(255))
 
 
