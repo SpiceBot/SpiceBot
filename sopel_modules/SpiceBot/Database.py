@@ -500,6 +500,7 @@ class BotDatabase():
         SopelDB.adjust_plugin_list = SpiceDB.adjust_plugin_list
 
         self.db = SopelDB(botconfig.config)
+        BASE.metadata.create_all(self.db.engine)
 
     """Nick"""
 
