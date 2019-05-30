@@ -27,9 +27,9 @@ class PluginValues(BASE):
     """
     __tablename__ = 'plugin_values'
     plugin = Column(String(255), primary_key=True)
-    category = Column(String(255), primary_key=True)
     key = Column(String(255), primary_key=True)
     value = Column(String(255))
+    category = Column(String(255))
 
 
 class SpiceDB(object):
@@ -225,7 +225,7 @@ class SpiceDB(object):
         try:
             result = session.query(PluginValues) \
                 .filter(PluginValues.plugin == plugin)\
-                .filter(PluginValues.category == category)\
+                .filter_by(category=category) \
                 .filter(PluginValues.key == key) \
                 .one_or_none()
             # PluginValues exists, update
@@ -250,7 +250,7 @@ class SpiceDB(object):
         try:
             result = session.query(PluginValues) \
                 .filter(PluginValues.plugin == plugin)\
-                .filter(PluginValues.category == category)\
+                .filter_by(category=category) \
                 .filter(PluginValues.key == key) \
                 .one_or_none()
             if result is not None:
@@ -269,7 +269,7 @@ class SpiceDB(object):
         try:
             result = session.query(PluginValues) \
                 .filter(PluginValues.plugin == plugin)\
-                .filter(PluginValues.category == category)\
+                .filter_by(category=category) \
                 .filter(PluginValues.key == key) \
                 .one_or_none()
             # PluginValues exists, delete
@@ -290,7 +290,7 @@ class SpiceDB(object):
         try:
             result = session.query(PluginValues) \
                 .filter(PluginValues.plugin == plugin)\
-                .filter(PluginValues.category == category)\
+                .filter_by(category=category) \
                 .filter(PluginValues.key == key) \
                 .one_or_none()
             # ChannelValue exists, update
@@ -318,7 +318,7 @@ class SpiceDB(object):
         try:
             result = session.query(PluginValues) \
                 .filter(PluginValues.plugin == plugin)\
-                .filter(PluginValues.category == category)\
+                .filter_by(category=category) \
                 .filter(PluginValues.key == key) \
                 .one_or_none()
             # ChannelValue exists, update
