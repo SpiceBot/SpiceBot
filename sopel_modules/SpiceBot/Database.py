@@ -27,8 +27,8 @@ class PluginValues(BASE):
     """
     __tablename__ = 'plugin_values'
     plugin = Column(String(255), primary_key=True)
-    category = Column(String(255), primary_key=True)
-    key = Column(String(255))
+    key = Column(String(255), primary_key=True)
+    category = Column(String(255))
     value = Column(String(255))
 
 
@@ -217,7 +217,7 @@ class SpiceDB(object):
 
     # PLUGIN FUNCTIONS
 
-    def set_plugin_value(self, plugin, key, value, category='default'):
+    def set_plugin_value(self, plugin, key, value):
         """Sets the value for a given key to be associated with the plugin."""
         plugin = Identifier(plugin).lower()
         value = json.dumps(value, ensure_ascii=False)
@@ -225,7 +225,6 @@ class SpiceDB(object):
         try:
             result = session.query(PluginValues) \
                 .filter(PluginValues.plugin == plugin)\
-                .filter(PluginValues.category == category)\
                 .filter(PluginValues.key == key) \
                 .one_or_none()
             # PluginValues exists, update
@@ -234,7 +233,7 @@ class SpiceDB(object):
                 session.commit()
             # DNE - Insert
             else:
-                new_pluginvalue = PluginValues(plugin=plugin, category=category, key=key, value=value)
+                new_pluginvalue = PluginValues(plugin=plugin, key=key, value=value)
                 session.add(new_pluginvalue)
                 session.commit()
         except SQLAlchemyError:
@@ -243,14 +242,13 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def get_plugin_value(self, plugin, key, category='default'):
+    def get_plugin_value(self, plugin, key):
         """Retrieves the value for a given key associated with a plugin."""
         plugin = Identifier(plugin).lower()
         session = self.ssession()
         try:
             result = session.query(PluginValues) \
                 .filter(PluginValues.plugin == plugin)\
-                .filter(PluginValues.category == category)\
                 .filter(PluginValues.key == key) \
                 .one_or_none()
             if result is not None:
@@ -262,14 +260,13 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def delete_plugin_value(self, plugin, key, category='default'):
+    def delete_plugin_value(self, plugin, key):
         """Deletes the value for a given key to be associated with the plugin."""
         plugin = Identifier(plugin).lower()
         session = self.ssession()
         try:
             result = session.query(PluginValues) \
                 .filter(PluginValues.plugin == plugin)\
-                .filter(PluginValues.category == category)\
                 .filter(PluginValues.key == key) \
                 .one_or_none()
             # PluginValues exists, delete
@@ -282,7 +279,7 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def adjust_plugin_value(self, plugin, key, value, category='default'):
+    def adjust_plugin_value(self, plugin, key, value):
         """Sets the value for a given key to be associated with the plugin."""
         plugin = Identifier(plugin).lower()
         value = json.dumps(value, ensure_ascii=False)
@@ -290,7 +287,6 @@ class SpiceDB(object):
         try:
             result = session.query(PluginValues) \
                 .filter(PluginValues.plugin == plugin)\
-                .filter(PluginValues.category == category)\
                 .filter(PluginValues.key == key) \
                 .one_or_none()
             # ChannelValue exists, update
@@ -299,7 +295,7 @@ class SpiceDB(object):
                 session.commit()
             # DNE - Insert
             else:
-                new_pluginvalue = PluginValues(plugin=plugin, category=category, key=key, value=float(value))
+                new_pluginvalue = PluginValues(plugin=plugin, key=key, value=float(value))
                 session.add(new_pluginvalue)
                 session.commit()
         except SQLAlchemyError:
@@ -308,7 +304,7 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def adjust_plugin_list(self, plugin, key, entries, adjustmentdirection, category='default'):
+    def adjust_plugin_list(self, plugin, key, entries, adjustmentdirection):
         """Sets the value for a given key to be associated with the plugin."""
         plugin = Identifier(plugin).lower()
         if not isinstance(entries, list):
@@ -318,7 +314,6 @@ class SpiceDB(object):
         try:
             result = session.query(PluginValues) \
                 .filter(PluginValues.plugin == plugin)\
-                .filter(PluginValues.category == category)\
                 .filter(PluginValues.key == key) \
                 .one_or_none()
             # ChannelValue exists, update
@@ -343,7 +338,7 @@ class SpiceDB(object):
                     for entry in entries:
                         while entry in values:
                             values.remove(entry)
-                new_pluginvalue = PluginValues(plugin=plugin, category=category, key=key, value=values)
+                new_pluginvalue = PluginValues(plugin=plugin, key=key, value=values)
                 session.add(new_pluginvalue)
                 session.commit()
         except SQLAlchemyError:
