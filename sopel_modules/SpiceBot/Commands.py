@@ -12,6 +12,7 @@ import threading
 import spicemanip
 
 from .Logs import logs
+from .Config import config as botconfig
 from .Database import db as botdb
 
 
@@ -37,13 +38,13 @@ class BotCommands():
                         return commandstype
         return None
 
-    def get_commands_disabled(self, bot, channel):
+    def get_commands_disabled(self, channel):
         if not len(list(self.dict['disabled'])):
-            self.dict['disabled'] = botdb.get_channel_value(bot, channel, 'commands_disabled') or {}
+            self.dict['disabled'] = botdb.get_channel_value(channel, 'commands_disabled') or {}
         return self.dict['disabled']
 
-    def check_commands_disabled(self, bot, command, channel):
-        if command in self.get_commands_disabled(bot, channel).keys():
+    def check_commands_disabled(self, command, channel):
+        if command in self.get_commands_disabled(channel).keys():
             return True
         else:
             return False
@@ -62,20 +63,20 @@ class BotCommands():
 
         return realcom
 
-    def set_command_disabled(self, bot, command, channel, timestamp, reason, bywhom):
+    def set_command_disabled(self, command, channel, timestamp, reason, bywhom):
         if not len(list(self.dict['disabled'])):
-            self.dict['disabled'] = botdb.get_channel_value(bot, channel, 'commands_disabled') or {}
+            self.dict['disabled'] = botdb.get_channel_value(channel, 'commands_disabled') or {}
         self.dict['disabled'][command] = {"reason": reason, "timestamp": timestamp, "disabledby": bywhom}
-        botdb.set_channel_value(bot, channel, 'commands_disabled', self.dict['disabled'])
+        botdb.set_channel_value(channel, 'commands_disabled', self.dict['disabled'])
 
-    def unset_command_disabled(self, bot, command, channel):
+    def unset_command_disabled(self, command, channel):
         if not len(list(self.dict['disabled'])):
-            self.dict['disabled'] = botdb.get_channel_value(bot, channel, 'commands_disabled') or {}
+            self.dict['disabled'] = botdb.get_channel_value(channel, 'commands_disabled') or {}
         if command in self.dict['disabled'].keys():
             del self.dict['disabled'][command]
-        botdb.set_channel_value(bot, channel, 'commands_disabled', self.dict['disabled'])
+        botdb.set_channel_value(channel, 'commands_disabled', self.dict['disabled'])
 
-    def register(self, bot, command_dict):
+    def register(self, command_dict):
 
         self.lock.acquire()
 
@@ -107,7 +108,7 @@ class BotCommands():
 
         self.lock.release()
 
-    def module_directory_list(self, bot):
+    def module_directory_list(self):
         filepathlisting = []
 
         # main Modules directory
@@ -116,7 +117,7 @@ class BotCommands():
         filepathlisting.append(modules_dir)
 
         # Home Directory
-        home_modules_dir = os.path.join(bot.config.homedir, 'modules')
+        home_modules_dir = os.path.join(botconfig.config.homedir, 'modules')
         if os.path.isdir(home_modules_dir):
             filepathlisting.append(home_modules_dir)
 
@@ -131,13 +132,13 @@ class BotCommands():
             logs.log('SpiceBot_CommandsQuery', "sopel_modules not loaded :" + str(e))
 
         # Extra directories
-        for directory in bot.config.core.extra:
+        for directory in botconfig.dict["core"]["extra"]:
             filepathlisting.append(directory)
 
         return filepathlisting
 
-    def module_files_list(self, bot):
-        filepathlisting = self.module_directory_list(bot)
+    def module_files_list(self):
+        filepathlisting = self.module_directory_list()
 
         filepathlist = []
 
@@ -155,8 +156,8 @@ class BotCommands():
 
         return filepathlist
 
-    def module_files_parse(self, bot):
-        filepathlist = self.module_files_list(bot)
+    def module_files_parse(self):
+        filepathlist = self.module_files_list()
 
         for modulefile in filepathlist:
 
@@ -226,7 +227,7 @@ class BotCommands():
 
                 if len(filelinelist):
                     for atlinefound in filelinelist:
-                        self.register(bot, atlinefound)
+                        self.register(atlinefound)
 
 
 commands = BotCommands()

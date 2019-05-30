@@ -12,7 +12,7 @@ def setup(bot):
     SpiceBot.logs.log('SpiceBot_Commands', "Starting setup procedure")
     SpiceBot.events.startup_add([SpiceBot.events.BOT_COMMANDSQUERY])
 
-    SpiceBot.commands.module_files_parse(bot)
+    SpiceBot.commands.module_files_parse()
 
     for comtype in ['module', 'nickname', 'rule']:
         SpiceBot.logs.log('SpiceBot_Commands', "Found " + str(len(SpiceBot.commands.dict['commands'][comtype].keys())) + " " + comtype + " commands.", True)

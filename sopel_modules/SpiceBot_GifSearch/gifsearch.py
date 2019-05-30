@@ -75,7 +75,7 @@ def setup(bot):
                         "validcoms": validgifapi
                         }
         SpiceBot.commands.dict['counts'] += 1
-        SpiceBot.commands.register(bot, command_dict)
+        SpiceBot.commands.register(command_dict)
 
         if validgifapi not in bot.memory["SpiceBot_GifSearch"]['cache'].keys():
             bot.memory["SpiceBot_GifSearch"]['cache'][validgifapi] = dict()
