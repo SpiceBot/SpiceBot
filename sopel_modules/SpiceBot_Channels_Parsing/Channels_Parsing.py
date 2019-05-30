@@ -4,35 +4,12 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 # sopel imports
 import sopel.module
-from sopel.config.types import StaticSection, ValidatedAttribute, ListAttribute
 
 import sopel_modules.SpiceBot as SpiceBot
 
 import spicemanip
 
 import time
-
-
-class SpiceBot_Channels_MainSection(StaticSection):
-    announcenew = ValidatedAttribute('announcenew', default=False)
-    joinall = ValidatedAttribute('joinall', default=False)
-    operadmin = ValidatedAttribute('operadmin', default=False)
-    chanignore = ListAttribute('chanignore')
-
-
-def configure(config):
-    config.define_section("SpiceBot_Channels", SpiceBot_Channels_MainSection, validate=False)
-    config.SpiceBot_Channels.configure_setting('announcenew', 'SpiceBot_Channels Announce New Channels')
-    config.SpiceBot_Channels.configure_setting('joinall', 'SpiceBot_Channels JOIN New Channels')
-    config.SpiceBot_Channels.configure_setting('operadmin', 'SpiceBot_Channels OPER ADMIN MODE')
-    config.SpiceBot_Channels.configure_setting('chanignore', 'SpiceBot_Channels Ignore JOIN for channels')
-
-
-def setup(bot):
-    SpiceBot.logs.log('SpiceBot_Channels', "Starting setup procedure")
-    SpiceBot.events.startup_add([SpiceBot.events.BOT_CHANNELS])
-    bot.config.define_section("SpiceBot_Channels", SpiceBot_Channels_MainSection, validate=False)
-    SpiceBot.config.config.define_section("SpiceBot_Channels", SpiceBot_Channels_MainSection, validate=False)
 
 
 @sopel.module.event(SpiceBot.events.RPL_WELCOME)

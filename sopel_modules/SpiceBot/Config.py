@@ -36,10 +36,15 @@ class BotConfig():
                 if each_key.lower() not in self.dict[each_section.lower()].keys():
                     self.dict[each_section.lower()][each_key.lower()] = each_val
 
+    def define_section(self, name, cls_, validate=True):
+        return self.config.define_section(name, cls_, validate)
+
     def __getattr__(self, name):
         ''' will only get called for undefined attributes '''
         """We will try to find a core value, or return None"""
-        if name.lower() in self.dict["core"].keys():
+        if hasattr(self.config.core, name):
+            return eval("self.config.core." + name)
+        elif name.lower() in self.dict["core"].keys():
             return self.dict["core"][str(name).lower()]
         else:
             return None
