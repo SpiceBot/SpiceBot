@@ -7,7 +7,7 @@ This is the SpiceBot Database
 # sopel imports
 from sopel.tools import Identifier
 import sopel.db
-from sopel.db import SopelDB, _deserialize, Nicknames
+from sopel.db import SopelDB, _deserialize, Nicknames, NickIDs
 
 from .Config import config as botconfig
 
@@ -55,6 +55,9 @@ class PluginValues(BASE):
 
 
 class SpiceDB(object):
+
+    def dummyfunc_pep(self):
+        return NickIDs
 
     # NICK FUNCTIONS
 
