@@ -2,7 +2,6 @@
 from __future__ import unicode_literals, absolute_import, division, print_function
 """A way to read the bot's config without bot"""
 
-import sopel.config
 from sopel.cli.run import build_parser, get_configuration
 
 import sys
