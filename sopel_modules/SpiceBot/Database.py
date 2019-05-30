@@ -27,7 +27,7 @@ class NickValues(BASE):
     """
     __tablename__ = 'nick_values'
     nick_id = Column(Integer, ForeignKey('nick_ids.nick_id'), primary_key=True)
-    category = Column(String(255), primary_key=True)
+    # category = Column(String(255), primary_key=True)
     key = Column(String(255), primary_key=True)
     value = Column(String(255))
 
@@ -38,7 +38,7 @@ class ChannelValues(BASE):
     """
     __tablename__ = 'channel_values'
     channel = Column(String(255), primary_key=True)
-    category = Column(String(255), primary_key=True)
+    # category = Column(String(255), primary_key=True)
     key = Column(String(255), primary_key=True)
     value = Column(String(255))
 
@@ -49,7 +49,7 @@ class PluginValues(BASE):
     """
     __tablename__ = 'plugin_values'
     plugin = Column(String(255), primary_key=True)
-    category = Column(String(255), primary_key=True)
+    # category = Column(String(255), primary_key=True)
     key = Column(String(255), primary_key=True)
     value = Column(String(255))
 
@@ -58,7 +58,7 @@ class SpiceDB(object):
 
     # NICK FUNCTIONS
 
-    def set_nick_value(self, nick, key, value, category='default'):
+    def set_nick_value(self, nick, key, value):
         """Sets the value for a given key to be associated with the nick."""
         nick = Identifier(nick)
         value = json.dumps(value, ensure_ascii=False)
@@ -67,7 +67,6 @@ class SpiceDB(object):
         try:
             result = session.query(NickValues) \
                 .filter(NickValues.nick_id == nick_id) \
-                .filter(NickValues.category == category)\
                 .filter(NickValues.key == key) \
                 .one_or_none()
             # NickValue exists, update
@@ -76,7 +75,7 @@ class SpiceDB(object):
                 session.commit()
             # DNE - Insert
             else:
-                new_nickvalue = NickValues(nick_id=nick_id, category=category, key=key, value=value)
+                new_nickvalue = NickValues(nick_id=nick_id, key=key, value=value)
                 session.add(new_nickvalue)
                 session.commit()
         except SQLAlchemyError:
@@ -85,7 +84,7 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def get_nick_value(self, nick, key, category='default'):
+    def get_nick_value(self, nick, key):
         """Retrieves the value for a given key associated with a nick."""
         nick = Identifier(nick)
         session = self.ssession()
@@ -93,7 +92,6 @@ class SpiceDB(object):
             result = session.query(NickValues) \
                 .filter(Nicknames.nick_id == NickValues.nick_id) \
                 .filter(Nicknames.slug == nick.lower()) \
-                .filter(NickValues.category == category)\
                 .filter(NickValues.key == key) \
                 .one_or_none()
             if result is not None:
@@ -105,7 +103,7 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def delete_nick_value(self, nick, key, category='default'):
+    def delete_nick_value(self, nick, key):
         """Deletes the value for a given key to be associated with the nick."""
         nick = Identifier(nick)
         nick_id = self.get_nick_id(nick)
@@ -113,7 +111,6 @@ class SpiceDB(object):
         try:
             result = session.query(NickValues) \
                 .filter(NickValues.nick_id == nick_id) \
-                .filter(NickValues.category == category)\
                 .filter(NickValues.key == key) \
                 .one_or_none()
             # NickValue exists, delete
@@ -126,7 +123,7 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def adjust_nick_value(self, nick, key, value, category='default'):
+    def adjust_nick_value(self, nick, key, value):
         """Sets the value for a given key to be associated with the nick."""
         nick = Identifier(nick)
         value = json.dumps(value, ensure_ascii=False)
@@ -135,7 +132,6 @@ class SpiceDB(object):
         try:
             result = session.query(NickValues) \
                 .filter(NickValues.nick_id == nick_id) \
-                .filter(NickValues.category == category)\
                 .filter(NickValues.key == key) \
                 .one_or_none()
             # NickValue exists, update
@@ -144,7 +140,7 @@ class SpiceDB(object):
                 session.commit()
             # DNE - Insert
             else:
-                new_nickvalue = NickValues(nick_id=nick_id, category=category, key=key, value=float(value))
+                new_nickvalue = NickValues(nick_id=nick_id, key=key, value=float(value))
                 session.add(new_nickvalue)
                 session.commit()
         except SQLAlchemyError:
@@ -153,7 +149,7 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def adjust_nick_list(self, nick, key, entries, adjustmentdirection, category='default'):
+    def adjust_nick_list(self, nick, key, entries, adjustmentdirection):
         """Sets the value for a given key to be associated with the nick."""
         nick = Identifier(nick)
         if not isinstance(entries, list):
@@ -164,7 +160,6 @@ class SpiceDB(object):
         try:
             result = session.query(NickValues) \
                 .filter(NickValues.nick_id == nick_id) \
-                .filter(NickValues.category == category)\
                 .filter(NickValues.key == key) \
                 .one_or_none()
             # NickValue exists, update
@@ -189,7 +184,7 @@ class SpiceDB(object):
                     for entry in entries:
                         while entry in values:
                             values.remove(entry)
-                new_nickvalue = NickValues(nick_id=nick_id, category=category, key=key, value=values)
+                new_nickvalue = NickValues(nick_id=nick_id, key=key, value=values)
                 session.add(new_nickvalue)
                 session.commit()
         except SQLAlchemyError:
@@ -200,7 +195,7 @@ class SpiceDB(object):
 
     # CHANNEL FUNCTIONS
 
-    def set_channel_value(self, channel, key, value, category='default'):
+    def set_channel_value(self, channel, key, value):
         """Sets the value for a given key to be associated with the channel."""
         channel = Identifier(channel).lower()
         value = json.dumps(value, ensure_ascii=False)
@@ -208,7 +203,6 @@ class SpiceDB(object):
         try:
             result = session.query(ChannelValues) \
                 .filter(ChannelValues.channel == channel)\
-                .filter(ChannelValues.category == category)\
                 .filter(ChannelValues.key == key) \
                 .one_or_none()
             # ChannelValue exists, update
@@ -217,7 +211,7 @@ class SpiceDB(object):
                 session.commit()
             # DNE - Insert
             else:
-                new_channelvalue = ChannelValues(channel=channel, category=category, key=key, value=value)
+                new_channelvalue = ChannelValues(channel=channel, key=key, value=value)
                 session.add(new_channelvalue)
                 session.commit()
         except SQLAlchemyError:
@@ -226,14 +220,13 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def get_channel_value(self, channel, key, category='default'):
+    def get_channel_value(self, channel, key):
         """Retrieves the value for a given key associated with a channel."""
         channel = Identifier(channel).lower()
         session = self.ssession()
         try:
             result = session.query(ChannelValues) \
                 .filter(ChannelValues.channel == channel)\
-                .filter(ChannelValues.category == category)\
                 .filter(ChannelValues.key == key) \
                 .one_or_none()
             if result is not None:
@@ -245,14 +238,13 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def delete_channel_value(self, channel, key, category='default'):
+    def delete_channel_value(self, channel, key):
         """Sets the value for a given key to be associated with the channel."""
         channel = Identifier(channel).lower()
         session = self.ssession()
         try:
             result = session.query(ChannelValues) \
                 .filter(ChannelValues.channel == channel)\
-                .filter(ChannelValues.category == category)\
                 .filter(ChannelValues.key == key) \
                 .one_or_none()
             # ChannelValue exists, delete
@@ -265,7 +257,7 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def adjust_channel_value(self, channel, key, value, category='default'):
+    def adjust_channel_value(self, channel, key, value):
         """Sets the value for a given key to be associated with the channel."""
         channel = Identifier(channel).lower()
         value = json.dumps(value, ensure_ascii=False)
@@ -273,7 +265,6 @@ class SpiceDB(object):
         try:
             result = session.query(ChannelValues) \
                 .filter(ChannelValues.channel == channel)\
-                .filter(ChannelValues.category == category)\
                 .filter(ChannelValues.key == key) \
                 .one_or_none()
             # ChannelValue exists, update
@@ -282,7 +273,7 @@ class SpiceDB(object):
                 session.commit()
             # DNE - Insert
             else:
-                new_channelvalue = ChannelValues(channel=channel, category=category, key=key, value=float(value))
+                new_channelvalue = ChannelValues(channel=channel, key=key, value=float(value))
                 session.add(new_channelvalue)
                 session.commit()
         except SQLAlchemyError:
@@ -291,7 +282,7 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def adjust_channel_list(self, channel, key, entries, adjustmentdirection, category='default'):
+    def adjust_channel_list(self, channel, key, entries, adjustmentdirection):
         """Sets the value for a given key to be associated with the channel."""
         channel = Identifier(channel).lower()
         if not isinstance(entries, list):
@@ -301,7 +292,6 @@ class SpiceDB(object):
         try:
             result = session.query(ChannelValues) \
                 .filter(ChannelValues.channel == channel)\
-                .filter(ChannelValues.category == category)\
                 .filter(ChannelValues.key == key) \
                 .one_or_none()
             # ChannelValue exists, update
@@ -326,7 +316,7 @@ class SpiceDB(object):
                     for entry in entries:
                         while entry in values:
                             values.remove(entry)
-                new_channelvalue = ChannelValues(channel=channel, category=category, key=key, value=values)
+                new_channelvalue = ChannelValues(channel=channel, key=key, value=values)
                 session.add(new_channelvalue)
                 session.commit()
         except SQLAlchemyError:
@@ -337,7 +327,7 @@ class SpiceDB(object):
 
     # PLUGIN FUNCTIONS
 
-    def set_plugin_value(self, plugin, key, value, category='default'):
+    def set_plugin_value(self, plugin, key, value):
         """Sets the value for a given key to be associated with the plugin."""
         plugin = Identifier(plugin).lower()
         value = json.dumps(value, ensure_ascii=False)
@@ -345,7 +335,6 @@ class SpiceDB(object):
         try:
             result = session.query(PluginValues) \
                 .filter(PluginValues.plugin == plugin)\
-                .filter(ChannelValues.category == category)\
                 .filter(PluginValues.key == key) \
                 .one_or_none()
             # PluginValues exists, update
@@ -354,7 +343,7 @@ class SpiceDB(object):
                 session.commit()
             # DNE - Insert
             else:
-                new_pluginvalue = PluginValues(plugin=plugin, category=category, key=key, value=value)
+                new_pluginvalue = PluginValues(plugin=plugin, key=key, value=value)
                 session.add(new_pluginvalue)
                 session.commit()
         except SQLAlchemyError:
@@ -363,14 +352,13 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def get_plugin_value(self, plugin, key, category='default'):
+    def get_plugin_value(self, plugin, key):
         """Retrieves the value for a given key associated with a plugin."""
         plugin = Identifier(plugin).lower()
         session = self.ssession()
         try:
             result = session.query(PluginValues) \
                 .filter(PluginValues.plugin == plugin)\
-                .filter(ChannelValues.category == category)\
                 .filter(PluginValues.key == key) \
                 .one_or_none()
             if result is not None:
@@ -382,14 +370,13 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def delete_plugin_value(self, plugin, key, category='default'):
+    def delete_plugin_value(self, plugin, key):
         """Deletes the value for a given key to be associated with the plugin."""
         plugin = Identifier(plugin).lower()
         session = self.ssession()
         try:
             result = session.query(PluginValues) \
                 .filter(PluginValues.plugin == plugin)\
-                .filter(ChannelValues.category == category)\
                 .filter(PluginValues.key == key) \
                 .one_or_none()
             # PluginValues exists, delete
@@ -402,7 +389,7 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def adjust_plugin_value(self, plugin, key, value, category='default'):
+    def adjust_plugin_value(self, plugin, key, value):
         """Sets the value for a given key to be associated with the plugin."""
         plugin = Identifier(plugin).lower()
         value = json.dumps(value, ensure_ascii=False)
@@ -410,7 +397,6 @@ class SpiceDB(object):
         try:
             result = session.query(PluginValues) \
                 .filter(PluginValues.plugin == plugin)\
-                .filter(ChannelValues.category == category)\
                 .filter(PluginValues.key == key) \
                 .one_or_none()
             # ChannelValue exists, update
@@ -419,7 +405,7 @@ class SpiceDB(object):
                 session.commit()
             # DNE - Insert
             else:
-                new_pluginvalue = PluginValues(plugin=plugin, category=category, key=key, value=float(value))
+                new_pluginvalue = PluginValues(plugin=plugin, key=key, value=float(value))
                 session.add(new_pluginvalue)
                 session.commit()
         except SQLAlchemyError:
@@ -428,7 +414,7 @@ class SpiceDB(object):
         finally:
             session.close()
 
-    def adjust_plugin_list(self, plugin, key, entries, adjustmentdirection, category='default'):
+    def adjust_plugin_list(self, plugin, key, entries, adjustmentdirection):
         """Sets the value for a given key to be associated with the plugin."""
         plugin = Identifier(plugin).lower()
         if not isinstance(entries, list):
@@ -438,7 +424,6 @@ class SpiceDB(object):
         try:
             result = session.query(PluginValues) \
                 .filter(PluginValues.plugin == plugin)\
-                .filter(ChannelValues.category == category)\
                 .filter(PluginValues.key == key) \
                 .one_or_none()
             # ChannelValue exists, update
@@ -463,7 +448,7 @@ class SpiceDB(object):
                     for entry in entries:
                         while entry in values:
                             values.remove(entry)
-                new_pluginvalue = PluginValues(plugin=plugin, category=category, key=key, value=values)
+                new_pluginvalue = PluginValues(plugin=plugin, key=key, value=values)
                 session.add(new_pluginvalue)
                 session.commit()
         except SQLAlchemyError:
