@@ -26,9 +26,6 @@ class BotConfig():
         # Filename
         self.filename = self.config.filename
 
-        # load Sopel config fully
-        sopel.config.Config(self.config.filename)
-
         # load as dict
         config = configparser.ConfigParser()
         config.read(self.filename)
