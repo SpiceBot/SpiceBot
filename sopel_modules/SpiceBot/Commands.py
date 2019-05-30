@@ -132,7 +132,7 @@ class BotCommands():
             logs.log('SpiceBot_CommandsQuery', "sopel_modules not loaded :" + str(e))
 
         # Extra directories
-        for directory in botconfig.dict["core"]["extra"]:
+        for directory in botconfig.config.extra:
             filepathlisting.append(directory)
 
         return filepathlisting
