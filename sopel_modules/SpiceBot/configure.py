@@ -2,15 +2,7 @@
 from __future__ import unicode_literals, absolute_import, division, print_function
 """Configuration for SpiceBot"""
 
-import sopel.module
-from sopel.config.types import StaticSection, ValidatedAttribute, ListAttribute
-
-
-class SpiceBot_Channels_MainSection(StaticSection):
-    announcenew = ValidatedAttribute('announcenew', default=False)
-    joinall = ValidatedAttribute('joinall', default=False)
-    operadmin = ValidatedAttribute('operadmin', default=False)
-    chanignore = ListAttribute('chanignore')
+from .Channels import SpiceBot_Channels_MainSection
 
 
 def configure(config):

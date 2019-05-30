@@ -4,13 +4,32 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 This is the SpiceBot Channels system.
 """
 import sopel
+from sopel.config.types import StaticSection, ValidatedAttribute, ListAttribute
+
 import re
 import threading
+
+from .Config import config as botconfig
+from .Events import events
+from .Logs import logs
+
+
+class SpiceBot_Channels_MainSection(StaticSection):
+    announcenew = ValidatedAttribute('announcenew', default=False)
+    joinall = ValidatedAttribute('joinall', default=False)
+    operadmin = ValidatedAttribute('operadmin', default=False)
+    chanignore = ListAttribute('chanignore')
 
 
 class BotChannels():
     """This Logs all channels known to the server"""
     def __init__(self):
+
+        # SpiceBot
+        logs.log('SpiceBot_Channels', "Setting Up BotChannels class")
+        botconfig.define_section("SpiceBot_Channels", SpiceBot_Channels_MainSection, validate=False)
+        events.startup_add([events.BOT_CHANNELS])
+
         self.lock = threading.Lock()
         self.channel_lock = False
         self.dict = {
