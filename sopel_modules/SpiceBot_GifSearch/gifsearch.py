@@ -55,7 +55,7 @@ def setup(bot):
     dir_to_scan.append(api_dir)
 
     bot.config.define_section("SopelGifSearch", GifAPIMainSection, validate=False)
-    SpiceBot.config.config.define_section("SopelGifSearch", GifAPIMainSection, validate=False)
+    SpiceBot.config.define_section("SopelGifSearch", GifAPIMainSection, validate=False)
     if bot.config.SopelGifSearch.extra:
         dir_to_scan.append(bot.config.SopelGifSearch.extra)
 
@@ -63,7 +63,7 @@ def setup(bot):
 
     for gif_api in valid_gif_api_dict.keys():
         bot.config.define_section(gif_api, GifAPISection, validate=False)
-        SpiceBot.config.config.define_section(gif_api, GifAPISection, validate=False)
+        SpiceBot.config.define_section(gif_api, GifAPISection, validate=False)
         apikey = eval("bot.config." + gif_api + ".apikey")
         if apikey:
             valid_gif_api_dict[gif_api]["apikey"] = apikey

@@ -42,7 +42,7 @@ def setup(bot):
     # verify config settings for server
     SpiceBot.logs.log('SpiceBot_Kick', "Checking for config settings")
     bot.config.define_section("SpiceBot_Kick", SpiceBot_Kick, validate=False)
-    SpiceBot.config.config.define_section("SpiceBot_Kick", SpiceBot_Kick, validate=False)
+    SpiceBot.config.define_section("SpiceBot_Kick", SpiceBot_Kick, validate=False)
 
 
 @module.event('005')

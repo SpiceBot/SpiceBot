@@ -42,7 +42,7 @@ github_dict = {
 def bot_privs(privtype):
     if privtype == 'owners':
         privtype = 'owner'
-    botpriveval = eval("botconfig.config.config.core." + privtype)
+    botpriveval = eval("botconfig." + privtype)
     if not isinstance(botpriveval, list):
         botpriveval = [botpriveval]
     return botpriveval

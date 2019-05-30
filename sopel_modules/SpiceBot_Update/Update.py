@@ -25,7 +25,7 @@ def configure(config):
 def setup(bot):
     SpiceBot.logs.log('SpiceBot_Update', "Initial Setup processing")
     bot.config.define_section("SpiceBot_Update", SpiceBot_Update_MainSection, validate=False)
-    SpiceBot.config.config.define_section("SpiceBot_Update", SpiceBot_Update_MainSection, validate=False)
+    SpiceBot.config.define_section("SpiceBot_Update", SpiceBot_Update_MainSection, validate=False)
 
 
 @SpiceBot.prerun.prerun('nickname')

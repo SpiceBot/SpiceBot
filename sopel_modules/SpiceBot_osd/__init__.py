@@ -50,7 +50,7 @@ def setup(bot):
     # verify config settings for server
     SpiceBot.logs.log('SpiceBot_OSD', "Checking for config settings")
     bot.config.define_section("SpiceBot_OSD", SpiceBot_OSD, validate=False)
-    SpiceBot.config.config.define_section("SpiceBot_OSD", SpiceBot_OSD, validate=False)
+    SpiceBot.config.define_section("SpiceBot_OSD", SpiceBot_OSD, validate=False)
 
 
 @module.event('005')

@@ -30,7 +30,7 @@ class BotLogs():
         logtitle = "[" + logtype + "]"
         logmessage = logtitle + "    " + logentry
 
-        if botconfig.config.core.logging_channel:
+        if botconfig.logging_channel:
             self.dict["queue"].append(logmessage)
 
         if stdio:
@@ -57,7 +57,7 @@ class BotLogs():
         for logtype in self.dict["list"].keys():
             stdio_ignore.append("[" + logtype + "]")
 
-        logfile = os.path.os.path.join(botconfig.config.core.logdir, 'stdio.log')
+        logfile = os.path.os.path.join(botconfig.logdir, 'stdio.log')
 
         try:
             log_file_lines = []
@@ -105,12 +105,12 @@ class BotLogs():
 
     def get_running_pid(self):
         try:
-            filename = "/run/sopel/sopel-" + str(botconfig.config.core.nick) + ".pid"
+            filename = "/run/sopel/sopel-" + str(botconfig.nick) + ".pid"
             with open(filename, 'r') as pid_file:
                 pidnum = int(pid_file.read())
         except Exception as e:
             pidnum = e
-            pidnum = str(os.popen("systemctl show " + str(botconfig.config.core.nick) + " --property=MainPID").read()).split("=")[-1]
+            pidnum = str(os.popen("systemctl show " + str(botconfig.nick) + " --property=MainPID").read()).split("=")[-1]
         return pidnum
 
 

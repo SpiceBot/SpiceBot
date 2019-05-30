@@ -10,4 +10,4 @@ import sopel_modules.SpiceBot as SpiceBot
 
 @sopel.module.nickname_commands('database')
 def bot_command_gender(bot, trigger):
-    bot.osd("Database is " + SpiceBot.config.dict["core"]["db_type"])
+    bot.osd("Database is " + SpiceBot.config.db_type)

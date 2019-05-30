@@ -18,7 +18,7 @@ def setup(bot):
 @sopel.module.rule('.*')
 def join_log_channel(bot, trigger):
 
-    if SpiceBot.config.config.core.logging_channel:
+    if SpiceBot.config.logging_channel:
         channel = bot.config.core.logging_channel
         if channel not in bot.channels.keys():
             bot.write(('JOIN', bot.nick, channel))
