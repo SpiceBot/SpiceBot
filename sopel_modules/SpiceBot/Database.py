@@ -525,71 +525,71 @@ class BotDatabase():
 
     """Nick"""
 
-    def get_nick_value(self, nick, key):
-        return self.db.get_nick_value(nick, key)
+    def get_nick_value(self, nick, key, category='default'):
+        return self.db.get_nick_value(nick, key, category)
 
-    def set_nick_value(self, nick, key, value):
-        return self.db.set_nick_value(nick, key, value)
+    def set_nick_value(self, nick, key, value, category='default'):
+        return self.db.set_nick_value(nick, key, value, category)
 
-    def delete_nick_value(self, nick, key):
-        return self.db.delete_nick_value(nick, key)
+    def delete_nick_value(self, nick, key, category='default'):
+        return self.db.delete_nick_value(nick, key, category)
 
-    def adjust_nick_value(self, nick, key, value):
-        return self.db.adjust_nick_value(nick, key, value)
+    def adjust_nick_value(self, nick, key, value, category='default'):
+        return self.db.adjust_nick_value(nick, key, value, category)
 
-    def adjust_nick_list(self, nick, key, entries, adjustmentdirection):
-        return self.db.adjust_nick_list(nick, key, entries, adjustmentdirection)
+    def adjust_nick_list(self, nick, key, entries, adjustmentdirection, category='default'):
+        return self.db.adjust_nick_list(nick, key, entries, adjustmentdirection, category)
 
     """Bot"""
 
-    def get_bot_value(self, key):
-        return self.db.get_nick_value(botconfig.nick, key)
+    def get_bot_value(self, key, category='default'):
+        return self.db.get_nick_value(botconfig.nick, key, category)
 
-    def set_bot_value(self, key, value):
-        return self.db.set_nick_value(botconfig.nick, key, value)
+    def set_bot_value(self, key, value, category='default'):
+        return self.db.set_nick_value(botconfig.nick, key, value, category)
 
-    def delete_bot_value(self, key):
-        return self.db.delete_nick_value(botconfig.nick, key)
+    def delete_bot_value(self, key, category='default'):
+        return self.db.delete_nick_value(botconfig.nick, key, category)
 
-    def adjust_bot_value(self, key, value):
-        return self.db.adjust_nick_value(botconfig.nick, key, value)
+    def adjust_bot_value(self, key, value, category='default', category):
+        return self.db.adjust_nick_value(botconfig.nick, key, value, category)
 
-    def adjust_bot_list(self, key, entries, adjustmentdirection):
-        return self.db.adjust_nick_list(botconfig.nick, key, entries, adjustmentdirection)
+    def adjust_bot_list(self, key, entries, adjustmentdirection, category='default'):
+        return self.db.adjust_nick_list(botconfig.nick, key, entries, adjustmentdirection, category)
 
     """Channels"""
 
-    def get_channel_value(self, channel, key):
-        return self.db.get_channel_value(channel, key)
+    def get_channel_value(self, channel, key, category='default'):
+        return self.db.get_channel_value(channel, key, category)
 
-    def set_channel_value(self, channel, key, value):
-        return self.db.set_channel_value(channel, key, value)
+    def set_channel_value(self, channel, key, value, category='default'):
+        return self.db.set_channel_value(channel, key, value, category)
 
-    def delete_channel_value(self, channel, key):
-        return self.db.delete_channel_value(channel, key)
+    def delete_channel_value(self, channel, key, category='default'):
+        return self.db.delete_channel_value(channel, key, category)
 
-    def adjust_channel_value(self, channel, key, value):
-        return self.db.adjust_channel_value(channel, key, value)
+    def adjust_channel_value(self, channel, key, value, category='default'):
+        return self.db.adjust_channel_value(channel, key, value, category)
 
-    def adjust_channel_list(self, nick, key, entries, adjustmentdirection):
-        return self.db.adjust_channel_list(nick, key, entries, adjustmentdirection)
+    def adjust_channel_list(self, nick, key, entries, adjustmentdirection, category='default'):
+        return self.db.adjust_channel_list(nick, key, entries, adjustmentdirection, category)
 
     """Plugins"""
 
-    def get_plugin_value(self, plugin, key):
-        return self.db.get_plugin_value(plugin, key)
+    def get_plugin_value(self, plugin, key, category='default'):
+        return self.db.get_plugin_value(plugin, key, category)
 
-    def set_plugin_value(self, plugin, key, value):
-        return self.db.set_plugin_value(plugin, key, value)
+    def set_plugin_value(self, plugin, key, value, category='default'):
+        return self.db.set_plugin_value(plugin, key, value, category)
 
-    def delete_plugin_value(self, plugin, key):
-        return self.db.delete_plugin_value(plugin, key)
+    def delete_plugin_value(self, plugin, key, category='default'):
+        return self.db.delete_plugin_value(plugin, key, category)
 
-    def adjust_plugin_value(self, plugin, key, value):
-        return self.db.adjust_plugin_value(plugin, key, value)
+    def adjust_plugin_value(self, plugin, key, value, category='default'):
+        return self.db.adjust_plugin_value(plugin, key, value, category)
 
-    def adjust_plugin_list(self, nick, key, entries, adjustmentdirection):
-        return self.db.adjust_plugin_list(nick, key, entries, adjustmentdirection)
+    def adjust_plugin_list(self, nick, key, entries, adjustmentdirection, category='default'):
+        return self.db.adjust_plugin_list(nick, key, entries, adjustmentdirection, category)
 
 
 db = BotDatabase()
