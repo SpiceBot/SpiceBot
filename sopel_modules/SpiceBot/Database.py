@@ -7,7 +7,7 @@ This is the SpiceBot Database
 # sopel imports
 from sopel.tools import Identifier
 import sopel.db
-from sopel.db import SopelDB, _deserialize, Nicknames, NickIDs
+from sopel.db import SopelDB, _deserialize
 
 from .Config import config as botconfig
 
@@ -19,6 +19,24 @@ import json
 
 
 BASE = declarative_base()
+
+
+class NickIDs(BASE):
+    """
+    NickIDs SQLAlchemy Class
+    """
+    __tablename__ = 'spice_nick_ids'
+    nick_id = Column(Integer, primary_key=True)
+
+
+class Nicknames(BASE):
+    """
+    Nicknames SQLAlchemy Class
+    """
+    __tablename__ = 'spice_nicknames'
+    nick_id = Column(Integer, ForeignKey('spice_nick_ids.nick_id'), primary_key=True)
+    slug = Column(String(255), primary_key=True)
+    canonical = Column(String(255))
 
 
 class NickValues(BASE):
