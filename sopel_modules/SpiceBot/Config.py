@@ -5,12 +5,14 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 from sopel.cli.run import build_parser, get_configuration
 
 import sys
+import os
 import configparser
 
 
 class BotConfig():
 
     def __init__(self):
+
         self.dict = {}
 
         # Load config
@@ -22,8 +24,13 @@ class BotConfig():
         opts = parser.parse_args(argv)
         self.config = get_configuration(opts)
 
-        # Filename
-        self.filename = self.config.filename
+        self.config.basename = os.path.basename(self.config.filename).rsplit('.', 1)[0]
+        self.config.core.logs_stdio = os.path.join(self.config.core.logdir, 'stdio.log')
+        # self.config.core.logs_stdio = os.path.os.path.join(self.config.core.logdir, self.config.basename + '.stdio.log')
+        self.config.core.logs_exceptions = os.path.join(self.config.core.logdir, 'exceptions.log')
+        # self.config.core.logs_exceptions = os.path.os.path.join(self.config.core.logdir, self.config.basename + '.exceptions.log')
+        self.config.core.logs_raw = os.path.join(self.config.core.logdir, 'raw.log')
+        # self.config.core.logs_raw = os.path.os.path.join(self.config.core.logdir, self.config.basename + '.raw.log')
 
         # load as dict
         config = configparser.ConfigParser()

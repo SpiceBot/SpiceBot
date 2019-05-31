@@ -57,11 +57,9 @@ class BotLogs():
         for logtype in self.dict["list"].keys():
             stdio_ignore.append("[" + logtype + "]")
 
-        logfile = os.path.os.path.join(botconfig.logdir, 'stdio.log')
-
         try:
             log_file_lines = []
-            log_file = open(logfile, 'r')
+            log_file = open(botconfig.logs_stdio, 'r')
             lines = log_file.readlines()
             for line in lines:
                 log_file_lines.append(line)
