@@ -12,8 +12,6 @@ import sopel_modules.SpiceBot as SpiceBot
 @sopel.module.rule('.*')
 def bot_events_complete(bot, trigger):
 
-    SpiceBot.events.startup_add([SpiceBot.events.BOT_COMMANDS])
-
     for comtype in SpiceBot.commands.dict['commands'].keys():
         if comtype not in ['module', 'nickname', 'rule']:
             SpiceBot.logs.log('SpiceBot_Commands', "Found " + str(len(SpiceBot.commands.dict['commands'][comtype].keys())) + " " + comtype + " commands.", True)

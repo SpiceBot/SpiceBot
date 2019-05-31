@@ -8,12 +8,8 @@ from sopel.config.types import StaticSection, ValidatedAttribute, ListAttribute
 
 import re
 import threading
-import time
-
-import spicemanip
 
 from .Config import config as botconfig
-from .Events import events
 from .Logs import logs
 
 
@@ -31,7 +27,6 @@ class BotChannels():
         # SpiceBot
         logs.log('SpiceBot_Channels', "Setting Up BotChannels class")
         botconfig.define_section("SpiceBot_Channels", SpiceBot_Channels_MainSection, validate=False)
-        events.startup_add([events.BOT_CHANNELS])
 
         self.lock = threading.Lock()
         self.channel_lock = False

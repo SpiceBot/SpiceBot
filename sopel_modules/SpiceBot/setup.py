@@ -9,6 +9,7 @@ import os
 
 from .Config import config as botconfig
 from .Logs import logs
+from .Events import events
 
 from .Channels import SpiceBot_Channels_MainSection
 from .Update import SpiceBot_Update_MainSection
@@ -40,8 +41,15 @@ def setup(bot):
     # bot.config.core.logs_raw = os.path.os.path.join(bot.config.core.logdir, bot.config.basename + '.raw.log')
 
     logs.log('SpiceBot_Channels', "Setting Up Configuration")
+    events.startup_add([events.BOT_CHANNELS])
     bot.config.define_section("SpiceBot_Channels", SpiceBot_Channels_MainSection, validate=False)
+
+    logs.log('SpiceBot_Commands', "Setting Up Configuration")
+    events.startup_add([events.BOT_COMMANDS])
 
     logs.log('SpiceBot_Update', "Initial Setup processing")
     bot.config.define_section("SpiceBot_Update", SpiceBot_Update_MainSection, validate=False)
     botconfig.define_section("SpiceBot_Update", SpiceBot_Update_MainSection, validate=False)
+
+    logs.log('SpiceBot_StartupMonologue', "Initial Setup processing")
+    events.startup_add([events.BOT_STARTUPMONOLOGUE_CHANNELS, events.BOT_STARTUPMONOLOGUE_COMMANDSQUERY, events.BOT_STARTUPMONOLOGUE_CONNECTED])

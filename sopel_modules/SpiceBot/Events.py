@@ -85,10 +85,7 @@ class BotEvents(object):
         else:
             eventnumber = str(trigger.event)
             message = trigger.args[1]
-        if int(eventnumber) in self.defaultevents:
-            logs.log('SpiceBot_Events', str(eventnumber) + "    " + str(message), True)
-        else:
-            logs.log('SpiceBot_Events', str(eventnumber) + "    " + str(message))
+        logs.log('SpiceBot_Events', str(eventnumber) + "    " + str(message))
         if eventnumber not in self.dict["triggers_recieved"]:
             self.dict["triggers_recieved"][eventnumber] = []
         self.dict["triggers_recieved"][eventnumber].append(message)
