@@ -106,7 +106,9 @@ class BotEvents(object):
         self.lock.acquire()
         if not isinstance(startlist, list):
             startlist = [str(startlist)]
-        self.dict["startup_required"].extend(startlist)
+        for eventitem in startlist:
+            if eventitem not in self.dict["startup_required"]:
+                self.dict["startup_required"].append(eventitem)
         self.lock.release()
 
     def startup_check(self):
