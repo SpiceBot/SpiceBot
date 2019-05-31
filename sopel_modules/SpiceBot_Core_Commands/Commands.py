@@ -12,7 +12,7 @@ import spicemanip
 import sopel_modules.SpiceBot as SpiceBot
 
 
-@SpiceBot.events.check_ready([SpiceBot.events.BOT_COMMANDSQUERY])
+@SpiceBot.events.check_ready([SpiceBot.events.BOT_COMMANDS])
 @SpiceBot.prerun.prerun('nickname')
 @sopel.module.nickname_commands('(.*)')
 def query_detection_nick(bot, trigger):
@@ -78,7 +78,7 @@ def query_detection_nick(bot, trigger):
         bot.osd("The following " + bot.nick + " commands start with " + str(trigger.sb['com']) + ": " + spicemanip.main(commandlist, 'andlist') + ".", trigger.nick, 'notice')
 
 
-@SpiceBot.events.check_ready([SpiceBot.events.BOT_COMMANDSQUERY])
+@SpiceBot.events.check_ready([SpiceBot.events.BOT_COMMANDS])
 @SpiceBot.prerun.prerun('query')
 @sopel.module.rule('^\?(.*)')
 def query_detection(bot, trigger):

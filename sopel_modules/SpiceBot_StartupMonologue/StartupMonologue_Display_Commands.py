@@ -7,7 +7,7 @@ import sopel.module
 import sopel_modules.SpiceBot as SpiceBot
 
 
-@sopel.module.event(SpiceBot.events.BOT_COMMANDSQUERY)
+@sopel.module.event(SpiceBot.events.BOT_COMMANDS)
 @sopel.module.rule('.*')
 def bot_startup_monologue_commands(bot, trigger):
 

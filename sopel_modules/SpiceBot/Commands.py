@@ -29,6 +29,9 @@ class BotCommands():
                                 },
                     'disabled': {}
                     }
+        self.module_files_parse()
+        for comtype in ['module', 'nickname', 'rule']:
+            logs.log('SpiceBot_Commands', "Found " + str(len(self.dict['commands'][comtype].keys())) + " " + comtype + " commands.", True)
 
     def find_command_type(self, command):
         for commandstype in self.dict['commands'].keys():
@@ -129,7 +132,7 @@ class BotCommands():
                     pypi_modules_dir = os.path.join(plugin_dir, pathname)
                     filepathlisting.append(pypi_modules_dir)
         except Exception as e:
-            logs.log('SpiceBot_CommandsQuery', "sopel_modules not loaded :" + str(e))
+            logs.log('SpiceBOT_COMMANDS', "sopel_modules not loaded :" + str(e))
 
         # Extra directories
         for directory in botconfig.extra:
