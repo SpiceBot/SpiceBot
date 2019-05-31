@@ -590,8 +590,3 @@ class BotDatabase():
 
 
 db = BotDatabase()
-
-
-@sopel.module.nickname_commands('database')
-def bot_command_database(bot, trigger):
-    bot.osd("Database is " + botconfig.db_type)
