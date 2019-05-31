@@ -12,7 +12,7 @@ import datetime
 import spicemanip
 
 from .Tools import command_permissions_check
-from .Commands import commands
+from .Commands import commands as botcommands
 from .Database import db as botdb
 
 
@@ -36,7 +36,7 @@ class BotPrerun():
                 argsdict_default["type"] = trigger_command_type
                 argsdict_default["com"] = trigger_command
 
-                realcom = commands.get_realcom(argsdict_default["com"], trigger_command_type)
+                realcom = botcommands.get_realcom(argsdict_default["com"], trigger_command_type)
                 argsdict_default["realcom"] = realcom
 
                 # split into && groupings
@@ -161,11 +161,11 @@ class BotPrerun():
                 bot.osd("This command must be run in a channel you which to enable it in.", trigger.nick, 'notice')
                 return
 
-            if not commands.check_commands_disabled(trigger.sb["realcom"], trigger.sender):
+            if not botcommands.check_commands_disabled(trigger.sb["realcom"], trigger.sender):
                 bot.osd(trigger.sb["com"] + " is already enabled in " + str(trigger.sender), trigger.nick, 'notice')
                 return
 
-            commands.unset_command_disabled(trigger.sb["realcom"], trigger.sender)
+            botcommands.unset_command_disabled(trigger.sb["realcom"], trigger.sender)
             bot.osd(trigger.sb["com"] + " is now enabled in " + str(trigger.sender))
             return
 
@@ -179,14 +179,14 @@ class BotPrerun():
                 bot.osd("This command must be run in a channel you which to disable it in.", trigger.nick, 'notice')
                 return
 
-            if commands.check_commands_disabled(trigger.sb["realcom"], trigger.sender):
+            if botcommands.check_commands_disabled(trigger.sb["realcom"], trigger.sender):
                 bot.osd(trigger.sb["com"] + " is already disabled in " + str(trigger.sender), trigger.nick, 'notice')
                 return
 
             trailingmessage = spicemanip.main(trigger.sb["args"], 0) or "No reason given."
             timestamp = str(datetime.datetime.utcnow())
 
-            commands.set_command_disabled(trigger.sb["realcom"], trigger.sender, timestamp, trailingmessage, trigger.nick)
+            botcommands.set_command_disabled(trigger.sb["realcom"], trigger.sender, timestamp, trailingmessage, trigger.nick)
             bot.osd(trigger.sb["com"] + " is now disabled in " + str(trigger.sender))
             return
 
