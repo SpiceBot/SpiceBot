@@ -23,8 +23,8 @@ def bot_command_admins(bot, trigger):
 
 def bot_command_process(bot, trigger):
 
-    if trigger.sb['com'] == 'owner':
-        trigger.sb['com'] = 'owners'
+    if not trigger.sb['com'].endswith("s"):
+        trigger.sb['com'] = str(trigger.sb['com'] + "s")
 
     privlist = spicemanip.main(SpiceBot.bot_privs(trigger.sb['com']), 'andlist')
     bot.osd(str(bot.nick) + " " + trigger.sb['com'] + ": " + privlist)
