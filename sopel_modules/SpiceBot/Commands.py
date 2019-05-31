@@ -15,7 +15,7 @@ from .Logs import logs
 from .Config import config as botconfig
 from .Database import db as botdb
 from .Events import events
-from .Prerun import prerun
+from .Prerun import prerun as botprerun
 from .Tools import letters_in_string, similar_list
 
 
@@ -237,7 +237,7 @@ commands = BotCommands()
 
 
 @events.check_ready([events.BOT_COMMANDSQUERY])
-@prerun.prerun('nickname')
+@botprerun.prerun('nickname')
 @sopel.module.nickname_commands('(.*)')
 def query_detection_nick(bot, trigger):
 
@@ -303,7 +303,7 @@ def query_detection_nick(bot, trigger):
 
 
 @events.check_ready([events.BOT_COMMANDSQUERY])
-@prerun.prerun('query')
+@botprerun.prerun('query')
 @sopel.module.rule('^\?(.*)')
 def query_detection(bot, trigger):
 
