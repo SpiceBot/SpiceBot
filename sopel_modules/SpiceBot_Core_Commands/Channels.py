@@ -23,12 +23,12 @@ def nickname_comand_channels(bot, trigger):
     trigger.sb['args'] = spicemanip.main(trigger.sb['args'], '2+', 'list')
 
     if commandused == 'list':
-        chanlist = spicemanip.main(bot.SpiceBot.channels.keys(), 'andlist')
+        chanlist = spicemanip.main(bot.channels.keys(), 'andlist')
         bot.osd("You can find me in " + chanlist)
         return
 
     elif commandused == 'total':
-        botcount = len(bot.SpiceBot.channels.keys())
+        botcount = len(bot.channels.keys())
         servercount = len(SpiceBot.channels.dict['list'].keys())
         bot.osd("I am in " + str(botcount) + " of " + str(servercount) + " channel(s) available on this server.")
         return
@@ -84,7 +84,7 @@ def nickname_comand_channels(bot, trigger):
             if not SpiceBot.inlist(channel.lower(), SpiceBot.channels.dict['list'].keys()):
                 bot.osd("Channel name {} not valid.".format(channel))
                 return
-            if not SpiceBot.inlist(channel.lower(), bot.SpiceBot.channels.keys()):
+            if not SpiceBot.inlist(channel.lower(), bot.channels.keys()):
                 bot.osd("I need to be in {} to see nick privileges.".format(channel))
                 return
 
@@ -104,7 +104,7 @@ def nickname_comand_channels(bot, trigger):
         if not SpiceBot.inlist(channel.lower(), SpiceBot.channels.dict['list'].keys()):
             bot.osd("Channel name {} not valid.".format(channel))
             return
-        if not SpiceBot.inlist(channel.lower(), bot.SpiceBot.channels.keys()):
+        if not SpiceBot.inlist(channel.lower(), bot.channels.keys()):
             bot.osd("I need to be in {} to see user list.".format(channel))
             return
         dispmsg = []
