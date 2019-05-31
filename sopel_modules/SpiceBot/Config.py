@@ -49,7 +49,6 @@ class BotConfig():
         elif hasattr(self.config, name):
             return eval("self.config." + name)
         else:
-            stderr(str(name))
             return None
 
 
