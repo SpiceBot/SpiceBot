@@ -74,9 +74,6 @@ class PluginValues(BASE):
 
 class SpiceDB(object):
 
-    def dummyfunc_pep(self):
-        return NickIDs
-
     # NICK FUNCTIONS
 
     def set_nick_value(self, nick, key, value, category='default'):
