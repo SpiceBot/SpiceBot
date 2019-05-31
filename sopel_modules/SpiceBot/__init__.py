@@ -10,6 +10,7 @@ from .configure import *
 from .setup import *
 
 from .Update import *
+from .osd import *
 
 from .Config import *
 from .Tools import *

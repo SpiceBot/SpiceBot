@@ -1,81 +1,16 @@
 # coding=utf8
-"""Sopel OSD
-
-Sopel OSD is a "niche" method of displaying text in a Sopel bot
+from __future__ import unicode_literals, absolute_import, division, print_function
+"""
+This is the SpiceBot OSD system.
 """
 
-# pylama:ignore=W0611
-
-
-from __future__ import unicode_literals, absolute_import, division, print_function
-
-import sopel.bot
-from sopel import tools, module
+from sopel import tools
 from sopel.tools import Identifier
 from sopel.config.types import StaticSection, ValidatedAttribute
-
-import sopel_modules.SpiceBot as SpiceBot
 
 import time
 from collections import abc
 import sys
-
-
-__author__ = 'Sam Zick'
-__email__ = 'sam@deathbybandaid.net'
-__version__ = '0.1.2'
-
-
-def configure(config):
-    config.define_section("SpiceBot_OSD", SpiceBot_OSD, validate=False)
-    config.SpiceBot_OSD.configure_setting('notice', 'MAXTARG limit for NOTICE')
-    config.SpiceBot_OSD.configure_setting('privmsg', 'MAXTARG limit for PRIVMSG')
-    config.SpiceBot_OSD.configure_setting('flood_burst_lines', 'How many messages can be sent in burst mode.')
-    config.SpiceBot_OSD.configure_setting('flood_empty_wait', 'How long to wait between sending messages when not in burst mode, in seconds.')
-    config.SpiceBot_OSD.configure_setting('flood_refill_rate', 'How quickly burst mode recovers, in messages per second.')
-    config.SpiceBot_OSD.configure_setting('flood_throttle', 'Whether messages will be throttled if too many are sent in a short time.')
-    config.SpiceBot_OSD.configure_setting('flood_dots', "Whether repeated messages will be replaced with '...', then dropped.")
-
-
-def setup(bot):
-
-    # Inject OSD
-    SpiceBot.logs.log('SpiceBot_OSD', "Implanting OSD function into bot")
-    bot.osd = SopelOSD.osd
-    sopel.bot.SopelWrapper.osd = SopelWrapperOSD.osd
-    tools.get_available_message_bytes = ToolsOSD.get_available_message_bytes
-    tools.get_sendable_message_list = ToolsOSD.get_sendable_message_list
-    tools.get_message_recipientgroups = ToolsOSD.get_message_recipientgroups
-
-    # verify config settings for server
-    SpiceBot.logs.log('SpiceBot_OSD', "Checking for config settings")
-    bot.config.define_section("SpiceBot_OSD", SpiceBot_OSD, validate=False)
-    SpiceBot.config.define_section("SpiceBot_OSD", SpiceBot_OSD, validate=False)
-
-
-@module.event('005')
-@module.rule('.*')
-def parse_event_005(bot, trigger):
-    if trigger.args[-1] != 'are supported by this server':
-        return
-    parameters = trigger.args[1:-1]
-    for param in parameters:
-        if '=' in param:
-            if param.startswith("TARGMAX"):
-                param = str(param).split('=')[1]
-                settings = str(param).split(',')
-                for setting in settings:
-                    settingname = str(setting).split(':')[0]
-                    if settingname.upper() in ['NOTICE', 'PRIVMSG']:
-                        try:
-                            value = str(setting).split(':')[1] or None
-                        except IndexError:
-                            value = None
-                        if value:
-                            if settingname.upper() == 'NOTICE':
-                                bot.config.SpiceBot_OSD.notice = int(value)
-                            elif settingname.upper() == 'PRIVMSG':
-                                bot.config.SpiceBot_OSD.privmsg = int(value)
 
 
 class SpiceBot_OSD(StaticSection):

@@ -2,6 +2,9 @@
 from __future__ import unicode_literals, absolute_import, division, print_function
 """Setup for SpiceBot"""
 
+import sopel.bot
+from sopel import tools
+
 import os
 
 from .Config import config as botconfig
@@ -9,9 +12,23 @@ from .Logs import logs
 
 from .Channels import SpiceBot_Channels_MainSection
 from .Update import SpiceBot_Update_MainSection
+from .osd import SopelWrapperOSD, ToolsOSD, SopelOSD, SpiceBot_OSD
 
 
 def setup(bot):
+
+    # Inject OSD
+    logs.log('SpiceBot_OSD', "Implanting OSD function into bot")
+    bot.osd = SopelOSD.osd
+    sopel.bot.SopelWrapper.osd = SopelWrapperOSD.osd
+    tools.get_available_message_bytes = ToolsOSD.get_available_message_bytes
+    tools.get_sendable_message_list = ToolsOSD.get_sendable_message_list
+    tools.get_message_recipientgroups = ToolsOSD.get_message_recipientgroups
+
+    # verify config settings for server
+    logs.log('SpiceBot_OSD', "Checking for config settings")
+    bot.config.define_section("SpiceBot_OSD", SpiceBot_OSD, validate=False)
+    botconfig.define_section("SpiceBot_OSD", SpiceBot_OSD, validate=False)
 
     logs.log('SpiceBot_Config', "Setting Up Configuration")
     bot.config.core.basename = os.path.basename(bot.config.filename).rsplit('.', 1)[0]
