@@ -2,6 +2,7 @@
 from __future__ import unicode_literals, absolute_import, division, print_function
 
 from .AI import *
+from .AI_aiml import *
 from .AI_Hello import *
 from .AI_Goodbye import *
 from .AI_Thanks import *
