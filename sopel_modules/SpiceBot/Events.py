@@ -10,6 +10,7 @@ self-trigger the bot into performing actions
 import sopel
 import functools
 import threading
+import time
 
 from .Logs import logs
 
@@ -34,6 +35,7 @@ class BotEvents(object):
     def __init__(self):
         self.lock = threading.Lock()
         self.RPL_WELCOME = '001'  # This is a defined IRC event
+        self.BOT_UPTIME = time.time()
         self.BOT_WELCOME = '1001'
         self.BOT_READY = '1002'
         self.BOT_CONNECTED = '1003'
@@ -41,7 +43,7 @@ class BotEvents(object):
         self.BOT_RECONNECTED = '1005'
         self.defaultevents = [self.BOT_WELCOME, self.BOT_READY, self.BOT_CONNECTED, self.BOT_LOADED, self.BOT_RECONNECTED]
         self.dict = {
-                    "assigned_IDs": {1000: "Default", 1001: "BOT_WELCOME", 1002: "BOT_READY", 1003: "BOT_CONNECTED", 1004: "BOT_LOADED", 1005: "BOT_RECONNECTED"},
+                    "assigned_IDs": {1000: "BOT_UPTIME", 1001: "BOT_WELCOME", 1002: "BOT_READY", 1003: "BOT_CONNECTED", 1004: "BOT_LOADED", 1005: "BOT_RECONNECTED"},
                     "triggers_recieved": {},
                     "trigger_queue": [],
                     "startup_required": [self.BOT_WELCOME, self.BOT_READY, self.BOT_CONNECTED],

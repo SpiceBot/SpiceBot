@@ -9,6 +9,7 @@ This module contains references only for other modules to utilize.
 from .Commands import *
 from .Channels import *
 from .Database import *
+from .Uptime import *
 
 __author__ = 'Sam Zick'
 __email__ = 'sam@deathbybandaid.net'
