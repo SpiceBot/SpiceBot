@@ -15,7 +15,7 @@ import sopel_modules.SpiceBot as SpiceBot
 @sopel.module.event(SpiceBot.events.RPL_WELCOME)
 @sopel.module.rule('.*')
 def unkickable_bot(bot, trigger):
-    if bot.config.SpiceBot_SpiceBot.channels.operadmin:
+    if SpiceBot.config.SpiceBot_Channels.operadmin:
         bot.write(('SAMODE', bot.nick, '+q'))
 
 
@@ -85,7 +85,7 @@ def trigger_channel_list_recurring(bot, trigger):
         newlist = [item.lower() for item in oldlist if item.lower() not in list(SpiceBot.channels.dict['list'].keys())]
         if "*" in newlist:
             newlist.remove("*")
-        if len(newlist) and bot.config.SpiceBot_SpiceBot.channels.announcenew:
+        if len(newlist) and SpiceBot.config.SpiceBot_Channels.announcenew:
             bot.osd(["The Following channel(s) are new:", spicemanip.main(newlist, 'andlist')], bot.channels.keys())
 
         SpiceBot.channels.join_all_channels(bot)
