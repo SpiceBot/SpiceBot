@@ -7,12 +7,15 @@ This is the SpiceBot AI system. Based On Chatty cathy
 import os
 import aiml
 
-BOT_PREFIX = (".", '?', '!')
+from .Logs import logs
 
 
 class SpiceBot_AI():
 
     def __init__(self):
+        self.dict = {
+                    "counts": 0,
+                    }
         # Load AIML kernel
         self.aiml_kernel = aiml.Kernel()
         # Learn responses
@@ -22,7 +25,12 @@ class SpiceBot_AI():
             aimldir = os.path.join(configsdir, "aiml")
             for aimlfile in os.listdir(aimldir):
                 aiml_filename = os.path.join(aimldir, aimlfile)
-                self.aiml_kernel.learn(aiml_filename)
+                try:
+                    self.aiml_kernel.learn(aiml_filename)
+                    self.dict['counts'] += 1
+                except Exception as e:
+                    logs.log('SpiceBot_AI', "Error loading %s: %s (%s)" % ('aiml', e, aiml_filename))
+        logs.log('SpiceBot_AI', "Found " + str(self.dict['counts']) + " " + 'aiml' + " commands.", True)
 
     def on_message(self, message):
         return self.aiml_kernel.respond(message.content)
