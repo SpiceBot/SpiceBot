@@ -1,7 +1,7 @@
 # coding=utf8
 from __future__ import unicode_literals, absolute_import, division, print_function
 """
-This is the SpiceBot Channels system.
+This is the SpiceBot Events system.
 """
 import sopel
 
@@ -17,13 +17,6 @@ def bot_events_connected(bot, trigger):
             pretriggerdict = SpiceBot.events.dict["trigger_queue"][0]
             SpiceBot.events.dispatch(bot, pretriggerdict)
             del SpiceBot.events.dict["trigger_queue"][0]
-
-
-@sopel.module.event(SpiceBot.events.BOT_WELCOME, SpiceBot.events.BOT_READY, SpiceBot.events.BOT_CONNECTED, SpiceBot.events.BOT_LOADED)
-@sopel.module.rule('.*')
-def bot_events_complete(bot, trigger):
-    """This is here simply to log to stderr that this was recieved."""
-    SpiceBot.logs.log('SpiceBot_Events', trigger.args[1], True)
 
 
 @sopel.module.event(SpiceBot.events.RPL_WELCOME)
