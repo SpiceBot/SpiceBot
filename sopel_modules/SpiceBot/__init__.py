@@ -22,6 +22,7 @@ from .Events import *
 from .StartupMonologue import *
 from .Channels import *
 from .Database import *
+from .AI import *
 
 __author__ = 'Sam Zick'
 __email__ = 'sam@deathbybandaid.net'
