@@ -7,7 +7,7 @@ import sopel.module
 import sopel_modules.SpiceBot as SpiceBot
 
 
-@sopel.module.nickname_commands('(.*)')
+@sopel.module.rule('(.*)')
 def bot_command_nick(bot, trigger):
 
     if trigger.nick == bot.nick:
