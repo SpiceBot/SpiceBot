@@ -16,7 +16,7 @@ def bot_command_owners(bot, trigger):
 
 
 @SpiceBot.prerun.prerun('nickname')
-@sopel.module.nickname_commands('admins')
+@sopel.module.nickname_commands('admins', 'admin')
 def bot_command_admins(bot, trigger):
     bot_command_process(bot, trigger)
 
