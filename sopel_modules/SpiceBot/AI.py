@@ -23,13 +23,13 @@ class SpiceBot_AI():
         for plugin_dir in set(sopel_modules.__path__):
             configsdir = os.path.join(plugin_dir, "SpiceBot_Configs")
             aimldir = os.path.join(configsdir, "aiml")
-            for aimlfile in os.listdir(aimldir):
-                aiml_filename = os.path.join(aimldir, aimlfile)
-                try:
-                    self.aiml_kernel.learn(aiml_filename)
-                    self.dict['counts'] += 1
-                except Exception as e:
-                    logs.log('SpiceBot_AI', "Error loading %s: %s (%s)" % ('aiml', e, aiml_filename))
+            aimlstarter = os.path.join(aimldir, "std-startup.xml")
+            try:
+                self.aiml_kernel.learn(aimlstarter)
+                self.aiml_kernel.respond("LOAD AIML B")
+                self.dict['counts'] += 1
+            except Exception as e:
+                logs.log('SpiceBot_AI', "Error loading %s: %s (%s)" % ('aiml', e, aimlstarter))
         logs.log('SpiceBot_AI', "Found " + str(self.dict['counts']) + " " + 'aiml' + " commands.", True)
 
     def on_message(self, message):
