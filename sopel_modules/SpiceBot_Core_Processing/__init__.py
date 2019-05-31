@@ -12,6 +12,7 @@ from .Modules import *
 from .osd import *
 from .StartupMonologue import *
 from .Logs import *
+from .Kick import *
 
 
 __author__ = 'Sam Zick'

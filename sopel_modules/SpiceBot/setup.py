@@ -14,6 +14,7 @@ from .Events import events
 from .Channels import SpiceBot_Channels_MainSection
 from .Update import SpiceBot_Update_MainSection
 from .osd import SopelWrapperOSD, ToolsOSD, SopelOSD, SpiceBot_OSD
+from .Kick import SopelWrapperKICK, SopelKICK, SpiceBot_Kick
 
 
 def setup(bot):
@@ -34,6 +35,16 @@ def setup(bot):
     logs.log('SpiceBot_OSD', "Checking for config settings")
     bot.config.define_section("SpiceBot_OSD", SpiceBot_OSD, validate=False)
     botconfig.define_section("SpiceBot_OSD", SpiceBot_OSD, validate=False)
+
+    # Inject KICK
+    logs.log('SpiceBot_Kick', "Implanting Kick function into bot")
+    bot.kick = SopelKICK.kick
+    sopel.bot.SopelWrapper.kick = SopelWrapperKICK.kick
+
+    # verify config settings for server
+    logs.log('SpiceBot_Kick', "Checking for config settings")
+    bot.config.define_section("SpiceBot_Kick", SpiceBot_Kick, validate=False)
+    botconfig.define_section("SpiceBot_Kick", SpiceBot_Kick, validate=False)
 
     logs.log('SpiceBot_Config', "Setting Up Configuration")
     bot.config.core.basename = os.path.basename(bot.config.filename).rsplit('.', 1)[0]

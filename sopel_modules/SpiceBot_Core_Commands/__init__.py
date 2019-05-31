@@ -12,6 +12,8 @@ from .Database import *
 from .Uptime import *
 from .Logs import *
 from .Runtime_Controls import *
+from .Messaging import *
+from .Docs import *
 
 __author__ = 'Sam Zick'
 __email__ = 'sam@deathbybandaid.net'

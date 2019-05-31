@@ -11,6 +11,7 @@ from .setup import *
 
 from .Update import *
 from .osd import *
+from .Kick import *
 
 from .Config import *
 from .Tools import *
