@@ -117,7 +117,7 @@ class BotCommands():
         filepathlisting.append(modules_dir)
 
         # Home Directory
-        home_modules_dir = os.path.join(botconfig.config.homedir, 'modules')
+        home_modules_dir = os.path.join(botconfig.homedir, 'modules')
         if os.path.isdir(home_modules_dir):
             filepathlisting.append(home_modules_dir)
 

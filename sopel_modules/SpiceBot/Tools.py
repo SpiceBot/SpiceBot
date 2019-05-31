@@ -284,13 +284,13 @@ def spicebot_update(deps=False):
 
     logs.log('SpiceBot_Update', "Cloning  to " + clonepath, True)
 
-    clone_repository(str(botconfig.config.config.SpiceBot_Update.gitrepo + ".git"), clonepath, checkout_branch=botconfig.config.config.SpiceBot_Update.gitbranch)
+    clone_repository(str(botconfig.SpiceBot_Update.gitrepo + ".git"), clonepath, checkout_branch=botconfig.SpiceBot_Update.gitbranch)
 
     pipcommand = "sudo pip3 install --upgrade"
     if not deps:
          pipcommand += " --no-deps"
     pipcommand += " --force-reinstall"
-    # pipcommand += " git+" + str(botconfig.config.config.SpiceBot_Update.gitrepo) + "@" + str(botconfig.config.config.SpiceBot_Update.gitbranch)
+    # pipcommand += " git+" + str(botconfig.SpiceBot_Update.gitrepo) + "@" + str(botconfig.SpiceBot_Update.gitbranch)
     pipcommand += " /tmp/SpiceBot/"
 
     logs.log('SpiceBot_Update', "Running `" + pipcommand + "`", True)
