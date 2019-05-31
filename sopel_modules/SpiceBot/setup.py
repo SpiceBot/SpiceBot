@@ -4,9 +4,11 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import os
 
+from .Config import config as botconfig
 from .Logs import logs
 
 from .Channels import SpiceBot_Channels_MainSection
+from .Update import SpiceBot_Update_MainSection
 
 
 def setup(bot):
@@ -20,7 +22,9 @@ def setup(bot):
     bot.config.core.logs_raw = os.path.join(bot.config.core.logdir, 'raw.log')
     # bot.config.core.logs_raw = os.path.os.path.join(bot.config.core.logdir, bot.config.basename + '.raw.log')
 
-    # logs.log('SpiceBot_Logs', "Setting Up Configuration")
-
     logs.log('SpiceBot_Channels', "Setting Up Configuration")
     bot.config.define_section("SpiceBot_Channels", SpiceBot_Channels_MainSection, validate=False)
+
+    logs.log('SpiceBot_Update', "Initial Setup processing")
+    bot.config.define_section("SpiceBot_Update", SpiceBot_Update_MainSection, validate=False)
+    botconfig.define_section("SpiceBot_Update", SpiceBot_Update_MainSection, validate=False)

@@ -10,6 +10,7 @@ from .Commands import *
 from .Channels import *
 from .Database import *
 from .Uptime import *
+from .Runtime_Controls import *
 
 __author__ = 'Sam Zick'
 __email__ = 'sam@deathbybandaid.net'

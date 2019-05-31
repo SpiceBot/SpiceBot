@@ -1,31 +1,12 @@
-#!/usr/bin/env python
 # coding=utf-8
-from __future__ import unicode_literals, absolute_import, print_function, division
 
-# sopel imports
+from __future__ import unicode_literals, absolute_import, division, print_function
+
 import sopel.module
-from sopel.config.types import StaticSection, ValidatedAttribute
 
 import spicemanip
 
 import sopel_modules.SpiceBot as SpiceBot
-
-
-class SpiceBot_Update_MainSection(StaticSection):
-    gitrepo = ValidatedAttribute('gitrepo', default="https://github.com/SpiceBot/SpiceBot")
-    gitbranch = ValidatedAttribute('gitbranch', default="master")
-
-
-def configure(config):
-    config.define_section("SpiceBot_Update", SpiceBot_Update_MainSection, validate=False)
-    config.SpiceBot_Update.configure_setting('gitrepo', 'SpiceBot_Update git repo to install')
-    config.SpiceBot_Update.configure_setting('gitbranch', 'SpiceBot_Update git branch to install')
-
-
-def setup(bot):
-    SpiceBot.logs.log('SpiceBot_Update', "Initial Setup processing")
-    bot.config.define_section("SpiceBot_Update", SpiceBot_Update_MainSection, validate=False)
-    SpiceBot.config.define_section("SpiceBot_Update", SpiceBot_Update_MainSection, validate=False)
 
 
 @SpiceBot.prerun.prerun('nickname')
@@ -58,3 +39,17 @@ def nickname_comand_update(bot, trigger):
 
     # service_manip(bot.nick, 'restart', 'SpiceBot_Update')
     SpiceBot.spicebot_reload(bot, 'SpiceBot_Update', quitmessage)
+
+
+@sopel.module.nickname_commands('restart')
+def nickname_comand_restart(bot, trigger):
+
+    if not trigger.admin:
+        bot.osd("You are not authorized to perform this function.")
+
+    quitmessage = "Received command from " + trigger.nick + " to restart. Be Back Soon!"
+    SpiceBot.logs.log('SpiceBot_Restart', quitmessage)
+    bot.osd(quitmessage, bot.channels.keys())
+
+    # service_manip(bot.nick, 'restart', 'SpiceBot_Restart')
+    SpiceBot.spicebot_reload(bot, 'SpiceBot_Restart', quitmessage)

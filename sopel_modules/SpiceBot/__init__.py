@@ -9,6 +9,8 @@ This module contains references only for other modules to utilize.
 from .configure import *
 from .setup import *
 
+from .Update import *
+
 from .Config import *
 from .Tools import *
 from .Prerun import *
