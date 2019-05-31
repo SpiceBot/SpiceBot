@@ -56,4 +56,8 @@ def setup(bot):
     botconfig.define_section("SpiceBot_Update", SpiceBot_Update_MainSection, validate=False)
 
     logs.log('SpiceBot_StartupMonologue', "Initial Setup processing")
-    events.startup_add([events.BOT_STARTUPMONOLOGUE_CHANNELS, events.BOT_STARTUPMONOLOGUE_COMMANDS, events.BOT_STARTUPMONOLOGUE_CONNECTED])
+    events.startup_add([
+                        events.BOT_STARTUPMONOLOGUE_CONNECTED,
+                        events.BOT_STARTUPMONOLOGUE_CHANNELS,
+                        events.BOT_STARTUPMONOLOGUE_COMMANDS
+                        ])
