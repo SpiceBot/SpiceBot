@@ -40,7 +40,7 @@ def bot_startup_monologue_commands(bot, trigger):
     displayval = "There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files."
     SpiceBot.startupmonologue.dict["commands"] = displayval
     SpiceBot.logs.log('SpiceBot_StartupMonologue', displayval)
-    SpiceBot.events.trigger(bot, SpiceBot.events.BOT_STARTUPMONOLOGUE_COMMANDSQUERY, "SpiceBot_StartupMonologue")
+    SpiceBot.events.trigger(bot, SpiceBot.events.BOT_STARTUPMONOLOGUE_COMMANDS, "SpiceBot_StartupMonologue")
 
 
 @sopel.module.event(SpiceBot.events.BOT_LOADED)

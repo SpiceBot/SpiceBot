@@ -8,7 +8,7 @@ import sopel
 import sopel_modules.SpiceBot as SpiceBot
 
 
-@sopel.module.event(SpiceBot.events.BOT_LOADED)
+@sopel.module.event(SpiceBot.events.BOT_READY)
 @sopel.module.rule('.*')
 def bot_events_complete(bot, trigger):
 
