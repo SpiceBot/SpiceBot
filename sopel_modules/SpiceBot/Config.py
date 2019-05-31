@@ -40,7 +40,6 @@ class BotConfig():
         return self.config.define_section(name, cls_, validate)
 
     def __getattr__(self, name):
-        stderr(str(name))
         ''' will only get called for undefined attributes '''
         """We will try to find a core value, or return None"""
         if hasattr(self.config.core, name):
@@ -48,6 +47,7 @@ class BotConfig():
         elif name.lower() in self.dict["core"].keys():
             return self.dict["core"][str(name).lower()]
         else:
+            stderr(str(name))
             return None
 
 
