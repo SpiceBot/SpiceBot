@@ -11,12 +11,12 @@ from .setup import *
 
 from .Config import *
 from .Tools import *
+from .Prerun import *
 from .Logs import *
 from .Commands import *
 from .Events import *
 from .Channels import *
 from .Database import *
-from .Prerun import *
 
 __author__ = 'Sam Zick'
 __email__ = 'sam@deathbybandaid.net'
