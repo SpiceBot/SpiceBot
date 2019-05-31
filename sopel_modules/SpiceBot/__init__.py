@@ -18,6 +18,7 @@ from .Prerun import *
 from .Logs import *
 from .Commands import *
 from .Events import *
+from .StartupMonologue import *
 from .Channels import *
 from .Database import *
 

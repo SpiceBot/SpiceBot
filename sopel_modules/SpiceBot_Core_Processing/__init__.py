@@ -10,6 +10,7 @@ from .Channels import *
 from .Events import *
 from .Modules import *
 from .osd import *
+from .StartupMonologue import *
 
 
 __author__ = 'Sam Zick'
