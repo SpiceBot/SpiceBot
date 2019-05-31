@@ -1,17 +1,11 @@
-# coding=utf-8
+# coding=utf8
 from __future__ import unicode_literals, absolute_import, division, print_function
-
-import sopel.module
-import sopel.tools
-import sopel.config
+"""
+This is the SpiceBot Logs system.
+"""
+import sopel
 
 import sopel_modules.SpiceBot as SpiceBot
-
-
-def setup(bot):
-    SpiceBot.logs.log('SpiceBot_Logs', "Starting Setup Procedure")
-    SpiceBot.events.startup_add([SpiceBot.events.BOT_LOGS])
-    SpiceBot.events.trigger(bot, SpiceBot.events.BOT_LOGS, "SpiceBot_Logs")
 
 
 @sopel.module.event(SpiceBot.events.RPL_WELCOME)

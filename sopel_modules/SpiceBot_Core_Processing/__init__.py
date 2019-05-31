@@ -11,6 +11,7 @@ from .Events import *
 from .Modules import *
 from .osd import *
 from .StartupMonologue import *
+from .Logs import *
 
 
 __author__ = 'Sam Zick'

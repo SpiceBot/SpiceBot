@@ -18,6 +18,10 @@ from .osd import SopelWrapperOSD, ToolsOSD, SopelOSD, SpiceBot_OSD
 
 def setup(bot):
 
+    logs.log('SpiceBot_Logs', "Starting Setup Procedure")
+    events.startup_add([events.BOT_LOGS])
+    events.trigger(bot, events.BOT_LOGS, "SpiceBot_Logs")
+
     # Inject OSD
     logs.log('SpiceBot_OSD', "Implanting OSD function into bot")
     bot.osd = SopelOSD.osd
