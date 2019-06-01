@@ -53,6 +53,7 @@ class SpiceBot_AI():
         self.learn(braindirs)
 
     def load_extras(self, bot):
+        return
         if len(bot.config.SpiceBot_AI.extra):
             self.learn(self, bot.config.SpiceBot_AI.extra)
 
@@ -68,18 +69,21 @@ class SpiceBot_AI():
                         "<aiml version='1.0.1' encoding='UTF-8'>"
                         "    <!-- std-startup.xml -->\n"
                         "    <category>\n"
-                        "        <pattern>LOAD AIML {}</pattern>\n"
+                        "        <pattern>LOAD AIML B</pattern>\n"
+                        # "        <pattern>LOAD AIML {}</pattern>\n"
                         "        <template>\n"
                         "            <learn>{}</learn>\n"
                         "        </template>\n"
                         "    </category>\n"
-                        "</aiml>".format(str(dirnumber), os.path.join(braindir, "*"))
+                        # "</aiml>".format(str(dirnumber), os.path.join(braindir, "*"))
+                        "</aiml>".format(os.path.join(braindir, "*"))
                     )
                 self.aiml_kernel.learn(tempbrain)
-        for number in self.load_commands:
-            if number != 0:
-                self.aiml_kernel.respond("LOAD AIML {}").format(str(dirnumber))
-                os.remove(tempbrain)
+        self.aiml_kernel.respond("LOAD AIML b")
+        # for number in self.load_commands:
+        #    if number != 0:
+        #        self.aiml_kernel.respond("LOAD AIML {}").format(str(dirnumber))
+        #        os.remove(tempbrain)
 
     def on_message(self, bot, trigger, message):
         nick = Identifier(trigger.nick)
