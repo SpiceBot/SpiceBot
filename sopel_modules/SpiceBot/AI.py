@@ -32,6 +32,7 @@ class SpiceBot_AI():
         if os.path.isfile(botconfig.config.aibrain):
             self.aiml_kernel.bootstrap(brainFile=botconfig.config.aibrain)
             self.aiml_kernel.respond("LOAD AIML B")
+            self.save_brain()
         else:
             import sopel_modules
             for plugin_dir in set(sopel_modules.__path__):
