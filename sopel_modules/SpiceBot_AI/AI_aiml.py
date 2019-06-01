@@ -16,6 +16,7 @@ def bot_command_nick(bot, trigger):
     if not len(trigger.args):
         return
 
+    # TODO actual prefix
     if str(trigger.args[1]).startswith((".", '?', '!')) or str(trigger.args[1]).lower().startswith(bot.nick.lower()):
         return
 
