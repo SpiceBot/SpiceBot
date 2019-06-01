@@ -35,7 +35,8 @@ class SpiceBot_AI():
     def on_message(self, message):
         try:
             aiml_response = self.aiml_kernel.respond(message)
-        except WARNING:
+        except Exception as e:
+            aiml_response = e
             return None
         return aiml_response
 
