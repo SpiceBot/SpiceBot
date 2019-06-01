@@ -10,7 +10,7 @@ import sopel_modules.SpiceBot as SpiceBot
 
 @sopel.module.event(SpiceBot.events.BOT_READY)
 @sopel.module.rule('.*')
-def bot_events_complete(bot, trigger):
+def bot_events_complete_modules(bot, trigger):
 
     for comtype in SpiceBot.commands.dict['commands'].keys():
         if comtype not in ['module', 'nickname', 'rule']:

@@ -58,8 +58,8 @@ class SpiceBot_AI():
     def learn(self, braindirs):
         for braindir in braindirs:
             dirnumber = max(self.load_commands) + 1
-            for parsefile in os.listdir(braindir):
-                self.check_file_parse(parsefile)
+            # for parsefile in os.listdir(braindir):
+            #    self.check_file_parse(parsefile)
             tempbrain = tempfile.mkstemp()[1]
             with open(tempbrain, 'w') as fileo:
                 fileo.write(

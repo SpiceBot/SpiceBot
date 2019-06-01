@@ -10,7 +10,7 @@ import sopel_modules.SpiceBot as SpiceBot
 
 @sopel.module.event(SpiceBot.events.BOT_READY)
 @sopel.module.rule('.*')
-def bot_events_complete(bot, trigger):
+def bot_events_complete_ai(bot, trigger):
 
     if SpiceBot.botai.dict["counts"]:
         SpiceBot.logs.log('SpiceBot_AI', 'Registered %d %s files,' % (SpiceBot.botai.dict["counts"], 'aiml'))
