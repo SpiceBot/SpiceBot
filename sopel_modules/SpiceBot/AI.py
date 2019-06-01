@@ -22,6 +22,7 @@ class SpiceBot_AI_MainSection(StaticSection):
 class SpiceBot_AI():
 
     def __init__(self):
+        self.load_commands = [0]
         self.dict = {
                     "counts": 0,
                     "failcounts": 0,
@@ -56,6 +57,7 @@ class SpiceBot_AI():
 
     def learn(self, braindirs):
         for braindir in braindirs:
+            dirnumber = max(self.load_commands) + 1
             for parsefile in os.listdir(braindir):
                 self.check_file_parse(parsefile)
             tempbrain = tempfile.mkstemp()[1]
@@ -64,15 +66,17 @@ class SpiceBot_AI():
                     "<aiml version='1.0.1' encoding='UTF-8'>"
                     "    <!-- std-startup.xml -->\n"
                     "    <category>\n"
-                    "        <pattern>LOAD AIML B</pattern>\n"
+                    "        <pattern>LOAD AIML {}</pattern>\n"
                     "        <template>\n"
                     "            <learn>{}</learn>\n"
                     "        </template>\n"
                     "    </category>\n"
-                    "</aiml>".format(os.path.join(braindir, "*"))
+                    "</aiml>".format(str(dirnumber), os.path.join(braindir, "*"))
                 )
             self.aiml_kernel.learn(tempbrain)
-            self.aiml_kernel.respond("LOAD AIML B")
+            for number in self.load_commands:
+                if number != 0:
+                    self.aiml_kernel.respond("LOAD AIML {}").format(str(dirnumber))
             os.remove(tempbrain)
 
     def on_message(self, bot, trigger, message):
