@@ -55,8 +55,6 @@ def setup(bot):
     bot.config.core.logs_raw = os.path.join(bot.config.core.logdir, 'raw.log')
     # bot.config.core.logs_raw = os.path.os.path.join(bot.config.core.logdir, bot.config.basename + '.raw.log')
 
-    bot.config.aibrain = os.path.join(bot.config.homedir, bot.config.basename + '.aibrain.brn')
-
     logs.log('SpiceBot_Channels', "Setting Up Configuration")
     events.startup_add([events.BOT_CHANNELS])
     bot.config.define_section("SpiceBot_Channels", SpiceBot_Channels_MainSection, validate=False)
