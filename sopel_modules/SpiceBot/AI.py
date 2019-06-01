@@ -33,7 +33,10 @@ class SpiceBot_AI():
         logs.log('SpiceBot_AI', "Found " + str(self.dict['counts']) + " " + 'aiml' + " commands.", True)
 
     def on_message(self, message):
-        aiml_response = self.aiml_kernel.respond(message)
+        try:
+            aiml_response = self.aiml_kernel.respond(message)
+        except WARNING:
+            return None
         return aiml_response
 
 
