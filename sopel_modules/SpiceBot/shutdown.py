@@ -6,5 +6,5 @@ from .AI import botai
 
 
 def shutdown(bot):
-    botai.
+    botai.save_brain()
     pass
