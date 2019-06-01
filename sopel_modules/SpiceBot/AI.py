@@ -76,9 +76,9 @@ class SpiceBot_AI():
                         "</aiml>".format(str(dirnumber), os.path.join(braindir, "*"))
                     )
                 self.aiml_kernel.learn(tempbrain)
-                for number in self.load_commands:
-                    if number != 0:
-                        self.aiml_kernel.respond("LOAD AIML {}").format(str(dirnumber))
+        for number in self.load_commands:
+            if number != 0:
+                self.aiml_kernel.respond("LOAD AIML {}").format(str(dirnumber))
                 os.remove(tempbrain)
 
     def on_message(self, bot, trigger, message):
