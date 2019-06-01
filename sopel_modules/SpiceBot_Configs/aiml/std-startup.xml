@@ -11,7 +11,7 @@
         <!-- Template is the response to the pattern -->
         <!-- This learn an aiml file -->
         <template>
-            <learn>aiml/*</learn>
+            <learn>./aiml/*</learn>
             <!-- All aiml files are relative to the run dir and must be subdirs,
                  E.g. ./aiml/alice/one.aiml, ./aiml/custom/mine.aiml -->
 
