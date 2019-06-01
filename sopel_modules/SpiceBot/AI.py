@@ -16,7 +16,7 @@ class SpiceBot_AI():
                     }
         # Load AIML kernel
         self.aiml_kernel = aiml.Kernel()
-        self.aiml_kernel._verboseMode = False
+        # self.aiml_kernel._verboseMode = False
         # Learn responses
         import sopel_modules
         for plugin_dir in set(sopel_modules.__path__):
