@@ -53,9 +53,6 @@ class SpiceBot_AI():
             aimldir = os.path.join(configsdir, "aiml")
             braindirs.append(aimldir)
 
-        # for aimldir in bot.config.SpiceBot_AI.extra:
-        #    braindirs.append(aimldir)
-
         # learn directories
         self.learn(braindirs)
 
