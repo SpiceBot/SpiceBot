@@ -16,6 +16,7 @@ class SpiceBot_AI():
                     }
         # Load AIML kernel
         self.aiml_kernel = aiml.Kernel()
+        self.aiml_kernel._verboseMode = False
         # Learn responses
         import sopel_modules
         initial_dir = os.getcwd()
