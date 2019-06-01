@@ -34,7 +34,7 @@ class SpiceBot_AI():
 
     def on_message(self, message):
         aiml_response = self.aiml_kernel.respond(message)
-        return self.aiml_kernel.respond(aiml_response)
+        return aiml_response
 
 
 botai = SpiceBot_AI()
