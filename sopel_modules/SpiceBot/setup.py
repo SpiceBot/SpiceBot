@@ -79,4 +79,4 @@ def setup(bot):
 
     logs.log('SpiceBot_AI', "Setting Up Configuration")
     bot.config.define_section("SpiceBot_AI", SpiceBot_AI_MainSection, validate=False)
-    # botai.load_extras(bot) TODO
+    botai.load_extras(bot)
