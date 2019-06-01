@@ -39,12 +39,6 @@ class SpiceBot_AI():
         # Learn responses
         self.load_brain()
 
-        if self.dict["counts"]:
-            logs.log('SpiceBot_AI', 'Registered %d %s files,' % (self.dict["counts"], 'aiml'))
-            logs.log('SpiceBot_AI', '%d %s files failed to load' % (self.dict["failcounts"], 'aiml'), True)
-        else:
-            logs.log('SpiceBot_AI', "Warning: Couldn't load any %s files" % ('aiml'))
-
     def load_brain(self):
         import sopel_modules
         braindirs = []
