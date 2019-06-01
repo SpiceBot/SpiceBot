@@ -32,7 +32,6 @@ class SpiceBot_AI():
 
         # aiml parser
         self.aiml_parser = aiml.AimlParser.create_parser()
-        self.aiml_parser.setEncoding(None)
 
         # Don't warn for no matches
         self.aiml_kernel._verboseMode = False
