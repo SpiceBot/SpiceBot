@@ -61,6 +61,7 @@ class SpiceBot_AI():
             if braindir not in self.braindirs:
                 self.braindirs.append(braindir)
                 dirnumber = max(self.load_commands) + 1
+                self.load_commands.append(dirnumber)
                 tempbrain = tempfile.mkstemp()[1]
                 with open(tempbrain, 'w') as fileo:
                     fileo.write(
