@@ -64,8 +64,8 @@ class SpiceBot_AI():
             self.dict["sessioncache"][nick_id] = botdb.get_nick_value(nick, 'botai') or {}
             for predicate in self.dict["sessioncache"][nick_id].keys():
                 predval = self.dict["sessioncache"][nick_id][predicate]
-                self.aiml_kernel.setPredicate(predicate, predval, sessionId=nick_id)
-        aiml_response = self.aiml_kernel.respond(message, sessionId=nick_id)
+                self.aiml_kernel.setPredicate(predicate, predval, nick_id)
+        aiml_response = self.aiml_kernel.respond(message, nick_id)
         sessionData = self.aiml_kernel.getSessionData(nick_id)
         botdb.set_nick_value(nick, 'botai', sessionData)
         return aiml_response
