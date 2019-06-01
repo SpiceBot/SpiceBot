@@ -31,11 +31,17 @@ class SpiceBot_AI():
 
     def load_brain(self):
         import sopel_modules
+        braindirs = []
         for plugin_dir in set(sopel_modules.__path__):
             configsdir = os.path.join(plugin_dir, "SpiceBot_Configs")
             aimldir = os.path.join(configsdir, "aiml")
-            aimlstarter = tempfile.mkstemp()[1]
-            with open(aimlstarter, 'w') as fileo:
+            braindirs.append(aimldir)
+
+        # TODO add extra config
+
+        for braindir in braindirs:
+            tempbrain = tempfile.mkstemp()[1]
+            with open(tempbrain, 'w') as fileo:
                 fileo.write(
                     "<aiml version='1.0.1' encoding='UTF-8'>"
                     "    <!-- std-startup.xml -->\n"
@@ -45,11 +51,11 @@ class SpiceBot_AI():
                     "            <learn>{}</learn>\n"
                     "        </template>\n"
                     "    </category>\n"
-                    "</aiml>".format(os.path.join(aimldir, "*"))
+                    "</aiml>".format(os.path.join(braindir, "*"))
                 )
-            self.aiml_kernel.learn(aimlstarter)
+            self.aiml_kernel.learn(tempbrain)
             self.aiml_kernel.respond("LOAD AIML B")
-            os.remove(aimlstarter)
+            os.remove(tempbrain)
 
     def on_message(self, bot, trigger, message):
         nick = Identifier(trigger.nick)
