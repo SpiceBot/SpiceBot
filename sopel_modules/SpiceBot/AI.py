@@ -79,7 +79,7 @@ class SpiceBot_AI():
                         "</aiml>".format(os.path.join(braindir, "*"))
                     )
                 self.aiml_kernel.learn(tempbrain)
-        self.aiml_kernel.respond("LOAD AIML b")
+        self.aiml_kernel.respond("LOAD AIML B")
         # for number in self.load_commands:
         #    if number != 0:
         #        self.aiml_kernel.respond("LOAD AIML {}").format(str(dirnumber))
