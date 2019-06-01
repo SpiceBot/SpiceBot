@@ -9,6 +9,7 @@ This module contains references only for other modules to utilize.
 from .Channels import *
 from .Events import *
 from .Modules import *
+from .AI import *
 from .osd import *
 from .StartupMonologue import *
 from .Logs import *
