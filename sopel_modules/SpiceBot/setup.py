@@ -15,6 +15,7 @@ from .Channels import SpiceBot_Channels_MainSection
 from .Update import SpiceBot_Update_MainSection
 from .osd import SopelWrapperOSD, ToolsOSD, SopelOSD, SpiceBot_OSD
 from .Kick import SopelWrapperKICK, SopelKICK, SpiceBot_Kick
+from .AI import SpiceBot_AI_MainSection, botai
 
 
 def setup(bot):
@@ -46,6 +47,9 @@ def setup(bot):
     bot.config.define_section("SpiceBot_Kick", SpiceBot_Kick, validate=False)
     botconfig.define_section("SpiceBot_Kick", SpiceBot_Kick, validate=False)
 
+    bot.config.core.prefix_list = str(bot.config.core.prefix).replace("\\", '').split("|")
+    bot.config.core.prefix_list.append("?")
+
     logs.log('SpiceBot_Config', "Setting Up Configuration")
     bot.config.core.basename = os.path.basename(bot.config.filename).rsplit('.', 1)[0]
     bot.config.core.logs_stdio = os.path.join(bot.config.core.logdir, 'stdio.log')
@@ -72,3 +76,7 @@ def setup(bot):
                         events.BOT_STARTUPMONOLOGUE_CHANNELS,
                         events.BOT_STARTUPMONOLOGUE_COMMANDS
                         ])
+
+    logs.log('SpiceBot_AI', "Setting Up Configuration")
+    bot.config.define_section("SpiceBot_AI", SpiceBot_AI_MainSection, validate=False)
+    botai.load_extras(bot)

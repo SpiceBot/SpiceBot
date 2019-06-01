@@ -3,6 +3,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 """Configuration for SpiceBot"""
 
 from .Channels import SpiceBot_Channels_MainSection
+from .AI import SpiceBot_AI_MainSection
 from .Update import SpiceBot_Update_MainSection
 from .Kick import SpiceBot_Kick
 from .osd import SpiceBot_OSD
@@ -31,3 +32,6 @@ def configure(config):
 
     config.define_section("SpiceBot_Kick", SpiceBot_Kick, validate=False)
     config.SpiceBot_Kick.configure_setting('kick', 'MAXTARG limit for KICK')
+
+    config.define_section("SpiceBot_AI", SpiceBot_AI_MainSection, validate=False)
+    config.SpiceBot_AI.configure_setting('extra', 'extra aiml directories to import matches from')

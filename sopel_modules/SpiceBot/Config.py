@@ -24,6 +24,9 @@ class BotConfig():
         opts = parser.parse_args(argv)
         self.config = get_configuration(opts)
 
+        self.config.core.prefix_list = str(self.config.core.prefix).replace("\\", '').split("|")
+        self.config.core.prefix_list.append("?")
+
         self.config.basename = os.path.basename(self.config.filename).rsplit('.', 1)[0]
         self.config.core.logs_stdio = os.path.join(self.config.core.logdir, 'stdio.log')
         # self.config.core.logs_stdio = os.path.os.path.join(self.config.core.logdir, self.config.basename + '.stdio.log')

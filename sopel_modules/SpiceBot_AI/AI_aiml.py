@@ -16,10 +16,12 @@ def bot_command_nick(bot, trigger):
     if not len(trigger.args):
         return
 
-    # TODO actual prefix
-    if str(trigger.args[1]).startswith((".", '?', '!')) or str(trigger.args[1]).lower().startswith(bot.nick.lower()):
+    message = trigger.args[1]
+
+    # ignore text coming from a valid prefix
+    if str(message).startswith(tuple(bot.config.core.prefix_list)):
         return
 
-    returnmessage = SpiceBot.botai.on_message(bot, trigger, trigger.args[1])
-
-    bot.osd(str(returnmessage))
+    returnmessage = SpiceBot.botai.on_message(bot, trigger, message)
+    if returnmessage:
+        bot.osd(str(returnmessage))

@@ -5,12 +5,18 @@ This is the SpiceBot AI system. Based On Chatty cathy
 """
 
 from sopel.tools import Identifier
+from sopel.config.types import StaticSection, ListAttribute
 
 import os
 import tempfile
 import aiml
 
 from .Database import db as botdb
+from .Logs import logs
+
+
+class SpiceBot_AI_MainSection(StaticSection):
+    extra = ListAttribute('extra')
 
 
 class SpiceBot_AI():
@@ -18,16 +24,27 @@ class SpiceBot_AI():
     def __init__(self):
         self.dict = {
                     "counts": 0,
+                    "failcounts": 0,
                     "sessioncache": {}
                     }
         # Load AIML kernel
         self.aiml_kernel = aiml.Kernel()
+
+        # aiml parser
+        self.aiml_parser = aiml.AimlParser.create_parser()
+        self.aiml_parser.setEncoding(None)
 
         # Don't warn for no matches
         self.aiml_kernel._verboseMode = False
 
         # Learn responses
         self.load_brain()
+
+        if self.dict["counts"]:
+            logs.log('SpiceBot_AI', 'Registered %d %s files,' % (self.dict["counts"], 'aiml'))
+            logs.log('SpiceBot_AI', '%d %s files failed to load' % (self.dict["failcounts"], 'aiml'), True)
+        else:
+            logs.log('SpiceBot_AI', "Warning: Couldn't load any %s files" % ('aiml'))
 
     def load_brain(self):
         import sopel_modules
@@ -37,9 +54,20 @@ class SpiceBot_AI():
             aimldir = os.path.join(configsdir, "aiml")
             braindirs.append(aimldir)
 
-        # TODO add extra config
+        # for aimldir in bot.config.SpiceBot_AI.extra:
+        #    braindirs.append(aimldir)
 
+        # learn directories
+        self.learn(braindirs)
+
+    def load_extras(self, bot):
+        if len(bot.config.SpiceBot_AI.extra):
+            self.learn(self, bot.config.SpiceBot_AI.extra)
+
+    def learn(self, braindirs):
         for braindir in braindirs:
+            for parsefile in os.listdir(braindir):
+                self.check_file_parse(parsefile)
             tempbrain = tempfile.mkstemp()[1]
             with open(tempbrain, 'w') as fileo:
                 fileo.write(
@@ -59,16 +87,36 @@ class SpiceBot_AI():
 
     def on_message(self, bot, trigger, message):
         nick = Identifier(trigger.nick)
-        nick_id = bot.db.get_nick_id(nick, create=True)
+        nick_id = botdb.get_nick_id(nick, create=True)
+        self.check_user_import(nick, nick_id)
+        aiml_response = self.aiml_kernel.respond(message, nick_id)
+        self.save_nick_session(nick, nick_id)
+        return aiml_response
+
+    def check_user_import(self, nick, nick_id=None):
+        if not nick_id:
+            nick = Identifier(nick)
+            nick_id = botdb.get_nick_id(nick, create=True)
         if nick_id not in self.dict["sessioncache"].keys():
             self.dict["sessioncache"][nick_id] = botdb.get_nick_value(nick, 'botai') or {}
             for predicate in self.dict["sessioncache"][nick_id].keys():
                 predval = self.dict["sessioncache"][nick_id][predicate]
                 self.aiml_kernel.setPredicate(predicate, predval, nick_id)
-        aiml_response = self.aiml_kernel.respond(message, nick_id)
+
+    def save_nick_session(self, nick, nick_id=None):
+        if not nick_id:
+            nick = Identifier(nick)
+            nick_id = botdb.get_nick_id(nick, create=True)
         sessionData = self.aiml_kernel.getSessionData(nick_id)
         botdb.set_nick_value(nick, 'botai', sessionData)
-        return aiml_response
+
+    def check_file_parse(self, parsefile):
+        try:
+            self.aiml_parser.parse(parsefile)
+            self.dict["counts"] += 1
+        except Exception as e:
+            logs.log('SpiceBot_AI', "Error loading %s: %s (%s)" % ('aiml', e, parsefile))
+            self.dict["failcounts"] += 1
 
 
 botai = SpiceBot_AI()
