@@ -6,9 +6,6 @@ These are the core SpiceBot Classes
 This module contains references only for other modules to utilize.
 """
 
-from .configure import *
-from .setup import *
-
 from .Update import *
 from .osd import *
 from .Kick import *
@@ -23,6 +20,11 @@ from .StartupMonologue import *
 from .Channels import *
 from .Database import *
 from .AI import *
+
+
+from .configure import *
+from .setup import *
+from .shutdown import *
 
 __author__ = 'Sam Zick'
 __email__ = 'sam@deathbybandaid.net'

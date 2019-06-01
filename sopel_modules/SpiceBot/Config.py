@@ -32,6 +32,8 @@ class BotConfig():
         self.config.core.logs_raw = os.path.join(self.config.core.logdir, 'raw.log')
         # self.config.core.logs_raw = os.path.os.path.join(self.config.core.logdir, self.config.basename + '.raw.log')
 
+        self.config.aibrain = os.path.join(self.config.homedir, 'aibrain.brn')
+
         # load as dict
         config = configparser.ConfigParser()
         config.read(self.config.filename)

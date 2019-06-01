@@ -19,4 +19,4 @@ def bot_command_nick(bot, trigger):
     if str(trigger.args[1]).startswith((".", '?', '!')) or str(trigger.args[1]).lower().startswith(bot.nick.lower()):
         return
 
-    bot.osd(str(SpiceBot.botai.on_message(str(trigger.args[1]))))
+    bot.osd(str(SpiceBot.botai.on_message(str(bot, trigger, trigger.args[1]))))
