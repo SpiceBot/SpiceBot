@@ -54,7 +54,7 @@ class SpiceBot_AI():
     def on_message(self, bot, trigger, message):
         nick = Identifier(trigger.nick)
         nick_id = bot.db.get_nick_id(nick, create=True)
-        if nick_id not in self.dict["sessioncache"]:
+        if nick_id not in self.dict["sessioncache"].keys():
             self.dict["sessioncache"][nick_id] = botdb.get_nick_value(nick, 'botai') or {}
             for predicate in self.dict["sessioncache"][nick_id].keys():
                 predval = self.dict["sessioncache"][nick_id][predicate]
