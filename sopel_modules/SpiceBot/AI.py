@@ -32,7 +32,7 @@ class SpiceBot_AI():
             except Exception as e:
                 logs.log('SpiceBot_AI', "Error loading %s: %s (%s)" % ('aiml', e, aimlstarter))
         os.chdir(initial_dir)
-        logs.log('SpiceBot_AI', "Found " + str(self.dict['counts']) + " " + 'aiml' + " commands.", True)
+        # logs.log('SpiceBot_AI', "Found " + str(self.dict['counts']) + " " + 'aiml' + " commands.", True)
 
     def on_message(self, message):
         try:
