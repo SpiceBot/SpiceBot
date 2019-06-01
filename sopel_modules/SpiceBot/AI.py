@@ -11,6 +11,7 @@ import tempfile
 import aiml
 
 from .Config import config as botconfig
+from .Database import db as botdb
 
 
 class SpiceBot_AI():
@@ -18,6 +19,7 @@ class SpiceBot_AI():
     def __init__(self):
         self.dict = {
                     "counts": 0,
+                    "sessioncache": {}
                     }
         # Load AIML kernel
         self.aiml_kernel = aiml.Kernel()
@@ -62,7 +64,14 @@ class SpiceBot_AI():
     def on_message(self, bot, trigger, message):
         nick = Identifier(trigger.nick)
         nick_id = bot.db.get_nick_id(nick, create=True)
+        if nick_id not in self.dict["sessioncache"]:
+            self.dict["sessioncache"][nick_id] = botdb.get_nick_value(nick, 'botai') or {}
+            for predicate in self.dict["sessioncache"][nick_id].keys():
+                predval = self.dict["sessioncache"][nick_id][predicate]
+                self.aiml_kernel.setPredicate(predicate, predval, sessionId=nick_id)
         aiml_response = self.aiml_kernel.respond(message, sessionId=nick_id)
+        sessionData = self.aiml_kernel.getSessionData(nick_id)
+        botdb.set_nick_value(nick, 'botai', sessionData)
         return aiml_response
 
 
