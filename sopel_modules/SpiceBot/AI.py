@@ -62,7 +62,7 @@ class SpiceBot_AI():
     def on_message(self, bot, trigger, message):
         nick = Identifier(trigger.nick)
         nick_id = bot.db.get_nick_id(nick, create=True)
-        aiml_response = self.aiml_kernel.respond(message, nick_id)
+        aiml_response = self.aiml_kernel.respond(message, sessionId=nick_id)
         return aiml_response
 
 
