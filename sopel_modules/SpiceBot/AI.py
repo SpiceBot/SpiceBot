@@ -52,8 +52,10 @@ class SpiceBot_AI():
         # learn directories
         self.learn(braindirs)
 
+    def load_bot_values(self, bot):
+        self.aiml_kernel.setBotPredicate("nick", bot.nick)
+
     def load_extras(self, bot):
-        return
         if len(bot.config.SpiceBot_AI.extra):
             self.learn(self, bot.config.SpiceBot_AI.extra)
 
