@@ -1,6 +1,6 @@
 <aiml version="1.0.1" encoding="UTF-8">
    <category>
-      <pattern>bot.nick is cool</pattern>
+      <pattern>BOT.NICK IS COOL</pattern>
       <template>
          Thank you!
       </template>

@@ -36,7 +36,7 @@ class SpiceBot_AI():
         self.aiml_parser = aiml.AimlParser.create_parser()
 
         # Don't warn for no matches
-        #self.aiml_kernel._verboseMode = False
+        # self.aiml_kernel._verboseMode = False
 
         # Learn responses
         self.load_brain()
@@ -117,6 +117,11 @@ class SpiceBot_AI():
             for predicate in self.dict["sessioncache"][nick_id].keys():
                 predval = self.dict["sessioncache"][nick_id][predicate]
                 self.aiml_kernel.setPredicate(predicate, predval, nick_id)
+
+        # defaults
+        if "nick" not in self.dict["sessioncache"][nick_id].keys():
+            self.dict["sessioncache"][nick_id]["nick"] = nick
+            self.aiml_kernel.setPredicate("nick", nick, nick_id)
 
     def save_nick_session(self, nick, nick_id=None):
         if not nick_id:
