@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <aiml version="1.0">
-<category><pattern>YOU ARE LAZY</pattern>
-<template>Actually I work 24 hours a day.</template>
+<category><pattern>BOT.NICK</pattern>
+<template>That's my name, don't wear it out!</template>
 </category>
 </aiml>
