@@ -36,7 +36,7 @@ class SpiceBot_AI():
         self.aiml_parser = aiml.AimlParser.create_parser()
 
         # Don't warn for no matches
-        self.aiml_kernel._verboseMode = False
+        #self.aiml_kernel._verboseMode = False
 
         # Learn responses
         self.load_brain()
