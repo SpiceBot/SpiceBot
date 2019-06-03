@@ -1,8 +1,6 @@
-<aiml version="1.0.1" encoding="UTF-8">
-   <category>
-      <pattern>BOT.NICK IS COOL</pattern>
-      <template>
-         Thank you!
-      </template>
-   </category>
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="1.0">
+<category><pattern>YOU ARE LAZY</pattern>
+<template>Actually I work 24 hours a day.</template>
+</category>
 </aiml>
