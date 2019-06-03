@@ -98,19 +98,14 @@ class SpiceBot_AI():
         return aiml_response
 
     def bot_message_precipher(self, bot, trigger, message):
-        while str(bot.nick) in message.upper():
-            message = message.replace(str(bot.nick), "bot.nick")
-        while str(trigger.nick) in message.upper():
-            message = message.replace(str(trigger.nick), "trigger.nick")
+        message = message.replace(str(bot.nick), "bot.nick")
+        message = message.replace(str(trigger.nick), "trigger.nick")
         bot.say(str(message))
         return message
 
     def bot_message_decipher(self, bot, trigger, aiml_response):
-        while "bot.nick" in aiml_response:
-            aiml_response = aiml_response.replace("bot.nick", str(bot.nick))
-        while "trigger.nick" in aiml_response:
-            aiml_response = aiml_response.replace("trigger.nick", str(trigger.nick))
-        bot.say(str(aiml_response))
+        aiml_response = aiml_response.replace("bot.nick", str(bot.nick))
+        aiml_response = aiml_response.replace("trigger.nick", str(trigger.nick))
         return aiml_response
 
     def check_user_import(self, nick, nick_id=None):
