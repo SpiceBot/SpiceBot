@@ -14,6 +14,8 @@ import spicemanip
 from .Config import config as botconfig
 
 
+# TODO timestamps
+
 class BotLogs():
     """This Is a contained source of log information"""
     def __init__(self):
