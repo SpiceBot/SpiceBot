@@ -10,6 +10,9 @@ import sopel_modules.SpiceBot as SpiceBot
 @sopel.module.rule('(.*)')
 def bot_command_nick(bot, trigger):
 
+    # TODO add config limits
+    # but still allow in privmsg
+
     if trigger.nick == bot.nick:
         return
 
