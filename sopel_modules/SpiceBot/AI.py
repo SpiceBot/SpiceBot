@@ -98,13 +98,13 @@ class SpiceBot_AI():
         return aiml_response
 
     def bot_message_precipher(self, bot, message):
-        # while bot.nick in message:
-        #    message.replace(bot.nick, "bot.nick")
+        while str(bot.nick) in message.upper():
+            message = message.replace(str(bot.nick), "bot.nick")
         return message
 
     def bot_message_decipher(self, bot, aiml_response):
-        # while "bot.nick" in aiml_response:
-        #    aiml_response.replace("bot.nick", bot.nick)
+        while "bot.nick" in aiml_response:
+            aiml_response = aiml_response.replace("bot.nick", str(bot.nick))
         return aiml_response
 
     def check_user_import(self, nick, nick_id=None):
