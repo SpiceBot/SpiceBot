@@ -91,10 +91,16 @@ class SpiceBot_AI():
         nick = Identifier(trigger.nick)
         nick_id = botdb.get_nick_id(nick, create=True)
         self.check_user_import(nick, nick_id)
+        message = self.bot_message_precipher(bot, message)
         aiml_response = self.aiml_kernel.respond(message, nick_id)
         self.save_nick_session(nick, nick_id)
         aiml_response = self.bot_message_decipher(bot, aiml_response)
         return aiml_response
+
+    def bot_message_precipher(self, bot, message):
+        while bot.nick in message:
+            message.replace(bot.nick, "bot.nick")
+        return message
 
     def bot_message_decipher(self, bot, aiml_response):
         while "bot.nick" in aiml_response:
