@@ -10,6 +10,7 @@ from sopel.config.types import StaticSection, ListAttribute
 import os
 import tempfile
 import aiml
+import untangle
 
 from .Database import db as botdb
 from .Logs import logs
@@ -78,6 +79,24 @@ class SpiceBot_AI():
                 self.aiml_kernel.learn(tempbrain)
         self.aiml_kernel.respond("LOAD AIML B")
 
+    def count_aiml_coms(self):
+        filepathlist = []
+        for braindir in self.braindirs:
+            for pathname in os.listdir(braindir):
+                path = os.path.join(braindir, pathname)
+                if os.path.isfile(path) and path.endswith('.aiml'):
+                    filepathlist.append(str(path))
+
+        for aimlfile in filepathlist:
+
+            try:
+                aiml_dict = untangle.parse(aimlfile)
+                logs.log('SpiceBot_AI', aiml_dict)
+                self.dict["counts"] += 1
+            except Exception as e:
+                logs.log('SpiceBot_AI', "Error loading %s: %s (%s)" % ('aiml', e, aimlfile))
+                self.dict["failcounts"] += 1
+
     def on_message(self, bot, trigger, message):
         nick = Identifier(trigger.nick)
         nick_id = botdb.get_nick_id(nick, create=True)
@@ -127,14 +146,6 @@ class SpiceBot_AI():
             nick_id = botdb.get_nick_id(nick, create=True)
         sessionData = self.aiml_kernel.getSessionData(nick_id)
         botdb.set_nick_value(nick, 'botai', sessionData)
-
-    def check_file_parse(self, parsefile):
-        try:
-            self.aiml_parser.parse(parsefile)
-            self.dict["counts"] += 1
-        except Exception as e:
-            logs.log('SpiceBot_AI', "Error loading %s: %s (%s)" % ('aiml', e, parsefile))
-            self.dict["failcounts"] += 1
 
 
 botai = SpiceBot_AI()
