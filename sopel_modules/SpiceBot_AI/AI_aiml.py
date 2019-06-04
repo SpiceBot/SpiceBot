@@ -25,6 +25,18 @@ def bot_command_rule(bot, trigger):
 
     # ignore text coming from a valid prefix
     if str(message).startswith(tuple(bot.config.core.prefix_list)):
+        trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'module')
+        commands_list = []
+        for commandstype in SpiceBot.commands.dict['commands'].keys():
+            if commandstype not in ['rule', 'nickname']:
+                for com in SpiceBot.commands.dict['commands'][commandstype].keys():
+                    if com not in commands_list:
+                        commands_list.append(com)
+        if trigger_command not in commands_list:
+            invalid_display = ["I don't seem to have a command for " + str(trigger_command) + "!"]
+            invalid_display.append("If you have a suggestion for this command, you can run .feature ." + str(trigger_command))
+            invalid_display.append("ADD DESCRIPTION HERE!")
+            bot.osd(invalid_display, trigger.nick, 'notice')
         return
 
     if str(message).lower().startswith(str(bot.nick).lower()):
