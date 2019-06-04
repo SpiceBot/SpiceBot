@@ -94,10 +94,11 @@ class SpiceBot_AI():
 
             try:
                 dict_from_file = untangle.parse(aimlfile)
-                logs.log('SpiceBot_AI', dict_from_file)
+                # logs.log('SpiceBot_AI', dict_from_file)
             except Exception as e:
+                filereadgood = e
                 filereadgood = False
-                logs.log('SpiceBot_AI', "Error loading %s: %s (%s)" % ('aiml', e, aimlfile))
+                # logs.log('SpiceBot_AI', "Error loading %s: %s (%s)" % ('aiml', e, aimlfile))
 
             if filereadgood and isinstance(dict_from_file, dict):
                 self.dict["counts"] += 1
