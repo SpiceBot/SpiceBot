@@ -23,7 +23,7 @@ class SpiceBot_AI():
 
     def __init__(self):
         self.load_commands = [0]
-        self.braindirs = []
+        self.braindirs = {}
         self.dict = {
                     "counts": 0,
                     "failcounts": 0,
@@ -63,40 +63,21 @@ class SpiceBot_AI():
         for braindir in braindirs:
             if braindir not in self.braindirs:
                 self.braindirs.append(braindir)
-                dirnumber = max(self.load_commands) + 1
-                self.load_commands.append(dirnumber)
                 tempbrain = tempfile.mkstemp()[1]
-                # with open(tempbrain, 'w') as fileo:
-                #    fileo.write(
-                #        "<aiml version='1.0.1' encoding='UTF-8'>"
-                #        "    <!-- std-startup.xml -->\n"
-                #        "    <category>\n"
-                #        "        <pattern>LOAD AIML B</pattern>\n"
-                #        # "        <pattern>LOAD AIML {}</pattern>\n"
-                #        "        <template>\n"
-                #        "            <learn>{}</learn>\n"
-                #        "        </template>\n"
-                #        "    </category>\n"
-                #        # "</aiml>".format(str(dirnumber), os.path.join(braindir, "*"))
-                #        "</aiml>".format(os.path.join(braindir, "*.aiml"))
-                #    )
-                brainfile = open(tempbrain, 'a')
-                brainfile.write("<aiml version='1.0.1' encoding='UTF-8'>")
-                brainfile.write("    <!-- std-startup.xml -->\n")
-                brainfile.write("    <category>\n")
-                brainfile.write("        <pattern>LOAD AIML {}</pattern>\n".format(str(dirnumber)))
-                brainfile.write("        <template>\n")
-                brainfile.write("            <learn>{}</learn>\n".format(os.path.join(braindir, "*.aiml")))
-                brainfile.write("        </template>\n")
-                brainfile.write("    </category>\n")
-                brainfile.write("</aiml>")
-                brainfile.close()
+                with open(tempbrain, 'w') as fileo:
+                    fileo.write(
+                        "<aiml version='1.0.1' encoding='UTF-8'>"
+                        "    <!-- std-startup.xml -->\n"
+                        "    <category>\n"
+                        "        <pattern>LOAD AIML B</pattern>\n"
+                        "        <template>\n"
+                        "            <learn>{}</learn>\n"
+                        "        </template>\n"
+                        "    </category>\n"
+                        "</aiml>".format(os.path.join(braindir, "*.aiml"))
+                    )
                 self.aiml_kernel.learn(tempbrain)
-        # self.aiml_kernel.respond("LOAD AIML B")
-        for number in self.load_commands:
-            if number != 0:
-                self.aiml_kernel.respond("LOAD AIML {}").format(str(dirnumber))
-                os.remove(tempbrain)
+        self.aiml_kernel.respond("LOAD AIML B")
 
     def on_message(self, bot, trigger, message):
         nick = Identifier(trigger.nick)
