@@ -43,7 +43,7 @@ def bot_command_rule(bot, trigger):
     if returnmessage:
         bot.osd(str(returnmessage))
     else:
-        closestmatches = SpiceBot.similar_list(bot, trigger_command, SpiceBot.commands.dict['commands']["nickname"].keys(), 3, 'reverse')
+        closestmatches = SpiceBot.similar_list(trigger_command, SpiceBot.commands.dict['commands']["nickname"].keys(), 3, 'reverse')
         if len(closestmatches):
             closestmatches = spicemanip.main(closestmatches, "andlist")
             bot.osd("I don't know what you are asking me to do! Did you mean: " + str(closestmatches) + "?")
