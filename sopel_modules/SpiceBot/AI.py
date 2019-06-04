@@ -78,7 +78,7 @@ class SpiceBot_AI():
                         "        </template>\n"
                         "    </category>\n"
                         # "</aiml>".format(str(dirnumber), os.path.join(braindir, "*"))
-                        "</aiml>".format(os.path.join(braindir, "*"))
+                        "</aiml>".format(os.path.join(braindir, "*.aiml"))
                     )
                 self.aiml_kernel.learn(tempbrain)
         self.aiml_kernel.respond("LOAD AIML B")
