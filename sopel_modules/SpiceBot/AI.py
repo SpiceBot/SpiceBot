@@ -10,7 +10,6 @@ from sopel.config.types import StaticSection, ListAttribute
 import os
 import tempfile
 import aiml
-from bs4 import BeautifulSoup
 
 from .Database import db as botdb
 
@@ -40,7 +39,6 @@ class SpiceBot_AI():
 
         # Learn responses
         self.load_brain()
-        self.count_aiml_coms()
 
     def load_brain(self):
         import sopel_modules
@@ -52,7 +50,6 @@ class SpiceBot_AI():
 
         # learn directories
         self.learn(braindirs)
-        self.count_aiml_coms()
 
     def load_bot_values(self, bot):
         self.aiml_kernel.setBotPredicate("nick", bot.nick)
@@ -80,46 +77,6 @@ class SpiceBot_AI():
                     )
                 self.aiml_kernel.learn(tempbrain)
         self.aiml_kernel.respond("LOAD AIML B")
-
-    def count_aiml_coms(self):
-        self.dict["counts"] = 0
-        self.dict["failcounts"] = 0
-        filepathlist = []
-        for braindir in self.braindirs:
-            for pathname in os.listdir(braindir):
-                path = os.path.join(braindir, pathname)
-                if os.path.isfile(path) and path.endswith('.aiml'):
-                    filepathlist.append(str(path))
-
-        for aimlfile in filepathlist:
-            filereadgood = True
-            xmldoc = BeautifulSoup(aimlfile)
-            if aimlfile not in self.dict["files"]:
-                self.dict["files"][aimlfile] = xmldoc
-            return
-            aiml_file_lines = []
-            aiml_file = open(aimlfile, 'r')
-            lines = aiml_file.readlines()
-            for line in lines:
-                aiml_file_lines.append(str(line))
-            aiml_file.close()
-
-            detected_lines = []
-            for line in aiml_file_lines:
-                if line.startswith("<pattern>"):
-                    line = line.replace("<pattern>", '')
-                    line = line.replace("</pattern>", '')
-                    detected_lines.append(line)
-
-            if not len(detected_lines):
-                filereadgood = False
-
-            if filereadgood:
-                self.dict["counts"] += 1
-                if aimlfile not in self.dict["files"]:
-                    self.dict["files"][aimlfile] = detected_lines
-            else:
-                self.dict["failcounts"] += 1
 
     def on_message(self, bot, trigger, message):
         nick = Identifier(trigger.nick)
