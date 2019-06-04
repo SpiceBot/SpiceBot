@@ -6,8 +6,6 @@ import sopel.module
 
 import sopel_modules.SpiceBot as SpiceBot
 
-import spicemanip
-
 
 @sopel.module.rule('(.*)')
 def bot_command_rule(bot, trigger):
