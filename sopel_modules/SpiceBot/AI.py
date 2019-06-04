@@ -11,10 +11,8 @@ import os
 import tempfile
 import aiml
 import xmltodict
-import json
 
 from .Database import db as botdb
-
 
 
 class SpiceBot_AI_MainSection(StaticSection):
@@ -95,32 +93,29 @@ class SpiceBot_AI():
 
         for aimlfile in filepathlist:
             filereadgood = True
+            aiml_file_lines = []
+            aiml_file = open(aimlfile, 'r')
+            lines = aiml_file.readlines()
+            for line in lines:
+                aiml_file_lines.append(str(line))
+            aiml_file.close()
 
-            try:
-                with open(aimlfile) as fd:
-                    dict_from_file = xmltodict.parse(fd.read())
-            except Exception as e:
-                filereadgood = e
+            detected_lines = []
+            for line in aiml_file_lines:
+                if line.startswith("<pattern>"):
+                    line = line.replace("<pattern>", '')
+                    line = line.replace("</pattern>", '')
+                    detected_lines.append(line)
+
+            if not len(detected_lines):
                 filereadgood = False
 
             if filereadgood:
                 self.dict["counts"] += 1
                 if aimlfile not in self.dict["files"]:
-                    self.dict["files"][aimlfile] = dict_from_file
+                    self.dict["files"][aimlfile] = detected_lines
             else:
                 self.dict["failcounts"] += 1
-
-    """def donothing():
-        aiml_file_lines = []
-        aiml_file = open(aimlfile, 'r')
-        lines = aiml_file.readlines()
-        for line in lines:
-            aiml_file_lines.append(line)
-        aiml_file.close()
-
-        detected_lines = []
-        for line in aiml_file_lines:
-            dothing = True"""
 
     def on_message(self, bot, trigger, message):
         nick = Identifier(trigger.nick)
