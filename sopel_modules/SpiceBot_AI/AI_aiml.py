@@ -6,6 +6,8 @@ import sopel.module
 
 import sopel_modules.SpiceBot as SpiceBot
 
+import spicemanip
+
 
 @sopel.module.rule('(.*)')
 def bot_command_rule(bot, trigger):
@@ -27,9 +29,25 @@ def bot_command_rule(bot, trigger):
 
     if str(message).lower().startswith(str(bot.nick).lower()):
         trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'nickname')
+        if str(trigger_command).startswith("?"):
+            return
+        fulltrigger = spicemanip.main(trigger_args, 0)
+        if fulltrigger in SpiceBot.commands.dict['nickrules']:
+            return
         if trigger_command in SpiceBot.commands.dict['commands']["nickname"].keys():
             return
+    else:
+        trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'module')
 
     returnmessage = SpiceBot.botai.on_message(bot, trigger, message)
     if returnmessage:
         bot.osd(str(returnmessage))
+    else:
+        closestmatches = SpiceBot.similar_list(bot, trigger_command, SpiceBot.commands.dict['commands']["nickname"].keys(), 3, 'reverse')
+        if len(closestmatches):
+            closestmatches = spicemanip.main(closestmatches, "andlist")
+            bot.osd("I don't know what you are asking me to do! Did you mean: " + str(closestmatches) + "?")
+            return
+        else:
+            bot.osd("I don't know what you are asking me to do!")
+            return

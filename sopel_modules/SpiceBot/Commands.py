@@ -22,6 +22,8 @@ class BotCommands():
         self.lock = threading.Lock()
         self.dict = {
                     "counts": 0,
+                    'nickrules': [],
+                    'nickaiml': [],
                     "commands": {
                                 'module': {},
                                 'nickname': {},
@@ -30,8 +32,16 @@ class BotCommands():
                     'disabled': {}
                     }
         self.module_files_parse()
+        self.nickrules()
         for comtype in ['module', 'nickname', 'rule']:
             logs.log('SpiceBot_Commands', "Found " + str(len(self.dict['commands'][comtype].keys())) + " " + comtype + " commands.", True)
+
+    def nickrules(self):
+        for command in self.dict['commands']['rule'].keys():
+            if command.startswith("$nickname"):
+                command = command.split("$nickname")[-1]
+                if command not in self.dict['nickrules']:
+                    self.dict['nickrules'].append(command)
 
     def find_command_type(self, command):
         for commandstype in self.dict['commands'].keys():
