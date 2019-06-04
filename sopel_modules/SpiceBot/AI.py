@@ -89,6 +89,9 @@ class SpiceBot_AI():
         return aiml_response
 
     def bot_message_precipher(self, bot, trigger, message):
+        puct_dict = {"!": "exclamationmark", ".": "period", "?": "questionmark", ",": "comma"}
+        for puctuation in puct_dict.keys():
+            message = message.replace(puctuation, puct_dict[puctuation])
         for botitem in ["nick"]:
             message = message.replace(str(eval("bot." + botitem)), "bot" + botitem)
         for triggeritem in ["nick", "sender"]:
