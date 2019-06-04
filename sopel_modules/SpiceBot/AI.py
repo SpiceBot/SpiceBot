@@ -82,6 +82,8 @@ class SpiceBot_AI():
         self.aiml_kernel.respond("LOAD AIML B")
 
     def count_aiml_coms(self):
+        self.dict["counts"] = 0
+        self.dict["failcounts"] = 0
         filepathlist = []
         for braindir in self.braindirs:
             for pathname in os.listdir(braindir):
