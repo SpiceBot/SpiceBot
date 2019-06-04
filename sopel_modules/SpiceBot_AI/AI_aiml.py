@@ -28,6 +28,7 @@ def bot_command_rule(bot, trigger):
         return
 
     if str(message).lower().startswith(str(bot.nick).lower()):
+        command_type = 'nickname'
         trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'nickname')
         if str(trigger_command).startswith("?"):
             return
@@ -37,17 +38,19 @@ def bot_command_rule(bot, trigger):
         if trigger_command in SpiceBot.commands.dict['commands']["nickname"].keys():
             return
     else:
+        command_type = 'module'
         trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'module')
 
     returnmessage = SpiceBot.botai.on_message(bot, trigger, message)
     if returnmessage:
         bot.osd(str(returnmessage))
     else:
-        closestmatches = SpiceBot.similar_list(trigger_command, SpiceBot.commands.dict['commands']["nickname"].keys(), 3, 'reverse')
-        if len(closestmatches):
-            closestmatches = spicemanip.main(closestmatches, "andlist")
-            bot.osd("I don't know what you are asking me to do! Did you mean: " + str(closestmatches) + "?")
-            return
-        else:
-            bot.osd("I don't know what you are asking me to do!")
-            return
+        if command_type == 'nickname':
+            closestmatches = SpiceBot.similar_list(trigger_command, SpiceBot.commands.dict['commands']["nickname"].keys(), 3, 'reverse')
+            if len(closestmatches):
+                closestmatches = spicemanip.main(closestmatches, "andlist")
+                bot.osd("I don't know what you are asking me to do! Did you mean: " + str(closestmatches) + "?")
+                return
+            else:
+                bot.osd("I don't know what you are asking me to do!")
+                return
