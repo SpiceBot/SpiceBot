@@ -10,7 +10,7 @@ from sopel.config.types import StaticSection, ListAttribute
 import os
 import tempfile
 import aiml
-from xml.etree import ElementTree
+from xml.dom import minidom
 
 from .Database import db as botdb
 
@@ -93,10 +93,9 @@ class SpiceBot_AI():
 
         for aimlfile in filepathlist:
             filereadgood = True
-            tree = ElementTree.parse(aimlfile)
-            root = tree.getroot()
+            xmldoc = minidom.parse(aimlfile)
             if aimlfile not in self.dict["files"]:
-                self.dict["files"][aimlfile] = root
+                self.dict["files"][aimlfile] = xmldoc
             return
             aiml_file_lines = []
             aiml_file = open(aimlfile, 'r')
