@@ -27,7 +27,6 @@ def bot_command_rule(bot, trigger):
 
     if str(message).lower().startswith(str(bot.nick).lower()):
         trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'nickname')
-
         if trigger_command in SpiceBot.commands.dict['commands']["nickname"].keys():
             return
 
