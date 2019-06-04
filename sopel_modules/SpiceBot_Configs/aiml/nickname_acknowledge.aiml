@@ -2,11 +2,6 @@
 <aiml version="1.0">
 
 <category>
-  <pattern>BOTNICK IS COOL</pattern>
-  <template>Thanks!</template>
-</category>
-
-<category>
   <pattern>BOTNICK!</pattern>
   <template>triggernick!</template>
 </category>
