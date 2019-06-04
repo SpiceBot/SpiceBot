@@ -100,10 +100,22 @@ class SpiceBot_AI():
                 filereadgood = False
                 # logs.log('SpiceBot_AI', "Error loading %s: %s (%s)" % ('aiml', e, aimlfile))
 
-            if filereadgood and isinstance(dict_from_file, dict):
+            if filereadgood:
                 self.dict["counts"] += 1
             else:
                 self.dict["failcounts"] += 1
+
+    """def donothing():
+        aiml_file_lines = []
+        aiml_file = open(aimlfile, 'r')
+        lines = aiml_file.readlines()
+        for line in lines:
+            aiml_file_lines.append(line)
+        aiml_file.close()
+
+        detected_lines = []
+        for line in aiml_file_lines:
+            dothing = True"""
 
     def on_message(self, bot, trigger, message):
         nick = Identifier(trigger.nick)
