@@ -27,7 +27,8 @@ class SpiceBot_AI():
         self.dict = {
                     "counts": 0,
                     "failcounts": 0,
-                    "sessioncache": {}
+                    "sessioncache": {},
+                    "files": {}
                     }
         # Load AIML kernel
         self.aiml_kernel = aiml.Kernel()
@@ -104,6 +105,8 @@ class SpiceBot_AI():
 
             if filereadgood:
                 self.dict["counts"] += 1
+                if aimlfile not in self.dict["files"]:
+                    self.dict["files"][aimlfile] = dict_from_file
             else:
                 self.dict["failcounts"] += 1
 
