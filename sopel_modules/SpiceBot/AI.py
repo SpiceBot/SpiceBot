@@ -40,6 +40,7 @@ class SpiceBot_AI():
 
         # Learn responses
         self.load_brain()
+        self.count_aiml_coms()
 
     def load_brain(self):
         import sopel_modules
@@ -51,6 +52,7 @@ class SpiceBot_AI():
 
         # learn directories
         self.learn(braindirs)
+        self.count_aiml_coms()
 
     def load_bot_values(self, bot):
         self.aiml_kernel.setBotPredicate("nick", bot.nick)
@@ -88,13 +90,18 @@ class SpiceBot_AI():
                     filepathlist.append(str(path))
 
         for aimlfile in filepathlist:
+            filereadgood = True
 
             try:
-                aiml_dict = untangle.parse(aimlfile)
-                logs.log('SpiceBot_AI', aiml_dict)
-                self.dict["counts"] += 1
+                dict_from_file = untangle.parse(aimlfile)
+                logs.log('SpiceBot_AI', dict_from_file)
             except Exception as e:
+                filereadgood = False
                 logs.log('SpiceBot_AI', "Error loading %s: %s (%s)" % ('aiml', e, aimlfile))
+
+            if filereadgood and isinstance(dict_from_file, dict):
+                self.dict["counts"] += 1
+            else:
                 self.dict["failcounts"] += 1
 
     def on_message(self, bot, trigger, message):
