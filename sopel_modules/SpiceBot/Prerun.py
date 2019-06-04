@@ -91,6 +91,7 @@ class BotPrerun():
         return prerun_split
 
     def trigger_runstatus(self, bot, trigger):
+        return True
 
         # Bots can't run commands
         if Identifier(trigger.nick) == bot.nick:
@@ -106,8 +107,9 @@ class BotPrerun():
 
         # don't run commands that are disabled in channels
         if not trigger.is_privmsg:
+            commandused = trigger.sb["realcom"]
             disabled_list = botdb.get_channel_value(trigger.sender, 'commands_disabled') or {}
-            if trigger.sb["realcom"] in disabled_list.keys():
+            if commandused in disabled_list.keys():
                 reason = disabled_list[trigger.sb["realcom"]]["reason"]
                 timestamp = disabled_list[trigger.sb["realcom"]]["timestamp"]
                 bywhom = disabled_list[trigger.sb["realcom"]]["disabledby"]
