@@ -7,13 +7,19 @@
 </category>
 
 <category>
-  <pattern>BOTNICK</pattern>
-      <template>That's my name, don't wear it out!</template>
+  <pattern>BOTNICKquestionmark</pattern>
+      <template>I'm here, triggernick</template>
 </category>
 
 <category>
-  <pattern>BOTNICKquestionmark</pattern>
-      <template>I'm here, triggernick</template>
+  <pattern>BOTNICK</pattern>
+      <template>
+        <random>
+          <li>That's my name, don't wear it out!</li>
+          <li>Need something, triggernick?</li>
+          <li>What's going on, triggernick?</li>
+        </random>
+      </template>
 </category>
 
 </aiml>
