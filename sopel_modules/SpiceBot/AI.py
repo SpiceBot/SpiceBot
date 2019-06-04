@@ -10,10 +10,11 @@ from sopel.config.types import StaticSection, ListAttribute
 import os
 import tempfile
 import aiml
-import untangle
+import xmltodict
+import json
 
 from .Database import db as botdb
-from .Logs import logs
+
 
 
 class SpiceBot_AI_MainSection(StaticSection):
@@ -96,12 +97,11 @@ class SpiceBot_AI():
             filereadgood = True
 
             try:
-                dict_from_file = untangle.parse(aimlfile)
-                # logs.log('SpiceBot_AI', dict_from_file)
+                with open(aimlfile) as fd:
+                    dict_from_file = xmltodict.parse(fd.read())
             except Exception as e:
                 filereadgood = e
                 filereadgood = False
-                # logs.log('SpiceBot_AI', "Error loading %s: %s (%s)" % ('aiml', e, aimlfile))
 
             if filereadgood:
                 self.dict["counts"] += 1
