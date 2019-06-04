@@ -7,12 +7,12 @@
 </category>
 
 <category>
-  <pattern>BOTNICKquestionmark</pattern>
+  <pattern>BOTNICK</pattern>
       <template>That's my name, don't wear it out!</template>
 </category>
 
 <category>
-  <pattern>BOTNICK</pattern>
+  <pattern>BOTNICKquestionmark</pattern>
       <template>I'm here, triggernick</template>
 </category>
 
