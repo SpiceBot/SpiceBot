@@ -33,9 +33,6 @@ def bot_command_rule(bot, trigger):
         if trigger_command in SpiceBot.commands.dict['commands']["nickname"].keys():
             return
 
-        trigger_args.insert(0, bot.nick)
-        message = spicemanip.main(trigger_args, 0).lower()
-
     returnmessage = SpiceBot.botai.on_message(bot, trigger, message)
     if returnmessage:
         bot.osd(str(returnmessage))
