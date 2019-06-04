@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <aiml version="1.0">
 
-<category><pattern>BOTNICK</pattern>
-<template>That's my name, don't wear it out!</template>
+<category>
+  <pattern>BOTNICK IS COOL</pattern>
+  <template>Thanks!</template>
 </category>
 
-<category><pattern>BOTNICK IS COOL</pattern>
-<template>Thanks!</template>
+<category>
+  <pattern>BOTNICK!</pattern>
+  <template>triggernick!</template>
+</category>
+
+<category>
+  <pattern>BOTNICK</pattern>
+      <template>
+        <random>
+          <li>That's my name, don't wear it out!</li>
+          <li>I'm here, triggernick</li>
+        </random>
+      </template>
 </category>
 
 </aiml>
