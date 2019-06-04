@@ -33,6 +33,8 @@ def bot_command_rule(bot, trigger):
                     if com not in commands_list:
                         commands_list.append(com)
         if trigger_command not in commands_list:
+            if not SpiceBot.letters_in_string(trigger_command):
+                return
             invalid_display = ["I don't seem to have a command for " + str(trigger_command) + "!"]
             invalid_display.append("If you have a suggestion for this command, you can run .feature ." + str(trigger_command))
             invalid_display.append("ADD DESCRIPTION HERE!")
