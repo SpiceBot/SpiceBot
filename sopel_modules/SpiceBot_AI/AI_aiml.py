@@ -6,9 +6,11 @@ import sopel.module
 
 import sopel_modules.SpiceBot as SpiceBot
 
+import spicemanip
+
 
 @sopel.module.rule('(.*)')
-def bot_command_nick(bot, trigger):
+def bot_command_rule(bot, trigger):
 
     # TODO add config limits
     # but still allow in privmsg
@@ -24,6 +26,15 @@ def bot_command_nick(bot, trigger):
     # ignore text coming from a valid prefix
     if str(message).startswith(tuple(bot.config.core.prefix_list)):
         return
+
+    if str(message).lower().startswith(str(bot.nick).lower()):
+        trigger_args, trigger_command = SpiceBot.prerun.trigger_args(trigger.args[1], 'nickname')
+
+        if trigger_command in SpiceBot.commands.dict['commands']["nickname"].keys():
+            return
+
+        trigger_args.insert(0, bot.nick)
+        message = spicemanip.main(trigger_args, 0).lower()
 
     returnmessage = SpiceBot.botai.on_message(bot, trigger, message)
     if returnmessage:

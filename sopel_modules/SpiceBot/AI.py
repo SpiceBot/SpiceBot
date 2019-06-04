@@ -89,13 +89,14 @@ class SpiceBot_AI():
         return aiml_response
 
     def bot_message_precipher(self, bot, trigger, message):
+        message = message.upper()
         puct_dict = {"!": "exclamationmark", ".": "period", "?": "questionmark", ",": "comma"}
         for puctuation in puct_dict.keys():
             message = message.replace(puctuation, puct_dict[puctuation])
         for botitem in ["nick"]:
-            message = message.replace(str(eval("bot." + botitem)), "bot" + botitem)
+            message = message.replace(str(eval("bot." + botitem)).upper(), str("bot" + botitem).upper())
         for triggeritem in ["nick", "sender"]:
-            message = message.replace(str(eval("trigger." + triggeritem)), "trigger" + triggeritem)
+            message = message.replace(str(eval("trigger." + triggeritem)).upper(), str("trigger" + triggeritem).upper())
         return message
 
     def bot_message_decipher(self, bot, trigger, aiml_response):
