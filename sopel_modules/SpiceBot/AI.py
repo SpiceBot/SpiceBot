@@ -232,13 +232,11 @@ class SpiceBot_AI():
             nick = Identifier(nick)
             nick_id = botdb.get_nick_id(nick, create=True)
         sessionData = self.aiml_kernel.getSessionData(nick_id)
-        sessionData = {k: unicode(v).encode("utf-8") for k, v in sessionData.iteritems()}
         botdb.set_nick_value(nick, 'botai', sessionData)
 
     def save_brain(self):
         self.aiml_kernel.saveBrain(botconfig.config.aibrain)
         botsessiondata = self.aiml_kernel._botPredicates
-        botsessiondata = {k: unicode(v).encode("utf-8") for k, v in botsessiondata.iteritems()}
         botdb.set_bot_value('botai', botsessiondata)
 
 
