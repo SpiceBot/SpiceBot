@@ -21,10 +21,7 @@ def bot_command_rule(bot, trigger):
     if not len(trigger.args):
         return
 
-    message = str(trigger.args[1]).encode('utf-8', 'replace')
-
-    if is_ascii(message):
-        return
+    message = str(trigger.args[1]).decode('utf-8')
 
     # ignore text coming from a valid prefix
     if str(message).startswith(tuple(bot.config.core.prefix_list)):
@@ -89,12 +86,3 @@ def bot_command_rule(bot, trigger):
             else:
                 bot.osd("I don't know what you are asking me to do!")
                 return
-
-
-def is_ascii(s):
-    try:
-        s.decode('ascii')
-    except UnicodeDecodeError:
-        return False
-    else:
-        return True
