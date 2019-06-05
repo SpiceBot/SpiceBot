@@ -49,7 +49,7 @@ class SpiceBot_AI():
 
     def setup_ai(self):
         botconfig.define_section("SpiceBot_AI", SpiceBot_AI_MainSection, validate=False)
-        botconfig.aibrain = os.path.join(botconfig.homedir, botconfig.basename + '.aibrain.brn')
+        botconfig.config.aibrain = os.path.join(botconfig.homedir, botconfig.basename + '.aibrain.brn')
 
     def load_saved_brain(self):
         if os.path.isfile(botconfig.config.aibrain):

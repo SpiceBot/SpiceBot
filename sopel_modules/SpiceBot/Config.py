@@ -12,9 +12,7 @@ import configparser
 class BotConfig():
 
     def __init__(self):
-
         self.dict = {}
-
         # Load config
         parser = build_parser()
         if not len(sys.argv[1:]):
