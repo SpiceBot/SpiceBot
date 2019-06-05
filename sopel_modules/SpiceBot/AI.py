@@ -26,8 +26,8 @@ class SpiceBot_AI():
         self.setup_ai()
         self.braindirs = []
         self.dict = {
-                    "counts": 0,
-                    "failcounts": 0,
+                    "patterncount": 0,
+                    "filecounts": 0,
                     "sessioncache": {},
                     "files": {}
                     }
@@ -94,6 +94,16 @@ class SpiceBot_AI():
         for braindir in braindirs:
             if braindir not in self.braindirs:
                 self.braindirs.append(braindir)
+
+                # Count matches
+                for pathname in os.listdir(braindir):
+                    self.dict["filecounts"] += 1
+                    aimlfile = os.path.join(braindir, pathname)
+                    data = open(aimlfile).read()
+                    count = data.count('pattern')
+                    count = count / 2
+                    self.dict["patterncount"] += count
+
                 tempbrain = tempfile.mkstemp()[1]
                 with open(tempbrain, 'w') as fileo:
                     fileo.write(
