@@ -74,12 +74,10 @@ class SpiceBot_AI():
 
     def load_bot_values(self):
         self.aiml_kernel.setBotPredicate("nick", botconfig.nick)
-        # self.aiml_kernel.setBotPredicate("gender", botconfig.SpiceBot_AI.gender)
-        self.aiml_kernel.setBotPredicate("gender", "male")
-        currentgender = self.aiml_kernel.getBotPredicate("gender")
-        if currentgender == "male":
+        self.aiml_kernel.setBotPredicate("gender", botconfig.SpiceBot_AI.gender.lower())
+        if botconfig.SpiceBot_AI.gender.lower() == "male":
             pronoun = "he"
-        elif currentgender == "female":
+        elif botconfig.SpiceBot_AI.gender.lower() == "female":
             pronoun = "she"
         else:
             pronoun = "it"
