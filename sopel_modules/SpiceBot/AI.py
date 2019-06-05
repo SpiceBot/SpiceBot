@@ -73,15 +73,16 @@ class SpiceBot_AI():
         self.save_brain()
 
     def load_bot_values(self):
+
+        # sopel nick
         self.aiml_kernel.setBotPredicate("nick", botconfig.nick)
+
+        # gender
         self.aiml_kernel.setBotPredicate("gender", botconfig.SpiceBot_AI.gender.lower())
-        if botconfig.SpiceBot_AI.gender.lower() == "male":
-            pronoun = "he"
-        elif botconfig.SpiceBot_AI.gender.lower() == "female":
-            pronoun = "she"
+        if botconfig.SpiceBot_AI.gender.lower() not in ["male", "female"]:
+            self.aiml_kernel.setBotPredicate("gendertype", "item")
         else:
-            pronoun = "it"
-        self.aiml_kernel.setBotPredicate("pronoun", pronoun)
+            self.aiml_kernel.setBotPredicate("gendertype", botconfig.SpiceBot_AI.gender.lower())
 
     def learn(self, braindirs):
         for braindir in braindirs:
@@ -119,22 +120,78 @@ class SpiceBot_AI():
         return aiml_response
 
     def bot_message_precipher(self, bot, trigger, message):
+
+        # uppercase input
         message = message.upper()
+
+        # punctuation
         puct_dict = {"!": "exclamationmark", ".": "period", "?": "questionmark", ",": "comma"}
         for puctuation in puct_dict.keys():
             message = message.replace(puctuation, puct_dict[puctuation])
+
+        # bot items
         for botitem in ["nick"]:
             message = message.replace(str(eval("bot." + botitem)).upper(), str("bot" + botitem).upper())
+
         for triggeritem in ["nick", "sender"]:
             message = message.replace(str(eval("trigger." + triggeritem)).upper(), str("trigger" + triggeritem).upper())
+
         return message
 
     def bot_message_decipher(self, bot, trigger, aiml_response):
+
+        # bot items
         for botitem in ["nick"]:
             aiml_response = aiml_response.replace("bot" + botitem, str(eval("bot." + botitem)))
+
+        # trigger items
         for triggeritem in ["nick", "sender"]:
             aiml_response = aiml_response.replace("trigger" + triggeritem, str(eval("trigger." + triggeritem)))
+
+        # pronouns
+        botgendertype = self.aiml_kernel.getBotPredicate("gendertype")
+        pronounsdict = {
+                        "male": {
+                                "main": "he",
+                                "possess": "his",
+                                "self": "himself",
+                                },
+                        "female": {
+                                "main": "her",
+                                "possess": "hers",
+                                "self": "herself",
+                                },
+                        "item": {
+                                "main": "it",
+                                "possess": "its",
+                                "self": "itself",
+                                },
+                        "point": {
+                                "main": "you",
+                                "possess": "yours",
+                                "self": "yourself",
+                                },
+                        "group": {
+                                "main": "them",
+                                "possess": "theirs",
+                                "self": "themselves",
+                                },
+                        }
+        for pronounitem in pronounsdict[botgendertype].keys():
+            aiml_response = aiml_response.replace("BOTPRONOUN" + pronounitem, pronounsdict[botgendertype][pronounitem])
+        triggergendertype = self.getPredicate("gender", trigger.nick)
+        if triggergendertype == "":
+            triggergendertype = "point"
+        for pronounitem in pronounsdict[triggergendertype].keys():
+            aiml_response = aiml_response.replace("TRIGGERPRONOUN" + pronounitem, pronounsdict[triggergendertype][pronounitem])
+
         return aiml_response
+
+    def getPredicate(self, predicate, nick, nick_id=None):
+        if not nick_id:
+            nick = Identifier(nick)
+            nick_id = botdb.get_nick_id(nick, create=True)
+        self.aiml_kernel.getPredicate(predicate, nick_id)
 
     def check_user_import(self, nick, nick_id=None):
         if not nick_id:
