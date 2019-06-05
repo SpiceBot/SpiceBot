@@ -121,25 +121,19 @@ class SpiceBot_AI():
         self.aiml_kernel.respond("LOAD AIML B")
 
     def on_message(self, bot, trigger, message):
-        try:
+        nick = Identifier(trigger.nick)
+        nick_id = botdb.get_nick_id(nick, create=True)
+        self.check_user_import(nick, nick_id)
 
-            nick = Identifier(trigger.nick)
-            nick_id = botdb.get_nick_id(nick, create=True)
-            self.check_user_import(nick, nick_id)
+        message = self.bot_message_precipher(bot, trigger, message)
+        aiml_response = self.aiml_kernel.respond(message, nick_id)
+        if aiml_response:
+            aiml_response = self.bot_message_decipher(bot, trigger, aiml_response)
 
-            message = self.bot_message_precipher(bot, trigger, message)
-            aiml_response = self.aiml_kernel.respond(message, nick_id)
-            if aiml_response:
-                aiml_response = self.bot_message_decipher(bot, trigger, aiml_response)
+        self.save_nick_session(nick, nick_id)
+        self.save_brain()
 
-            self.save_nick_session(nick, nick_id)
-            self.save_brain()
-
-            return aiml_response
-        except Exception as e:
-            returnval = e
-            returnval = None
-            return returnval
+        return aiml_response
 
     def bot_message_precipher(self, bot, trigger, message):
 
