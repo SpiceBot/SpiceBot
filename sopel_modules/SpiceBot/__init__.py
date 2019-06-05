@@ -6,19 +6,20 @@ These are the core SpiceBot Classes
 This module contains references only for other modules to utilize.
 """
 
+from .Config import *
+from .Logs import *
+from .Database import *
+
 from .Update import *
 from .osd import *
 from .Kick import *
 
-from .Config import *
 from .Tools import *
 from .Prerun import *
-from .Logs import *
 from .Commands import *
 from .Events import *
 from .StartupMonologue import *
 from .Channels import *
-from .Database import *
 from .AI import *
 
 
