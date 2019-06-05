@@ -76,6 +76,14 @@ class SpiceBot_AI():
         self.aiml_kernel.setBotPredicate("nick", botconfig.nick)
         # self.aiml_kernel.setBotPredicate("gender", botconfig.SpiceBot_AI.gender)
         self.aiml_kernel.setBotPredicate("gender", "male")
+        currentgender = self.aiml_kernel.getBotPredicate("gender")
+        if currentgender == "male":
+            pronoun = "he"
+        elif currentgender == "female":
+            pronoun = "she"
+        else:
+            pronoun = "it"
+        self.aiml_kernel.setBotPredicate("pronoun", pronoun)
 
     def learn(self, braindirs):
         for braindir in braindirs:
@@ -154,6 +162,8 @@ class SpiceBot_AI():
 
     def save_brain(self):
         self.aiml_kernel.saveBrain(botconfig.config.aibrain)
+        botsessiondata = self.aiml_kernel._botPredicates
+        botdb.set_bot_value('botai', botsessiondata)
 
 
 botai = SpiceBot_AI()
