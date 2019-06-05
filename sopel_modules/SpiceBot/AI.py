@@ -74,7 +74,8 @@ class SpiceBot_AI():
 
     def load_bot_values(self):
         self.aiml_kernel.setBotPredicate("nick", botconfig.nick)
-        self.aiml_kernel.setBotPredicate("gender", botconfig.SpiceBot_AI.gender)
+        # self.aiml_kernel.setBotPredicate("gender", botconfig.SpiceBot_AI.gender)
+        self.aiml_kernel.setBotPredicate("gender", "male")
 
     def learn(self, braindirs):
         for braindir in braindirs:
