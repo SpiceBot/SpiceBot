@@ -59,11 +59,11 @@ def setup_logs(bot):
     logs.log('SpiceBot_Logs', "Starting Setup Procedure")
     events.startup_add([events.BOT_LOGS])
     bot.config.core.logs_stdio = os.path.join(bot.config.core.logdir, 'stdio.log')
-    # bot.config.core.logs_stdio = os.path.os.path.join(bot.config.core.logdir, bot.config.basename + '.stdio.log')
+    # bot.config.core.logs_stdio = os.path.os.path.join(bot.config.core.logdir, bot.config.core.basename + '.stdio.log')
     bot.config.core.logs_exceptions = os.path.join(bot.config.core.logdir, 'exceptions.log')
-    # bot.config.core.logs_exceptions = os.path.os.path.join(bot.config.core.logdir, bot.config.basename + '.exceptions.log')
+    # bot.config.core.logs_exceptions = os.path.os.path.join(bot.config.core.logdir, bot.config.core.basename + '.exceptions.log')
     bot.config.core.logs_raw = os.path.join(bot.config.core.logdir, 'raw.log')
-    # bot.config.core.logs_raw = os.path.os.path.join(bot.config.core.logdir, bot.config.basename + '.raw.log')
+    # bot.config.core.logs_raw = os.path.os.path.join(bot.config.core.logdir, bot.config.core.basename + '.raw.log')
     events.trigger(bot, events.BOT_LOGS, "SpiceBot_Logs")
 
 
@@ -99,7 +99,7 @@ def setup_update(bot):
 def setup_ai(bot):
     logs.log('SpiceBot_AI', "Setting Up Configuration")
     bot.config.define_section("SpiceBot_AI", SpiceBot_AI_MainSection, validate=False)
-    bot.config.aibrain = os.path.join(bot.config.homedir, bot.config.basename + '.aibrain.brn')
+    bot.config.aibrain = os.path.join(bot.config.homedir, bot.config.core.basename + '.aibrain.brn')
 
 
 def setup_osd(bot):
