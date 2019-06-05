@@ -21,7 +21,7 @@ def bot_command_rule(bot, trigger):
     if not len(trigger.args):
         return
 
-    message = trigger.args[1]
+    message = trigger.args[1].encode('ascii','ignore')
 
     # ignore text coming from a valid prefix
     if str(message).startswith(tuple(bot.config.core.prefix_list)):
