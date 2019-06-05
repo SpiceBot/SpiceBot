@@ -39,9 +39,18 @@ class SpiceBot_AI():
         # Don't warn for no matches
         self.aiml_kernel._verboseMode = False
 
+        # Config
+        self.botai_config()
+
         # Learn responses
         self.load_saved_brain()
         self.load_brain()
+
+        # Load bot values
+        self.load_bot_values()
+
+    def botai_config(self):
+        botconfig.define_section("SpiceBot_AI", SpiceBot_AI_MainSection, validate=False)
 
     def load_saved_brain(self):
         if os.path.isfile(botconfig.config.aibrain):
@@ -56,18 +65,17 @@ class SpiceBot_AI():
             aimldir = os.path.join(configsdir, "aiml")
             braindirs.append(aimldir)
 
+        if len(botconfig.SpiceBot_AI.extra):
+            for extrabraindir in botconfig.SpiceBot_AI.extra:
+                braindirs.append(extrabraindir)
+
         # learn directories
         self.learn(braindirs)
         self.save_brain()
 
-    def load_bot_values(self, bot):
-        self.aiml_kernel.setBotPredicate("nick", bot.nick)
-        self.aiml_kernel.setBotPredicate("gender", bot.config.SpiceBot_AI.gender)
-
-    def load_extras(self, bot):
-        if len(bot.config.SpiceBot_AI.extra):
-            self.learn(self, bot.config.SpiceBot_AI.extra)
-            self.save_brain()
+    def load_bot_values(self):
+        self.aiml_kernel.setBotPredicate("nick", botconfig.nick)
+        self.aiml_kernel.setBotPredicate("gender", botconfig.SpiceBot_AI.gender)
 
     def learn(self, braindirs):
         for braindir in braindirs:
