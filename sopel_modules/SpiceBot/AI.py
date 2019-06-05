@@ -181,7 +181,7 @@ class SpiceBot_AI():
         for pronounitem in pronounsdict[botgendertype].keys():
             aiml_response = aiml_response.replace("BOTPRONOUN" + pronounitem, pronounsdict[botgendertype][pronounitem])
         triggergendertype = self.getPredicate("gender", trigger.nick)
-        if triggergendertype == "":
+        if not triggergendertype or triggergendertype == "":
             triggergendertype = "point"
         for pronounitem in pronounsdict[triggergendertype].keys():
             aiml_response = aiml_response.replace("TRIGGERPRONOUN" + pronounitem, pronounsdict[triggergendertype][pronounitem])
