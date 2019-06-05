@@ -59,7 +59,7 @@ def bot_command_rule(bot, trigger):
         trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'module')
         fulltrigger = spicemanip.main(trigger_args, 0)
 
-    returnmessage = SpiceBot.botai.on_message(bot, trigger, message)
+    returnmessage = SpiceBot.botai.on_message(bot, trigger, message.encode('utf-8'))
     if returnmessage:
         bot.osd(str(returnmessage))
     else:
