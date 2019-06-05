@@ -44,10 +44,10 @@ def bot_command_rule(bot, trigger):
             bot.osd(invalid_display, trigger.nick, 'notice')
         return
 
-    fulltrigger = spicemanip.main(trigger_args, 0)
     if str(message).lower().startswith(str(bot.nick).lower()):
         command_type = 'nickname'
         trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'nickname')
+        fulltrigger = spicemanip.main(trigger_args, 0)
         if str(trigger_command).startswith("?"):
             return
         if fulltrigger in SpiceBot.commands.dict['nickrules']:
@@ -57,6 +57,7 @@ def bot_command_rule(bot, trigger):
     else:
         command_type = 'module'
         trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'module')
+        fulltrigger = spicemanip.main(trigger_args, 0)
 
     returnmessage = SpiceBot.botai.on_message(bot, trigger, message)
     if returnmessage:
