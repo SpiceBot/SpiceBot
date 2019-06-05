@@ -21,7 +21,8 @@ def bot_command_rule(bot, trigger):
     if not len(trigger.args):
         return
 
-    message = str(trigger.args[1])
+    message = trigger.args[1]
+    message = return_utf(message)
 
     # ignore text coming from a valid prefix
     if str(message).startswith(tuple(bot.config.core.prefix_list)):
@@ -86,3 +87,20 @@ def bot_command_rule(bot, trigger):
             else:
                 bot.osd("I don't know what you are asking me to do!")
                 return
+
+
+def return_utf(s):
+    if isinstance(s, str):
+        return s.encode('utf-8')
+    if isinstance(s, (int, float, complex)):
+        return str(s).encode('utf-8')
+    try:
+        return s.encode('utf-8')
+    except TypeError:
+        try:
+            return str(s).encode('utf-8')
+        except AttributeError:
+            return s
+    except AttributeError:
+        return s
+    return s  # assume it was already utf-8
