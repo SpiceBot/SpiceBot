@@ -88,7 +88,7 @@ class BotChannels():
         # Chan ADMIN +a
         for channel in bot.channels.keys():
             if channel.startswith("#"):
-                if channel not in bot.configSpiceBot_Channels.chanignore:
+                if channel not in botconfig.SpiceBot_Channels.chanignore:
                     if botconfig.SpiceBot_Channels.operadmin:
                         if not bot.channels[channel].privileges[bot.nick] < sopel.module.ADMIN:
                             bot.write(('SAMODE', channel, "+a", bot.nick))
