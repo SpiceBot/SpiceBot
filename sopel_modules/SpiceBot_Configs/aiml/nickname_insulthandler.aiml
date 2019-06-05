@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="1.0">
+
+<category>
+  <pattern>BOTNICK fuck you</pattern>
+      <template>Watch your mouth, triggernick, or I'll tell your mother!</template>
+</category>
+
+<category>
+  <pattern>BOTNICK fuck off</pattern>
+      <template>Watch your mouth, triggernick, or I'll tell your mother!</template>
+</category>
+
+<category>
+  <pattern>BOTNICK screw you</pattern>
+      <template>Watch your mouth, triggernick, or I'll tell your mother!</template>
+</category>
+
+<category>
+  <pattern>fuck you BOTNICK</pattern>
+      <template>Watch your mouth, triggernick, or I'll tell your mother!</template>
+</category>
+
+<category>
+  <pattern>fuck off BOTNICK</pattern>
+      <template>Watch your mouth, triggernick, or I'll tell your mother!</template>
+</category>
+
+<category>
+  <pattern>screw you BOTNICK</pattern>
+      <template>Watch your mouth, triggernick, or I'll tell your mother!</template>
+</category>
+
+</aiml>

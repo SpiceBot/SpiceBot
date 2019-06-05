@@ -6,15 +6,14 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel
 import sopel.module
 
-from sopel_modules.SpiceBot.Logs import botlogs
-from sopel_modules.SpiceBot_SBTools import stock_modules_begone
+import sopel_modules.SpiceBot as SpiceBot
 
 
 def setup(bot):
 
-    botlogs.log('Sopel_Patch', "Patching Sopels built-in url_callbacks")
+    SpiceBot.logs.log('Sopel_Patch', "Patching Sopels built-in url_callbacks")
     if 'url_callbacks' not in bot.memory:
         bot.memory['url_callbacks'] = sopel.tools.SopelMemory()
 
-    botlogs.log('Sopel_Patch', "Removing Stock Modules and verifying Dummy Command is present.")
-    stock_modules_begone(bot)
+    SpiceBot.logs.log('Sopel_Patch', "Removing Stock Modules and verifying Dummy Command is present.")
+    SpiceBot.stock_modules_begone()

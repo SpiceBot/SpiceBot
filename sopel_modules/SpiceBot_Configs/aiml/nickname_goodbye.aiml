@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="1.0">
+
+<category>
+  <pattern>BOTNICK BYE</pattern>
+      <template>
+        <random>
+          <li>bye, triggernick</li>
+          <li>goodbye, triggernick</li>
+          <li>seeya, triggernick</li>
+          <li>cya, triggernick</li>
+          <li>ttyl, triggernick</li>
+        </random>
+      </template>
+</category>
+
+<category>
+  <pattern>BOTNICK GOODBYE</pattern>
+      <template>
+        <random>
+          <li>bye, triggernick</li>
+          <li>goodbye, triggernick</li>
+          <li>seeya, triggernick</li>
+          <li>cya, triggernick</li>
+          <li>ttyl, triggernick</li>
+        </random>
+      </template>
+</category>
+
+<category>
+  <pattern>BOTNICK seeya</pattern>
+      <template>
+        <random>
+          <li>bye, triggernick</li>
+          <li>goodbye, triggernick</li>
+          <li>seeya, triggernick</li>
+          <li>cya, triggernick</li>
+          <li>ttyl, triggernick</li>
+        </random>
+      </template>
+</category>
+
+<category>
+  <pattern>BOTNICK cya</pattern>
+      <template>
+        <random>
+          <li>bye, triggernick</li>
+          <li>goodbye, triggernick</li>
+          <li>seeya, triggernick</li>
+          <li>cya, triggernick</li>
+          <li>ttyl, triggernick</li>
+        </random>
+      </template>
+</category>
+
+<category>
+  <pattern>BOTNICK ttyl</pattern>
+      <template>
+        <random>
+          <li>bye, triggernick</li>
+          <li>goodbye, triggernick</li>
+          <li>seeya, triggernick</li>
+          <li>cya, triggernick</li>
+          <li>ttyl, triggernick</li>
+        </random>
+      </template>
+</category>
+
+<category>
+  <pattern>BYE BOTNICK</pattern>
+      <template>
+        <random>
+          <li>bye, triggernick</li>
+          <li>goodbye, triggernick</li>
+          <li>seeya, triggernick</li>
+          <li>cya, triggernick</li>
+          <li>ttyl, triggernick</li>
+        </random>
+      </template>
+</category>
+
+<category>
+  <pattern>GOODBYE BOTNICK</pattern>
+      <template>
+        <random>
+          <li>bye, triggernick</li>
+          <li>goodbye, triggernick</li>
+          <li>seeya, triggernick</li>
+          <li>cya, triggernick</li>
+          <li>ttyl, triggernick</li>
+        </random>
+      </template>
+</category>
+
+<category>
+  <pattern>seeya BOTNICK</pattern>
+      <template>
+        <random>
+          <li>bye, triggernick</li>
+          <li>goodbye, triggernick</li>
+          <li>seeya, triggernick</li>
+          <li>cya, triggernick</li>
+          <li>ttyl, triggernick</li>
+        </random>
+      </template>
+</category>
+
+<category>
+  <pattern>cya BOTNICK</pattern>
+      <template>
+        <random>
+          <li>bye, triggernick</li>
+          <li>goodbye, triggernick</li>
+          <li>seeya, triggernick</li>
+          <li>cya, triggernick</li>
+          <li>ttyl, triggernick</li>
+        </random>
+      </template>
+</category>
+
+<category>
+  <pattern>ttyl BOTNICK</pattern>
+      <template>
+        <random>
+          <li>bye, triggernick</li>
+          <li>goodbye, triggernick</li>
+          <li>seeya, triggernick</li>
+          <li>cya, triggernick</li>
+          <li>ttyl, triggernick</li>
+        </random>
+      </template>
+</category>
+
+</aiml>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="1.0">
+
+<category>
+  <pattern>BOTNICK really</pattern>
+      <template>
+        <random>
+          <li>triggernick, Yes, really.</li>
+          <li>triggernick, Really really</li>
+        </random>
+      </template>
+</category>
+
+<category>
+  <pattern>really BOTNICK</pattern>
+      <template>
+        <random>
+          <li>triggernick, Yes, really.</li>
+          <li>triggernick, Really really</li>
+        </random>
+      </template>
+</category>
+
+
+</aiml>

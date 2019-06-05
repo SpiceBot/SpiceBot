@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="1.0">
+
+<category>
+  <pattern>BOTNICK welcome back</pattern>
+  <template>Thanks!</template>
+</category>
+
+<category>
+  <pattern>welcome back BOTNICK</pattern>
+  <template>Thanks!</template>
+</category>
+
+</aiml>
