@@ -23,6 +23,9 @@ def bot_command_rule(bot, trigger):
 
     message = trigger.args[1]
 
+    if is_ascii(message):
+        return
+
     # ignore text coming from a valid prefix
     if str(message).startswith(tuple(bot.config.core.prefix_list)):
         trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'module')
@@ -59,7 +62,7 @@ def bot_command_rule(bot, trigger):
         trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'module')
         fulltrigger = spicemanip.main(trigger_args, 0)
 
-    returnmessage = SpiceBot.botai.on_message(bot, trigger, str(message).encode('utf-8'))
+    returnmessage = SpiceBot.botai.on_message(bot, trigger, message)
     if returnmessage:
         bot.osd(str(returnmessage))
     else:
@@ -86,3 +89,7 @@ def bot_command_rule(bot, trigger):
             else:
                 bot.osd("I don't know what you are asking me to do!")
                 return
+
+
+def is_ascii(s):
+    return all(ord(c) < 128 for c in s)
