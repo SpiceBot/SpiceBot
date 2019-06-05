@@ -77,20 +77,20 @@ class BotChannels():
                     self.lock.release()
 
     def join_all_channels(self, bot):
-        if bot.config.SpiceBot_Channels.joinall:
+        if botconfig.SpiceBot_Channels.joinall:
             for channel in self.dict['list'].keys():
                 if channel.startswith("#"):
-                    if channel not in bot.channels.keys() and channel not in bot.config.SpiceBot_Channels.chanignore:
+                    if channel not in bot.channels.keys() and channel not in botconfig.SpiceBot_Channels.chanignore:
                         bot.write(('JOIN', bot.nick, self.dict['list'][channel]['name']))
-                        if channel not in bot.channels.keys() and bot.config.SpiceBot_Channels.operadmin:
+                        if channel not in bot.channels.keys() and botconfig.SpiceBot_Channels.operadmin:
                             bot.write(('SAJOIN', bot.nick, self.dict['list'][channel]['name']))
 
     def chanadmin_all_channels(self, bot):
         # Chan ADMIN +a
         for channel in bot.channels.keys():
             if channel.startswith("#"):
-                if channel not in bot.config.SpiceBot_Channels.chanignore:
-                    if bot.config.SpiceBot_Channels.operadmin:
+                if channel not in bot.configSpiceBot_Channels.chanignore:
+                    if botconfig.SpiceBot_Channels.operadmin:
                         if not bot.channels[channel].privileges[bot.nick] < sopel.module.ADMIN:
                             bot.write(('SAMODE', channel, "+a", bot.nick))
                 else:
