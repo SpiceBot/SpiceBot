@@ -40,9 +40,6 @@ class SpiceBot_AI():
         # Don't warn for no matches
         self.aiml_kernel._verboseMode = False
 
-        # Config
-        self.botai_config()
-
         # Learn responses
         self.load_saved_brain()
         self.load_brain()
