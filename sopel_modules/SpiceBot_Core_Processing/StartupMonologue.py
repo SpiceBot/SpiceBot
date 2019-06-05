@@ -48,7 +48,7 @@ def bot_startup_monologue_commands(bot, trigger):
 def bot_startup_monologue_ai(bot, trigger):
     availablecomsnum = SpiceBot.botai.dict['patterncounts']
     availablecomsfiles = SpiceBot.botai.dict['filecounts']
-    displayval = "There are " + str(availablecomsnum) + " AI matches available in " + str(availablecomsfiles) + " files."
+    displayval = "There are " + str(availablecomsnum) + " AI pattern matches available in " + str(availablecomsfiles) + " files."
     SpiceBot.startupmonologue.dict["ai"] = displayval
     SpiceBot.logs.log('SpiceBot_StartupMonologue', displayval)
     SpiceBot.events.trigger(bot, SpiceBot.events.BOT_STARTUPMONOLOGUE_AI, "SpiceBot_StartupMonologue")
