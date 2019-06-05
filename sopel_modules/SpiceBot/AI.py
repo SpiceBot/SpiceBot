@@ -112,7 +112,8 @@ class SpiceBot_AI():
 
         message = self.bot_message_precipher(bot, trigger, message)
         aiml_response = self.aiml_kernel.respond(message, nick_id)
-        aiml_response = self.bot_message_decipher(bot, trigger, aiml_response)
+        if aiml_response:
+            aiml_response = self.bot_message_decipher(bot, trigger, aiml_response)
 
         self.save_nick_session(nick, nick_id)
         self.save_brain()
@@ -184,6 +185,8 @@ class SpiceBot_AI():
             triggergendertype = "point"
         for pronounitem in pronounsdict[triggergendertype].keys():
             aiml_response = aiml_response.replace("TRIGGERPRONOUN" + pronounitem, pronounsdict[triggergendertype][pronounitem])
+
+        aiml_response = "\x0315" + aiml_response + "\x03"
 
         return aiml_response
 
