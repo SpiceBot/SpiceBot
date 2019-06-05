@@ -513,8 +513,8 @@ class BotDatabase():
             path = os.path.expanduser(path)
             if not os.path.isabs(path):
                 path = os.path.normpath(os.path.join(config_dir, path))
-            self.filename = path
-            self.url = 'sqlite:///%s' % path
+            SopelDB.filename = path
+            SopelDB.url = 'sqlite:///%s' % path
         # Otherwise, handle all other database engines
         else:
             if db_type == 'mysql':
