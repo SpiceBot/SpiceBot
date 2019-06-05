@@ -51,6 +51,8 @@ def bot_startup_monologue_display(bot, trigger):
         dispmsg.append(SpiceBot.startupmonologue.dict[messagekey])
     if SpiceBot.events.dict["RPL_WELCOME_Count"] == 1:
         timesince = SpiceBot.humanized_time(time.time() - SpiceBot.events.BOT_UPTIME)
+        if timesince == "just now":
+            timesince = "1 second"
         dispmsg.append("Startup took " + timesince)
     # Announce to chan, then handle some closing stuff
     SpiceBot.logs.log('SpiceBot_StartupMonologue', bot.nick + " startup complete")
