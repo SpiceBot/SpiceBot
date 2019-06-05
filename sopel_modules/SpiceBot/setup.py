@@ -15,7 +15,7 @@ from .Channels import SpiceBot_Channels_MainSection
 from .Update import SpiceBot_Update_MainSection
 from .osd import SopelWrapperOSD, ToolsOSD, SopelOSD, SpiceBot_OSD
 from .Kick import SopelWrapperKICK, SopelKICK, SpiceBot_Kick
-from .AI import SpiceBot_AI_MainSection, botai
+from .AI import SpiceBot_AI_MainSection
 
 
 def setup(bot):
