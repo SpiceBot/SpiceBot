@@ -74,6 +74,12 @@ class SpiceBot_AI():
 
     def load_bot_values(self):
 
+        current_bot_db = botdb.get_bot_value('botai') or None
+        if current_bot_db:
+            for predicate in current_bot_db.keys():
+                predval = current_bot_db[predicate]
+                self.aiml_kernel.setBotPredicate(predicate, predval)
+
         # sopel nick
         self.aiml_kernel.setBotPredicate("nick", botconfig.nick)
 
