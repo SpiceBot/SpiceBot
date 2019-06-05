@@ -6,26 +6,14 @@ These are the core SpiceBot Classes
 This module contains references only for other modules to utilize.
 """
 
-from .Config import *
-from .Logs import *
-from .Database import *
-
-from .Update import *
-from .osd import *
-from .Kick import *
-
-from .Tools import *
-from .Prerun import *
 from .Commands import *
-from .Events import *
-from .StartupMonologue import *
 from .Channels import *
-from .AI import *
-
-
-from .configure import *
-from .setup import *
-from .shutdown import *
+from .Database import *
+from .Uptime import *
+from .Logs import *
+from .Runtime_Controls import *
+from .Messaging import *
+from .Docs import *
 
 __author__ = 'Sam Zick'
 __email__ = 'sam@deathbybandaid.net'

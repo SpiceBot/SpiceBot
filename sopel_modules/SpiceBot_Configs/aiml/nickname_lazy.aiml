@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="1.0">
+
+<category>
+  <pattern>BOTNICK IS LAZY</pattern>
+      <template>
+        <random>
+          <li>hi, triggernick</li>
+          <li>hello, triggernick</li>
+          <li>hey, triggernick</li>
+        </random>
+      </template>
+</category>
+
+
+<category>
+  <pattern>LAZY BOTNICK</pattern>
+      <template>
+        <random>
+          <li>hi, triggernick</li>
+          <li>hello, triggernick</li>
+          <li>hey, triggernick</li>
+        </random>
+      </template>
+</category>
+
+<category>
+  <pattern>DAMNIT BOTNICK</pattern>
+      <template>
+        <random>
+          <li>hi, triggernick</li>
+          <li>hello, triggernick</li>
+          <li>hey, triggernick</li>
+        </random>
+      </template>
+</category>
+
+</aiml>

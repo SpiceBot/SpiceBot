@@ -6,51 +6,74 @@ This is the SpiceBot Logs system.
 This Class stores logs in an easy to access manner
 """
 
-
-import sopel
+import threading
 import os
+import sys
 import spicemanip
 
+from .Config import config as botconfig
 
-class botlogs():
+
+# TODO timestamps
+
+class BotLogs():
     """This Is a contained source of log information"""
     def __init__(self):
-        self.SpiceBot_Logs = {
-                                "list": {"Sopel_systemd": [], "Sopel_stdio": []},
-                                "queue": []
-                                }
-        self.sopel_config = {
-                                "logging_channel": True
-                                }
+        self.setup_logs()
+        self.lock = threading.Lock()
+        self.dict = {
+                    "list": {"Sopel_systemd": [], "Sopel_stdio": []},
+                    "queue": []
+                    }
+
+    def setup_logs(self):
+        botconfig.core.logs_stdio = os.path.join(botconfig.core.logdir, 'stdio.log')
+        # botconfig.core.logs_stdio = os.path.os.path.join(botconfig.core.logdir, botconfig.basename + '.stdio.log')
+        botconfig.core.logs_exceptions = os.path.join(botconfig.core.logdir, 'exceptions.log')
+        # botconfig.core.logs_exceptions = os.path.os.path.join(botconfig.core.logdir, botconfig.basename + '.exceptions.log')
+        botconfig.core.logs_raw = os.path.join(botconfig.core.logdir, 'raw.log')
+        # botconfig.core.logs_raw = os.path.os.path.join(botconfig.core.logdir, botconfig.basename + '.raw.log')
+
+    def botstderr(self, logmessage):
+        sys.stderr.write(logmessage)
 
     def log(self, logtype, logentry, stdio=False):
+
+        self.lock.acquire()
+
         logtitle = "[" + logtype + "]"
         logmessage = logtitle + "    " + logentry
 
-        if self.sopel_config["logging_channel"]:
-            self.SpiceBot_Logs["queue"].append(logmessage)
+        if botconfig.logging_channel:
+            self.dict["queue"].append(logmessage)
 
         if stdio:
-            sopel.tools.stderr(logmessage)
+            self.botstderr(logmessage)
 
-        if logtype not in self.SpiceBot_Logs["list"].keys():
-            self.SpiceBot_Logs["list"][logtype] = []
-        self.SpiceBot_Logs["list"][logtype].append(logentry)
+        if logtype not in self.dict["list"].keys():
+            self.dict["list"][logtype] = []
+        self.dict["list"][logtype].append(logentry)
 
-    def get_logs(self):
-        return []
+        self.lock.release()
 
-    def stdio_logs_fetch(self, bot):
+    def get_logs(self, logtype):
+        if logtype == "Sopel_systemd":
+            logindex = self.systemd_logs_fetch()
+        elif logtype == "Sopel_stdio":
+            logindex = self.stdio_logs_fetch()
+        else:
+            logindex = self.dict["list"][logtype]
+        return logindex
+
+    def stdio_logs_fetch(self):
 
         stdio_ignore = []
-        for logtype in botlogs.SpiceBot_Logs["list"].keys():
+        for logtype in self.dict["list"].keys():
             stdio_ignore.append("[" + logtype + "]")
-
-        logfile = os.path.os.path.join(bot.config.core.logdir, 'stdio.log')
 
         try:
             log_file_lines = []
-            log_file = open(logfile, 'r')
+            log_file = open(botconfig.logs_stdio, 'r')
             lines = log_file.readlines()
             for line in lines:
                 log_file_lines.append(line)
@@ -80,8 +103,8 @@ class botlogs():
 
         return debuglines
 
-    def systemd_logs_fetch(self, bot):
-        servicepid = self.get_running_pid(bot)
+    def systemd_logs_fetch(self):
+        servicepid = self.get_running_pid()
         debuglines = []
         for line in os.popen(str("sudo journalctl _PID=" + str(servicepid))).read().split('\n'):
             line = str(line).split(str(os.uname()[1] + " "))[-1]
@@ -92,15 +115,15 @@ class botlogs():
                 debuglines.append(str(line))
         return debuglines
 
-    def get_running_pid(self, bot):
+    def get_running_pid(self):
         try:
-            filename = "/run/sopel/sopel-" + str(bot.nick) + ".pid"
+            filename = "/run/sopel/sopel-" + str(botconfig.nick) + ".pid"
             with open(filename, 'r') as pid_file:
                 pidnum = int(pid_file.read())
         except Exception as e:
             pidnum = e
-            pidnum = str(os.popen("systemctl show " + str(bot.nick) + " --property=MainPID").read()).split("=")[-1]
+            pidnum = str(os.popen("systemctl show " + str(botconfig.nick) + " --property=MainPID").read()).split("=")[-1]
         return pidnum
 
 
-botlogs = botlogs()
+logs = BotLogs()

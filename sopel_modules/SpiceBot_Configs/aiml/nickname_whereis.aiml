@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="1.0">
+
+<category>
+  <pattern>BOTNICK where is waldo</pattern>
+  <template>He is hiding for a reason?</template>
+</category>
+
+<category>
+  <pattern>BOTNICK where is wally</pattern>
+  <template>He is hiding for a reason?</template>
+</category>
+
+<category>
+  <pattern>BOTNICK where is carmen sandiego</pattern>
+  <template>
+    <random>
+      <li>Currently she is located at ACME Headquarters</li>
+      <li>Currently she is located at Villains' International League of Evil</li>
+    </random>
+  </template>
+</category>
+
+<category>
+  <pattern>BOTNICK where is</pattern>
+  <template>Not sure what you want me to look for.</template>
+</category>
+
+</aiml>

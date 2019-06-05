@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="1.0">
+
+<category>
+  <pattern>BOTNICK I love you</pattern>
+      <template>triggernick, I love you too.</template>
+</category>
+
+<category>
+  <pattern>BOTNICK loveya</pattern>
+      <template>triggernick, I love you too.</template>
+</category>
+
+<category>
+  <pattern>BOTNICK I love you</pattern>
+      <template>triggernick, I love you too.</template>
+</category>
+
+<category>
+  <pattern>BOTNICK I like you</pattern>
+      <template>triggernick, I like you too.</template>
+</category>
+
+<category>
+  <pattern>I love you BOTNICK</pattern>
+      <template>triggernick, I love you too.</template>
+</category>
+
+<category>
+  <pattern>loveya BOTNICK</pattern>
+      <template>triggernick, I love you too.</template>
+</category>
+
+<category>
+  <pattern>I love BOTNICK</pattern>
+      <template>triggernick, I love you too.</template>
+</category>
+
+<category>
+  <pattern>I like BOTNICK</pattern>
+      <template>triggernick, I like you too.</template>
+</category>
+
+</aiml>
