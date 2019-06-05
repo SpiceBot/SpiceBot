@@ -35,3 +35,4 @@ def configure(config):
 
     config.define_section("SpiceBot_AI", SpiceBot_AI_MainSection, validate=False)
     config.SpiceBot_AI.configure_setting('extra', 'extra aiml directories to import matches from')
+    config.SpiceBot_AI.configure_setting('gender', 'bot gender')

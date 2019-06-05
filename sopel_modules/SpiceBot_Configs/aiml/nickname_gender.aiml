@@ -9,7 +9,7 @@
 
 <category>
   <pattern>BOTNICK WHAT IS YOUR GENDER</pattern>
-  <template>If societal genders are binary, my gender is female</template>
+  <template>If societal genders are binary, my gender is <bot name="gender"/></template>
 </category>
 
 

@@ -5,7 +5,7 @@ This is the SpiceBot AI system. Based On Chatty cathy
 """
 
 from sopel.tools import Identifier
-from sopel.config.types import StaticSection, ListAttribute
+from sopel.config.types import StaticSection, ListAttribute, ValidatedAttribute
 
 import os
 import tempfile
@@ -17,6 +17,7 @@ from .Config import config as botconfig
 
 class SpiceBot_AI_MainSection(StaticSection):
     extra = ListAttribute('extra')
+    gender = ValidatedAttribute('gender', default='female')
 
 
 class SpiceBot_AI():
@@ -61,6 +62,7 @@ class SpiceBot_AI():
 
     def load_bot_values(self, bot):
         self.aiml_kernel.setBotPredicate("nick", bot.nick)
+        self.aiml_kernel.setBotPredicate("gender", bot.config.SpiceBot_AI.gender)
 
     def load_extras(self, bot):
         if len(bot.config.SpiceBot_AI.extra):
