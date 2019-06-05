@@ -26,43 +26,6 @@ def bot_command_nick(bot, trigger):
 
     fulltrigger = spicemanip.main(trigger.sb['args'], 0).lower()
 
-    if fulltrigger.lower().startswith("what is"):
-        searchterm = spicemanip.main(trigger.sb['args'], "3+") or None
-        if searchterm:
-            searchreturn = SpiceBot.googlesearch(searchterm)
-            if not searchreturn:
-                bot.osd('I cannot find anything about that')
-            else:
-                bot.osd(str(searchreturn))
-        else:
-            bot.osd("Do you think this is Jeopardy?")
-        return
-
-    elif fulltrigger.lower().startswith("where is"):
-        searchterm = spicemanip.main(trigger.sb['args'], "3+") or None
-        if searchterm:
-
-            if searchterm.lower() in ['waldo', 'wally']:
-                bot.osd("He is hiding for a reason?")
-                searchreturn = SpiceBot.googlesearch("wimmelbilderbuch")
-                if searchreturn:
-                    bot.osd(str(searchreturn))
-                return
-
-            elif searchterm.lower() == 'carmen sandiego':
-                carmenlocale = ['ACME Headquarters', "Villains' International League of Evil"]
-                bot.osd("Currently she is located at " + spicemanip.main(carmenlocale, 'random'))
-                return
-            searchreturn = SpiceBot.googlesearch(searchterm, 'maps')
-
-            if not searchreturn:
-                bot.osd('I cannot find anything about that')
-            else:
-                bot.osd(str(searchreturn))
-        else:
-            bot.osd("Not sure what you want me to look for.")
-        return
-
     # if fulltrigger.lower().startswith("what time is it"):
     # TODO
 
@@ -73,7 +36,7 @@ def bot_command_nick(bot, trigger):
     #    return
     # TODO
 
-    elif fulltrigger.lower().startswith(tuple(["make me a", "beam me a"])):
+    if fulltrigger.lower().startswith(tuple(["make me a", "beam me a"])):
         makemea = spicemanip.main(trigger.sb['args'], "4+") or None
         if makemea:
             bot.osd("beams " + trigger.nick + " a " + makemea, trigger.sender, 'action')

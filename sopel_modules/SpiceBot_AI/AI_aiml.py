@@ -44,12 +44,12 @@ def bot_command_rule(bot, trigger):
             bot.osd(invalid_display, trigger.nick, 'notice')
         return
 
+    fulltrigger = spicemanip.main(trigger_args, 0)
     if str(message).lower().startswith(str(bot.nick).lower()):
         command_type = 'nickname'
         trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'nickname')
         if str(trigger_command).startswith("?"):
             return
-        fulltrigger = spicemanip.main(trigger_args, 0)
         if fulltrigger in SpiceBot.commands.dict['nickrules']:
             return
         if trigger_command in SpiceBot.commands.dict['commands']["nickname"].keys():
@@ -63,6 +63,20 @@ def bot_command_rule(bot, trigger):
         bot.osd(str(returnmessage))
     else:
         if command_type == 'nickname':
+
+            if fulltrigger.lower().startswith(tuple(["what is", "where is"])):
+                searchterm = spicemanip.main(trigger_args, "3+") or None
+                if searchterm:
+                    if trigger_args[0].lower() == "where":
+                        searchreturn = SpiceBot.googlesearch(searchterm, 'maps')
+                    else:
+                        searchreturn = SpiceBot.googlesearch(searchterm)
+                    if not searchreturn:
+                        bot.osd('I cannot find anything about that')
+                    else:
+                        bot.osd(str(searchreturn))
+                return
+
             closestmatches = SpiceBot.similar_list(trigger_command, SpiceBot.commands.dict['commands']["nickname"].keys(), 3, 'reverse')
             if len(closestmatches):
                 closestmatches = spicemanip.main(closestmatches, "andlist")
