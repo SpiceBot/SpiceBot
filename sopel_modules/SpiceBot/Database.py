@@ -11,13 +11,11 @@ from sopel.db import SopelDB, _deserialize
 
 from .Config import config as botconfig
 
-from sqlalchemy import Column, String, ForeignKey, Integer, Text, create_engine
+from sqlalchemy import Column, String, ForeignKey, Integer, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.engine.url import URL
 
 import json
-import os
 
 
 BASE = declarative_base()
