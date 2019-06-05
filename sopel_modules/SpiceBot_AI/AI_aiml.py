@@ -21,7 +21,7 @@ def bot_command_rule(bot, trigger):
     if not len(trigger.args):
         return
 
-    message = trigger.args[1]
+    message = str(trigger.args[1]).encode('utf-8', 'replace')
 
     if is_ascii(message):
         return
@@ -62,7 +62,7 @@ def bot_command_rule(bot, trigger):
         trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'module')
         fulltrigger = spicemanip.main(trigger_args, 0)
 
-    returnmessage = SpiceBot.botai.on_message(bot, trigger, str(message).encode('utf-8'))
+    returnmessage = SpiceBot.botai.on_message(bot, trigger, message)
     if returnmessage:
         bot.osd(str(returnmessage))
     else:
@@ -92,4 +92,9 @@ def bot_command_rule(bot, trigger):
 
 
 def is_ascii(s):
-    return all(ord(c) < 128 for c in s)
+    try:
+        s.decode('ascii')
+    except UnicodeDecodeError:
+        return False
+    else:
+        return True
