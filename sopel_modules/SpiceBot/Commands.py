@@ -5,7 +5,10 @@ This is the SpiceBot Commands system.
 
 This Class stores commands in an easy to access manner
 """
+
 import sopel
+from sopel.config.types import StaticSection, ValidatedAttribute
+
 import os
 import threading
 
@@ -16,9 +19,14 @@ from .Config import config as botconfig
 from .Database import db as botdb
 
 
+class SpiceBot_Commands_MainSection(StaticSection):
+    query_prefix = ValidatedAttribute('query_prefix', default="?")
+
+
 class BotCommands():
     """This Logs all commands known to the bot"""
     def __init__(self):
+        self.setup_commands()
         self.lock = threading.Lock()
         self.dict = {
                     "counts": 0,
@@ -35,6 +43,11 @@ class BotCommands():
         self.nickrules()
         for comtype in ['module', 'nickname', 'rule']:
             logs.log('SpiceBot_Commands', "Found " + str(len(self.dict['commands'][comtype].keys())) + " " + comtype + " commands.", True)
+
+    def setup_commands(self):
+        botconfig.define_section("SpiceBot_Commands", SpiceBot_Commands_MainSection, validate=False)
+        botconfig.core.query_list = str(botconfig.SpiceBot_Commands.query_prefix).replace("\\", '').split("|")
+        botconfig.core.prefix_list.extend(botconfig.SpiceBot_Commands.query_prefix)
 
     def nickrules(self):
         for command in self.dict['commands']['rule'].keys():

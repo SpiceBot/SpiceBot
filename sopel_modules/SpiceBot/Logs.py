@@ -6,9 +6,9 @@ This is the SpiceBot Logs system.
 This Class stores logs in an easy to access manner
 """
 
-import sopel
 import threading
 import os
+import sys
 import spicemanip
 
 from .Config import config as botconfig
@@ -19,11 +19,23 @@ from .Config import config as botconfig
 class BotLogs():
     """This Is a contained source of log information"""
     def __init__(self):
+        self.setup_logs()
         self.lock = threading.Lock()
         self.dict = {
                     "list": {"Sopel_systemd": [], "Sopel_stdio": []},
                     "queue": []
                     }
+
+    def setup_logs(self):
+        botconfig.core.logs_stdio = os.path.join(botconfig.core.logdir, 'stdio.log')
+        # botconfig.core.logs_stdio = os.path.os.path.join(botconfig.core.logdir, botconfig.basename + '.stdio.log')
+        botconfig.core.logs_exceptions = os.path.join(botconfig.core.logdir, 'exceptions.log')
+        # botconfig.core.logs_exceptions = os.path.os.path.join(botconfig.core.logdir, botconfig.basename + '.exceptions.log')
+        botconfig.core.logs_raw = os.path.join(botconfig.core.logdir, 'raw.log')
+        # botconfig.core.logs_raw = os.path.os.path.join(botconfig.core.logdir, botconfig.basename + '.raw.log')
+
+    def botstderr(self, logmessage):
+        sys.stderr.write(logmessage)
 
     def log(self, logtype, logentry, stdio=False):
 
@@ -36,7 +48,7 @@ class BotLogs():
             self.dict["queue"].append(logmessage)
 
         if stdio:
-            sopel.tools.stderr(logmessage)
+            self.botstderr(logmessage)
 
         if logtype not in self.dict["list"].keys():
             self.dict["list"][logtype] = []

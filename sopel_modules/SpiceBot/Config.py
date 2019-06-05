@@ -24,18 +24,7 @@ class BotConfig():
         opts = parser.parse_args(argv)
         self.config = get_configuration(opts)
 
-        self.config.core.prefix_list = str(self.config.core.prefix).replace("\\", '').split("|")
-        self.config.core.prefix_list.append("?")
-
-        self.config.basename = os.path.basename(self.config.filename).rsplit('.', 1)[0]
-        self.config.core.logs_stdio = os.path.join(self.config.core.logdir, 'stdio.log')
-        # self.config.core.logs_stdio = os.path.os.path.join(self.config.core.logdir, self.config.basename + '.stdio.log')
-        self.config.core.logs_exceptions = os.path.join(self.config.core.logdir, 'exceptions.log')
-        # self.config.core.logs_exceptions = os.path.os.path.join(self.config.core.logdir, self.config.basename + '.exceptions.log')
-        self.config.core.logs_raw = os.path.join(self.config.core.logdir, 'raw.log')
-        # self.config.core.logs_raw = os.path.os.path.join(self.config.core.logdir, self.config.basename + '.raw.log')
-
-        self.config.aibrain = os.path.join(self.config.homedir, self.config.basename + '.aibrain.brn')
+        self.setup_config()
 
         # load as dict
         config = configparser.ConfigParser()
@@ -46,6 +35,10 @@ class BotConfig():
             for (each_key, each_val) in config.items(each_section):
                 if each_key.lower() not in self.dict[each_section.lower()].keys():
                     self.dict[each_section.lower()][each_key.lower()] = each_val
+
+    def setup_config(self):
+        self.config.core.basename = os.path.basename(self.config.filename).rsplit('.', 1)[0]
+        self.config.core.prefix_list = str(self.config.core.prefix).replace("\\", '').split("|")
 
     def define_section(self, name, cls_, validate=True):
         return self.config.define_section(name, cls_, validate)

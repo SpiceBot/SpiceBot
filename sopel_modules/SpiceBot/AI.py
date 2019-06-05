@@ -23,9 +23,7 @@ class SpiceBot_AI_MainSection(StaticSection):
 class SpiceBot_AI():
 
     def __init__(self):
-
-        botconfig.define_section("SpiceBot_AI", SpiceBot_AI_MainSection, validate=False)
-
+        self.setup_ai()
         self.braindirs = []
         self.dict = {
                     "counts": 0,
@@ -51,6 +49,10 @@ class SpiceBot_AI():
 
         # Load bot values
         self.load_bot_values()
+
+    def setup_ai(self):
+        botconfig.define_section("SpiceBot_AI", SpiceBot_AI_MainSection, validate=False)
+        botconfig.aibrain = os.path.join(botconfig.homedir, botconfig.basename + '.aibrain.brn')
 
     def load_saved_brain(self):
         if os.path.isfile(botconfig.config.aibrain):

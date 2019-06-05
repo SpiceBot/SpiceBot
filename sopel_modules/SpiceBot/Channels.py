@@ -10,7 +10,6 @@ import re
 import threading
 
 from .Config import config as botconfig
-from .Logs import logs
 
 
 class SpiceBot_Channels_MainSection(StaticSection):
@@ -23,10 +22,7 @@ class SpiceBot_Channels_MainSection(StaticSection):
 class BotChannels():
     """This Logs all channels known to the server"""
     def __init__(self):
-
-        # SpiceBot
-        logs.log('SpiceBot_Channels', "Setting Up BotChannels class")
-        botconfig.define_section("SpiceBot_Channels", SpiceBot_Channels_MainSection, validate=False)
+        self.setup_channels()
 
         self.lock = threading.Lock()
         self.channel_lock = False
@@ -34,6 +30,9 @@ class BotChannels():
                     "list": {},
                     "InitialProcess": False
                     }
+
+    def setup_channels(self):
+        botconfig.define_section("SpiceBot_Channels", SpiceBot_Channels_MainSection, validate=False)
 
     def channel_list_request(self, bot):
         bot.write(['LIST'])
