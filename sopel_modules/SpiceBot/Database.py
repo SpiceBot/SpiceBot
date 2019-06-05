@@ -11,11 +11,13 @@ from sopel.db import SopelDB, _deserialize
 
 from .Config import config as botconfig
 
-from sqlalchemy import Column, String, ForeignKey, Integer, Text
+from sqlalchemy import Column, String, ForeignKey, Integer, Text, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.engine.url import URL
 
 import json
+import os
 
 
 BASE = declarative_base()
@@ -495,6 +497,55 @@ class BotDatabase():
     """A thread safe database cache"""
 
     def __init__(self):
+
+        # patch unicode issues
+        # MySQL - mysql://username:password@localhost/db
+        # SQLite - sqlite:////home/sopel/.sopel/default.db
+        db_type = botconfig.config.core.db_type
+
+        # Handle SQLite explicitly as a default
+        if db_type == 'sqlite':
+            path = botconfig.config.core.db_filename
+            config_dir, config_file = os.path.split(botconfig.config.filename)
+            config_name, _ = os.path.splitext(config_file)
+            if path is None:
+                path = os.path.join(config_dir, config_name + '.db')
+            path = os.path.expanduser(path)
+            if not os.path.isabs(path):
+                path = os.path.normpath(os.path.join(config_dir, path))
+            self.filename = path
+            self.url = 'sqlite:///%s' % path
+        # Otherwise, handle all other database engines
+        else:
+            if db_type == 'mysql':
+                drivername = botconfig.config.core.db_driver or 'mysql'
+            elif db_type == 'postgres':
+                drivername = botconfig.config.core.db_driver or 'postgresql'
+            elif db_type == 'oracle':
+                drivername = botconfig.config.core.db_driver or 'oracle'
+            elif db_type == 'mssql':
+                drivername = botconfig.config.core.db_driver or 'mssql+pymssql'
+            elif db_type == 'firebird':
+                drivername = botconfig.config.core.db_driver or 'firebird+fdb'
+            elif db_type == 'sybase':
+                drivername = botconfig.config.core.db_driver or 'sybase+pysybase'
+            else:
+                raise Exception('Unknown db_type')
+
+            db_user = botconfig.config.core.db_user
+            db_pass = botconfig.config.core.db_pass
+            db_host = botconfig.config.core.db_host
+            db_port = botconfig.config.core.db_port  # Optional
+            db_name = botconfig.config.core.db_name  # Optional, depending on DB
+
+            # Ensure we have all our variables defined
+            if db_user is None or db_pass is None or db_host is None:
+                raise Exception('Please make sure the following core '
+                                'configuration values are defined: '
+                                'db_user, db_pass, db_host')
+            SopelDB.url = URL(drivername=drivername, username=db_user, password=db_pass,
+                           host=db_host, port=db_port, database=db_name, use_unicode=True, charset="utf8")
+        SopelDB.engine = create_engine(SopelDB.url)
 
         sopel.db.NickValues = NickValues
         SopelDB.get_nick_value = SpiceDB.get_nick_value
