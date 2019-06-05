@@ -80,7 +80,8 @@ def setup_startupmonologue(bot):
     events.startup_add([
                         events.BOT_STARTUPMONOLOGUE_CONNECTED,
                         events.BOT_STARTUPMONOLOGUE_CHANNELS,
-                        events.BOT_STARTUPMONOLOGUE_COMMANDS
+                        events.BOT_STARTUPMONOLOGUE_COMMANDS,
+                        events.BOT_STARTUPMONOLOGUE_AI,
                         ])
 
 
@@ -100,6 +101,7 @@ def setup_ai(bot):
     logs.log('SpiceBot_AI', "Setting Up Configuration")
     bot.config.define_section("SpiceBot_AI", SpiceBot_AI_MainSection, validate=False)
     bot.config.aibrain = os.path.join(bot.config.homedir, bot.config.core.basename + '.aibrain.brn')
+    events.startup_add([events.BOT_AI])
 
 
 def setup_osd(bot):

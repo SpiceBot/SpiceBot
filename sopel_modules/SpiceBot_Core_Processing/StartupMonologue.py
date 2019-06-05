@@ -43,6 +43,17 @@ def bot_startup_monologue_commands(bot, trigger):
     SpiceBot.events.trigger(bot, SpiceBot.events.BOT_STARTUPMONOLOGUE_COMMANDS, "SpiceBot_StartupMonologue")
 
 
+@sopel.module.event(SpiceBot.events.BOT_AI)
+@sopel.module.rule('.*')
+def bot_startup_monologue_ai(bot, trigger):
+    availablecomsnum = SpiceBot.botai.dict['patterncounts']
+    availablecomsfiles = SpiceBot.botai.dict['filecounts']
+    displayval = "There are " + str(availablecomsnum) + " AI matches available in " + str(availablecomsfiles) + " files."
+    SpiceBot.startupmonologue.dict["ai"] = displayval
+    SpiceBot.logs.log('SpiceBot_StartupMonologue', displayval)
+    SpiceBot.events.trigger(bot, SpiceBot.events.BOT_STARTUPMONOLOGUE_AI, "SpiceBot_StartupMonologue")
+
+
 @sopel.module.event(SpiceBot.events.BOT_LOADED)
 @sopel.module.rule('.*')
 def bot_startup_monologue_display(bot, trigger):

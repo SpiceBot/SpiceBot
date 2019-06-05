@@ -26,7 +26,7 @@ class SpiceBot_AI():
         self.setup_ai()
         self.braindirs = []
         self.dict = {
-                    "patterncount": 0,
+                    "patterncounts": 0,
                     "filecounts": 0,
                     "sessioncache": {},
                     "files": {}
@@ -102,7 +102,7 @@ class SpiceBot_AI():
                     data = open(aimlfile).read()
                     count = data.count('pattern')
                     count = count / 2
-                    self.dict["patterncount"] += count
+                    self.dict["patterncounts"] += count
 
                 tempbrain = tempfile.mkstemp()[1]
                 with open(tempbrain, 'w') as fileo:
