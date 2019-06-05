@@ -102,7 +102,7 @@ class SpiceBot_AI():
                     data = open(aimlfile).read()
                     count = data.count('pattern')
                     count = count / 2
-                    self.dict["patterncounts"] += count
+                    self.dict["patterncounts"] += int(count)
 
                 tempbrain = tempfile.mkstemp()[1]
                 with open(tempbrain, 'w') as fileo:
