@@ -12,6 +12,7 @@ import tempfile
 import aiml
 
 from .Database import db as botdb
+from .Config import config as botconfig
 
 
 class SpiceBot_AI_MainSection(StaticSection):
@@ -38,7 +39,13 @@ class SpiceBot_AI():
         self.aiml_kernel._verboseMode = False
 
         # Learn responses
+        self.load_saved_brain()
         self.load_brain()
+
+    def load_saved_brain(self):
+        if os.path.isfile(botconfig.config.aibrain):
+            self.aiml_kernel.bootstrap(brainFile=botconfig.config.aibrain)
+            self.save_brain()
 
     def load_brain(self):
         import sopel_modules
@@ -50,6 +57,7 @@ class SpiceBot_AI():
 
         # learn directories
         self.learn(braindirs)
+        self.save_brain()
 
     def load_bot_values(self, bot):
         self.aiml_kernel.setBotPredicate("nick", bot.nick)
@@ -57,6 +65,7 @@ class SpiceBot_AI():
     def load_extras(self, bot):
         if len(bot.config.SpiceBot_AI.extra):
             self.learn(self, bot.config.SpiceBot_AI.extra)
+            self.save_brain()
 
     def learn(self, braindirs):
         for braindir in braindirs:
@@ -79,13 +88,18 @@ class SpiceBot_AI():
         self.aiml_kernel.respond("LOAD AIML B")
 
     def on_message(self, bot, trigger, message):
+
         nick = Identifier(trigger.nick)
         nick_id = botdb.get_nick_id(nick, create=True)
         self.check_user_import(nick, nick_id)
+
         message = self.bot_message_precipher(bot, trigger, message)
         aiml_response = self.aiml_kernel.respond(message, nick_id)
-        self.save_nick_session(nick, nick_id)
         aiml_response = self.bot_message_decipher(bot, trigger, aiml_response)
+
+        self.save_nick_session(nick, nick_id)
+        self.save_brain()
+
         return aiml_response
 
     def bot_message_precipher(self, bot, trigger, message):
@@ -127,6 +141,9 @@ class SpiceBot_AI():
             nick_id = botdb.get_nick_id(nick, create=True)
         sessionData = self.aiml_kernel.getSessionData(nick_id)
         botdb.set_nick_value(nick, 'botai', sessionData)
+
+    def save_brain(self):
+        self.aiml_kernel.saveBrain(botconfig.config.aibrain)
 
 
 botai = SpiceBot_AI()
