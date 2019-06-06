@@ -49,6 +49,7 @@ def bot_command_rule(bot, trigger):
     if str(message).lower().startswith(str(bot.nick).lower()):
         command_type = 'nickname'
         trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'nickname')
+        trigger_args.insert(0, trigger_command)
         fulltrigger = spicemanip.main(trigger_args, 0)
         if str(trigger_command).startswith("?"):
             return
@@ -59,6 +60,7 @@ def bot_command_rule(bot, trigger):
     else:
         command_type = 'module'
         trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'module')
+        trigger_args.insert(0, trigger_command)
         fulltrigger = spicemanip.main(trigger_args, 0)
 
     returnmessage = SpiceBot.botai.on_message(bot, trigger, message)
@@ -66,7 +68,6 @@ def bot_command_rule(bot, trigger):
         bot.osd(str(returnmessage))
     else:
         if command_type == 'nickname':
-            bot.say(str(trigger_args[0].lower()))
 
             if trigger_args[0].lower() in ["what", "where"] and trigger_args[0].lower() in ["is", "are"]:
                 searchterm = spicemanip.main(trigger_args, "3+") or None

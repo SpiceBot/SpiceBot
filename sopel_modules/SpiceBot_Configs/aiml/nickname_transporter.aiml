@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="1.0">
+
+<category>
+  <pattern>BOTNICK beam me up</pattern>
+      <template>locks onto triggernicks coordinates and transports them to the transporter room.</template>
+</category>
+
+</aiml>
