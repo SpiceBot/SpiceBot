@@ -22,7 +22,7 @@ def bot_command_rule(bot, trigger):
         return
 
     message = trigger.args[1]
-    if isinstance(message, unicode):
+    if isinstance(message, 'unicode'):
         return
 
     # ignore text coming from a valid prefix
