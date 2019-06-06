@@ -58,9 +58,9 @@ def bot_command_rule(bot, trigger):
         if trigger_command in SpiceBot.commands.dict['commands']["nickname"].keys():
             return
     else:
-        command_type = 'module'
-        trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'module')
-        trigger_args.insert(0, trigger_command)
+        command_type = 'other'
+        trigger_args = spicemanip.main(message, 'create')
+        trigger_command = trigger_args[0]
         fulltrigger = spicemanip.main(trigger_args, 0)
 
     returnmessage = SpiceBot.botai.on_message(bot, trigger, message)
