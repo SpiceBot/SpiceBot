@@ -74,11 +74,11 @@ class SpiceBot_AI():
 
     def load_bot_values(self):
 
-        current_bot_db = botdb.get_bot_value('botai') or None
-        if current_bot_db:
-            for predicate in current_bot_db.keys():
-                predval = current_bot_db[predicate]
-                self.aiml_kernel.setBotPredicate(predicate, predval)
+        # current_bot_db = botdb.get_bot_value('botai') or None
+        # if current_bot_db:
+        #    for predicate in current_bot_db.keys():
+        #        predval = current_bot_db[predicate]
+        #        self.aiml_kernel.setBotPredicate(predicate, predval)
 
         # sopel nick
         self.aiml_kernel.setBotPredicate("nick", botconfig.nick)
@@ -121,7 +121,6 @@ class SpiceBot_AI():
         self.aiml_kernel.respond("LOAD AIML B")
 
     def on_message(self, bot, trigger, message):
-
         nick = Identifier(trigger.nick)
         nick_id = botdb.get_nick_id(nick, create=True)
         self.check_user_import(nick, nick_id)
@@ -236,8 +235,8 @@ class SpiceBot_AI():
 
     def save_brain(self):
         self.aiml_kernel.saveBrain(botconfig.config.aibrain)
-        botsessiondata = self.aiml_kernel._botPredicates
-        botdb.set_bot_value('botai', botsessiondata)
+        # botsessiondata = self.aiml_kernel._botPredicates
+        # botdb.set_bot_value('botai', botsessiondata)
 
 
 botai = SpiceBot_AI()
