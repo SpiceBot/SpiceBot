@@ -65,6 +65,7 @@ def bot_command_rule(bot, trigger):
         bot.osd(str(returnmessage))
     else:
         if command_type == 'nickname':
+            bot.say(str(trigger_args[0].lower()))
 
             if trigger_args[0].lower() in ["what", "where"] and trigger_args[0].lower() in ["is", "are"]:
                 searchterm = spicemanip.main(trigger_args, "3+") or None
