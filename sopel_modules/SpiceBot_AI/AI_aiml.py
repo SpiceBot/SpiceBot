@@ -26,6 +26,7 @@ def bot_command_rule(bot, trigger):
 
     # ignore text coming from a valid prefix
     if str(message).startswith(tuple(bot.config.core.prefix_list)):
+        return
         trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'module')
         # patch for people typing "...", maybe other stuff, but this verifies that there is still a command here
         if trigger_command.startswith("."):
