@@ -22,8 +22,7 @@ def bot_command_rule(bot, trigger):
         return
 
     message = trigger.args[1]
-    if isinstance(message, 'unicode'):
-        return
+    message = ''.join([x for x in message if ord(x) < 128])
 
     # ignore text coming from a valid prefix
     if str(message).startswith(tuple(bot.config.core.prefix_list)):
