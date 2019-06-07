@@ -11,43 +11,28 @@ import sopel_modules.SpiceBot as SpiceBot
 @sopel.module.event('JOIN')
 @sopel.module.rule('.*')
 def users_join(bot, trigger):
-    bot.say(str(trigger), "#deathbybandaid")
-    bot.say(str(trigger.nick), "#deathbybandaid")
-    bot.say(str(trigger.args), "#deathbybandaid")
-    # SpiceBot.users.join(bot, trigger)
+    SpiceBot.users.join(bot, trigger)
 
 
 @sopel.module.event('QUIT')
 @sopel.module.rule('.*')
 def users_quit(bot, trigger):
-    bot.say(str(trigger), "#deathbybandaid")
-    bot.say(str(trigger.nick), "#deathbybandaid")
-    bot.say(str(trigger.args), "#deathbybandaid")
-    # SpiceBot.users.quit(bot, trigger)
+    SpiceBot.users.quit(bot, trigger)
 
 
 @sopel.module.event('PART')
 @sopel.module.rule('.*')
 def users_part(bot, trigger):
-    bot.say(str(trigger), "#deathbybandaid")
-    bot.say(str(trigger.nick), "#deathbybandaid")
-    bot.say(str(trigger.args), "#deathbybandaid")
-    # SpiceBot.users.part(bot, trigger)
+    SpiceBot.users.part(bot, trigger)
 
 
 @sopel.module.event('KICK')
 @sopel.module.rule('.*')
 def users_kick(bot, trigger):
-    bot.say(str(trigger), "#deathbybandaid")
-    bot.say(str(trigger.nick), "#deathbybandaid")
-    bot.say(str(trigger.args), "#deathbybandaid")
-    # SpiceBot.users.kick(bot, trigger)
+    SpiceBot.users.kick(bot, trigger)
 
 
 @sopel.module.event('NICK')
 @sopel.module.rule('.*')
 def users_nick(bot, trigger):
-    bot.say(str(trigger), "#deathbybandaid")
-    bot.say(str(trigger.nick), "#deathbybandaid")
-    bot.say(str(trigger.args), "#deathbybandaid")
-    # SpiceBot.users.nick(bot, trigger)
+    SpiceBot.users.nick(bot, trigger)
