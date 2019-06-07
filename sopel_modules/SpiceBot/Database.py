@@ -33,7 +33,7 @@ class Nicknames(BASE):
     """
     Nicknames SQLAlchemy Class
     """
-    __tablename__ = 'nicknames'
+    __tablename__ = 'spice_nicknames'
     nick_id = Column(Integer, ForeignKey('spice_nick_ids.nick_id'), primary_key=True)
     slug = Column(String(255), primary_key=True)
     canonical = Column(String(255))
