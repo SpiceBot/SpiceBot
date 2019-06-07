@@ -45,7 +45,7 @@ class NickValues(BASE):
     """
     __tablename__ = 'spice_nick_values'
     nick_id = Column(Integer, ForeignKey('nick_ids.nick_id'), primary_key=True)
-    # namespace = Column(String(255), primary_key=True)
+    namespace = Column(String(255), primary_key=True)
     key = Column(String(255), primary_key=True)
     value = Column(Text())
 
@@ -56,7 +56,7 @@ class ChannelValues(BASE):
     """
     __tablename__ = 'spice_channel_values'
     channel = Column(String(255), primary_key=True)
-    # namespace = Column(String(255), primary_key=True)
+    namespace = Column(String(255), primary_key=True)
     key = Column(String(255), primary_key=True)
     value = Column(Text())
 
@@ -67,7 +67,7 @@ class PluginValues(BASE):
     """
     __tablename__ = 'spice_plugin_values'
     plugin = Column(String(255), primary_key=True)
-    # namespace = Column(String(255), primary_key=True)
+    namespace = Column(String(255), primary_key=True)
     key = Column(String(255), primary_key=True)
     value = Column(Text())
 
@@ -83,10 +83,9 @@ class SpiceDB(object):
         nick_id = self.get_nick_id(nick)
         session = self.ssession()
         try:
-            # .filter(NickValues.namespace == namespace)\
-            key = namespace + "_" + key
             result = session.query(NickValues) \
                 .filter(NickValues.nick_id == nick_id) \
+                .filter(NickValues.namespace == namespace)\
                 .filter(NickValues.key == key) \
                 .one_or_none()
             # NickValue exists, update
@@ -95,7 +94,7 @@ class SpiceDB(object):
                 session.commit()
             # DNE - Insert
             else:
-                new_nickvalue = NickValues(nick_id=nick_id, key=key, value=value)
+                new_nickvalue = NickValues(nick_id=nick_id, namespace=namespace, key=key, value=value)
                 session.add(new_nickvalue)
                 session.commit()
         except SQLAlchemyError:
@@ -109,11 +108,10 @@ class SpiceDB(object):
         nick = Identifier(nick)
         session = self.ssession()
         try:
-            # .filter(NickValues.namespace == namespace)\
-            key = namespace + "_" + key
             result = session.query(NickValues) \
                 .filter(Nicknames.nick_id == NickValues.nick_id) \
                 .filter(Nicknames.slug == nick.lower()) \
+                .filter(NickValues.namespace == namespace)\
                 .filter(NickValues.key == key) \
                 .one_or_none()
             if result is not None:
@@ -131,10 +129,9 @@ class SpiceDB(object):
         nick_id = self.get_nick_id(nick)
         session = self.ssession()
         try:
-            # .filter(NickValues.namespace == namespace)\
-            key = namespace + "_" + key
             result = session.query(NickValues) \
                 .filter(NickValues.nick_id == nick_id) \
+                .filter(NickValues.namespace == namespace)\
                 .filter(NickValues.key == key) \
                 .one_or_none()
             # NickValue exists, delete
@@ -154,10 +151,9 @@ class SpiceDB(object):
         nick_id = self.get_nick_id(nick)
         session = self.ssession()
         try:
-            # .filter(NickValues.namespace == namespace)\
-            key = namespace + "_" + key
             result = session.query(NickValues) \
                 .filter(NickValues.nick_id == nick_id) \
+                .filter(NickValues.namespace == namespace)\
                 .filter(NickValues.key == key) \
                 .one_or_none()
             # NickValue exists, update
@@ -166,7 +162,7 @@ class SpiceDB(object):
                 session.commit()
             # DNE - Insert
             else:
-                new_nickvalue = NickValues(nick_id=nick_id, key=key, value=float(value))
+                new_nickvalue = NickValues(nick_id=nick_id, namespace=namespace, key=key, value=float(value))
                 session.add(new_nickvalue)
                 session.commit()
         except SQLAlchemyError:
@@ -184,10 +180,9 @@ class SpiceDB(object):
         nick_id = self.get_nick_id(nick)
         session = self.ssession()
         try:
-            # .filter(NickValues.namespace == namespace)\
-            key = namespace + "_" + key
             result = session.query(NickValues) \
                 .filter(NickValues.nick_id == nick_id) \
+                .filter(NickValues.namespace == namespace)\
                 .filter(NickValues.key == key) \
                 .one_or_none()
             # NickValue exists, update
@@ -212,7 +207,7 @@ class SpiceDB(object):
                     for entry in entries:
                         while entry in values:
                             values.remove(entry)
-                new_nickvalue = NickValues(nick_id=nick_id, key=key, value=values)
+                new_nickvalue = NickValues(nick_id=nick_id, namespace=namespace, key=key, value=values)
                 session.add(new_nickvalue)
                 session.commit()
         except SQLAlchemyError:
@@ -229,10 +224,9 @@ class SpiceDB(object):
         value = json.dumps(value, ensure_ascii=False)
         session = self.ssession()
         try:
-            # .filter(ChannelValues.namespace == namespace)\
-            key = namespace + "_" + key
             result = session.query(ChannelValues) \
                 .filter(ChannelValues.channel == channel)\
+                .filter(ChannelValues.namespace == namespace)\
                 .filter(ChannelValues.key == key) \
                 .one_or_none()
             # ChannelValue exists, update
@@ -241,7 +235,7 @@ class SpiceDB(object):
                 session.commit()
             # DNE - Insert
             else:
-                new_channelvalue = ChannelValues(channel=channel, key=key, value=value)
+                new_channelvalue = ChannelValues(channel=channel, namespace=namespace, key=key, value=value)
                 session.add(new_channelvalue)
                 session.commit()
         except SQLAlchemyError:
@@ -255,10 +249,9 @@ class SpiceDB(object):
         channel = Identifier(channel).lower()
         session = self.ssession()
         try:
-            # .filter(ChannelValues.namespace == namespace)\
-            key = namespace + "_" + key
             result = session.query(ChannelValues) \
                 .filter(ChannelValues.channel == channel)\
+                .filter(ChannelValues.namespace == namespace)\
                 .filter(ChannelValues.key == key) \
                 .one_or_none()
             if result is not None:
@@ -275,10 +268,9 @@ class SpiceDB(object):
         channel = Identifier(channel).lower()
         session = self.ssession()
         try:
-            # .filter(ChannelValues.namespace == namespace)\
-            key = namespace + "_" + key
             result = session.query(ChannelValues) \
                 .filter(ChannelValues.channel == channel)\
+                .filter(ChannelValues.namespace == namespace)\
                 .filter(ChannelValues.key == key) \
                 .one_or_none()
             # ChannelValue exists, delete
@@ -297,10 +289,9 @@ class SpiceDB(object):
         value = json.dumps(value, ensure_ascii=False)
         session = self.ssession()
         try:
-            # .filter(ChannelValues.namespace == namespace)\
-            key = namespace + "_" + key
             result = session.query(ChannelValues) \
                 .filter(ChannelValues.channel == channel)\
+                .filter(ChannelValues.namespace == namespace)\
                 .filter(ChannelValues.key == key) \
                 .one_or_none()
             # ChannelValue exists, update
@@ -309,7 +300,7 @@ class SpiceDB(object):
                 session.commit()
             # DNE - Insert
             else:
-                new_channelvalue = ChannelValues(channel=channel, key=key, value=float(value))
+                new_channelvalue = ChannelValues(channel=channel, namespace=namespace, key=key, value=float(value))
                 session.add(new_channelvalue)
                 session.commit()
         except SQLAlchemyError:
@@ -326,10 +317,9 @@ class SpiceDB(object):
         entries = json.dumps(entries, ensure_ascii=False)
         session = self.ssession()
         try:
-            # .filter(ChannelValues.namespace == namespace)\
-            key = namespace + "_" + key
             result = session.query(ChannelValues) \
                 .filter(ChannelValues.channel == channel)\
+                .filter(ChannelValues.namespace == namespace)\
                 .filter(ChannelValues.key == key) \
                 .one_or_none()
             # ChannelValue exists, update
@@ -354,7 +344,7 @@ class SpiceDB(object):
                     for entry in entries:
                         while entry in values:
                             values.remove(entry)
-                new_channelvalue = ChannelValues(channel=channel, key=key, value=values)
+                new_channelvalue = ChannelValues(channel=channel, namespace=namespace, key=key, value=values)
                 session.add(new_channelvalue)
                 session.commit()
         except SQLAlchemyError:
@@ -371,10 +361,9 @@ class SpiceDB(object):
         value = json.dumps(value, ensure_ascii=False)
         session = self.ssession()
         try:
-            # .filter(PluginValues.namespace == namespace)\
-            key = namespace + "_" + key
             result = session.query(PluginValues) \
                 .filter(PluginValues.plugin == plugin)\
+                .filter(PluginValues.namespace == namespace)\
                 .filter(PluginValues.key == key) \
                 .one_or_none()
             # PluginValues exists, update
@@ -383,7 +372,7 @@ class SpiceDB(object):
                 session.commit()
             # DNE - Insert
             else:
-                new_pluginvalue = PluginValues(plugin=plugin, key=key, value=value)
+                new_pluginvalue = PluginValues(plugin=plugin, namespace=namespace, key=key, value=value)
                 session.add(new_pluginvalue)
                 session.commit()
         except SQLAlchemyError:
@@ -397,10 +386,9 @@ class SpiceDB(object):
         plugin = Identifier(plugin).lower()
         session = self.ssession()
         try:
-            # .filter(PluginValues.namespace == namespace)\
-            key = namespace + "_" + key
             result = session.query(PluginValues) \
                 .filter(PluginValues.plugin == plugin)\
+                .filter(PluginValues.namespace == namespace)\
                 .filter(PluginValues.key == key) \
                 .one_or_none()
             if result is not None:
@@ -417,10 +405,9 @@ class SpiceDB(object):
         plugin = Identifier(plugin).lower()
         session = self.ssession()
         try:
-            # .filter(PluginValues.namespace == namespace)\
-            key = namespace + "_" + key
             result = session.query(PluginValues) \
                 .filter(PluginValues.plugin == plugin)\
+                .filter(PluginValues.namespace == namespace)\
                 .filter(PluginValues.key == key) \
                 .one_or_none()
             # PluginValues exists, delete
@@ -439,10 +426,9 @@ class SpiceDB(object):
         value = json.dumps(value, ensure_ascii=False)
         session = self.ssession()
         try:
-            # .filter(PluginValues.namespace == namespace)\
-            key = namespace + "_" + key
             result = session.query(PluginValues) \
                 .filter(PluginValues.plugin == plugin)\
+                .filter(PluginValues.namespace == namespace)\
                 .filter(PluginValues.key == key) \
                 .one_or_none()
             # ChannelValue exists, update
@@ -451,7 +437,7 @@ class SpiceDB(object):
                 session.commit()
             # DNE - Insert
             else:
-                new_pluginvalue = PluginValues(plugin=plugin, key=key, value=float(value))
+                new_pluginvalue = PluginValues(plugin=plugin, namespace=namespace, key=key, value=float(value))
                 session.add(new_pluginvalue)
                 session.commit()
         except SQLAlchemyError:
@@ -468,10 +454,9 @@ class SpiceDB(object):
         entries = json.dumps(entries, ensure_ascii=False)
         session = self.ssession()
         try:
-            # .filter(PluginValues.namespace == namespace)\
-            key = namespace + "_" + key
             result = session.query(PluginValues) \
                 .filter(PluginValues.plugin == plugin)\
+                .filter(PluginValues.namespace == namespace)\
                 .filter(PluginValues.key == key) \
                 .one_or_none()
             # ChannelValue exists, update
@@ -496,8 +481,7 @@ class SpiceDB(object):
                     for entry in entries:
                         while entry in values:
                             values.remove(entry)
-                new_pluginvalue = PluginValues(plugin=plugin, key=key, value=values)
-                # new_pluginvalue = PluginValues(plugin=plugin, namespace=namespace, key=key, value=values)
+                new_pluginvalue = PluginValues(plugin=plugin, namespace=namespace, key=key, value=values)
                 session.add(new_pluginvalue)
                 session.commit()
         except SQLAlchemyError:
