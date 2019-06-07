@@ -188,5 +188,8 @@ class BotUsers():
         if nick_id in self.offline:
             self.offline.remove(nick_id)
 
+    def mode(self, bot, trigger):
+        return
+
 
 users = BotUsers()

@@ -125,3 +125,10 @@ def channels_users_kick(bot, trigger):
 @sopel.module.rule('.*')
 def channels_users_nick(bot, trigger):
     SpiceBot.channels.nick(bot, trigger)
+
+
+@sopel.module.event('MODE')
+@sopel.module.rule('.*')
+def channels_users_mode(bot, trigger):
+    SpiceBot.channels.mode(bot, trigger)
+    # TODO

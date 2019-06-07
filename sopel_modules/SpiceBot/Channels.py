@@ -172,5 +172,8 @@ class BotChannels():
         # Verify nick is in the channel list
         self.add_to_channel(self, trigger.sender, trigger.nick, nick_id)
 
+    def mode(self, bot, trigger):
+        return
+
 
 channels = BotChannels()

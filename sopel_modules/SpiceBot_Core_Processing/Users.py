@@ -36,3 +36,10 @@ def users_kick(bot, trigger):
 @sopel.module.rule('.*')
 def users_nick(bot, trigger):
     SpiceBot.users.nick(bot, trigger)
+
+
+@sopel.module.event('MODE')
+@sopel.module.rule('.*')
+def users_mode(bot, trigger):
+    SpiceBot.users.mode(bot, trigger)
+    # TODO
