@@ -42,7 +42,7 @@ class BotUsers():
             nick_id = self.whois(nick)
         # add to current if not there
         if nick_id not in self.current.keys():
-            self.current[nick_id] = {"channels": []}
+            self.current[nick_id] = {"channels": [], "nick": nick}
 
     def join(self, bot, trigger):
         # bot block
@@ -54,6 +54,8 @@ class BotUsers():
                 self.add_to_all(user, nick_id)
                 # Verify nick is in the all list
                 self.add_to_current(user, nick_id)
+                # set current nick
+                self.current[nick_id]["nick"] = user
                 # add joined channel to nick list
                 if trigger.sender not in self.current[nick_id]["channels"]:
                     self.current[nick_id]["channels"].append(trigger.sender)
@@ -69,6 +71,8 @@ class BotUsers():
         self.add_to_all(trigger.nick, nick_id)
         # Verify nick is in the all list
         self.add_to_current(trigger.nick, nick_id)
+        # set current nick
+        self.current[nick_id]["nick"] = trigger.nick
         # add joined channel to nick list
         if trigger.sender not in self.current[nick_id]["channels"]:
             self.current[nick_id]["channels"].append(trigger.sender)
@@ -167,6 +171,8 @@ class BotUsers():
         self.add_to_all(newnick, nick_id)
         # Verify nick is in the all list
         self.add_to_current(newnick, nick_id)
+        # set current nick
+        self.current[nick_id]["nick"] = newnick
         # add joined channel to nick list
         if trigger.sender not in self.current[nick_id]["channels"]:
             self.current[nick_id]["channels"].append(trigger.sender)
