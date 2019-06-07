@@ -19,6 +19,12 @@ class BotUsers():
         self.current = {}
 
     def whois(self, nick):
+        nick_id = self.whois_id(nick)
+        self.add_to_all(nick, nick_id)
+        self.add_to_current(nick, nick_id)
+        return self.current[nick_id]["nick"]
+
+    def whois_id(self, nick):
         nick = Identifier(nick)
         nick_id = botdb.db.get_nick_id(nick, create=True)
         return nick_id
@@ -28,7 +34,7 @@ class BotUsers():
 
     def add_to_all(self, nick, nick_id=None):
         if not nick_id:
-            nick_id = self.whois(nick)
+            nick_id = self.whois_id(nick)
         # add to all if not there
         if nick_id not in self.all.keys():
             self.all[nick_id] = []
@@ -39,7 +45,7 @@ class BotUsers():
 
     def add_to_current(self, nick, nick_id=None):
         if not nick_id:
-            nick_id = self.whois(nick)
+            nick_id = self.whois_id(nick)
         # add to current if not there
         if nick_id not in self.current.keys():
             self.current[nick_id] = {"channels": [], "nick": nick}
@@ -49,7 +55,7 @@ class BotUsers():
         if trigger.nick == bot.nick:
             for user in bot.channels[trigger.sender].privileges.keys():
                 # Identify
-                nick_id = self.whois(user)
+                nick_id = self.whois_id(user)
                 # Verify nick is in the all list
                 self.add_to_all(user, nick_id)
                 # Verify nick is in the all list
@@ -66,7 +72,7 @@ class BotUsers():
                     self.offline.remove(nick_id)
             return
         # Identify
-        nick_id = self.whois(trigger.nick)
+        nick_id = self.whois_id(trigger.nick)
         # Verify nick is in the all list
         self.add_to_all(trigger.nick, nick_id)
         # Verify nick is in the all list
@@ -87,7 +93,7 @@ class BotUsers():
         if trigger.nick == bot.nick:
             return
         # Identify
-        nick_id = self.whois(trigger.nick)
+        nick_id = self.whois_id(trigger.nick)
         # Verify nick is in the all list
         self.add_to_all(trigger.nick, nick_id)
         # Verify nick is in the all list
@@ -115,7 +121,7 @@ class BotUsers():
                     self.offline.append(nick_id)
             return
         # Identify
-        nick_id = self.whois(trigger.nick)
+        nick_id = self.whois_id(trigger.nick)
         # Verify nick is in the all list
         self.add_to_all(trigger.nick, nick_id)
         # Verify nick is in the all list
@@ -143,7 +149,7 @@ class BotUsers():
                     self.offline.append(nick_id)
             return
         # Identify
-        nick_id = self.whois(targetnick)
+        nick_id = self.whois_id(targetnick)
         # Verify nick is in the all list
         self.add_to_all(targetnick, nick_id)
         # Verify nick is in the all list
@@ -166,7 +172,7 @@ class BotUsers():
         if not botdb.check_nick_id(newnick):
             botdb.alias_nick(trigger.nick, newnick)
         # Identify
-        nick_id = self.whois(newnick)
+        nick_id = self.whois_id(newnick)
         # Verify nick is in the all list
         self.add_to_all(newnick, nick_id)
         # Verify nick is in the all list

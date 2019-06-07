@@ -97,20 +97,20 @@ class BotChannels():
                 else:
                     bot.part(channel)
 
-    def whois(self, nick):
+    def whois_id(self, nick):
         nick = Identifier(nick)
         nick_id = botdb.db.get_nick_id(nick, create=True)
         return nick_id
 
     def add_to_channel(self, channel, nick, nick_id=None):
         if not nick_id:
-            nick_id = self.whois(nick)
+            nick_id = self.whois_id(nick)
         if nick_id not in self.dict['list'][channel.lower()]['users']:
             self.dict['list'][channel.lower()]['users'].append(nick_id)
 
     def remove_from_channel(self, channel, nick, nick_id=None):
         if not nick_id:
-            nick_id = self.whois(nick)
+            nick_id = self.whois_id(nick)
         if nick_id in self.dict['list'][channel.lower()]['users']:
             self.dict['list'][channel.lower()]['users'].remove(nick_id)
 
@@ -124,7 +124,7 @@ class BotChannels():
                 self.add_to_channel(self, trigger.sender, user)
             return
         # Identify
-        nick_id = self.whois(trigger.nick)
+        nick_id = self.whois_id(trigger.nick)
         # Verify nick is in the channel list
         self.add_to_channel(self, trigger.sender, trigger.nick, nick_id)
 
@@ -134,7 +134,7 @@ class BotChannels():
             self.remove_all_from_channel(trigger.sender)
             return
         # Identify
-        nick_id = self.whois(trigger.nick)
+        nick_id = self.whois_id(trigger.nick)
         # Verify nick is not in the channel list
         self.remove_from_channel(self, trigger.sender, trigger.nick, nick_id)
 
@@ -144,7 +144,7 @@ class BotChannels():
             self.remove_all_from_channel(trigger.sender)
             return
         # Identify
-        nick_id = self.whois(trigger.nick)
+        nick_id = self.whois_id(trigger.nick)
         # Verify nick is not in the channel list
         self.remove_from_channel(self, trigger.sender, trigger.nick, nick_id)
 
@@ -155,7 +155,7 @@ class BotChannels():
             self.remove_all_from_channel(trigger.sender)
             return
         # Identify
-        nick_id = self.whois(targetnick)
+        nick_id = self.whois_id(targetnick)
         # Verify nick is not in the channel list
         self.remove_from_channel(self, trigger.sender, targetnick, nick_id)
 
@@ -168,7 +168,7 @@ class BotChannels():
         if not botdb.check_nick_id(newnick):
             botdb.alias_nick(trigger.nick, newnick)
         # Identify
-        nick_id = self.whois(newnick)
+        nick_id = self.whois_id(newnick)
         # Verify nick is in the channel list
         self.add_to_channel(self, trigger.sender, trigger.nick, nick_id)
 
