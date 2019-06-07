@@ -25,7 +25,7 @@ class NickIDs(BASE):
     """
     NickIDs SQLAlchemy Class
     """
-    __tablename__ = 'nick_ids'
+    __tablename__ = 'spice_nick_ids'
     nick_id = Column(Integer, primary_key=True)
 
 
@@ -34,7 +34,7 @@ class Nicknames(BASE):
     Nicknames SQLAlchemy Class
     """
     __tablename__ = 'nicknames'
-    nick_id = Column(Integer, ForeignKey('nick_ids.nick_id'), primary_key=True)
+    nick_id = Column(Integer, ForeignKey('spice_nick_ids.nick_id'), primary_key=True)
     slug = Column(String(255), primary_key=True)
     canonical = Column(String(255))
 
@@ -44,7 +44,7 @@ class NickValues(BASE):
     NickValues SQLAlchemy Class
     """
     __tablename__ = 'spice_nick_values'
-    nick_id = Column(Integer, ForeignKey('nick_ids.nick_id'), primary_key=True)
+    nick_id = Column(Integer, ForeignKey('spice_nick_ids.nick_id'), primary_key=True)
     namespace = Column(String(255), primary_key=True)
     key = Column(String(255), primary_key=True)
     value = Column(Text())
