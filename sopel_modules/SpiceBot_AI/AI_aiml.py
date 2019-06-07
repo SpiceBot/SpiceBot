@@ -26,6 +26,7 @@ def bot_command_rule(bot, trigger):
 
     # ignore text coming from a valid prefix
     if str(message).startswith(tuple(bot.config.core.prefix_list)):
+        return
         trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'module')
         # patch for people typing "...", maybe other stuff, but this verifies that there is still a command here
         if trigger_command.startswith("."):
@@ -48,6 +49,7 @@ def bot_command_rule(bot, trigger):
     if str(message).lower().startswith(str(bot.nick).lower()):
         command_type = 'nickname'
         trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'nickname')
+        trigger_args.insert(0, trigger_command)
         fulltrigger = spicemanip.main(trigger_args, 0)
         if str(trigger_command).startswith("?"):
             return
@@ -56,8 +58,9 @@ def bot_command_rule(bot, trigger):
         if trigger_command in SpiceBot.commands.dict['commands']["nickname"].keys():
             return
     else:
-        command_type = 'module'
-        trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'module')
+        command_type = 'other'
+        trigger_args = spicemanip.main(message, 'create')
+        trigger_command = trigger_args[0]
         fulltrigger = spicemanip.main(trigger_args, 0)
 
     returnmessage = SpiceBot.botai.on_message(bot, trigger, message)
@@ -66,7 +69,8 @@ def bot_command_rule(bot, trigger):
     else:
         if command_type == 'nickname':
 
-            if trigger_args[0].lower() in ["what", "where"] and trigger_args[0].lower() in ["is", "are"]:
+            if trigger_args[0].lower() in ["what", "where"] and trigger_args[1].lower() in ["is", "are"]:
+                # TODO saved definitions
                 searchterm = spicemanip.main(trigger_args, "3+") or None
                 if searchterm:
                     if trigger_args[0].lower() == "where":

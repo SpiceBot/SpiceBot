@@ -6,6 +6,7 @@ These are the core SpiceBot Classes
 This module contains references only for other modules to utilize.
 """
 
+from .CommandsQuery import *
 from .Commands import *
 from .Channels import *
 from .Database import *
