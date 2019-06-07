@@ -105,16 +105,28 @@ class BotChannels():
     def add_to_channel(self, channel, nick, nick_id=None):
         if not nick_id:
             nick_id = self.whois_id(nick)
+        if channel.lower() not in self.dict['list'].keys():
+            self.dict['list'][channel.lower()] = dict()
+        if 'users' not in self.dict['list'][channel.lower()]:
+            self.dict['list'][channel.lower()]['users'] = []
         if nick_id not in self.dict['list'][channel.lower()]['users']:
             self.dict['list'][channel.lower()]['users'].append(nick_id)
 
     def remove_from_channel(self, channel, nick, nick_id=None):
         if not nick_id:
             nick_id = self.whois_id(nick)
+        if channel.lower() not in self.dict['list'].keys():
+            self.dict['list'][channel.lower()] = dict()
+        if 'users' not in self.dict['list'][channel.lower()]:
+            self.dict['list'][channel.lower()]['users'] = []
         if nick_id in self.dict['list'][channel.lower()]['users']:
             self.dict['list'][channel.lower()]['users'].remove(nick_id)
 
     def remove_all_from_channel(self, channel):
+        if channel.lower() not in self.dict['list'].keys():
+            self.dict['list'][channel.lower()] = dict()
+        if 'users' not in self.dict['list'][channel.lower()]:
+            self.dict['list'][channel.lower()]['users'] = []
         self.dict['list'][channel.lower()]['users'] = []
 
     def join(self, bot, trigger):
