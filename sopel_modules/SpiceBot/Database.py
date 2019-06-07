@@ -496,6 +496,8 @@ class BotDatabase():
 
     def __init__(self):
 
+        sopel.db.NickIDs = NickIDs
+        sopel.db.Nicknames = Nicknames
         sopel.db.NickValues = NickValues
         SopelDB.get_nick_value = SpiceDB.get_nick_value
         SopelDB.set_nick_value = SpiceDB.set_nick_value
