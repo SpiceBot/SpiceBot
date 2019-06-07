@@ -87,22 +87,3 @@ def bot_command_nick(bot, trigger):
         else:
             bot.osd("I'm afraid you do not have the authority to make that call, " + trigger.nick + ".")
         return
-
-    elif fulltrigger.lower().startswith("can you see"):
-        target = spicemanip.main(trigger.sb['args'], "4+") or None
-        if not target:
-            bot.osd(trigger.nick + ", I can see clearly.")
-            return
-        if target in [trigger.nick, 'me']:
-            bot.osd(trigger.nick + ", I can see you.")
-        else:
-            if SpiceBot.inlist(trigger.nick, bot.users):
-                bot.osd(trigger.nick + ", yes. I can see " + SpiceBot.inlist_match(target, bot.users) + " right now!")
-            else:
-                bot.osd(trigger.nick + ", no. I cannot see " + SpiceBot.inlist_match(target, bot.users) + " right now!")
-                # if bot_check_inlist(target, bot.memory["botdict"]["users"].keys()):
-                #    bot.osd(trigger.nick + ", I can't see " + inlist_match(target, bot.users) + " at the moment.")
-                # else:
-                #    bot.osd("I have never seen " + str(target) + ".")
-                # TODO
-        return

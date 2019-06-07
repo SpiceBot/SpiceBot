@@ -8,6 +8,7 @@ This module contains references only for other modules to utilize.
 
 from .CommandsQuery import *
 from .Commands import *
+from .Users import *
 from .Channels import *
 from .Database import *
 from .Uptime import *
