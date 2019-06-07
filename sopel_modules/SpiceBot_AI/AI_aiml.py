@@ -69,9 +69,8 @@ def bot_command_rule(bot, trigger):
     else:
         if command_type == 'nickname':
 
-            if trigger_args[0].lower() in ["what", "where"] and trigger_args[0].lower() in ["is", "are"]:
+            if trigger_args[0].lower() in ["what", "where"] and trigger_args[1].lower() in ["is", "are"]:
                 searchterm = spicemanip.main(trigger_args, "3+") or None
-                bot.say(str(searchterm))
                 if searchterm:
                     if trigger_args[0].lower() == "where":
                         searchreturn = SpiceBot.googlesearch(searchterm, 'maps')
