@@ -21,7 +21,6 @@ def nickname_comand_commands(bot, trigger):
         commandused = 'list'
     else:
         commandused = spicemanip.main(trigger.sb['args'], 1).lower()
-    bot.say(str(commandused))
 
     commands_list = []
     for commandstype in SpiceBot.commands.dict['commands'].keys():
@@ -38,9 +37,9 @@ def nickname_comand_commands(bot, trigger):
         return
 
     elif commandused == 'total':
-        bot.osd("I have " + str(len(commands_list)) + " commands available.")
+        bot.osd("I have " + str(len(commands_list.keys())) + " commands available.")
         return
 
     elif commandused == 'random':
-        bot.osd(["Here's a random command for you:", + spicemanip.main(commands_list, 'random')])
+        bot.osd(["Here's a random command for you:", + spicemanip.main(commands_list.keys(), 'random')])
         return
