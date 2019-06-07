@@ -35,6 +35,17 @@ github_dict = {
                 "repo_name": "SpiceBot",
                 }
 
+mode_dict_alias = {
+                    "+o": "OP", "-o": "deOP",
+                    "+v": "VOICE", "-v": "deVOICE",
+                    "+h": "HOP", "-h": "deHOP",
+                    "+a": "ADMIN", "-a": "deADMIN",
+                    "+q": "OWNER", "-q": "deOWNER",
+                    "+b": "BAN", "-b": "unBAN",
+                    "+c": "noCOLOR", "-c": "COLOR",
+                    #  TODO add more user/channel modes
+                    }
+
 
 """Sopel Wrapping Tools"""
 
