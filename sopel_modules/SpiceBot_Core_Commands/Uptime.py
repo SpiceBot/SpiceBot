@@ -10,6 +10,6 @@ import sopel_modules.SpiceBot as SpiceBot
 
 
 @sopel.module.nickname_commands('uptime')
-def bot_command_srewyou(bot, trigger):
+def bot_command_uptime(bot, trigger):
     timesince = str(SpiceBot.humanized_time(time.time() - SpiceBot.events.BOT_UPTIME)) + " ago."
     bot.osd("I have been running since " + timesince)
