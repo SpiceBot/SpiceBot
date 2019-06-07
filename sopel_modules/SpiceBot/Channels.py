@@ -129,6 +129,11 @@ class BotChannels():
             self.dict['list'][channel.lower()]['users'] = []
         self.dict['list'][channel.lower()]['users'] = []
 
+    def channel_scan(self, bot):
+        for channel in bot.channels.keys():
+            for user in bot.channels[channel].privileges.keys():
+                self.add_to_channel(channel, user)
+
     def join(self, bot, trigger):
         # bot block
         if trigger.nick == bot.nick:

@@ -43,3 +43,10 @@ def users_nick(bot, trigger):
 def users_mode(bot, trigger):
     SpiceBot.users.mode(bot, trigger)
     # TODO
+
+
+@sopel.module.event(SpiceBot.events.BOT_CONNECTED)
+@sopel.module.rule('.*')
+def bot_channelscan_users(bot, trigger):
+    while True:
+        SpiceBot.users.channel_scan(bot)

@@ -50,8 +50,27 @@ class BotUsers():
         if nick_id not in self.current.keys():
             self.current[nick_id] = {"channels": [], "nick": nick}
 
+    def channel_scan(self, bot):
+        for channel in bot.channels.keys():
+            for user in bot.channels[channel].privileges.keys():
+                # Identify
+                nick_id = self.whois_id(user)
+                # Verify nick is in the all list
+                self.add_to_all(user, nick_id)
+                # Verify nick is in the all list
+                self.add_to_current(user, nick_id)
+                # set current nick
+                self.current[nick_id]["nick"] = user
+                # add joined channel to nick list
+                if channel not in self.current[nick_id]["channels"]:
+                    self.current[nick_id]["channels"].append(channel)
+                # mark user as online
+                if nick_id not in self.online:
+                    self.online.append(nick_id)
+                if nick_id in self.offline:
+                    self.offline.remove(nick_id)
+
     def join(self, bot, trigger):
-        # bot block
         if trigger.nick == bot.nick:
             for user in bot.channels[trigger.sender].privileges.keys():
                 # Identify
@@ -89,7 +108,6 @@ class BotUsers():
             self.offline.remove(nick_id)
 
     def quit(self, bot, trigger):
-        # bot block
         if trigger.nick == bot.nick:
             return
         # Identify
@@ -109,7 +127,6 @@ class BotUsers():
             self.offline.append(nick_id)
 
     def part(self, bot, trigger):
-        # bot block
         if trigger.nick == bot.nick:
             for nick_id in self.current.keys():
                 if trigger.sender in self.current[nick_id]["channels"]:
@@ -137,7 +154,6 @@ class BotUsers():
 
     def kick(self, bot, trigger):
         targetnick = Identifier(str(trigger.args[1]))
-        # bot block
         if targetnick == bot.nick:
             for nick_id in self.current.keys():
                 if trigger.sender in self.current[nick_id]["channels"]:
@@ -165,7 +181,6 @@ class BotUsers():
 
     def nick(self, bot, trigger):
         newnick = Identifier(trigger)
-        # bot block
         if trigger.nick == bot.nick or newnick == bot.nick:
             return
         # alias the nick
