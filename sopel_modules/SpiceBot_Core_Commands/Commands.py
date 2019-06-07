@@ -21,6 +21,7 @@ def nickname_comand_channels(bot, trigger):
         commandused = 'list'
     else:
         commandused = spicemanip.main(trigger.sb['args'], 1).lower()
+    bot.say(str(commandused))
 
     commands_list = []
     for commandstype in SpiceBot.commands.dict['commands'].keys():

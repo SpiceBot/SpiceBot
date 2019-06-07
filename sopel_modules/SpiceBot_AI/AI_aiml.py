@@ -70,6 +70,7 @@ def bot_command_rule(bot, trigger):
         if command_type == 'nickname':
 
             if trigger_args[0].lower() in ["what", "where"] and trigger_args[1].lower() in ["is", "are"]:
+                # TODO saved definitions
                 searchterm = spicemanip.main(trigger_args, "3+") or None
                 if searchterm:
                     if trigger_args[0].lower() == "where":
