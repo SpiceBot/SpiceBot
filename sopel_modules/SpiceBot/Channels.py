@@ -121,12 +121,12 @@ class BotChannels():
         # bot block
         if trigger.nick == bot.nick:
             for user in bot.channels[trigger.sender].privileges.keys():
-                self.add_to_channel(self, trigger.sender, user)
+                self.add_to_channel(trigger.sender, user)
             return
         # Identify
         nick_id = self.whois_id(trigger.nick)
         # Verify nick is in the channel list
-        self.add_to_channel(self, trigger.sender, trigger.nick, nick_id)
+        self.add_to_channel(trigger.sender, trigger.nick, nick_id)
 
     def quit(self, bot, trigger):
         # bot block
@@ -136,7 +136,7 @@ class BotChannels():
         # Identify
         nick_id = self.whois_id(trigger.nick)
         # Verify nick is not in the channel list
-        self.remove_from_channel(self, trigger.sender, trigger.nick, nick_id)
+        self.remove_from_channel(trigger.sender, trigger.nick, nick_id)
 
     def part(self, bot, trigger):
         # bot block
@@ -146,7 +146,7 @@ class BotChannels():
         # Identify
         nick_id = self.whois_id(trigger.nick)
         # Verify nick is not in the channel list
-        self.remove_from_channel(self, trigger.sender, trigger.nick, nick_id)
+        self.remove_from_channel(trigger.sender, trigger.nick, nick_id)
 
     def kick(self, bot, trigger):
         targetnick = Identifier(str(trigger.args[1]))
@@ -157,7 +157,7 @@ class BotChannels():
         # Identify
         nick_id = self.whois_id(targetnick)
         # Verify nick is not in the channel list
-        self.remove_from_channel(self, trigger.sender, targetnick, nick_id)
+        self.remove_from_channel(trigger.sender, targetnick, nick_id)
 
     def nick(self, bot, trigger):
         newnick = Identifier(trigger)
@@ -170,7 +170,7 @@ class BotChannels():
         # Identify
         nick_id = self.whois_id(newnick)
         # Verify nick is in the channel list
-        self.add_to_channel(self, trigger.sender, trigger.nick, nick_id)
+        self.add_to_channel(trigger.sender, trigger.nick, nick_id)
 
     def mode(self, bot, trigger):
         return
