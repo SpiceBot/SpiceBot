@@ -525,6 +525,16 @@ class BotDatabase():
     def get_nick_id(self, nick, create=True):
         return self.db.get_nick_id(nick, create)
 
+    def alias_nick(self, nick, alias):
+        return self.alias_nick(nick, alias)
+
+    def check_nick_id(self, nick):
+        try:
+            self.db.get_nick_id(nick, create=False)
+            return True
+        except ValueError:
+            return False
+
     def get_nick_value(self, nick, key, namespace='default'):
         return self.db.get_nick_value(nick, key, namespace)
 

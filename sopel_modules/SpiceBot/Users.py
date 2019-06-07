@@ -5,15 +5,18 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 from sopel.tools import Identifier
 
 from .Database import db as botdb
-from .Tools import inlist, inlist_match
 
 
 class BotUsers():
 
     def __init__(self):
-        self.all = botdb.get_bot_value('users') or []
+        # TODO timestamp for new .seen
+        self.all = botdb.get_bot_value('users') or dict()
         self.online = []
-        self.save_user_db()
+        self.offline = []
+        for user_id in self.all.keys():
+            self.offline.append(user_id)
+        self.current = {}
 
     def whois(self, nick):
         nick = Identifier(nick)
@@ -23,14 +26,57 @@ class BotUsers():
     def save_user_db(self):
         botdb.set_bot_value('users', self.all)
 
+    def add_to_all(self, nick, nick_id=None):
+        if not nick_id:
+            nick_id = self.whois(nick)
+        # add to all if not there
+        if nick_id not in self.all.keys():
+            self.all[nick_id] = []
+        # add nick alias
+        if nick not in self.all[nick_id]:
+            self.all[nick_id].append(nick)
+        self.save_user_db()
+
+    def add_to_current(self, nick, nick_id=None):
+        if not nick_id:
+            nick_id = self.whois(nick)
+        # add to current if not there
+        if nick_id not in self.current.keys():
+            self.current[nick_id] = {"channels": []}
+
     def join(self, bot, trigger):
         # bot block
         if trigger.nick == bot.nick:
+            for user in bot.channels[trigger.sender].privileges.keys():
+                # Identify
+                nick_id = self.whois(user)
+                # Verify nick is in the all list
+                self.add_to_all(user, nick_id)
+                # Verify nick is in the all list
+                self.add_to_current(user, nick_id)
+                # add joined channel to nick list
+                if trigger.sender not in self.current[nick_id]["channels"]:
+                    self.current[nick_id]["channels"].append(trigger.sender)
+                # mark user as online
+                if nick_id not in self.online:
+                    self.online.append(nick_id)
+                if nick_id in self.offline:
+                    self.offline.remove(nick_id)
             return
         # Identify
         nick_id = self.whois(trigger.nick)
-        # mark online
-        self.mark_online(trigger.nick, nick_id)
+        # Verify nick is in the all list
+        self.add_to_all(trigger.nick, nick_id)
+        # Verify nick is in the all list
+        self.add_to_current(trigger.nick, nick_id)
+        # add joined channel to nick list
+        if trigger.sender not in self.current[nick_id]["channels"]:
+            self.current[nick_id]["channels"].append(trigger.sender)
+        # mark user as online
+        if nick_id not in self.online:
+            self.online.append(nick_id)
+        if nick_id in self.offline:
+            self.offline.remove(nick_id)
 
     def quit(self, bot, trigger):
         # bot block
@@ -38,70 +84,97 @@ class BotUsers():
             return
         # Identify
         nick_id = self.whois(trigger.nick)
-        # mark offline
-        self.mark_offline(trigger.nick, nick_id)
+        # Verify nick is in the all list
+        self.add_to_all(trigger.nick, nick_id)
+        # Verify nick is in the all list
+        self.add_to_current(trigger.nick, nick_id)
+        # empty nicks channel list
+        if trigger.sender in self.current[nick_id]["channels"]:
+            self.current[nick_id]["channels"].remove(trigger.sender)
+        self.current[nick_id]["channels"] = []
+        # mark user as offline
+        if nick_id in self.online:
+            self.online.remove(nick_id)
+        if nick_id not in self.offline:
+            self.offline.append(nick_id)
 
     def part(self, bot, trigger):
         # bot block
         if trigger.nick == bot.nick:
+            for nick_id in self.current.keys():
+                if trigger.sender in self.current[nick_id]["channels"]:
+                    self.current[nick_id]["channels"].remove(trigger.sender)
+                # mark offline
+                if not len(self.current[nick_id]["channels"]) and nick_id in self.online:
+                    self.online.remove(nick_id)
+                if not len(self.current[nick_id]["channels"]) and nick_id not in self.offline:
+                    self.offline.append(nick_id)
             return
         # Identify
         nick_id = self.whois(trigger.nick)
+        # Verify nick is in the all list
+        self.add_to_all(trigger.nick, nick_id)
+        # Verify nick is in the all list
+        self.add_to_current(trigger.nick, nick_id)
+        # remove channel from nick list
+        if trigger.sender in self.current[nick_id]["channels"]:
+            self.current[nick_id]["channels"].remove(trigger.sender)
         # mark offline
-        if trigger.nick not in bot.users:
-            self.mark_offline(trigger.nick, nick_id)
+        if not len(self.current[nick_id]["channels"]) and nick_id in self.online:
+            self.online.remove(nick_id)
+        if not len(self.current[nick_id]["channels"]) and nick_id not in self.offline:
+            self.offline.append(nick_id)
 
     def kick(self, bot, trigger):
-        target = str(trigger.args[1])
+        targetnick = Identifier(str(trigger.args[1]))
         # bot block
-        if target == bot.nick:
+        if targetnick == bot.nick:
+            for nick_id in self.current.keys():
+                if trigger.sender in self.current[nick_id]["channels"]:
+                    self.current[nick_id]["channels"].remove(trigger.sender)
+                # mark offline
+                if not len(self.current[nick_id]["channels"]) and nick_id in self.online:
+                    self.online.remove(nick_id)
+                if not len(self.current[nick_id]["channels"]) and nick_id not in self.offline:
+                    self.offline.append(nick_id)
             return
         # Identify
-        nick_id = self.whois(target)
+        nick_id = self.whois(targetnick)
+        # Verify nick is in the all list
+        self.add_to_all(targetnick, nick_id)
+        # Verify nick is in the all list
+        self.add_to_current(targetnick, nick_id)
+        # remove channel from nick list
+        if trigger.sender in self.current[nick_id]["channels"]:
+            self.current[nick_id]["channels"].remove(trigger.sender)
         # mark offline
-        if target not in bot.users:
-            self.mark_offline(target, nick_id)
+        if not len(self.current[nick_id]["channels"]) and nick_id in self.online:
+            self.online.remove(nick_id)
+        if not len(self.current[nick_id]["channels"]) and nick_id not in self.offline:
+            self.offline.append(nick_id)
 
-    def add_to_all(self, nick, nick_id=None):
-        if not nick_id:
-            nick_id = self.whois(nick)
-        # add to all if not there
-        if nick_id not in self.all.keys():
-            self.all[nick_id] = {"aliases": []}
-        # add nick alias
-        if nick not in self.all[nick_id]:
-            self.all[nick_id]["aliases"].append(nick)
-
-    def mark_online(self, nick, nick_id=None):
-        if not nick_id:
-            nick_id = self.whois(nick)
-        self.add_to_all(nick, nick_id)
+    def nick(self, bot, trigger):
+        newnick = Identifier(trigger)
+        # bot block
+        if trigger.nick == bot.nick or newnick == bot.nick:
+            return
+        # alias the nick
+        if not botdb.check_nick_id(newnick):
+            botdb.alias_nick(trigger.nick, newnick)
+        # Identify
+        nick_id = self.whois(newnick)
+        # Verify nick is in the all list
+        self.add_to_all(newnick, nick_id)
+        # Verify nick is in the all list
+        self.add_to_current(newnick, nick_id)
+        # add joined channel to nick list
+        if trigger.sender not in self.current[nick_id]["channels"]:
+            self.current[nick_id]["channels"].append(trigger.sender)
+        # mark user as online
         if nick_id not in self.online:
             self.online.append(nick_id)
-
-    def mark_offline(self, nick, nick_id=None):
-        if not nick_id:
-            nick_id = self.whois(nick)
-        self.add_to_all(nick, nick_id)
-        if nick_id in self.online:
-            self.online.remove(nick_id)
-
-    def current(self, bot, reqchannel='all'):
-        user_list = []
-        if reqchannel == 'all':
-            for channel in bot.channels.keys():
-                for user in bot.channels[channel].privileges.keys():
-                    user_id = self.whois(user)
-                    user_list.append(user_id)
-            return user_list
-        elif not inlist(reqchannel, bot.channels.keys()):
-            return user_list
-        else:
-            channel = inlist_match(reqchannel, bot.channels.keys())
-            for user in bot.channels[channel].privileges.keys():
-                user_id = self.whois(user)
-                user_list.append(user_id)
-            return user_list
+        if nick_id in self.offline:
+            self.offline.remove(nick_id)
 
 
 users = BotUsers()

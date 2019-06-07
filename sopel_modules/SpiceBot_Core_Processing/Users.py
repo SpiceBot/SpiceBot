@@ -12,6 +12,7 @@ import sopel_modules.SpiceBot as SpiceBot
 @sopel.module.rule('.*')
 def users_join(bot, trigger):
     bot.say(str(trigger))
+    bot.say(str(trigger.nick))
     bot.say(str(trigger.args))
     # SpiceBot.users.join(bot, trigger)
 
@@ -20,6 +21,7 @@ def users_join(bot, trigger):
 @sopel.module.rule('.*')
 def users_quit(bot, trigger):
     bot.say(str(trigger))
+    bot.say(str(trigger.nick))
     bot.say(str(trigger.args))
     # SpiceBot.users.quit(bot, trigger)
 
@@ -28,6 +30,7 @@ def users_quit(bot, trigger):
 @sopel.module.rule('.*')
 def users_part(bot, trigger):
     bot.say(str(trigger))
+    bot.say(str(trigger.nick))
     bot.say(str(trigger.args))
     # SpiceBot.users.part(bot, trigger)
 
@@ -36,5 +39,15 @@ def users_part(bot, trigger):
 @sopel.module.rule('.*')
 def users_kick(bot, trigger):
     bot.say(str(trigger))
+    bot.say(str(trigger.nick))
     bot.say(str(trigger.args))
     # SpiceBot.users.kick(bot, trigger)
+
+
+@sopel.module.event('NICK')
+@sopel.module.rule('.*')
+def users_nick(bot, trigger):
+    bot.say(str(trigger))
+    bot.say(str(trigger.nick))
+    bot.say(str(trigger.args))
+    # SpiceBot.users.nick(bot, trigger)
