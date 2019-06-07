@@ -4,12 +4,14 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 This is the SpiceBot Channels system.
 """
 import sopel
+from sopel.tools import Identifier
 from sopel.config.types import StaticSection, ValidatedAttribute, ListAttribute
 
 import re
 import threading
 
 from .Config import config as botconfig
+from .Database import db as botdb
 
 
 class SpiceBot_Channels_MainSection(StaticSection):
@@ -94,6 +96,81 @@ class BotChannels():
                             bot.write(('SAMODE', channel, "+a", bot.nick))
                 else:
                     bot.part(channel)
+
+    def whois(self, nick):
+        nick = Identifier(nick)
+        nick_id = botdb.db.get_nick_id(nick, create=True)
+        return nick_id
+
+    def add_to_channel(self, channel, nick, nick_id=None):
+        if not nick_id:
+            nick_id = self.whois(nick)
+        if nick_id not in self.dict['list'][channel.lower()]['users']:
+            self.dict['list'][channel.lower()]['users'].append(nick_id)
+
+    def remove_from_channel(self, channel, nick, nick_id=None):
+        if not nick_id:
+            nick_id = self.whois(nick)
+        if nick_id in self.dict['list'][channel.lower()]['users']:
+            self.dict['list'][channel.lower()]['users'].remove(nick_id)
+
+    def remove_all_from_channel(self, channel):
+        self.dict['list'][channel.lower()]['users'] = []
+
+    def join(self, bot, trigger):
+        # bot block
+        if trigger.nick == bot.nick:
+            for user in bot.channels[trigger.sender].privileges.keys():
+                self.add_to_channel(self, trigger.sender, user)
+            return
+        # Identify
+        nick_id = self.whois(trigger.nick)
+        # Verify nick is in the channel list
+        self.add_to_channel(self, trigger.sender, trigger.nick, nick_id)
+
+    def quit(self, bot, trigger):
+        # bot block
+        if trigger.nick == bot.nick:
+            self.remove_all_from_channel(trigger.sender)
+            return
+        # Identify
+        nick_id = self.whois(trigger.nick)
+        # Verify nick is not in the channel list
+        self.remove_from_channel(self, trigger.sender, trigger.nick, nick_id)
+
+    def part(self, bot, trigger):
+        # bot block
+        if trigger.nick == bot.nick:
+            self.remove_all_from_channel(trigger.sender)
+            return
+        # Identify
+        nick_id = self.whois(trigger.nick)
+        # Verify nick is not in the channel list
+        self.remove_from_channel(self, trigger.sender, trigger.nick, nick_id)
+
+    def kick(self, bot, trigger):
+        targetnick = Identifier(str(trigger.args[1]))
+        # bot block
+        if targetnick == bot.nick:
+            self.remove_all_from_channel(trigger.sender)
+            return
+        # Identify
+        nick_id = self.whois(targetnick)
+        # Verify nick is not in the channel list
+        self.remove_from_channel(self, trigger.sender, targetnick, nick_id)
+
+    def nick(self, bot, trigger):
+        newnick = Identifier(trigger)
+        # bot block
+        if trigger.nick == bot.nick or newnick == bot.nick:
+            return
+        # alias the nick
+        if not botdb.check_nick_id(newnick):
+            botdb.alias_nick(trigger.nick, newnick)
+        # Identify
+        nick_id = self.whois(newnick)
+        # Verify nick is in the channel list
+        self.add_to_channel(self, trigger.sender, trigger.nick, nick_id)
 
 
 channels = BotChannels()

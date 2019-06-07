@@ -95,3 +95,33 @@ def trigger_channel_list_recurring(bot, trigger):
         if "*" in SpiceBot.channels.dict['list'].keys():
             del SpiceBot.channels.dict['list']["*"]
         SpiceBot.channels.bot_part_empty(bot)
+
+
+@sopel.module.event('JOIN')
+@sopel.module.rule('.*')
+def channels_users_join(bot, trigger):
+    SpiceBot.channels.join(bot, trigger)
+
+
+@sopel.module.event('QUIT')
+@sopel.module.rule('.*')
+def channels_users_quit(bot, trigger):
+    SpiceBot.channels.quit(bot, trigger)
+
+
+@sopel.module.event('PART')
+@sopel.module.rule('.*')
+def channels_users_part(bot, trigger):
+    SpiceBot.channels.part(bot, trigger)
+
+
+@sopel.module.event('KICK')
+@sopel.module.rule('.*')
+def channels_users_kick(bot, trigger):
+    SpiceBot.channels.kick(bot, trigger)
+
+
+@sopel.module.event('NICK')
+@sopel.module.rule('.*')
+def channels_users_nick(bot, trigger):
+    SpiceBot.channels.nick(bot, trigger)
