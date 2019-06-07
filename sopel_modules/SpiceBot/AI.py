@@ -14,6 +14,8 @@ import aiml
 from .Database import db as botdb
 from .Config import config as botconfig
 
+import spicemanip
+
 
 class SpiceBot_AI_MainSection(StaticSection):
     extra = ListAttribute('extra')
@@ -137,9 +139,6 @@ class SpiceBot_AI():
 
     def bot_message_precipher(self, bot, trigger, message):
 
-        # uppercase input
-        message = message.upper()
-
         # punctuation
         puct_dict = {"!": "exclamationmark", ".": "period", "?": "questionmark", ",": "comma"}
         for puctuation in puct_dict.keys():
@@ -147,10 +146,18 @@ class SpiceBot_AI():
 
         # bot items
         for botitem in ["nick"]:
-            message = message.replace(str(eval("bot." + botitem)).upper(), str("bot" + botitem).upper())
+            messagelist = spicemanip.main(message, "create")
+            for i in range(len(messagelist)):
+                if messagelist[i].upper() == str(eval("bot." + botitem)).upper():
+                    messagelist[i] = str("bot" + botitem).upper()
+            message = spicemanip.main(messagelist, 0)
 
         for triggeritem in ["nick", "sender"]:
-            message = message.replace(str(eval("trigger." + triggeritem)).upper(), str("trigger" + triggeritem).upper())
+            messagelist = spicemanip.main(message, "create")
+            for i in range(len(messagelist)):
+                if messagelist[i].upper() == str(eval("trigger." + botitem)).upper():
+                    messagelist[i] = str("trigger" + botitem).upper()
+            message = spicemanip.main(messagelist, 0)
 
         return message
 

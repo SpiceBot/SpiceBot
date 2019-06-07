@@ -52,10 +52,6 @@ def bot_command_nick(bot, trigger):
             bot.osd(trigger.nick + ", where would you like me to beam you?")
         return
 
-    elif fulltrigger.lower().startswith("beam me up"):
-        bot.osd("locks onto " + trigger.nick + "s coordinates and transports them to the transporter room.", 'action')
-        return
-
     elif fulltrigger.lower().endswith(tuple(["order 66"])):
 
         if fulltrigger.lower() == "execute order 66":
