@@ -31,16 +31,18 @@ class BotUsers():
         else:
             raise Exception('User dict does not contain a function or key ' + str(name.lower()))
 
-    def ID(self, nick):
-        if is_number(nick):
-            if nick in list(self.dict["current"].keys()):
-                return self.dict["current"][nick]["nick"]
-            elif nick in list(self.dict["all"].keys()) and len(self.dict["all"][nick]):
-                return self.dict["all"][nick][0]
+    def ID(self, nickinput):
+        if is_number(nickinput):
+            nick_id = nickinput
+            if nick_id in list(self.dict["current"].keys()):
+                nick = self.dict["current"][nick_id]["nick"]
+            elif nick_id in list(self.dict["all"].keys()) and len(self.dict["all"][nick_id]):
+                nick = self.dict["all"][nick_id][0]
             else:
-                raise Exception('ID ' + str(nick) + ' does not appear to be associated with a nick')
+                raise Exception('ID ' + str(nickinput) + ' does not appear to be associated with a nick')
+            return nick
         else:
-            nick_id = self.whois_ident(nick)
+            nick_id = self.whois_ident(nickinput)
             return nick_id
 
     def whois_ident(self, nick):
