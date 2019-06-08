@@ -22,4 +22,24 @@
       </template>
 </category>
 
+<category>
+  <pattern>BOTNICK you there</pattern>
+      <template>
+        <random>
+          <li>Need something, triggernick?</li>
+          <li>What's going on, triggernick?</li>
+        </random>
+      </template>
+</category>
+
+<category>
+  <pattern>you there BOTNICK</pattern>
+      <template>
+        <random>
+          <li>Need something, triggernick?</li>
+          <li>What's going on, triggernick?</li>
+        </random>
+      </template>
+</category>
+
 </aiml>

@@ -8,7 +8,7 @@ import sopel_modules.SpiceBot as SpiceBot
 
 
 @sopel.module.nickname_commands('help', 'docs', 'wiki')
-def bot_command_owners(bot, trigger):
+def bot_command_docs(bot, trigger):
     bot.osd(["IRC Modules Repository",
                                         str(SpiceBot.github_dict["url_main"] +
                                         SpiceBot.github_dict["repo_owner"] + "/" +

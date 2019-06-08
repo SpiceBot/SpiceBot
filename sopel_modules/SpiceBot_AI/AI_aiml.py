@@ -83,6 +83,28 @@ def bot_command_rule(bot, trigger):
                         bot.osd(str(searchreturn))
                 return
 
+            elif trigger_args[0].lower() in ["can"] and trigger_args[1].lower() in ["you"] and trigger_args[2].lower() in ["see"]:
+                target = spicemanip.main(trigger_args, "4+") or None
+                if target:
+                    if SpiceBot.inlist(trigger.nick, bot.users):
+                        realtarget = SpiceBot.inlist_match(target, bot.users)
+                        dispmsg = [trigger.nick + ", yes. I can see " + realtarget]
+                        targetchannels = []
+                        for channel in bot.channels.keys():
+                            if SpiceBot.inlist(trigger.nick, bot.channels[channel].privileges.keys()):
+                                targetchannels.append(channel)
+                        dispmsg.append(realtarget + " is in " + spicemanip.main(targetchannels, 'andlist'))
+                        bot.osd(dispmsg)
+                    else:
+                        bot.osd(trigger.nick + ", no. I cannot see " + target + " right now!")
+                        # if bot_check_inlist(target, bot.memory["botdict"]["users"].keys()):
+                        #    bot.osd(trigger.nick + ", I can't see " + inlist_match(target, bot.users) + " at the moment.")
+                        # else:
+                        #    bot.osd("I have never seen " + str(target) + ".")
+                        # user in bot.channels[channel].privileges.keys()
+                        # TODO
+                return
+
             closestmatches = SpiceBot.similar_list(trigger_command, SpiceBot.commands.dict['commands']["nickname"].keys(), 3, 'reverse')
             if len(closestmatches):
                 closestmatches = spicemanip.main(closestmatches, "andlist")

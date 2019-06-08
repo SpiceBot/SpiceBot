@@ -20,6 +20,7 @@ from .Commands import *
 from .Events import *
 from .StartupMonologue import *
 from .Channels import *
+from .Users import *
 from .AI import *
 
 

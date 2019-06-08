@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="1.0">
+
+
+<category>
+  <pattern>BOTNICK can you see me</pattern>
+  <template>triggernick, I can see you.</template>
+</category>
+
+<category>
+  <pattern>BOTNICK can you see</pattern>
+  <template>triggernick, I can see clearly.</template>
+</category>
+
+
+</aiml>
