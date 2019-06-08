@@ -25,7 +25,7 @@ class NickIDs(BASE):
     """
     NickIDs SQLAlchemy Class
     """
-    __tablename__ = 'nick_ids'
+    __tablename__ = 'spice_nick_ids'
     nick_id = Column(Integer, primary_key=True)
 
 
@@ -33,8 +33,8 @@ class Nicknames(BASE):
     """
     Nicknames SQLAlchemy Class
     """
-    __tablename__ = 'nicknames'
-    nick_id = Column(Integer, ForeignKey('nick_ids.nick_id'), primary_key=True)
+    __tablename__ = 'spice_nicknames'
+    nick_id = Column(Integer, ForeignKey('spice_nick_ids.nick_id'), primary_key=True)
     slug = Column(String(255), primary_key=True)
     canonical = Column(String(255))
 
@@ -44,7 +44,7 @@ class NickValues(BASE):
     NickValues SQLAlchemy Class
     """
     __tablename__ = 'spice_nick_values'
-    nick_id = Column(Integer, ForeignKey('nick_ids.nick_id'), primary_key=True)
+    nick_id = Column(Integer, ForeignKey('spice_nick_ids.nick_id'), primary_key=True)
     namespace = Column(String(255), primary_key=True)
     key = Column(String(255), primary_key=True)
     value = Column(Text())
@@ -496,6 +496,8 @@ class BotDatabase():
 
     def __init__(self):
 
+        sopel.db.NickIDs = NickIDs
+        sopel.db.Nicknames = Nicknames
         sopel.db.NickValues = NickValues
         SopelDB.get_nick_value = SpiceDB.get_nick_value
         SopelDB.set_nick_value = SpiceDB.set_nick_value
@@ -524,6 +526,16 @@ class BotDatabase():
 
     def get_nick_id(self, nick, create=True):
         return self.db.get_nick_id(nick, create)
+
+    def alias_nick(self, nick, alias):
+        return self.alias_nick(nick, alias)
+
+    def check_nick_id(self, nick):
+        try:
+            self.db.get_nick_id(nick, create=False)
+            return True
+        except ValueError:
+            return False
 
     def get_nick_value(self, nick, key, namespace='default'):
         return self.db.get_nick_value(nick, key, namespace)

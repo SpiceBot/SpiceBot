@@ -15,13 +15,12 @@ import sopel_modules.SpiceBot as SpiceBot
 @SpiceBot.events.check_ready([SpiceBot.events.BOT_COMMANDS])
 @SpiceBot.prerun.prerun('nickname')
 @sopel.module.nickname_commands('commands', 'command')
-def nickname_comand_channels(bot, trigger):
+def nickname_comand_commands(bot, trigger):
 
     if not len(trigger.sb['args']):
         commandused = 'list'
     else:
         commandused = spicemanip.main(trigger.sb['args'], 1).lower()
-    bot.say(str(commandused))
 
     commands_list = []
     for commandstype in SpiceBot.commands.dict['commands'].keys():
@@ -42,5 +41,5 @@ def nickname_comand_channels(bot, trigger):
         return
 
     elif commandused == 'random':
-        bot.osd(["Here's a random command for you:", + spicemanip.main(commands_list, 'random')])
+        bot.osd(["Here's a random command for you:", spicemanip.main(commands_list, 'random')])
         return
