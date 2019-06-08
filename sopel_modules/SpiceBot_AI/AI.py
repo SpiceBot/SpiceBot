@@ -20,7 +20,7 @@ def bot_command_nick(bot, trigger):
     if trigger.sb['com'][0] == "?":
         return
 
-    if trigger.sb['com'] in SpiceBot.commands.dict['commands']["nickname"].keys():
+    if trigger.sb['com'] in list(SpiceBot.commands.dict['commands']["nickname"].keys()):
         return
     trigger.sb['args'].insert(0, trigger.sb['com'])
 

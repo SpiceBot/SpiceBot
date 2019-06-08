@@ -14,10 +14,10 @@ def join_log_channel(bot, trigger):
 
     if SpiceBot.config.logging_channel:
         channel = bot.config.core.logging_channel
-        if channel not in bot.channels.keys():
+        if channel not in list(bot.channels.keys()):
             bot.write(('JOIN', bot.nick, channel))
-            if channel not in bot.channels.keys() and bot.config.SpiceBot_Channels.operadmin:
-                bot.write(('SAJOIN', bot.nick, channel))
+        if channel not in list(bot.channels.keys()) and bot.config.SpiceBot_Channels.operadmin:
+            bot.write(('SAJOIN', bot.nick, channel))
 
         while True:
             if len(SpiceBot.logs.dict["queue"]):

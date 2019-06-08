@@ -41,7 +41,7 @@ def bot_events_start(bot, trigger):
     SpiceBot.events.trigger(bot, SpiceBot.events.BOT_READY, "Ready To Process module setup procedures")
 
     """Here, we wait until we are in at least one channel"""
-    while not len(bot.channels.keys()) > 0:
+    while not len(list(bot.channels.keys())) > 0:
         pass
     SpiceBot.events.trigger(bot, SpiceBot.events.BOT_CONNECTED, "Bot Connected to IRC")
 

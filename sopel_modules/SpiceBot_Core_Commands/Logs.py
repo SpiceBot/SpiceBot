@@ -23,11 +23,11 @@ def bot_command_logs(bot, trigger):
 
     logtype = spicemanip.main(trigger.sb['args'], 1) or None
     if not logtype:
-        bot.osd("Current valid log(s) include: " + spicemanip.main(SpiceBot.logs.dict["list"].keys(), 'andlist'), trigger.sender, 'action')
+        bot.osd("Current valid log(s) include: " + spicemanip.main(list(SpiceBot.logs.dict["list"].keys()), 'andlist'), trigger.sender, 'action')
         return
 
-    if not SpiceBot.inlist(logtype, SpiceBot.logs.dict["list"].keys()):
-        closestmatches = SpiceBot.similar_list(logtype, SpiceBot.logs.dict["list"].keys(), 10, 'reverse')
+    if not SpiceBot.inlist(logtype, list(SpiceBot.logs.dict["list"].keys())):
+        closestmatches = SpiceBot.similar_list(logtype, list(SpiceBot.logs.dict["list"].keys()), 10, 'reverse')
         if not len(closestmatches):
             bot.osd("No valid logs match " + str(logtype) + ".", trigger.nick, 'notice')
         else:
@@ -35,7 +35,7 @@ def bot_command_logs(bot, trigger):
 
         return
 
-    logtype = SpiceBot.inlist_match(logtype, SpiceBot.logs.dict["list"].keys())
+    logtype = SpiceBot.inlist_match(logtype, list(SpiceBot.logs.dict["list"].keys()))
 
     logindex = SpiceBot.logs.get_logs(logtype)
 

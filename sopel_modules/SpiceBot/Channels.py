@@ -45,7 +45,7 @@ class BotChannels():
     def channel_list_recieve_input(self, trigger):
         self.lock.acquire()
         channel, _, topic = trigger.args[1:]
-        if channel.lower() not in self.dict['list'].keys():
+        if channel.lower() not in list(self.dict['list'].keys()):
             self.dict['list'][channel.lower()] = dict()
         self.dict['list'][channel.lower()]['name'] = channel
         self.dict['list'][channel.lower()]['topic'] = self.topic_compile(topic)
@@ -69,8 +69,8 @@ class BotChannels():
         ignorepartlist = []
         if bot.config.core.logging_channel:
             ignorepartlist.append(bot.config.core.logging_channel)
-        for channel in bot.channels.keys():
-            if len(bot.channels[channel].privileges.keys()) == 1 and channel not in ignorepartlist and channel.startswith("#"):
+        for channel in list(bot.channels.keys()):
+            if len(list(bot.channels[channel].privileges.keys())) == 1 and channel not in ignorepartlist and channel.startswith("#"):
                 bot.part(channel, "Leaving Empty Channel")
                 if channel.lower() in self.dict['list']:
                     self.lock.acquire()
@@ -79,16 +79,16 @@ class BotChannels():
 
     def join_all_channels(self, bot):
         if botconfig.SpiceBot_Channels.joinall:
-            for channel in self.dict['list'].keys():
+            for channel in list(self.dict['list'].keys()):
                 if channel.startswith("#"):
-                    if channel not in bot.channels.keys() and channel not in botconfig.SpiceBot_Channels.chanignore:
+                    if channel not in list(bot.channels.keys()) and channel not in botconfig.SpiceBot_Channels.chanignore:
                         bot.write(('JOIN', bot.nick, self.dict['list'][channel]['name']))
-                        if channel not in bot.channels.keys() and botconfig.SpiceBot_Channels.operadmin:
+                        if channel not in list(bot.channels.keys()) and botconfig.SpiceBot_Channels.operadmin:
                             bot.write(('SAJOIN', bot.nick, self.dict['list'][channel]['name']))
 
     def chanadmin_all_channels(self, bot):
         # Chan ADMIN +a
-        for channel in bot.channels.keys():
+        for channel in list(bot.channels.keys()):
             if channel.startswith("#"):
                 if channel not in botconfig.SpiceBot_Channels.chanignore:
                     if botconfig.SpiceBot_Channels.operadmin:
@@ -105,7 +105,7 @@ class BotChannels():
     def add_to_channel(self, channel, nick, nick_id=None):
         if not nick_id:
             nick_id = self.whois_ident(nick)
-        if channel.lower() not in self.dict['list'].keys():
+        if channel.lower() not in list(self.dict['list'].keys()):
             self.dict['list'][channel.lower()] = dict()
         if 'users' not in self.dict['list'][channel.lower()]:
             self.dict['list'][channel.lower()]['users'] = []
@@ -115,7 +115,7 @@ class BotChannels():
     def remove_from_channel(self, channel, nick, nick_id=None):
         if not nick_id:
             nick_id = self.whois_ident(nick)
-        if channel.lower() not in self.dict['list'].keys():
+        if channel.lower() not in list(self.dict['list'].keys()):
             self.dict['list'][channel.lower()] = dict()
         if 'users' not in self.dict['list'][channel.lower()]:
             self.dict['list'][channel.lower()]['users'] = []
@@ -123,21 +123,21 @@ class BotChannels():
             self.dict['list'][channel.lower()]['users'].remove(nick_id)
 
     def remove_all_from_channel(self, channel):
-        if channel.lower() not in self.dict['list'].keys():
+        if channel.lower() not in list(self.dict['list'].keys()):
             self.dict['list'][channel.lower()] = dict()
         if 'users' not in self.dict['list'][channel.lower()]:
             self.dict['list'][channel.lower()]['users'] = []
         self.dict['list'][channel.lower()]['users'] = []
 
     def channel_scan(self, bot):
-        for channel in bot.channels.keys():
-            for user in bot.channels[channel].privileges.keys():
+        for channel in list(bot.channels.keys()):
+            for user in list(bot.channels[channel].privileges.keys()):
                 self.add_to_channel(channel, user)
 
     def join(self, bot, trigger):
         # bot block
         if trigger.nick == bot.nick:
-            for user in bot.channels[trigger.sender].privileges.keys():
+            for user in list(bot.channels[trigger.sender].privileges.keys()):
                 self.add_to_channel(trigger.sender, user)
             return
         # Identify

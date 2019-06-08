@@ -30,7 +30,7 @@ def nickname_comand_update(bot, trigger):
 
     quitmessage = "Received command from " + trigger.nick + " to update from Github and restart"
     SpiceBot.logs.log('SpiceBot_Update', quitmessage)
-    bot.osd(quitmessage, bot.channels.keys())
+    bot.osd(quitmessage, list(bot.channels.keys()))
 
     if commandused == 'nodeps':
         SpiceBot.spicebot_update(False)
@@ -49,7 +49,7 @@ def nickname_comand_restart(bot, trigger):
 
     quitmessage = "Received command from " + trigger.nick + " to restart. Be Back Soon!"
     SpiceBot.logs.log('SpiceBot_Restart', quitmessage)
-    bot.osd(quitmessage, bot.channels.keys())
+    bot.osd(quitmessage, list(bot.channels.keys()))
 
     # service_manip(bot.nick, 'restart', 'SpiceBot_Restart')
     SpiceBot.spicebot_reload(bot, 'SpiceBot_Restart', quitmessage)

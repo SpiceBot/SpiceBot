@@ -32,9 +32,9 @@ def bot_command_rule(bot, trigger):
         if trigger_command.startswith("."):
             return
         commands_list = []
-        for commandstype in SpiceBot.commands.dict['commands'].keys():
+        for commandstype in list(SpiceBot.commands.dict['commands'].keys()):
             if commandstype not in ['rule', 'nickname']:
-                for com in SpiceBot.commands.dict['commands'][commandstype].keys():
+                for com in list(SpiceBot.commands.dict['commands'][commandstype].keys()):
                     if com not in commands_list:
                         commands_list.append(com)
         if trigger_command not in commands_list:
@@ -55,7 +55,7 @@ def bot_command_rule(bot, trigger):
             return
         if fulltrigger in SpiceBot.commands.dict['nickrules']:
             return
-        if trigger_command in SpiceBot.commands.dict['commands']["nickname"].keys():
+        if trigger_command in list(SpiceBot.commands.dict['commands']["nickname"].keys()):
             return
     else:
         command_type = 'other'
@@ -90,22 +90,22 @@ def bot_command_rule(bot, trigger):
                         realtarget = SpiceBot.inlist_match(target, bot.users)
                         dispmsg = [trigger.nick + ", yes. I can see " + realtarget]
                         targetchannels = []
-                        for channel in bot.channels.keys():
-                            if SpiceBot.inlist(trigger.nick, bot.channels[channel].privileges.keys()):
+                        for channel in list(bot.channels.keys()):
+                            if SpiceBot.inlist(trigger.nick, list(bot.channels[channel].privileges.keys())):
                                 targetchannels.append(channel)
                         dispmsg.append(realtarget + " is in " + spicemanip.main(targetchannels, 'andlist'))
                         bot.osd(dispmsg)
                     else:
                         bot.osd(trigger.nick + ", no. I cannot see " + target + " right now!")
-                        # if bot_check_inlist(target, bot.memory["botdict"]["users"].keys()):
+                        # if bot_check_inlist(target, list(bot.memory["botdict"]["users"].keys())):
                         #    bot.osd(trigger.nick + ", I can't see " + inlist_match(target, bot.users) + " at the moment.")
                         # else:
                         #    bot.osd("I have never seen " + str(target) + ".")
-                        # user in bot.channels[channel].privileges.keys()
+                        # user in list(bot.channels[channel].privileges.keys())
                         # TODO
                 return
 
-            closestmatches = SpiceBot.similar_list(trigger_command, SpiceBot.commands.dict['commands']["nickname"].keys(), 3, 'reverse')
+            closestmatches = SpiceBot.similar_list(trigger_command, list(SpiceBot.commands.dict['commands']["nickname"].keys()), 3, 'reverse')
             if len(closestmatches):
                 closestmatches = spicemanip.main(closestmatches, "andlist")
                 bot.osd("I don't know what you are asking me to do! Did you mean: " + str(closestmatches) + "?")

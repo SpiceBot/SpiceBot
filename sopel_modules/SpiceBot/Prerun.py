@@ -109,7 +109,7 @@ class BotPrerun():
         if not trigger.is_privmsg:
             commandused = trigger.sb["realcom"]
             disabled_list = botdb.get_channel_value(trigger.sender, 'commands_disabled') or {}
-            if commandused in disabled_list.keys():
+            if commandused in list(disabled_list.keys()):
                 reason = disabled_list[trigger.sb["realcom"]]["reason"]
                 timestamp = disabled_list[trigger.sb["realcom"]]["timestamp"]
                 bywhom = disabled_list[trigger.sb["realcom"]]["disabledby"]
