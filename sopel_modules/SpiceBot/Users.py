@@ -32,6 +32,12 @@ class BotUsers():
         else:
             return None
 
+    def whois_nick(self, nick):
+        nick_id = self.whois_ident(nick)
+        self.add_to_all(nick, nick_id)
+        self.add_to_current(nick, nick_id)
+        return nick_id
+
     def whois_ident(self, nick):
         nick = Identifier(nick)
         nick_id = botdb.db.get_nick_id(nick, create=True)
