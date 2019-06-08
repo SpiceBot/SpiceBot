@@ -15,7 +15,7 @@ class BotUsers():
         self.online = []
         self.offline = []
         for user_id in self.all.keys():
-            self.offline.append(user_id)
+            self.offline.append(int(user_id))
         self.current = {}
 
     def whois(self, nick):
@@ -27,7 +27,7 @@ class BotUsers():
     def whois_id(self, nick):
         nick = Identifier(nick)
         nick_id = botdb.db.get_nick_id(nick, create=True)
-        return nick_id
+        return int(nick_id)
 
     def save_user_db(self):
         botdb.set_bot_value('users', self.all)
