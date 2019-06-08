@@ -33,6 +33,14 @@ class BotChannels():
                     "InitialProcess": False
                     }
 
+    def __getattr__(self, name):
+        ''' will only get called for undefined attributes '''
+        """We will try to find a dict value, or return None"""
+        if name.lower() in list(self.dict.keys()):
+            return self.dict[str(name).lower()]
+        else:
+            raise Exception('Channel dict does not contain a function or key ' + str(name.lower()))
+
     def setup_channels(self):
         botconfig.define_section("SpiceBot_Channels", SpiceBot_Channels_MainSection, validate=False)
 
