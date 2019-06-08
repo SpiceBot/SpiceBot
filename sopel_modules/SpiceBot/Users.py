@@ -66,7 +66,7 @@ class BotUsers():
                     self.current[nick_id]["channels"].append(channel)
                 # mark user as online
                 if nick_id not in self.online:
-                    self.online.append(nick_id)
+                    self.online.append(int(nick_id))
                 if nick_id in self.offline:
                     self.offline.remove(nick_id)
 
@@ -86,7 +86,7 @@ class BotUsers():
                     self.current[nick_id]["channels"].append(trigger.sender)
                 # mark user as online
                 if nick_id not in self.online:
-                    self.online.append(nick_id)
+                    self.online.append(int(nick_id))
                 if nick_id in self.offline:
                     self.offline.remove(nick_id)
             return
@@ -103,7 +103,7 @@ class BotUsers():
             self.current[nick_id]["channels"].append(trigger.sender)
         # mark user as online
         if nick_id not in self.online:
-            self.online.append(nick_id)
+            self.online.append(int(nick_id))
         if nick_id in self.offline:
             self.offline.remove(nick_id)
 
@@ -124,7 +124,7 @@ class BotUsers():
         if nick_id in self.online:
             self.online.remove(nick_id)
         if nick_id not in self.offline:
-            self.offline.append(nick_id)
+            self.offline.append(int(nick_id))
 
     def part(self, bot, trigger):
         if trigger.nick == bot.nick:
@@ -135,7 +135,7 @@ class BotUsers():
                 if not len(self.current[nick_id]["channels"]) and nick_id in self.online:
                     self.online.remove(nick_id)
                 if not len(self.current[nick_id]["channels"]) and nick_id not in self.offline:
-                    self.offline.append(nick_id)
+                    self.offline.append(int(nick_id))
             return
         # Identify
         nick_id = self.whois_id(trigger.nick)
@@ -150,7 +150,7 @@ class BotUsers():
         if not len(self.current[nick_id]["channels"]) and nick_id in self.online:
             self.online.remove(nick_id)
         if not len(self.current[nick_id]["channels"]) and nick_id not in self.offline:
-            self.offline.append(nick_id)
+            self.offline.append(int(nick_id))
 
     def kick(self, bot, trigger):
         targetnick = Identifier(str(trigger.args[1]))
@@ -162,7 +162,7 @@ class BotUsers():
                 if not len(self.current[nick_id]["channels"]) and nick_id in self.online:
                     self.online.remove(nick_id)
                 if not len(self.current[nick_id]["channels"]) and nick_id not in self.offline:
-                    self.offline.append(nick_id)
+                    self.offline.append(int(nick_id))
             return
         # Identify
         nick_id = self.whois_id(targetnick)
@@ -177,7 +177,7 @@ class BotUsers():
         if not len(self.current[nick_id]["channels"]) and nick_id in self.online:
             self.online.remove(nick_id)
         if not len(self.current[nick_id]["channels"]) and nick_id not in self.offline:
-            self.offline.append(nick_id)
+            self.offline.append(int(nick_id))
 
     def nick(self, bot, trigger):
         newnick = Identifier(trigger)
@@ -199,7 +199,7 @@ class BotUsers():
             self.current[nick_id]["channels"].append(trigger.sender)
         # mark user as online
         if nick_id not in self.online:
-            self.online.append(nick_id)
+            self.online.append(int(nick_id))
         if nick_id in self.offline:
             self.offline.remove(nick_id)
 

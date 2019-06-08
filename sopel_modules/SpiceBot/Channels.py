@@ -110,7 +110,7 @@ class BotChannels():
         if 'users' not in self.dict['list'][channel.lower()]:
             self.dict['list'][channel.lower()]['users'] = []
         if nick_id not in self.dict['list'][channel.lower()]['users']:
-            self.dict['list'][channel.lower()]['users'].append(nick_id)
+            self.dict['list'][channel.lower()]['users'].append(int(nick_id))
 
     def remove_from_channel(self, channel, nick, nick_id=None):
         if not nick_id:
