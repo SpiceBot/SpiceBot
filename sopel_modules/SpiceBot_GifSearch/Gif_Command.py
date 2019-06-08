@@ -20,7 +20,7 @@ def gif_trigger(bot, trigger):
         return bot.osd("Please present a query to search.")
 
     query = spicemanip.main(trigger.sb['args'], 0)
-    searchapis = bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys()
+    searchapis = list(bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys())
     searchdict = {"query": query, "gifsearch": searchapis}
 
     gifdict = getGif(bot, searchdict)

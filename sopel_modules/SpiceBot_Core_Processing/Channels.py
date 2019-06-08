@@ -38,7 +38,7 @@ def request_channels_list_initial(bot, trigger):
         else:
             pass
 
-    foundchannelcount = len(SpiceBot.channels.dict['list'].keys())
+    foundchannelcount = len(list(SpiceBot.channels.dict['list'].keys()))
     SpiceBot.logs.log('SpiceBot_Channels', "Channel listing finished! " + str(foundchannelcount) + " channel(s) found.")
 
     SpiceBot.channels.join_all_channels(bot)
@@ -86,13 +86,13 @@ def trigger_channel_list_recurring(bot, trigger):
         if "*" in newlist:
             newlist.remove("*")
         if len(newlist) and SpiceBot.config.SpiceBot_Channels.announcenew:
-            bot.osd(["The Following channel(s) are new:", spicemanip.main(newlist, 'andlist')], bot.channels.keys())
+            bot.osd(["The Following channel(s) are new:", spicemanip.main(newlist, 'andlist')], list(bot.channels.keys()))
 
         SpiceBot.channels.join_all_channels(bot)
 
         SpiceBot.channels.chanadmin_all_channels(bot)
 
-        if "*" in SpiceBot.channels.dict['list'].keys():
+        if "*" in list(SpiceBot.channels.dict['list'].keys()):
             del SpiceBot.channels.dict['list']["*"]
         SpiceBot.channels.bot_part_empty(bot)
 

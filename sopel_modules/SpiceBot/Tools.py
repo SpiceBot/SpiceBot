@@ -242,7 +242,7 @@ def letters_in_string(text):
 
 def channel_privs(bot, channel, privtype):
     privlist = []
-    for user in bot.channels[channel].privileges.keys():
+    for user in list(bot.channels[channel].privileges.keys()):
         try:
             privnum = bot.channels[channel].privileges[user] or 0
         except KeyError:

@@ -95,7 +95,7 @@ class BotEvents(object):
         if not isinstance(checklist, list):
             checklist = [str(checklist)]
         for number in checklist:
-            if str(number) not in self.dict["triggers_recieved"].keys():
+            if str(number) not in list(self.dict["triggers_recieved"].keys()):
                 return False
         return True
 
@@ -110,14 +110,14 @@ class BotEvents(object):
 
     def startup_check(self):
         for number in self.dict["startup_required"]:
-            if str(number) not in self.dict["triggers_recieved"].keys():
+            if str(number) not in list(self.dict["triggers_recieved"].keys()):
                 return False
         return True
 
     def startup_debug(self):
         not_done = []
         for number in self.dict["startup_required"]:
-            if str(number) not in self.dict["triggers_recieved"].keys():
+            if str(number) not in list(self.dict["triggers_recieved"].keys()):
                 not_done.append(int(number))
         reference_not_done = []
         for item in not_done:

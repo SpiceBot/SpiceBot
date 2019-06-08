@@ -23,9 +23,9 @@ def nickname_comand_commands(bot, trigger):
         commandused = spicemanip.main(trigger.sb['args'], 1).lower()
 
     commands_list = []
-    for commandstype in SpiceBot.commands.dict['commands'].keys():
+    for commandstype in list(SpiceBot.commands.dict['commands'].keys()):
         if commandstype not in ['rule']:
-            for com in SpiceBot.commands.dict['commands'][commandstype].keys():
+            for com in list(SpiceBot.commands.dict['commands'][commandstype].keys()):
                 if com not in commands_list:
                     if commandstype in ['nickname']:
                         commands_list.append(bot.nick + " " + com)

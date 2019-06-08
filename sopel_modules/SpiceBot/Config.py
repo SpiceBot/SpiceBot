@@ -28,10 +28,10 @@ class BotConfig():
         config = configparser.ConfigParser()
         config.read(self.config.filename)
         for each_section in config.sections():
-            if each_section.lower() not in self.dict.keys():
+            if each_section.lower() not in list(self.dict.keys()):
                 self.dict[each_section.lower()] = dict()
             for (each_key, each_val) in config.items(each_section):
-                if each_key.lower() not in self.dict[each_section.lower()].keys():
+                if each_key.lower() not in list(self.dict[each_section.lower()].keys()):
                     self.dict[each_section.lower()][each_key.lower()] = each_val
 
     def setup_config(self):
@@ -46,7 +46,7 @@ class BotConfig():
         """We will try to find a core value, or return None"""
         if hasattr(self.config.core, name):
             return eval("self.config.core." + name)
-        elif name.lower() in self.dict["core"].keys():
+        elif name.lower() in list(self.dict["core"].keys()):
             return self.dict["core"][str(name).lower()]
         elif hasattr(self.config, name):
             return eval("self.config." + name)
