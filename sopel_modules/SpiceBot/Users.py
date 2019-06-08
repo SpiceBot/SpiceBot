@@ -4,7 +4,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 from sopel.tools import Identifier
 
-from .Database import db as botdb,
+from .Database import db as botdb
 from .Tools import is_number
 
 # TODO timestamp for new .seen
