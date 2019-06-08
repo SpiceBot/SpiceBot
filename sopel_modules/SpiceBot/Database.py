@@ -85,8 +85,8 @@ class SpiceDB(object):
         not already exist"""
         session = self.ssession()
         slug = nick.lower()
-        self.nick_id_lock.acquire()
         try:
+            self.nick_id_lock.acquire()
             nickname = session.query(Nicknames) \
                 .filter(Nicknames.slug == slug) \
                 .one_or_none()
@@ -107,11 +107,9 @@ class SpiceDB(object):
             self.nick_id_lock.release()
             return nickname.nick_id
         except SQLAlchemyError:
-            self.nick_id_lock.release()
             session.rollback()
             raise
         finally:
-            self.nick_id_lock.release()
             session.close()
 
     def set_nick_value(self, nick, key, value, namespace='default'):
