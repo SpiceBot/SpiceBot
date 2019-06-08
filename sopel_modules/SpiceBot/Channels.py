@@ -12,6 +12,7 @@ import threading
 
 from .Config import config as botconfig
 from .Database import db as botdb
+from .Users import users as botusers
 
 
 class SpiceBot_Channels_MainSection(StaticSection):
@@ -40,6 +41,23 @@ class BotChannels():
             return self.dict[str(name).lower()]
         else:
             raise Exception('Channel dict does not contain a function or key ' + str(name.lower()))
+
+    def get_channel_users(self, channel, idtype="nick"):
+
+        if channel.lower() not in list(self.dict["list"].keys()):
+            raise Exception('Channel ' + str(channel.lower()) + " does not seem to be on this server")
+        if 'users' not in list(self.dict["list"][channel.lower()].keys()):
+            raise Exception('Channel ' + str(channel.lower()) + " does not seem to be a channel the bot is in")
+
+        nick_ids = self.dict["list"][channel.lower()]['users']
+        if idtype.upper() == "ID":
+            return nick_ids
+        else:
+            nick_list = []
+            for nick_id in nick_ids:
+                nickname = botusers.ID(nick_id)
+                nick_list.append(nickname)
+        return nick_list
 
     def setup_channels(self):
         botconfig.define_section("SpiceBot_Channels", SpiceBot_Channels_MainSection, validate=False)
