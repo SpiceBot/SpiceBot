@@ -20,7 +20,8 @@ class BotUsers():
                     "current": {},
                     }
         """during setup, all users from database are offline until marked online"""
-        self.dict["offline"] = list(self.dict["all"].keys())
+        for user_id in list(self.dict["all"].keys()):
+            self.dict["offline"].append(int(user_id))
 
     def __getattr__(self, name):
         ''' will only get called for undefined attributes '''
@@ -28,7 +29,7 @@ class BotUsers():
         if name.lower() in list(self.dict.keys()):
             return self.dict[str(name).lower()]
         else:
-            raise Exception('User dict does not contain a function or key ' + name.lower())
+            raise Exception('User dict does not contain a function or key ' + str(name.lower()))
 
     def ID(self, nick):
         if is_number(nick):
@@ -37,7 +38,7 @@ class BotUsers():
             elif nick in list(self.dict["all"].keys()) and len(self.dict["all"][nick]):
                 return self.dict["all"][nick][0]
             else:
-                raise Exception('ID ' + nick + ' does not appear to be associated with a nick')
+                raise Exception('ID ' + str(nick) + ' does not appear to be associated with a nick')
         else:
             nick_id = self.whois_ident(nick)
             self.add_to_all(nick, nick_id)
