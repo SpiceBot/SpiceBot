@@ -16,6 +16,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import SQLAlchemyError
 
 import json
+import threading
 
 
 BASE = declarative_base()
@@ -75,6 +76,43 @@ class PluginValues(BASE):
 class SpiceDB(object):
 
     # NICK FUNCTIONS
+
+    def get_nick_id(self, nick, create=True):
+        """Return the internal identifier for a given nick.
+
+        This identifier is unique to a user, and shared across all of that
+        user's aliases. If create is True, a new ID will be created if one does
+        not already exist"""
+        session = self.ssession()
+        slug = nick.lower()
+        self.nick_id_lock.acquire()
+        try:
+            nickname = session.query(Nicknames) \
+                .filter(Nicknames.slug == slug) \
+                .one_or_none()
+
+            if nickname is None:
+                if not create:
+                    self.nick_id_lock.release()
+                    raise ValueError('No ID exists for the given nick')
+                # Generate a new ID
+                nick_id = NickIDs()
+                session.add(nick_id)
+                session.commit()
+
+                # Create a new Nickname
+                nickname = Nicknames(nick_id=nick_id.nick_id, slug=slug, canonical=nick)
+                session.add(nickname)
+                session.commit()
+            self.nick_id_lock.release()
+            return nickname.nick_id
+        except SQLAlchemyError:
+            self.nick_id_lock.release()
+            session.rollback()
+            raise
+        finally:
+            self.nick_id_lock.release()
+            session.close()
 
     def set_nick_value(self, nick, key, value, namespace='default'):
         """Sets the value for a given key to be associated with the nick."""
@@ -496,9 +534,12 @@ class BotDatabase():
 
     def __init__(self):
 
+        SopelDB.nick_id_lock = threading.Lock()
+
         sopel.db.NickIDs = NickIDs
         sopel.db.Nicknames = Nicknames
         sopel.db.NickValues = NickValues
+        SopelDB.get_nick_id = SpiceDB.get_nick_id
         SopelDB.get_nick_value = SpiceDB.get_nick_value
         SopelDB.set_nick_value = SpiceDB.set_nick_value
         SopelDB.delete_nick_value = SpiceDB.delete_nick_value
