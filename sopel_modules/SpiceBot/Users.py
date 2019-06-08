@@ -41,9 +41,7 @@ class BotUsers():
                 raise Exception('ID ' + str(nick) + ' does not appear to be associated with a nick')
         else:
             nick_id = self.whois_ident(nick)
-            self.add_to_all(nick, nick_id)
-            self.add_to_current(nick, nick_id)
-            return self.dict["current"][nick_id]["nick"]
+            return nick_id
 
     def whois_ident(self, nick):
         nick = Identifier(nick)
