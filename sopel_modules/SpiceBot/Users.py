@@ -14,7 +14,7 @@ class BotUsers():
         self.all = botdb.get_bot_value('users') or dict()
         self.online = []
         self.offline = []
-        for user_id in self.all.keys():
+        for user_id in list(self.all.keys()):
             self.offline.append(int(user_id))
         self.current = {}
 
@@ -25,9 +25,9 @@ class BotUsers():
         return self.current[nick_id]["nick"]
 
     def whois_id(self, nick_id):
-        if nick_id in self.current.keys():
+        if nick_id in list(self.current.keys()):
             return self.current[nick_id]["nick"]
-        elif nick_id in self.all.keys() and len(self.all[nick_id]):
+        elif nick_id in list(self.all.keys()) and len(self.all[nick_id]):
             return self.all[nick_id][0]
         else:
             return None
@@ -50,7 +50,7 @@ class BotUsers():
         if not nick_id:
             nick_id = self.whois_ident(nick)
         # add to all if not there
-        if nick_id not in self.all.keys():
+        if nick_id not in list(self.all.keys()):
             self.all[nick_id] = []
         # add nick alias
         if nick not in self.all[nick_id]:
@@ -61,12 +61,12 @@ class BotUsers():
         if not nick_id:
             nick_id = self.whois_ident(nick)
         # add to current if not there
-        if nick_id not in self.current.keys():
+        if nick_id not in list(self.current.keys()):
             self.current[nick_id] = {"channels": [], "nick": nick}
 
     def channel_scan(self, bot):
-        for channel in bot.channels.keys():
-            for user in bot.channels[channel].privileges.keys():
+        for channel in list(bot.channels.keys()):
+            for user in list(bot.channels[channel].privileges.keys()):
                 # Identify
                 nick_id = self.whois_ident(user)
                 # Verify nick is in the all list
@@ -86,7 +86,7 @@ class BotUsers():
 
     def join(self, bot, trigger):
         if trigger.nick == bot.nick:
-            for user in bot.channels[trigger.sender].privileges.keys():
+            for user in list(bot.channels[trigger.sender].privileges.keys()):
                 # Identify
                 nick_id = self.whois_ident(user)
                 # Verify nick is in the all list
@@ -142,7 +142,7 @@ class BotUsers():
 
     def part(self, bot, trigger):
         if trigger.nick == bot.nick:
-            for nick_id in self.current.keys():
+            for nick_id in list(self.current.keys()):
                 if trigger.sender in self.current[nick_id]["channels"]:
                     self.current[nick_id]["channels"].remove(trigger.sender)
                 # mark offline
@@ -169,7 +169,7 @@ class BotUsers():
     def kick(self, bot, trigger):
         targetnick = Identifier(str(trigger.args[1]))
         if targetnick == bot.nick:
-            for nick_id in self.current.keys():
+            for nick_id in list(self.current.keys()):
                 if trigger.sender in self.current[nick_id]["channels"]:
                     self.current[nick_id]["channels"].remove(trigger.sender)
                 # mark offline

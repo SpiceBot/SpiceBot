@@ -78,7 +78,7 @@ class SpiceBot_AI():
 
         # current_bot_db = botdb.get_bot_value('botai') or None
         # if current_bot_db:
-        #    for predicate in current_bot_db.keys():
+        #    for predicate in list(current_bot_db.keys()):
         #        predval = current_bot_db[predicate]
         #        self.aiml_kernel.setBotPredicate(predicate, predval)
 
@@ -141,7 +141,7 @@ class SpiceBot_AI():
 
         # punctuation
         puct_dict = {"!": "exclamationmark", ".": "period", "?": "questionmark", ",": "comma"}
-        for puctuation in puct_dict.keys():
+        for puctuation in list(puct_dict.keys()):
             message = message.replace(puctuation, puct_dict[puctuation])
 
         # bot items
@@ -200,12 +200,12 @@ class SpiceBot_AI():
                                 "self": "themselves",
                                 },
                         }
-        for pronounitem in pronounsdict[botgendertype].keys():
+        for pronounitem in list(pronounsdict[botgendertype].keys()):
             aiml_response = aiml_response.replace("BOTPRONOUN" + pronounitem, pronounsdict[botgendertype][pronounitem])
         triggergendertype = self.getPredicate("gender", trigger.nick)
         if not triggergendertype or triggergendertype == "":
             triggergendertype = "point"
-        for pronounitem in pronounsdict[triggergendertype].keys():
+        for pronounitem in list(pronounsdict[triggergendertype].keys()):
             aiml_response = aiml_response.replace("TRIGGERPRONOUN" + pronounitem, pronounsdict[triggergendertype][pronounitem])
 
         aiml_response = "\x0315" + aiml_response + "\x03"
@@ -222,14 +222,14 @@ class SpiceBot_AI():
         if not nick_id:
             nick = Identifier(nick)
             nick_id = botdb.get_nick_id(nick, create=True)
-        if nick_id not in self.dict["sessioncache"].keys():
+        if nick_id not in list(self.dict["sessioncache"].keys()):
             self.dict["sessioncache"][nick_id] = botdb.get_nick_value(nick, 'botai') or {}
-            for predicate in self.dict["sessioncache"][nick_id].keys():
+            for predicate in list(self.dict["sessioncache"][nick_id].keys()):
                 predval = self.dict["sessioncache"][nick_id][predicate]
                 self.aiml_kernel.setPredicate(predicate, predval, nick_id)
 
         # defaults
-        if "nick" not in self.dict["sessioncache"][nick_id].keys():
+        if "nick" not in list(self.dict["sessioncache"][nick_id].keys()):
             self.dict["sessioncache"][nick_id]["nick"] = nick
             self.aiml_kernel.setPredicate("nick", nick, nick_id)
 

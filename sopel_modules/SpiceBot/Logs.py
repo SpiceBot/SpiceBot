@@ -50,7 +50,7 @@ class BotLogs():
         if stdio:
             self.botstderr(logmessage)
 
-        if logtype not in self.dict["list"].keys():
+        if logtype not in list(self.dict["list"].keys()):
             self.dict["list"][logtype] = []
         self.dict["list"][logtype].append(logentry)
 
@@ -68,7 +68,7 @@ class BotLogs():
     def stdio_logs_fetch(self):
 
         stdio_ignore = []
-        for logtype in self.dict["list"].keys():
+        for logtype in list(self.dict["list"].keys()):
             stdio_ignore.append("[" + logtype + "]")
 
         try:

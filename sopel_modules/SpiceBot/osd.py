@@ -46,7 +46,7 @@ class ToolsOSD:
             * unicode string
             * a comma-seperated unicode string
             * list
-            * dict_keys handy for bot.channels.keys()
+            * dict_keys handy for list(bot.channels.keys())
         """
 
         if sys.version_info.major >= 3:

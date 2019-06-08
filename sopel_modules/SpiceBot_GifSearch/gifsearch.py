@@ -35,7 +35,7 @@ def configure(config):
     config.SopelGifSearch.configure_setting('extra', 'SpiceBot_GifSearch API Extra directory')
     config.SopelGifSearch.configure_setting('nsfw', 'SpiceBot_GifSearch API nsfw content')
 
-    for gif_api in valid_gif_api_dict.keys():
+    for gif_api in list(valid_gif_api_dict.keys()):
         config.define_section(gif_api, GifAPISection, validate=False)
         gif_api_config = eval("config." + gif_api)
         gif_api_config.configure_setting('apikey', 'GIF API Client ID-' + gif_api)
@@ -61,7 +61,7 @@ def setup(bot):
 
     valid_gif_api_dict = SpiceBot.read_directory_json_to_dict(dir_to_scan, "Gif API", "SpiceBot_GifSearch", logging=True)
 
-    for gif_api in valid_gif_api_dict.keys():
+    for gif_api in list(valid_gif_api_dict.keys()):
         bot.config.define_section(gif_api, GifAPISection, validate=False)
         SpiceBot.config.define_section(gif_api, GifAPISection, validate=False)
         apikey = eval("bot.config." + gif_api + ".apikey")
@@ -71,7 +71,7 @@ def setup(bot):
             valid_gif_api_dict[gif_api]["apikey"] = None
         bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'][gif_api] = valid_gif_api_dict[gif_api]
 
-    for validgifapi in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
+    for validgifapi in list(bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys()):
         command_dict = {
                         "comtype": "prefix",
                         "validcoms": validgifapi
@@ -98,7 +98,7 @@ def getGif(bot, searchdict):
     query_defaults = {
                     "query": None,
                     "searchnum": 'random',
-                    "gifsearch": bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys(),
+                    "gifsearch": list(bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys()),
                     "gifsearchremove": ['gifme'],
                     "searchlimit": 'default',
                     "nsfw": False,
@@ -109,7 +109,7 @@ def getGif(bot, searchdict):
 
     # set defaults if they don't exist
     for key in query_defaults:
-        if key not in searchdict.keys():
+        if key not in list(searchdict.keys()):
             searchdict[key] = query_defaults[key]
             if key == "gifsearch":
                 for remx in query_defaults["gifsearchremove"]:
@@ -123,13 +123,13 @@ def getGif(bot, searchdict):
 
     # set api usage
     if not isinstance(searchdict['gifsearch'], list):
-        if str(searchdict['gifsearch']) in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
+        if str(searchdict['gifsearch']) in list(bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys()):
             searchdict['gifsearch'] = [searchdict['gifsearch']]
         else:
             searchdict['gifsearch'] = bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys()
     else:
         for apis in searchdict['gifsearch']:
-            if apis not in bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys():
+            if apis not in list(bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'].keys()):
                 searchdict['gifsearch'].remove(apis)
 
     # Verify search limit
@@ -164,10 +164,10 @@ def getGif(bot, searchdict):
         # api key
         url += str(bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'][currentapi]['key']) + str(bot.memory["SpiceBot_GifSearch"]['valid_gif_api_dict'][currentapi]['apikey'])
 
-        if currentapi not in bot.memory["SpiceBot_GifSearch"]['cache'].keys():
+        if currentapi not in list(bot.memory["SpiceBot_GifSearch"]['cache'].keys()):
             bot.memory["SpiceBot_GifSearch"]['cache'][currentapi] = dict()
 
-        if str(searchdict["searchquery"]) not in bot.memory["SpiceBot_GifSearch"]['cache'][currentapi].keys():
+        if str(searchdict["searchquery"]) not in list(bot.memory["SpiceBot_GifSearch"]['cache'][currentapi].keys()):
             bot.memory["SpiceBot_GifSearch"]['cache'][currentapi][str(searchdict["searchquery"])] = []
 
         if not len(bot.memory["SpiceBot_GifSearch"]['cache'][currentapi][str(searchdict["searchquery"])]):

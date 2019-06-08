@@ -29,8 +29,8 @@ def query_detection_nick(bot, trigger):
         return
 
     commands_list = dict()
-    for com in SpiceBot.commands.dict['commands']['nickname'].keys():
-        if com not in commands_list.keys():
+    for com in list(SpiceBot.commands.dict['commands']['nickname'].keys()):
+        if com not in list(commands_list.keys()):
             commands_list[com] = SpiceBot.commands.dict['commands']['nickname'][com]
 
     if trigger.sb['com'].endswith("+"):
@@ -48,7 +48,7 @@ def query_detection_nick(bot, trigger):
             return
 
         realcom = trigger.sb['com']
-        if "aliasfor" in commands_list[trigger.sb['com']].keys():
+        if "aliasfor" in list(commands_list[trigger.sb['com']].keys()):
             realcom = commands_list[trigger.sb['com']]["aliasfor"]
         validcomlist = commands_list[realcom]["validcoms"]
         bot.osd("The following " + bot.nick + " commands match " + str(trigger.sb['com']) + ": " + spicemanip.main(validcomlist, 'andlist') + ".", trigger.nick, 'notice')
@@ -91,10 +91,10 @@ def query_detection(bot, trigger):
         return
 
     commands_list = dict()
-    for commandstype in SpiceBot.commands.dict['commands'].keys():
+    for commandstype in list(SpiceBot.commands.dict['commands'].keys()):
         if commandstype not in ['rule', 'nickname']:
-            for com in SpiceBot.commands.dict['commands'][commandstype].keys():
-                if com not in commands_list.keys():
+            for com in list(SpiceBot.commands.dict['commands'][commandstype].keys()):
+                if com not in list(commands_list.keys()):
                     commands_list[com] = SpiceBot.commands.dict['commands'][commandstype][com]
 
     if trigger.sb['com'][:-1] == "+":
@@ -112,7 +112,7 @@ def query_detection(bot, trigger):
             return
 
         realcom = trigger.sb['com']
-        if "aliasfor" in commands_list[trigger.sb['com']].keys():
+        if "aliasfor" in list(commands_list[trigger.sb['com']].keys()):
             realcom = commands_list[trigger.sb['com']]["aliasfor"]
         validcomlist = commands_list[realcom]["validcoms"]
         bot.osd("The following commands match " + str(trigger.sb['com']) + ": " + spicemanip.main(validcomlist, 'andlist') + ".", trigger.nick, 'notice')

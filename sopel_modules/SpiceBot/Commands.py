@@ -42,7 +42,7 @@ class BotCommands():
         self.module_files_parse()
         self.nickrules()
         for comtype in ['module', 'nickname', 'rule']:
-            logs.log('SpiceBot_Commands', "Found " + str(len(self.dict['commands'][comtype].keys())) + " " + comtype + " commands.", True)
+            logs.log('SpiceBot_Commands', "Found " + str(len(list(self.dict['commands'][comtype].keys()))) + " " + comtype + " commands.", True)
 
     def setup_commands(self):
         botconfig.define_section("SpiceBot_Commands", SpiceBot_Commands_MainSection, validate=False)
@@ -50,16 +50,16 @@ class BotCommands():
         botconfig.core.prefix_list.extend(botconfig.SpiceBot_Commands.query_prefix)
 
     def nickrules(self):
-        for command in self.dict['commands']['rule'].keys():
+        for command in list(self.dict['commands']['rule'].keys()):
             if command.startswith("$nickname"):
                 command = command.split("$nickname")[-1]
                 if command not in self.dict['nickrules']:
                     self.dict['nickrules'].append(command)
 
     def find_command_type(self, command):
-        for commandstype in self.dict['commands'].keys():
+        for commandstype in list(self.dict['commands'].keys()):
             if commandstype not in ['rule']:
-                for com in self.dict['commands'][commandstype].keys():
+                for com in list(self.dict['commands'][commandstype].keys()):
                     if com.lower() == command.lower():
                         return commandstype
         return None
@@ -70,7 +70,7 @@ class BotCommands():
         return self.dict['disabled']
 
     def check_commands_disabled(self, command, channel):
-        if command in self.get_commands_disabled(channel).keys():
+        if command in list(self.get_commands_disabled(channel).keys()):
             return True
         else:
             return False
@@ -78,10 +78,10 @@ class BotCommands():
     def get_realcom(self, command, trigger_command_type):
         realcom = command
 
-        if trigger_command_type not in self.dict['commands'].keys():
+        if trigger_command_type not in list(self.dict['commands'].keys()):
             return realcom
 
-        if command not in self.dict['commands'][trigger_command_type].keys():
+        if command not in list(self.dict['commands'][trigger_command_type].keys()):
             return realcom
 
         if "aliasfor" in self.dict['commands'][trigger_command_type][command].keys():
@@ -98,7 +98,7 @@ class BotCommands():
     def unset_command_disabled(self, command, channel):
         if not len(list(self.dict['disabled'])):
             self.dict['disabled'] = botdb.get_channel_value(channel, 'commands_disabled') or {}
-        if command in self.dict['disabled'].keys():
+        if command in list(self.dict['disabled'].keys()):
             del self.dict['disabled'][command]
         botdb.set_channel_value(channel, 'commands_disabled', self.dict['disabled'])
 
@@ -112,13 +112,13 @@ class BotCommands():
         if not isinstance(validcoms, list):
             validcoms = [validcoms]
 
-        if command_type not in self.dict['commands'].keys():
+        if command_type not in list(self.dict['commands'].keys()):
             self.dict['commands'][command_type] = dict()
 
         dict_from_file = dict()
 
         # default command to filename
-        if "validcoms" not in dict_from_file.keys():
+        if "validcoms" not in list(dict_from_file.keys()):
             dict_from_file["validcoms"] = validcoms
 
         maincom = dict_from_file["validcoms"][0]
@@ -129,7 +129,7 @@ class BotCommands():
 
         self.dict['commands'][command_type][maincom] = dict_from_file
         for comalias in comaliases:
-            if comalias not in self.dict['commands'][command_type].keys():
+            if comalias not in list(self.dict['commands'][command_type].keys()):
                 self.dict['commands'][command_type][comalias] = {"aliasfor": maincom}
 
         self.lock.release()
