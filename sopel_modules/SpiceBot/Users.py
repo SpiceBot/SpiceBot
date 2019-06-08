@@ -27,7 +27,7 @@ class BotUsers():
     def whois_id(self, nick_id):
         if nick_id in self.current.keys():
             return self.current[nick_id]["nick"]
-        elif int(nick_id) in self.all.keys() and len(self.all[nick_id]):
+        elif nick_id in self.all.keys() and len(self.all[nick_id]):
             return self.all[nick_id][0]
         else:
             return None
