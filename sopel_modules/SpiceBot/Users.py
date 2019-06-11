@@ -228,5 +228,8 @@ class BotUsers():
     def mode(self, bot, trigger):
         return
 
+    def targetcheck(self):
+        return True
+
 
 users = BotUsers()

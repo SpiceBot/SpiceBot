@@ -129,6 +129,7 @@ class BotChannels():
         return nick_id
 
     def add_to_channel(self, channel, nick, nick_id=None):
+        channel = str(channel)
         if not nick_id:
             nick_id = self.whois_ident(nick)
         if channel.lower() not in list(self.dict['list'].keys()):
@@ -139,6 +140,7 @@ class BotChannels():
             self.dict['list'][channel.lower()]['users'].append(int(nick_id))
 
     def remove_from_channel(self, channel, nick, nick_id=None):
+        channel = str(channel)
         if not nick_id:
             nick_id = self.whois_ident(nick)
         if channel.lower() not in list(self.dict['list'].keys()):
@@ -149,6 +151,7 @@ class BotChannels():
             self.dict['list'][channel.lower()]['users'].remove(nick_id)
 
     def remove_all_from_channel(self, channel):
+        channel = str(channel)
         if channel.lower() not in list(self.dict['list'].keys()):
             self.dict['list'][channel.lower()] = dict()
         if 'users' not in self.dict['list'][channel.lower()]:
