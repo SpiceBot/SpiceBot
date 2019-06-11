@@ -65,13 +65,13 @@ def bot_command_rule(bot, trigger):
         trigger_command = trigger_args[0]
         fulltrigger = spicemanip.main(trigger_args, 0)
 
-    returnmessage = SpiceBot.botai.on_message(bot, trigger, message)
+    returnmessage = SpiceBot.botai.on_message(bot, trigger, fulltrigger)
     if returnmessage:
         bot.osd(str(returnmessage))
         return
 
     if command_type == 'nickname':
-        try_trigger = spicemanip.main(trigger_args, "2+", 'list')
+        try_trigger = spicemanip.main(fulltrigger, "2+", 'list')
         returnmessage = SpiceBot.botai.on_message(bot, trigger, try_trigger)
         if returnmessage:
             bot.osd(str(returnmessage))
