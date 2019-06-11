@@ -57,7 +57,7 @@ def bot_command_rule(bot, trigger):
         if trigger_command.startswith(tuple(bot.config.core.prefix_list)):
             return
         # If valid command don't continue further
-        if trigger_command not in commands_list:
+        if trigger_command in commands_list:
             return
     else:
         command_type = 'other'
