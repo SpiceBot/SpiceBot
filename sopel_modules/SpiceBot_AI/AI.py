@@ -150,7 +150,7 @@ def bot_command_rule(bot, trigger):
                 return
 
             elif fulltrigger.lower().startswith(tuple(["make me a", "beam me a"])):
-                makemea = spicemanip.main(trigger.sb['args'], "4+") or None
+                makemea = spicemanip.main(trigger_args, "4+") or None
                 if makemea:
                     bot.osd("beams " + trigger.nick + " a " + makemea, trigger.sender, 'action')
                 else:
@@ -158,7 +158,7 @@ def bot_command_rule(bot, trigger):
                 return
 
             elif fulltrigger.lower().startswith("beam me to"):
-                location = spicemanip.main(trigger.sb['args'], "4+") or None
+                location = spicemanip.main(trigger_args, "4+") or None
                 if location:
                     bot.osd("locks onto " + trigger.nick + "s coordinates and transports them to " + location, 'action')
                 else:
@@ -176,7 +176,7 @@ def bot_command_rule(bot, trigger):
             # TODO
 
             # elif fulltrigger.lower().startswith(tuple(["have you seen"])):
-            #    posstarget = spicemanip.main(trigger.sb['args'], 4) or 0
+            #    posstarget = spicemanip.main(trigger_args, 4) or 0
             #    message = seen_search(bot, botcom, posstarget)
             #    bot.osd(message)
             #    return
