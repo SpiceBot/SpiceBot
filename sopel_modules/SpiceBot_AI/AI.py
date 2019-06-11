@@ -70,6 +70,13 @@ def bot_command_rule(bot, trigger):
         bot.osd(str(returnmessage))
         return
 
+    if command_type == 'nickname':
+        try_trigger = spicemanip.main(trigger_args, "2+", 'list')
+        returnmessage = SpiceBot.botai.on_message(bot, trigger, try_trigger)
+        if returnmessage:
+            bot.osd(str(returnmessage))
+            return
+
     if command_type == 'module':
         # return  # TODO
         if trigger_command not in commands_list:
@@ -181,13 +188,6 @@ def bot_command_rule(bot, trigger):
         #    bot.osd(message)
         #    return
         # TODO
-
-        if command_type == 'nickname':
-            try_trigger = spicemanip.main(trigger_args, "2+", 'list')
-            returnmessage = SpiceBot.botai.on_message(bot, trigger, try_trigger)
-            if returnmessage:
-                bot.osd(str(returnmessage))
-                return
 
         closestmatches = SpiceBot.similar_list(trigger_command, list(SpiceBot.commands.dict['commands']["nickname"].keys()), 3, 'reverse')
         if len(closestmatches):
