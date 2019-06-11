@@ -22,29 +22,17 @@ def bot_command_rule(bot, trigger):
         return
 
     message = trigger.args[1]
+
+    # the bot brain cannot handle stuff like unicode shrug
     message = ''.join([x for x in message if ord(x) < 128])
 
-    # ignore text coming from a valid prefix
-    if str(message).startswith(tuple(bot.config.core.prefix_list)):
-        return
-        trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'module')
-        # patch for people typing "...", maybe other stuff, but this verifies that there is still a command here
-        if trigger_command.startswith("."):
-            return
-        commands_list = []
-        for commandstype in list(SpiceBot.commands.dict['commands'].keys()):
-            if commandstype not in ['rule', 'nickname']:
-                for com in list(SpiceBot.commands.dict['commands'][commandstype].keys()):
-                    if com not in commands_list:
-                        commands_list.append(com)
-        if trigger_command not in commands_list:
-            if not SpiceBot.letters_in_string(trigger_command):
-                return
-            invalid_display = ["I don't seem to have a command for " + str(trigger_command) + "!"]
-            # invalid_display.append("If you have a suggestion for this command, you can run .feature ." + str(trigger_command))
-            # invalid_display.append("ADD DESCRIPTION HERE!")
-            bot.osd(invalid_display, trigger.nick, 'notice')
-        return
+    # Create list of valid commands
+    commands_list = []
+    for commandstype in list(SpiceBot.commands.dict['commands'].keys()):
+        if commandstype not in ['rule', 'nickname']:
+            for com in list(SpiceBot.commands.dict['commands'][commandstype].keys()):
+                if com not in commands_list:
+                    commands_list.append(com)
 
     if str(message).lower().startswith(str(bot.nick).lower()):
         command_type = 'nickname'
@@ -57,6 +45,20 @@ def bot_command_rule(bot, trigger):
             return
         if trigger_command in list(SpiceBot.commands.dict['commands']["nickname"].keys()):
             return
+    elif str(message).lower().startswith("?"):
+        # no query commands detection here
+        return
+    elif str(message).startswith(tuple(bot.config.core.prefix_list)):
+        command_type = 'module'
+        trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'module')
+        trigger_args.insert(0, trigger_command)
+        fulltrigger = spicemanip.main(trigger_args, 0)
+        # patch for people typing "...", maybe other stuff, but this verifies that there is still a command here
+        if trigger_command.startswith(tuple(bot.config.core.prefix_list)):
+            return
+        # If valid command don't continue further
+        if trigger_command not in commands_list:
+            return
     else:
         command_type = 'other'
         trigger_args = spicemanip.main(message, 'create')
@@ -67,7 +69,20 @@ def bot_command_rule(bot, trigger):
     if returnmessage:
         bot.osd(str(returnmessage))
     else:
-        if command_type == 'nickname':
+
+        if command_type == 'module':
+            # return  # TODO
+            if trigger_command not in commands_list:
+                if not SpiceBot.letters_in_string(trigger_command):
+                    return
+                invalid_display = ["I don't seem to have a command for " + str(trigger_command) + "!"]
+                # TODO
+                # invalid_display.append("If you have a suggestion for this command, you can run .feature ." + str(trigger_command))
+                # invalid_display.append("ADD DESCRIPTION HERE!")
+                bot.osd(invalid_display, trigger.nick, 'notice')
+            return
+
+        elif command_type == 'nickname':
 
             if trigger_args[0].lower() in ["what", "where"] and trigger_args[1].lower() in ["is", "are"]:
                 # TODO saved definitions
