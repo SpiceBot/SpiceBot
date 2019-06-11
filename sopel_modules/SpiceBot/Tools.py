@@ -237,6 +237,14 @@ def letters_in_string(text):
         return False
 
 
+def is_number(n):
+    try:
+        float(n)
+    except ValueError:
+        return False
+    return True
+
+
 """Channel Functions"""
 
 
