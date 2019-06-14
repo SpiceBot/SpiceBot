@@ -10,8 +10,6 @@ import collections
 import os
 import sys
 import codecs
-import requests
-from fake_useragent import UserAgent
 from difflib import SequenceMatcher
 from operator import itemgetter
 from collections import abc
@@ -127,25 +125,6 @@ def humanized_time(countdownseconds):
 
 
 """Online Information Requests"""
-
-
-def googlesearch(searchterm, searchtype=None):
-    header = {'User-Agent': str(UserAgent().chrome)}
-    data = searchterm.replace(' ', '+')
-    lookfor = data.replace(':', '%3A')
-    try:
-        if searchtype == 'maps':
-            var = requests.get(r'http://www.google.com/maps/place/' + lookfor, headers=header)
-        else:
-            var = requests.get(r'http://www.google.com/search?q=' + lookfor + '&btnI', headers=header)
-    except Exception as e:
-        var = e
-        var = None
-
-    if not var or not var.url:
-        return None
-    else:
-        return var.url
 
 
 """List Manipulation Functions"""
