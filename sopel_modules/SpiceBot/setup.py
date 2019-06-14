@@ -13,6 +13,7 @@ from .Events import events
 
 from .Channels import SpiceBot_Channels_MainSection
 from .Commands import SpiceBot_Commands_MainSection
+from .Google import SpiceBot_Google_MainSection
 from .Update import SpiceBot_Update_MainSection
 from .osd import SopelWrapperOSD, ToolsOSD, SopelOSD, SpiceBot_OSD
 from .Kick import SopelWrapperKICK, SopelKICK, SpiceBot_Kick
@@ -29,6 +30,9 @@ def setup(bot):
 
     # Commands
     setup_commands(bot)
+
+    # Commands
+    setup_google(bot)
 
     # OSD
     setup_osd(bot)
@@ -73,6 +77,11 @@ def setup_commands(bot):
     bot.config.define_section("SpiceBot_Commands", SpiceBot_Commands_MainSection, validate=False)
     bot.config.core.query_list = str(bot.config.SpiceBot_Commands.query_prefix).replace("\\", '').split("|")
     bot.config.core.prefix_list.extend(bot.config.SpiceBot_Commands.query_prefix)
+
+
+def setup_google(bot):
+    logs.log('SpiceBot_Google', "Setting Up Configuration")
+    bot.config.define_section("SpiceBot_Google", SpiceBot_Google_MainSection, validate=False)
 
 
 def setup_startupmonologue(bot):
