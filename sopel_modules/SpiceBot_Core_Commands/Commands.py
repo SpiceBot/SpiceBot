@@ -11,6 +11,8 @@ import spicemanip
 
 import sopel_modules.SpiceBot as SpiceBot
 
+# TODO commands sent in privmsg don't need bot.nick
+
 
 @SpiceBot.events.check_ready([SpiceBot.events.BOT_COMMANDS])
 @SpiceBot.prerun.prerun('nickname')

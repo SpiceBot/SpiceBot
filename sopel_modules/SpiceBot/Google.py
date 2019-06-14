@@ -5,6 +5,8 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import requests
 from fake_useragent import UserAgent
 
+# TODO add a cache flush
+
 
 class Google():
 
