@@ -5,6 +5,8 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import requests
 from fake_useragent import UserAgent
 
+import googlesearch
+
 # TODO add a cache flush
 
 
@@ -21,6 +23,12 @@ class Google():
         # losercase searching
         searchterm = searchterm.lower()
 
+        """
+        safe='off',
+        """
+
+        return str(googlesearch.lucky(searchterm):)
+
         # check cache
         if searchtype not in list(self.cache.keys()):
             self.cache[searchtype] = dict()
@@ -34,6 +42,8 @@ class Google():
             if searchtype == 'maps':
                 var = requests.get(r'http://www.google.com/maps/place/' + lookfor, headers=header)
             elif searchtype == 'info':
+                var = requests.get(r'https://www.youtube.com/search?q=' + lookfor + '&btnI', headers=header)
+            elif searchtype == 'youtube':
                 var = requests.get(r'http://www.google.com/search?q=' + lookfor + '&btnI', headers=header)
             else:
                 var = requests.get(r'http://www.google.com/search?q=' + lookfor + '&btnI', headers=header)
