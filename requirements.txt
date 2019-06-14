@@ -3,4 +3,3 @@ gitpython
 pygit2
 fake-useragent
 google
-google-search
