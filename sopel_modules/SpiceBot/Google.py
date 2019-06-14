@@ -49,7 +49,7 @@ class Google():
         elif searchtype == 'youtube':
             returnurl = self.search_youtube(searchterm)
         else:
-            returnurl = self.search_info(self, searchterm)
+            returnurl = self.search_info(searchterm)
 
         if returnurl:
             self.cache[searchtype][searchterm] = str(returnurl)
