@@ -64,7 +64,7 @@ def bot_command_rule(bot, trigger):
         trigger_args = spicemanip.main(message, 'create')
         trigger_command = trigger_args[0]
         fulltrigger = spicemanip.main(trigger_args, 0)
-
+    bot.say(str(fulltrigger))
     returnmessage = SpiceBot.botai.on_message(bot, trigger, fulltrigger)
     if returnmessage:
         bot.osd(str(returnmessage))
@@ -102,10 +102,13 @@ def bot_command_rule(bot, trigger):
                 if not searchreturn:
                     bot.osd('I cannot find anything about that')
                 else:
-                    bot.osd(str(searchreturn))
+                    if trigger_args[0].lower() == "where":
+                        bot.osd(["[Location search for " + str(searchterm) + "]", str(searchreturn)])
+                    else:
+                        bot.osd(["[Information search for '" + str(searchterm) + "']", str(searchreturn)])
             return
 
-        elif trigger_args[0].lower() in ["can"] and trigger_args[1].lower() in ["you"] and trigger_args[2].lower() in ["see"]:
+        elif trigger_args[0].lower() in ["can", "have"] and trigger_args[1].lower() in ["you"] and trigger_args[2].lower() in ["see", "seen"]:
             target = spicemanip.main(trigger_args, "4+") or None
             if target:
                 if SpiceBot.inlist(trigger.nick, bot.users):
