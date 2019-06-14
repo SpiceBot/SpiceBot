@@ -71,7 +71,7 @@ def bot_command_rule(bot, trigger):
         return
 
     if command_type == 'nickname':
-        try_trigger = spicemanip.main(fulltrigger, "2+", 'list')
+        try_trigger = spicemanip.main(fulltrigger, "2+")
         returnmessage = SpiceBot.botai.on_message(bot, trigger, try_trigger)
         if returnmessage:
             bot.osd(str(returnmessage))
