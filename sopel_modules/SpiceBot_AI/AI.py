@@ -38,7 +38,7 @@ def bot_command_rule(bot, trigger):
         command_type = 'nickname'
         trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'nickname')
         trigger_args.insert(0, trigger_command)
-        fulltrigger = spicemanip.main(trigger_args, 0)
+        fulltrigger = bot.nick + " " + spicemanip.main(trigger_args, 0)
         if str(trigger_command).startswith("?"):
             return
         if fulltrigger in SpiceBot.commands.dict['nickrules']:
@@ -64,7 +64,7 @@ def bot_command_rule(bot, trigger):
         trigger_args = spicemanip.main(message, 'create')
         trigger_command = trigger_args[0]
         fulltrigger = spicemanip.main(trigger_args, 0)
-    bot.say(str(fulltrigger))
+
     returnmessage = SpiceBot.botai.on_message(bot, trigger, fulltrigger)
     if returnmessage:
         bot.osd(str(returnmessage))
