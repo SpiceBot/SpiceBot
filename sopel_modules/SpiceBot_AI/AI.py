@@ -78,7 +78,7 @@ def bot_command_rule(bot, trigger):
             return
 
     if command_type == 'module':
-        # return  # TODO
+        return  # TODO
         if trigger_command not in commands_list:
             if not SpiceBot.letters_in_string(trigger_command):
                 return
