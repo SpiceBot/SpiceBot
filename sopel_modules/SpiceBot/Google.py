@@ -26,7 +26,7 @@ class Google():
                     "maps": {}
                     }
 
-    def setup_commands(self):
+    def setup_google(self):
         botconfig.define_section("SpiceBot_Google", SpiceBot_Google_MainSection, validate=False)
 
     def search(self, searchterm, searchtype="info"):
