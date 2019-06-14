@@ -13,4 +13,10 @@
 </category>
 
 
+<category>
+  <pattern>BOTNICK have you seen</pattern>
+  <template>triggernick, I have seen many things.</template>
+</category>
+
+
 </aiml>

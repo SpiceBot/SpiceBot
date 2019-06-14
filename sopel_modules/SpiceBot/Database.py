@@ -528,7 +528,6 @@ class SpiceDB(object):
 
 
 class BotDatabase():
-    """A thread safe database cache"""
 
     def __init__(self):
 

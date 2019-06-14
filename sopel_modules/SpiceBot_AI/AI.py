@@ -96,9 +96,9 @@ def bot_command_rule(bot, trigger):
             searchterm = spicemanip.main(trigger_args, "3+") or None
             if searchterm:
                 if trigger_args[0].lower() == "where":
-                    searchreturn = SpiceBot.googlesearch(searchterm, 'maps')
+                    searchreturn = SpiceBot.google.search(searchterm, 'maps')
                 else:
-                    searchreturn = SpiceBot.googlesearch(searchterm)
+                    searchreturn = SpiceBot.google.search(searchterm)
                 if not searchreturn:
                     bot.osd('I cannot find anything about that')
                 else:
