@@ -2,7 +2,6 @@
 from __future__ import unicode_literals, absolute_import, division, print_function
 """A way to search google"""
 
-import urllib
 import requests
 from fake_useragent import UserAgent
 
