@@ -2,4 +2,5 @@ spicemanip>=0.1.6
 gitpython
 pygit2
 fake-useragent
-googlesearch
+google
+google-search
