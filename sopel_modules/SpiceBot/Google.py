@@ -36,18 +36,13 @@ class Google():
         lookfor = data.replace(':', '%3A')
         try:
             if searchtype == 'info':
-                url = "http://www.google.com"
+                var = requests.get(r'https://www.youtube.com/search?q=' + lookfor + '&btnI', headers=header)
             elif searchtype == 'maps':
-                url = "http://www.google.com"
-            elif searchtype == 'youtube':
-                url = "https://www.youtube.com"
-            else:
-                url = "http://www.google.com"
-            query = {'q': searchterm}
-            if searchtype == 'maps':
                 var = requests.get(r'http://www.google.com/maps/place/' + lookfor, headers=header)
+            elif searchtype == 'youtube':
+                var = requests.get(r'http://www.google.com/search_query?q=' + lookfor + '&btnI', headers=header)
             else:
-                var = requests.get(url, params=query)
+                var = requests.get(r'http://www.google.com/search?q=' + lookfor + '&btnI', headers=header)
         except Exception as e:
             var = e
             var = None
