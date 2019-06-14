@@ -2,4 +2,4 @@ spicemanip>=0.1.6
 gitpython
 pygit2
 fake-useragent
-google
+google-api-python-client
