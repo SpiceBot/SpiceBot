@@ -222,14 +222,19 @@ class SopelOSD:
 
                     self.sending.acquire()
 
-                    if not recipient_stack['flood_left']:
+                    if recipient_stack['messages']:
                         elapsed = time.time() - recipient_stack['messages'][-1][0]
+                    else:
+                        # Default to a high enough value that we won't care.
+                        # Five minutes should be enough not to matter anywhere below.
+                        elapsed = 300
+
+                    if not recipient_stack['flood_left']:
                         recipient_stack['flood_left'] = min(
                             self.config.SpiceBot_OSD.flood_burst_lines,
                             int(elapsed) * self.config.SpiceBot_OSD.flood_refill_rate)
 
                     if not recipient_stack['flood_left']:
-                        elapsed = time.time() - recipient_stack['messages'][-1][0]
                         penalty = float(max(0, len(text) - 50)) / 70
                         # Never wait more than 2 seconds
                         wait = min(self.config.SpiceBot_OSD.flood_empty_wait + penalty, 2)
