@@ -5,7 +5,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import requests
 from fake_useragent import UserAgent
 
-import googlesearch
+from googlesearch import search as gsearch
 
 # TODO add a cache flush
 
@@ -27,7 +27,7 @@ class Google():
         safe='off',
         """
 
-        return str(googlesearch.search(searchterm))
+        return str(gsearch(searchterm))
 
         # check cache
         if searchtype not in list(self.cache.keys()):
