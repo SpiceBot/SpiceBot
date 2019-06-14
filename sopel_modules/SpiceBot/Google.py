@@ -27,7 +27,7 @@ class Google():
         safe='off',
         """
 
-        return str(googlesearch.lucky(searchterm):)
+        return str(googlesearch.lucky(searchterm))
 
         # check cache
         if searchtype not in list(self.cache.keys()):
