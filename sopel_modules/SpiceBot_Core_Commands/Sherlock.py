@@ -21,8 +21,8 @@ def bot_command_sherlock(bot, trigger):
 
     checklist = netlist
     checklistname = 'all'
-    if SpiceBot.bot_check_inlist(bot, username, netlist):
-        checklistname = SpiceBot.inlist_match(bot, username, netlist)
+    if SpiceBot.inlist(username, netlist):
+        checklistname = SpiceBot.inlist_match(username, netlist)
         checklist = [checklistname]
         username = spicemanip.main(trigger.sb["args"], 1) or trigger.nick
 
