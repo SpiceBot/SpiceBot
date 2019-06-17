@@ -10,7 +10,7 @@ import spicemanip
 
 
 @sopel.module.rule('(.*)')
-def bot_command_rule(bot, trigger):
+def bot_command_rule_ai(bot, trigger):
 
     # TODO add config limits
     # but still allow in privmsg

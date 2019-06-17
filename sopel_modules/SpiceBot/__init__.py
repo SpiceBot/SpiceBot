@@ -23,6 +23,7 @@ from .Channels import *
 from .Users import *
 from .AI import *
 from .Google import *
+from .Gif import *
 
 
 from .configure import *
