@@ -7,7 +7,7 @@ import sopel_modules
 
 from .Config import config as botconfig
 from .Tools import read_directory_json_to_dict
-from .Commands import config as botcommands
+from .Commands import commands as botcommands
 
 import spicemanip
 
