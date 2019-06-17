@@ -50,8 +50,6 @@ class BotGif():
 
         for gif_api in list(valid_gif_api_dict.keys()):
             botconfig.define_section(gif_api, GifAPISection, validate=False)
-            gif_api_config = eval("botconfig." + gif_api)
-            gif_api_config.configure_setting('apikey', 'GIF API Client ID-' + gif_api)
 
             self.valid_api[gif_api] = valid_gif_api_dict[gif_api]
             self.valid_api[gif_api]["apikey"] = None
