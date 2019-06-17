@@ -17,6 +17,7 @@ from .Messaging import *
 from .Docs import *
 from .BotPrivs import *
 from .Search import *
+from .AI import *
 
 __author__ = 'Sam Zick'
 __email__ = 'sam@deathbybandaid.net'
