@@ -37,10 +37,10 @@ def bot_command_sherlock(bot, trigger):
         else:
             notinlist.append(social_network)
 
-    if inlist != []:
+    if len(inlist):
         if checklistname != 'all':
             bot.osd(["The username " + username + " is in " + checklist[0], SpiceBot.sherlock.dict.get(social_network).get("url").format(username)])
         else:
             bot.osd(["The username " + username + " is in the following:", spicemanip.main(inlist, "andlist")])
-    if notinlist != []:
+    if len(notinlist):
         bot.osd(["The username " + username + " is NOT in the following:", spicemanip.main(notinlist, "andlist")])
