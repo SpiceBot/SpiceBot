@@ -68,10 +68,10 @@ class Sherlock():
             if error not in r.url:
                 user_exists = True
 
-        if username not in list(self.dict[social_network]["cache"].keys()):
-            self.dict[social_network]["cache"][username] = {}
-        self.dict[social_network]["cache"][username]["time"] = time.time()
-        self.dict[social_network]["cache"][username]["exists"] = user_exists
+        self.dict[social_network]["cache"][username] = {
+                                                        "time": time.time(),
+                                                        "exists": user_exists
+                                                        }
 
         if user_exists:
             return True
