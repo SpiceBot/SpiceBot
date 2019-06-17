@@ -29,6 +29,40 @@ class Sherlock():
             self.dict[sherlockdict] = valid_usernames_dict[sherlockdict]
             self.dict[sherlockdict]["cache"] = dict()
 
+    def check_network(self, username, social_network):
+        url = self.dict.get(social_network).get("url").format(username)
+        error_type = self.dict.get(social_network).get("errorType")
+        cant_have_period = self.dict.get(social_network).get("noPeriod")
+
+        if ("." in username) and (cant_have_period == "True"):
+            while ("." in username):
+                username = username.replace(".", '')
+
+        r, error_type = self.make_request(url=url, error_type=error_type, social_network=social_network)
+
+        if error_type == "message":
+            error = self.dict.get(social_network).get("errorMsg")
+            # Checks if the error message is in the HTML
+            if error not in r.text:
+                return True
+            else:
+                return False
+
+        elif error_type == "status_code":
+            # Checks if the status code of the repsonse is 404
+            if not r.status_code == 404:
+                return True
+            else:
+                return False
+
+        elif error_type == "response_url":
+            error = self.dict.get(social_network).get("errorUrl")
+            # Checks if the redirect url is the same as the one defined in data.json
+            if error not in r.url:
+                return True
+            else:
+                return False
+
     def make_request(self, url, error_type, social_network):
         try:
             r = requests.get(url, headers=self.header)
