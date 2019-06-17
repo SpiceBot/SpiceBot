@@ -2,7 +2,7 @@
 from __future__ import unicode_literals, absolute_import, division, print_function
 """How to handle gifs"""
 
-from sopel.config.types import StaticSection, ValidatedAttribute
+from sopel.config.types import StaticSection, ValidatedAttribute, ListAttribute
 import sopel_modules
 
 from .Config import config as botconfig
@@ -20,7 +20,7 @@ import json
 
 
 class SpiceBot_Gif_MainSection(StaticSection):
-    extra = ValidatedAttribute('extra', default=None)
+    extra = ListAttribute('extra', default=None)
     nsfw = ValidatedAttribute('nsfw', default=False)
 
 
