@@ -25,9 +25,9 @@ class Sherlock():
 
         valid_usernames_dict = read_directory_json_to_dict(dir_to_scan, "Gif API", "SpiceBot_Gif")
 
-        for sherlockdict in list(valid_usernames_dict.keys()):
-            self.dict[sherlockdict] = valid_usernames_dict[sherlockdict]
-            self.dict[sherlockdict]["cache"] = dict()
+        for social_network in list(valid_usernames_dict.keys()):
+            self.dict[social_network] = valid_usernames_dict[social_network]
+            self.dict[social_network]["cache"] = []
 
     def check_network(self, username, social_network):
 
