@@ -49,16 +49,15 @@ class BotGif():
         valid_gif_api_dict = read_directory_json_to_dict(dir_to_scan, "Gif API", "SpiceBot_Gif")
 
         for gif_api in list(valid_gif_api_dict.keys()):
-            gif_api_base = os.path.basename(gif_api).rsplit('.', 1)[0]
-            botconfig.define_section(gif_api_base, GifAPISection, validate=False)
+            botconfig.define_section(gif_api, GifAPISection, validate=False)
 
-            self.valid_api[gif_api_base] = valid_gif_api_dict[gif_api]
-            self.valid_api[gif_api_base]["apikey"] = None
-            self.valid_api[gif_api_base]["cache"] = dict()
+            self.valid_api[gif_api] = valid_gif_api_dict[gif_api]
+            self.valid_api[gif_api]["apikey"] = None
+            self.valid_api[gif_api]["cache"] = dict()
 
-            apikey = eval("botconfig." + gif_api_base + ".apikey")
+            apikey = eval("botconfig." + gif_api + ".apikey")
             if apikey:
-                self.valid_api[gif_api_base]["apikey"] = apikey
+                self.valid_api[gif_api]["apikey"] = apikey
 
         for validgifapi in list(self.valid_api.keys()):
             command_dict = {
