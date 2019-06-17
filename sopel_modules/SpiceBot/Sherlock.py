@@ -30,6 +30,10 @@ class Sherlock():
             self.dict[sherlockdict]["cache"] = dict()
 
     def check_network(self, username, social_network):
+
+        if username in self.dict[social_network]["cache"]:
+            return True
+
         url = self.dict.get(social_network).get("url").format(username)
         error_type = self.dict.get(social_network).get("errorType")
         cant_have_period = self.dict.get(social_network).get("noPeriod")
@@ -40,28 +44,30 @@ class Sherlock():
 
         r, error_type = self.make_request(url=url, error_type=error_type, social_network=social_network)
 
+        user_exists = True
+
         if error_type == "message":
             error = self.dict.get(social_network).get("errorMsg")
             # Checks if the error message is in the HTML
-            if error not in r.text:
-                return True
-            else:
-                return False
+            if error in r.text:
+                user_exists = False
 
         elif error_type == "status_code":
             # Checks if the status code of the repsonse is 404
-            if not r.status_code == 404:
-                return True
-            else:
-                return False
+            if r.status_code == 404:
+                user_exists = False
 
         elif error_type == "response_url":
             error = self.dict.get(social_network).get("errorUrl")
             # Checks if the redirect url is the same as the one defined in data.json
-            if error not in r.url:
-                return True
-            else:
-                return False
+            if error in r.url:
+                user_exists = False
+
+        if user_exists:
+            self.dict[social_network]["cache"].append(username)
+            return True
+        else:
+            return False
 
     def make_request(self, url, error_type, social_network):
         try:
