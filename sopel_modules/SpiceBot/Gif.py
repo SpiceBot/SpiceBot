@@ -127,13 +127,17 @@ class BotGif():
         for currentapi in searchdict['gifsearch']:
 
             # check if query is already cached
-            if searchdict["searchquery"].lower() in list(self.valid_api[currentapi]["cache"].keys()) or not len(self.valid_api[currentapi]["cache"][str(searchdict["searchquery"]).lower()]):
-                verifygoodlinks = []
-                for gifresult in self.valid_api[currentapi]["cache"][str(searchdict["searchquery"])]:
-                    if gifresult["returnurl"] not in self.badlinks:
-                        verifygoodlinks.append(gifresult)
-                self.valid_api[currentapi]["cache"][str(searchdict["searchquery"])] = verifygoodlinks
-            else:
+            searchfor = True
+            if searchdict["searchquery"].lower() in list(self.valid_api[currentapi]["cache"].keys()):
+                if len(self.valid_api[currentapi]["cache"][str(searchdict["searchquery"]).lower()]):
+                    searchfor = False
+                    verifygoodlinks = []
+                    for gifresult in self.valid_api[currentapi]["cache"][str(searchdict["searchquery"])]:
+                        if gifresult["returnurl"] not in self.badlinks:
+                            verifygoodlinks.append(gifresult)
+                    self.valid_api[currentapi]["cache"][str(searchdict["searchquery"])] = verifygoodlinks
+
+            if searchfor:
                 self.valid_api[currentapi]["cache"][str(searchdict["searchquery"]).lower()] = []
                 # assemble url
                 url = self.gif_url_assemble(currentapi, str(searchdict["searchquery"]), str(searchdict["searchlimit"]), searchdict['nsfw'])
