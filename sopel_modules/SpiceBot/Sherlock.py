@@ -9,6 +9,7 @@ from .Tools import read_directory_json_to_dict
 import os
 from fake_useragent import UserAgent
 import requests
+import time
 
 
 class Sherlock():
@@ -27,12 +28,16 @@ class Sherlock():
 
         for social_network in list(valid_usernames_dict.keys()):
             self.dict[social_network] = valid_usernames_dict[social_network]
-            self.dict[social_network]["cache"] = []
+            self.dict[social_network]["cache"] = dict()
 
     def check_network(self, username, social_network):
 
-        if username in self.dict[social_network]["cache"]:
-            return True
+        if username in list(self.dict[social_network]["cache"].keys()):
+            if not self.dict[social_network]["cache"][username]["exists"]:
+                if time.time() - self.dict[social_network]["cache"][username]["time"] <= 1800:
+                    return True
+            else:
+                return True
 
         url = self.dict.get(social_network).get("url").format(username)
         error_type = self.dict.get(social_network).get("errorType")
@@ -63,8 +68,11 @@ class Sherlock():
             if error in r.url:
                 user_exists = False
 
+        if username not in list(self.dict[social_network]["cache"].keys()):
+            self.dict[social_network]["cache"][username] = {}
+        self.dict[social_network]["cache"][username]["time"] = time.time()
+        self.dict[social_network]["cache"][username]["exists"] = user_exists
         if user_exists:
-            self.dict[social_network]["cache"].append(username)
             return True
         else:
             return False
