@@ -49,29 +49,30 @@ class Sherlock():
 
         r, error_type = self.make_request(url=url, error_type=error_type, social_network=social_network)
 
-        user_exists = True
+        user_exists = False
 
         if error_type == "message":
             error = self.dict.get(social_network).get("errorMsg")
             # Checks if the error message is in the HTML
-            if error in r.text:
-                user_exists = False
+            if error not in r.text:
+                user_exists = True
 
         elif error_type == "status_code":
             # Checks if the status code of the repsonse is 404
-            if r.status_code == 404:
-                user_exists = False
+            if not r.status_code == 404:
+                user_exists = True
 
         elif error_type == "response_url":
             error = self.dict.get(social_network).get("errorUrl")
             # Checks if the redirect url is the same as the one defined in data.json
-            if error in r.url:
-                user_exists = False
+            if error not in r.url:
+                user_exists = True
 
         if username not in list(self.dict[social_network]["cache"].keys()):
             self.dict[social_network]["cache"][username] = {}
         self.dict[social_network]["cache"][username]["time"] = time.time()
         self.dict[social_network]["cache"][username]["exists"] = user_exists
+
         if user_exists:
             return True
         else:
