@@ -20,7 +20,7 @@ import json
 
 
 class SpiceBot_Gif_MainSection(StaticSection):
-    extra = ListAttribute('extra', default=None)
+    extra = ListAttribute('extra')
     nsfw = ValidatedAttribute('nsfw', default=False)
 
 
