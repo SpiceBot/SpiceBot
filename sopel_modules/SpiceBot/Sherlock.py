@@ -15,7 +15,7 @@ class Sherlock():
 
     def __init__(self):
         self.header = {'User-Agent': str(UserAgent().chrome)}
-        self.dict - dict()
+        self.dict = {}
 
         dir_to_scan = []
         for plugin_dir in set(sopel_modules.__path__):
