@@ -48,7 +48,7 @@ class BotLogs():
             self.dict["queue"].append(logmessage)
 
         if stdio:
-            self.botstderr(logmessage)
+            self.botstderr(logmessage + "\n")
 
         if logtype not in list(self.dict["list"].keys()):
             self.dict["list"][logtype] = []
