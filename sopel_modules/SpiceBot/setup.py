@@ -17,6 +17,7 @@ from .Google import SpiceBot_Google_MainSection
 from .Update import SpiceBot_Update_MainSection
 from .osd import SopelWrapperOSD, ToolsOSD, SopelOSD, SpiceBot_OSD
 from .Kick import SopelWrapperKICK, SopelKICK, SpiceBot_Kick
+from .Gif import SpiceBot_Gif_MainSection
 from .AI import SpiceBot_AI_MainSection
 
 
@@ -51,6 +52,8 @@ def setup(bot):
 
     # startupmonologue
     setup_startupmonologue(bot)
+
+    setup_gif(bot)
 
 
 def setup_config(bot):
@@ -138,3 +141,7 @@ def setup_kick(bot):
     logs.log('SpiceBot_Kick', "Checking for config settings")
     bot.config.define_section("SpiceBot_Kick", SpiceBot_Kick, validate=False)
     botconfig.define_section("SpiceBot_Kick", SpiceBot_Kick, validate=False)
+
+
+def setup_gif(bot):
+    bot.config.define_section("SopelGifSearch", SpiceBot_Gif_MainSection, validate=False)

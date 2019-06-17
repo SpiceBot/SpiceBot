@@ -19,6 +19,7 @@ class SpiceBot_Google_MainSection(StaticSection):
 class Google():
 
     def __init__(self):
+        self.header = {'User-Agent': str(UserAgent().chrome)}
         self.setup_google()
         self.cache = {
                     "info": {},
@@ -55,12 +56,11 @@ class Google():
         return returnurl
 
     def search_info(self, searchterm, retry=False):
-        header = {'User-Agent': str(UserAgent().chrome)}
         data = searchterm.replace(' ', '+')
         lookfor = data.replace(':', '%3A')
         if not botconfig.SpiceBot_Google.search_api or retry:
             try:
-                var = requests.get(r'http://www.google.com/search?q=' + lookfor + '&btnI', headers=header)
+                var = requests.get(r'http://www.google.com/search?q=' + lookfor + '&btnI', headers=self.header)
             except Exception as e:
                 var = e
                 var = None
@@ -71,12 +71,11 @@ class Google():
             return self.search_info(searchterm, retry=True)
 
     def search_maps(self, searchterm, retry=False):
-        header = {'User-Agent': str(UserAgent().chrome)}
         data = searchterm.replace(' ', '+')
         lookfor = data.replace(':', '%3A')
         if not botconfig.SpiceBot_Google.search_api or retry:
             try:
-                var = requests.get(r'http://www.google.com/maps/place/' + lookfor, headers=header)
+                var = requests.get(r'http://www.google.com/maps/place/' + lookfor, headers=self.header)
             except Exception as e:
                 var = e
                 var = None
@@ -87,12 +86,11 @@ class Google():
             return self.search_maps(searchterm, retry=True)
 
     def search_youtube(self, searchterm, retry=False):
-        header = {'User-Agent': str(UserAgent().chrome)}
         data = searchterm.replace(' ', '+')
         lookfor = data.replace(':', '%3A')
         if not botconfig.SpiceBot_Google.search_api or retry:
             try:
-                var = requests.get(r'https://www.youtube.com/search?q=' + lookfor + '&btnI', headers=header)
+                var = requests.get(r'https://www.youtube.com/search?q=' + lookfor + '&btnI', headers=self.header)
             except Exception as e:
                 var = e
                 var = None

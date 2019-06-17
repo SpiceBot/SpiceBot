@@ -7,6 +7,7 @@ from .Commands import SpiceBot_Commands_MainSection
 from .Google import SpiceBot_Google_MainSection
 from .AI import SpiceBot_AI_MainSection
 from .Update import SpiceBot_Update_MainSection
+from .Gif import SpiceBot_Gif_MainSection
 from .Kick import SpiceBot_Kick
 from .osd import SpiceBot_OSD
 
@@ -44,3 +45,7 @@ def configure(config):
 
     config.define_section("SpiceBot_Google", SpiceBot_Google_MainSection, validate=False)
     config.SpiceBot_Google.configure_setting('search_api', 'api key for google searching')
+
+    config.define_section("SpiceBot_Gif", SpiceBot_Gif_MainSection, validate=False)
+    config.SopelGifSearch.configure_setting('extra', 'SpiceBot_Gif API Extra directory')
+    config.SopelGifSearch.configure_setting('nsfw', 'SpiceBot_Gif API nsfw content')
