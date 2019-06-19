@@ -31,10 +31,13 @@ class Sherlock():
             self.dict[social_network]["cache"] = dict()
 
     def check_network(self, username, social_network):
+        username = str(username)
 
         if username in list(self.dict[social_network]["cache"].keys()):
             if time.time() - self.dict[social_network]["cache"][username]["time"] <= 1800:
                 return self.dict[social_network]["cache"][username]["exists"]
+        else:
+            self.dict[social_network]["cache"][username] = dict()
 
         url = self.dict.get(social_network).get("url").format(username)
         error_type = self.dict.get(social_network).get("errorType")
