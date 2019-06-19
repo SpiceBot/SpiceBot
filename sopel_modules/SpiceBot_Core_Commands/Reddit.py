@@ -16,7 +16,9 @@ import spicemanip
           """)
 def bot_command_reddit_user(bot, trigger):
     trigger_command = spicemanip.main(trigger.args[1], 1).lower()[:1]
+    trigger_arg = spicemanip.main(trigger.args[1], 1).lower()[1:]
     bot.osd(str(trigger_command))
+    bot.osd(str(trigger_arg))
 
 
 @sopel.module.rule(r"""(?:)r/
