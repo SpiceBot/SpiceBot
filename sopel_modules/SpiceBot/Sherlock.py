@@ -31,7 +31,7 @@ class Sherlock():
             self.dict[social_network]["cache"] = dict()
 
     def check_network(self, username, social_network):
-        username = str(username)
+        username = str(username).lower()
 
         if username in list(self.dict[social_network]["cache"].keys()):
             if time.time() - self.dict[social_network]["cache"][username]["time"] <= 1800:
