@@ -18,6 +18,5 @@ import sopel_modules.SpiceBot as SpiceBot
           )
           """)
 def bot_command_reddit_syntax(bot, trigger):
-    bot.say(str(trigger.group(1).split(' ', 1)))
     message = SpiceBot.reddit.prerun(trigger)
-    bot.osd(str(message))
+    bot.osd(message)
