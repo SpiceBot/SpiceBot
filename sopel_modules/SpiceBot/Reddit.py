@@ -5,14 +5,13 @@ This is the SpiceBot Reddit system.
 """
 
 from sopel.config.types import StaticSection, ValidatedAttribute
+from sopel.formatting import bold, color, colors
 
 import spicemanip
 
-import requests
-# from lxml import html
-from fake_useragent import UserAgent
+import datetime as dt
 import praw
-from prawcore import NotFound
+import prawcore
 from random import randint
 
 from .Config import config as botconfig
@@ -29,7 +28,6 @@ class BotReddit():
     def __init__(self):
         self.setup_reddit()
         self.cache = {}
-        self.header = {'User-Agent': str(UserAgent().chrome)}
         self.client_id = botconfig.SpiceBot_Reddit.client_id
         self.client_secret = botconfig.SpiceBot_Reddit.client_secret
         if not self.client_id or not self.client_secret:
@@ -50,13 +48,6 @@ class BotReddit():
             return "Reddit API is not available"
         message = "if you see this, there may be an error"
         trigger_argsdict = self.trigger_handler(trigger)
-        page = self.check_reddit_up()
-        if not page:
-            message = "Reddit Appears to be down"
-            return message
-        elif str(page.status_code).startswith(tuple(["4", "5"])):
-            message = "Reddit is replying with http code " + str(page.status_code)
-            return message
         if trigger_argsdict["slashcomm"] == "u":
             return self.user_handler(trigger_argsdict)
         elif trigger_argsdict["slashcomm"] == "r":
@@ -73,7 +64,36 @@ class BotReddit():
 
         fulluurul = str("https://www.reddit.com/" + trigger_argsdict["slashcomm"] + "/" + trigger_argsdict["command"])
         if subcommand == 'check':
-            return [trigger_argsdict["command"] + " appears to be a valid reddit " + trigger_argsdict["urltypetxt"] + "!", fulluurul]
+            u = self.praw.redditor(trigger_argsdict["command"])
+            message = ['[REDDITOR] ' + u.name]
+            is_cakeday = self.user_cakeday(u.created_utc)
+            if is_cakeday:
+                message.append(bold(color('Cake day', colors.LIGHT_PURPLE)))
+            message.append(fulluurul)
+            if u.is_gold:
+                message.append(bold(color('Gold', colors.YELLOW)))
+            if u.is_mod:
+                message.append(bold(color('Mod', colors.GREEN)))
+            message.append('Link: ' + str(u.link_karma))
+            message.append('Comment: ' + str(u.comment_karma))
+            return message
+
+    def user_cakeday(self, created):
+        now = dt.datetime.utcnow()
+        cakeday_start = dt.datetime.utcfromtimestamp(created)
+        cakeday_start = cakeday_start.replace(year=now.year)
+        day = dt.timedelta(days=1)
+        year_div_by_400 = now.year % 400 == 0
+        year_div_by_100 = now.year % 100 == 0
+        year_div_by_4 = now.year % 4 == 0
+        is_leap = year_div_by_400 or ((not year_div_by_100) and year_div_by_4)
+        if (not is_leap) and ((cakeday_start.month, cakeday_start.day) == (2, 29)):
+            # If cake day is 2/29 and it's not a leap year, cake day is 3/1.
+            # Cake day begins at exact account creation time.
+            is_cakeday = cakeday_start + day <= now <= cakeday_start + (2 * day)
+        else:
+            is_cakeday = cakeday_start <= now <= cakeday_start + day
+        return is_cakeday
 
     def subreddit_handler(self, trigger_argsdict):
         subcommand_valid = ['check', 'hot', 'new', 'top', 'random', 'controversial', 'gilded', 'rising', 'best']
@@ -155,19 +175,11 @@ class BotReddit():
 
         return trigger_argsdict
 
-    def check_reddit_up(self):
-        try:
-            page = requests.get("https://www.reddit.com/", headers=self.header)
-        except Exception as e:
-            page = e
-            page = None
-        return page
-
     def reddit_subreddit_check(self, sub):
         returndict = {"exists": True, "error": None}
         try:
             self.praw.subreddits.search_by_name(sub, exact=True)
-        except NotFound:
+        except prawcore.exceptions.NotFound:
             returndict["error"] = str(sub + " appears to not exist!")
             returndict["exists"] = False
             return returndict
@@ -192,7 +204,7 @@ class BotReddit():
         returndict = {"exists": True, "error": None}
         try:
             self.praw.redditor(user).fullname
-        except NotFound:
+        except prawcore.exceptions.NotFound:
             returndict["exists"] = False
             returndict["error"] = str(user + " appears to not exist!")
             return returndict
