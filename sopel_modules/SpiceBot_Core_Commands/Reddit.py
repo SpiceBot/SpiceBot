@@ -13,7 +13,7 @@ import sopel_modules.SpiceBot as SpiceBot
           )
           """)
 def bot_command_reddit_user(bot, trigger):
-    trigger = SpiceBot.reddit.reddit_prerun(trigger)
+    trigger = SpiceBot.reddit.prerun(trigger)
     bot.osd(str(trigger.sb))
 
 
@@ -23,5 +23,5 @@ def bot_command_reddit_user(bot, trigger):
           )
           """)
 def bot_command_reddit_subreddit(bot, trigger):
-    trigger = SpiceBot.reddit.reddit_prerun(trigger)
+    trigger = SpiceBot.reddit.prerun(trigger)
     bot.osd(str(trigger.sb))
