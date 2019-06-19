@@ -15,6 +15,7 @@ from .osd import *
 from .StartupMonologue import *
 from .Logs import *
 from .Kick import *
+from .Watch_URL import *
 
 
 __author__ = 'Sam Zick'
