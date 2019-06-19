@@ -34,6 +34,6 @@ def reddit_prerun(trigger):
     trigger.sb = {
                     "slashcomm": spicemanip.main(trigger_args, 1).lower()[:1],
                     "command": spicemanip.main(trigger_args, 1).lower()[2:],
-                    "args": spicemanip.main(trigger_args, "2+", 'list').lower()
+                    "args": spicemanip.main(trigger_args, "2+", 'list')
                     }
     return trigger
