@@ -5,7 +5,8 @@ import sopel
 
 
 # @sopel.module.url('(.*)')
-@sopel.module.url(r'xkcd.com/(\d+)')
+# @sopel.module.url(r'xkcd.com/(\d+)')
+@sopel.module.rule(r'(?u).*(https?://\S+).*')
 def watch_url(bot, trigger):
 
     bot.osd(str(trigger))
