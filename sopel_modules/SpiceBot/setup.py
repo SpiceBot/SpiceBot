@@ -15,6 +15,7 @@ from .Channels import SpiceBot_Channels_MainSection
 from .Commands import SpiceBot_Commands_MainSection
 from .Google import SpiceBot_Google_MainSection
 from .Update import SpiceBot_Update_MainSection
+from .Reddit import SpiceBot_Reddit_MainSection
 from .osd import SopelWrapperOSD, ToolsOSD, SopelOSD, SpiceBot_OSD
 from .Kick import SopelWrapperKICK, SopelKICK, SpiceBot_Kick
 from .Gif import SpiceBot_Gif_MainSection
@@ -54,6 +55,8 @@ def setup(bot):
     setup_startupmonologue(bot)
 
     setup_gif(bot)
+
+    setup_reddit(bot)
 
 
 def setup_config(bot):
@@ -145,3 +148,7 @@ def setup_kick(bot):
 
 def setup_gif(bot):
     bot.config.define_section("SopelGifSearch", SpiceBot_Gif_MainSection, validate=False)
+
+
+def setup_reddit(bot):
+    bot.config.define_section("SpiceBot_Reddit", SpiceBot_Reddit_MainSection, validate=False)
