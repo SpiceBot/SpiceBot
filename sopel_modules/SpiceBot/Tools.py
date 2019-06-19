@@ -333,7 +333,7 @@ def read_directory_json_to_dict(directories, configtypename="Config File", log_f
             if len(os.listdir(directory)) > 0:
                 for file in os.listdir(directory):
                     filepath = os.path.join(directory, file)
-                    if os.path.isfile(filepath):
+                    if os.path.isfile(filepath) and filepath.endswith('.json'):
                         filesprocess.append(filepath)
 
     for filepath in filesprocess:
@@ -356,7 +356,8 @@ def read_directory_json_to_dict(directories, configtypename="Config File", log_f
             filecount += 1
             slashsplit = str(filepath).split("/")
             filename = slashsplit[-1]
-            configs_dict[filename] = dict_from_file
+            filename_base = os.path.basename(filename).rsplit('.', 1)[0]
+            configs_dict[filename_base] = dict_from_file
         else:
             fileopenfail += 1
 

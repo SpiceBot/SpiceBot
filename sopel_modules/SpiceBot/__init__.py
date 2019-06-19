@@ -24,6 +24,7 @@ from .Users import *
 from .AI import *
 from .Google import *
 from .Gif import *
+from .Sherlock import *
 
 
 from .configure import *

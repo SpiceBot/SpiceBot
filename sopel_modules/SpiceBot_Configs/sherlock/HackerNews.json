@@ -1,0 +1,5 @@
+{
+"url": "https://news.ycombinator.com/user?id={}",
+"errorType": "message",
+"errorMsg": "No such user."
+}

@@ -1,0 +1,5 @@
+{
+"url": "https://steamcommunity.com/id/{}",
+"errorType": "message",
+"errorMsg": "The specified profile could not be found"
+}
