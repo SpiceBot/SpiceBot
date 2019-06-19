@@ -62,6 +62,8 @@ def bot_command_rule_ai(bot, trigger):
     else:
         command_type = 'other'
         trigger_args = spicemanip.main(message, 'create')
+        if not len(trigger_args):
+            return
         trigger_command = trigger_args[0]
         fulltrigger = spicemanip.main(trigger_args, 0)
 
