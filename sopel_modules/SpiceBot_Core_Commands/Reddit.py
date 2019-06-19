@@ -4,6 +4,8 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.module
 
+import spicemanip
+
 # import sopel_modules.SpiceBot as SpiceBot
 
 
@@ -13,8 +15,8 @@ import sopel.module
           )
           """)
 def bot_command_reddit_user(bot, trigger):
-    bot.osd(str(trigger))
-    bot.osd(str(trigger.args))
+    trigger_command = spicemanip.main(trigger.args[1], 1).lower()[0:]
+    bot.osd(str(trigger_command))
 
 
 @sopel.module.rule(r"""(?:)r/
