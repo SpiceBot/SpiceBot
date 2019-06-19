@@ -12,16 +12,11 @@ import sopel_modules.SpiceBot as SpiceBot
             (?:\\/ | [^/])+
           )
           """)
-def bot_command_reddit_user(bot, trigger):
-    message = SpiceBot.reddit.prerun(trigger)
-    bot.osd(str(message))
-
-
 @sopel.module.rule(r"""(?:)r/
           (
             (?:\\/ | [^/])+
           )
           """)
-def bot_command_reddit_subreddit(bot, trigger):
+def bot_command_reddit_user(bot, trigger):
     message = SpiceBot.reddit.prerun(trigger)
     bot.osd(str(message))

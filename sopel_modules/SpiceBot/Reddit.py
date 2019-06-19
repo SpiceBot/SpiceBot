@@ -28,7 +28,7 @@ class BotReddit():
     """This Logs all channels known to the server"""
     def __init__(self):
         self.setup_reddit()
-        self.dict = {}
+        self.cache = {}
         self.header = {'User-Agent': str(UserAgent().chrome)}
         self.client_id = botconfig.SpiceBot_Reddit.client_id
         self.client_secret = botconfig.SpiceBot_Reddit.client_secret
@@ -174,6 +174,7 @@ class BotReddit():
 
         try:
             subtype = self.praw.subreddit(sub).subreddit_type
+            returndict["subtype"] = subtype
         except Exception as e:
             returndict["exists"] = False
             if str(e) == "received 403 HTTP response":
@@ -185,8 +186,6 @@ class BotReddit():
             else:
                 returndict["error"] = str(sub + " appears to not have a type")
                 return returndict
-        return subtype
-
         return returndict
 
     def reddit_user_exists(self, user):
