@@ -25,6 +25,7 @@ from .AI import *
 from .Google import *
 from .Gif import *
 from .Sherlock import *
+from .Reddit import *
 
 
 from .configure import *
