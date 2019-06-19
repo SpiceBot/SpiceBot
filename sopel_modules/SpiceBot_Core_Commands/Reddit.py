@@ -30,9 +30,10 @@ def bot_command_reddit_subreddit(bot, trigger):
 
 
 def reddit_prerun(trigger):
+    trigger_args = spicemanip.main(trigger.args[1], 'create')
     trigger.sb = {
-                    "slashcomm": spicemanip.main(trigger.args[1], 1).lower()[:1],
-                    "command": spicemanip.main(trigger.args[1], 1).lower()[2:],
-                    "args": spicemanip.main(trigger.args[1], "2+", 'list').lower()
+                    "slashcomm": spicemanip.main(trigger_args, 1).lower()[:1],
+                    "command": spicemanip.main(trigger_args, 1).lower()[2:],
+                    "args": spicemanip.main(trigger_args, "2+", 'list').lower()
                     }
     return trigger
