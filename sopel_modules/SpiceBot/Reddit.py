@@ -27,14 +27,14 @@ class SpiceBot_Reddit_MainSection(StaticSection):
 class BotReddit():
     """This Logs all channels known to the server"""
     def __init__(self):
-        self.setup_commands()
+        self.setup_reddit()
         self.dict = {}
         self.header = {'User-Agent': str(UserAgent().chrome)}
         self.client_id = botconfig.SpiceBot_Reddit.client_id
         self.client_secret = botconfig.SpiceBot_Reddit.client_secret
         if not self.client_id or not self.client_secret:
             self.praw = None
-            logs.log('SpiceBot_Reddit', "Error loading reddit auth", True)
+            logs.log('SpiceBot_Reddit', "Client ID or Secret missing from config", True)
         else:
             self.praw = praw.Reddit(
                                     client_id=self.client_id,
@@ -42,7 +42,7 @@ class BotReddit():
                                     user_agent='spicebot:net.example.myredditapp:v1.2.3 (by /u/SpiceBot-dbb)'
                                     )
 
-    def setup_commands(self):
+    def setup_reddit(self):
         botconfig.define_section("SpiceBot_Reddit", SpiceBot_Reddit_MainSection, validate=False)
 
     def prerun(self, trigger):
