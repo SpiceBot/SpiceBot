@@ -222,31 +222,36 @@ class BotCommands():
                 filelinelist = []
                 currentsuccesslines = 0
                 for detected_line in detected_lines:
+                    try:
 
-                    # Commands
-                    if str(detected_line).startswith("commands"):
-                        comtype = "module"
-                        validcoms = eval(str(detected_line).split("commands")[-1])
-                    elif str(detected_line).startswith("nickname_commands"):
-                        comtype = "nickname"
-                        validcoms = eval(str(detected_line).split("nickname_commands")[-1])
-                    elif str(detected_line).startswith("rule"):
-                        comtype = "rule"
-                        validcoms = eval(str(detected_line).split("rule")[-1])
+                        # Commands
+                        if str(detected_line).startswith("commands"):
+                            comtype = "module"
+                            validcoms = eval(str(detected_line).split("commands")[-1])
+                        elif str(detected_line).startswith("nickname_commands"):
+                            comtype = "nickname"
+                            validcoms = eval(str(detected_line).split("nickname_commands")[-1])
+                        elif str(detected_line).startswith("rule"):
+                            comtype = "rule"
+                            validcoms = eval(str(detected_line).split("rule")[-1])
 
-                    if isinstance(validcoms, tuple):
-                        validcoms = list(validcoms)
-                    else:
-                        validcoms = [validcoms]
-                    for regexcom in ["(.*)", '^\?(.*)']:
-                        if regexcom in validcoms:
-                            while regexcom in validcoms:
-                                validcoms.remove(regexcom)
+                        if isinstance(validcoms, tuple):
+                            validcoms = list(validcoms)
+                        else:
+                            validcoms = [validcoms]
+                        for regexcom in ["(.*)", '^\?(.*)']:
+                            if regexcom in validcoms:
+                                while regexcom in validcoms:
+                                    validcoms.remove(regexcom)
 
-                    if len(validcoms):
-                        validcomdict = {"comtype": comtype, "validcoms": validcoms}
-                        filelinelist.append(validcomdict)
-                        currentsuccesslines += 1
+                        if len(validcoms):
+                            validcomdict = {"comtype": comtype, "validcoms": validcoms}
+                            filelinelist.append(validcomdict)
+                            currentsuccesslines += 1
+                    except Exception as e:
+                        addnothing = e
+                        if addnothing:
+                            currentsuccesslines += 0
 
                 if currentsuccesslines:
                     self.dict['counts'] += 1
