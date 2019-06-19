@@ -15,7 +15,7 @@ import spicemanip
           )
           """)
 def bot_command_reddit_user(bot, trigger):
-    trigger_command = spicemanip.main(trigger.args[1], 1).lower()[0:]
+    trigger_command = spicemanip.main(trigger.args[1], 1).lower()[:1]
     bot.osd(str(trigger_command))
 
 
