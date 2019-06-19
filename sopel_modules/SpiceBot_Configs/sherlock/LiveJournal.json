@@ -1,0 +1,6 @@
+{
+"url": "https://{}.livejournal.com",
+"errorType": "message",
+"errorMsg": "Unknown Journal",
+"noPeriod": "True"
+}

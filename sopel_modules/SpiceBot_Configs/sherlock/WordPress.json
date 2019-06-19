@@ -1,0 +1,6 @@
+{
+"url": "https://{}.wordpress.com",
+"errorType": "response_url",
+"errorUrl": "wordpress.com/typo/?subdomain=",
+"noPeriod": "True"
+}
