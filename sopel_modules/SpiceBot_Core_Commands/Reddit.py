@@ -15,10 +15,8 @@ import spicemanip
           )
           """)
 def bot_command_reddit_user(bot, trigger):
-    trigger_command = spicemanip.main(trigger.args[1], 1).lower()[:1]
-    trigger_arg = spicemanip.main(trigger.args[1], 1).lower()[1:]
-    bot.osd(str(trigger_command))
-    bot.osd(str(trigger_arg))
+    trigger = reddit_prerun(trigger)
+    bot.osd(str(trigger.sb))
 
 
 @sopel.module.rule(r"""(?:)r/
@@ -27,5 +25,13 @@ def bot_command_reddit_user(bot, trigger):
           )
           """)
 def bot_command_reddit_subreddit(bot, trigger):
-    bot.osd(str(trigger))
-    bot.osd(str(trigger.args))
+    trigger = reddit_prerun(trigger)
+    bot.osd(str(trigger.sb))
+
+
+def reddit_prerun(trigger):
+    trigger.sb = {
+                    "command": spicemanip.main(trigger.args[1], 1).lower()[:1],
+                    "args": spicemanip.main(trigger.args[1], 1).lower()[2:]
+                    }
+    return trigger
