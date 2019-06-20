@@ -60,11 +60,11 @@ class BotGif():
                 self.valid_api[gif_api]["apikey"] = apikey
 
         for validgifapi in list(self.valid_api.keys()):
+            botcommands.dict['counts'] += 1
             command_dict = {
                             "comtype": "gif_prefix",
                             "validcoms": [validgifapi]
                             }
-            botcommands.dict['counts'] += 1
             botcommands.register(command_dict)
 
     def setup_gif(self):
