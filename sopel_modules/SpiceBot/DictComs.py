@@ -41,8 +41,6 @@ class BotDictCommands():
 
             dict_from_file = self.valid_dictcom_dict[jsondict]
 
-            dict_from_file["comtype"] = "prefix"
-
             # default command to filename
             if "validcoms" not in list(dict_from_file.keys()):
                 dict_from_file["validcoms"] = [dict_from_file["filename"]]
@@ -66,6 +64,8 @@ class BotDictCommands():
             # check that type is set, use cases will inherit this if not set
             if "type" not in list(dict_from_file.keys()) or dict_from_file["type"] not in self.valid_com_types:
                 dict_from_file["type"] = 'simple'
+
+            dict_from_file["comtype"] = "prefix_" + dict_from_file["type"]
 
             # Don't process these.
             keysprocessed = []
