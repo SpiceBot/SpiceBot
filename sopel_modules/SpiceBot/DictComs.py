@@ -70,7 +70,7 @@ class BotJSONCommands():
             # Don't process these.
             keysprocessed = []
             keysprocessed.extend(["validcoms", "filepath", "filename"])
-            keysprocessed.append("author", "contributors")
+            keysprocessed.extend(["author", "contributors"])
             keysprocessed.extend(["validcoms", "filepath", "filename", "description", "exampleresponse", "example", "privs"])
 
             # handle basic required dict handling
