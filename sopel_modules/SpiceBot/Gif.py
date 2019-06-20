@@ -42,8 +42,8 @@ class BotGif():
             gifcfgdir = os.path.join(configsdir, "gifapi")
             dir_to_scan.append(gifcfgdir)
 
-        if len(botconfig.SopelGifSearch.extra):
-            for extragifcfgdir in botconfig.SopelGifSearch.extra:
+        if len(botconfig.SpiceBot_Gif.extra):
+            for extragifcfgdir in botconfig.SpiceBot_Gif.extra:
                 dir_to_scan.append(extragifcfgdir)
 
         valid_gif_api_dict = read_directory_json_to_dict(dir_to_scan, "Gif API", "SpiceBot_Gif")
@@ -62,13 +62,13 @@ class BotGif():
         for validgifapi in list(self.valid_api.keys()):
             command_dict = {
                             "comtype": "gif_prefix",
-                            "validcoms": validgifapi
+                            "validcoms": [validgifapi]
                             }
             botcommands.dict['counts'] += 1
             botcommands.register(command_dict)
 
     def setup_gif(self):
-        botconfig.define_section("SopelGifSearch", SpiceBot_Gif_MainSection, validate=False)
+        botconfig.define_section("SpiceBot_Gif", SpiceBot_Gif_MainSection, validate=False)
 
     def get_gif(self, searchdict):
 
@@ -90,7 +90,7 @@ class BotGif():
                     for remx in query_defaults["gifsearchremove"]:
                         searchdict["gifsearch"].remove(remx)
 
-        if botconfig.SopelGifSearch.nsfw:
+        if botconfig.SpiceBot_Gif.nsfw:
             query_defaults["nsfw"] = True
 
         # verify query is there to search

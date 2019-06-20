@@ -352,14 +352,18 @@ def read_directory_json_to_dict(directories, configtypename="Config File", log_f
         # Close File
         inf.close()
 
-        if filereadgood and isinstance(dict_from_file, dict):
-            filecount += 1
-            slashsplit = str(filepath).split("/")
-            filename = slashsplit[-1]
-            filename_base = os.path.basename(filename).rsplit('.', 1)[0]
-            configs_dict[filename_base] = dict_from_file
-        else:
+        # gather file stats
+        slashsplit = str(filepath).split("/")
+        filename = slashsplit[-1]
+        filename_base = os.path.basename(filename).rsplit('.', 1)[0]
+
+        if not filereadgood or not isinstance(dict_from_file, dict):
             fileopenfail += 1
+        else:
+            filecount += 1
+            dict_from_file["filepath"] = str(filepath)
+            dict_from_file["filename"] = str(filename_base)
+            configs_dict[filename_base] = dict_from_file
 
     if filecount:
         if logging:

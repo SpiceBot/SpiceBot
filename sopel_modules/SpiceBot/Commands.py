@@ -107,27 +107,24 @@ class BotCommands():
         self.lock.acquire()
 
         command_type = command_dict["comtype"]
-        validcoms = command_dict["validcoms"]
-
-        if not isinstance(validcoms, list):
-            validcoms = [validcoms]
-
         if command_type not in list(self.dict['commands'].keys()):
             self.dict['commands'][command_type] = dict()
 
-        dict_from_file = dict()
-
         # default command to filename
-        if "validcoms" not in list(dict_from_file.keys()):
-            dict_from_file["validcoms"] = validcoms
+        if "validcoms" not in list(command_dict.keys()):
+            command_dict["validcoms"] = [command_dict["filename"]]
 
-        maincom = dict_from_file["validcoms"][0]
-        if len(dict_from_file["validcoms"]) > 1:
-            comaliases = spicemanip.main(dict_from_file["validcoms"], '2+', 'list')
+        validcoms = command_dict["validcoms"]
+        if not isinstance(validcoms, list):
+            validcoms = [validcoms]
+
+        maincom = command_dict["validcoms"][0]
+        if len(command_dict["validcoms"]) > 1:
+            comaliases = spicemanip.main(command_dict["validcoms"], '2+', 'list')
         else:
             comaliases = []
 
-        self.dict['commands'][command_type][maincom] = dict_from_file
+        self.dict['commands'][command_type][maincom] = command_dict
         for comalias in comaliases:
             if comalias not in list(self.dict['commands'][command_type].keys()):
                 self.dict['commands'][command_type][comalias] = {"aliasfor": maincom}
@@ -194,6 +191,11 @@ class BotCommands():
                 module_file_lines.append(line)
             module_file.close()
 
+            # gather file stats
+            slashsplit = str(modulefile).split("/")
+            filename = slashsplit[-1]
+            filename_base = os.path.basename(filename).rsplit('.', 1)[0]
+
             detected_lines = []
             for line in module_file_lines:
 
@@ -245,7 +247,12 @@ class BotCommands():
                                     validcoms.remove(regexcom)
 
                         if len(validcoms):
-                            validcomdict = {"comtype": comtype, "validcoms": validcoms}
+                            validcomdict = {
+                                            "comtype": comtype,
+                                            "validcoms": validcoms,
+                                            "filepath": str(modulefile),
+                                            "filename": filename_base,
+                                            }
                             filelinelist.append(validcomdict)
                             currentsuccesslines += 1
                     except Exception as e:
@@ -257,8 +264,8 @@ class BotCommands():
                     self.dict['counts'] += 1
 
                 if len(filelinelist):
-                    for atlinefound in filelinelist:
-                        self.register(atlinefound)
+                    for vcomdict in filelinelist:
+                        self.register(vcomdict)
 
 
 commands = BotCommands()
