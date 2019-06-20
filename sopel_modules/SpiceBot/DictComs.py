@@ -6,20 +6,14 @@ This is the SpiceBot JSON Commands system.
 This Class stores commands in an easy to access manner
 """
 
-import os
-
 from sopel.config.types import StaticSection, ListAttribute
-import sopel_modules
 
 from .Config import config as botconfig
 from .Read import read as botread
 from .Commands import commands as botcommands
 
-import spicemanip
-
 import requests
 from fake_useragent import UserAgent
-from lxml import html
 import urllib
 
 
@@ -40,15 +34,7 @@ class BotJSONCommands():
                                     "feeds", "search"
                                     ]
 
-            dir_to_scan = []
-            for plugin_dir in set(sopel_modules.__path__):
-                configsdir = os.path.join(plugin_dir, "SpiceBot_Configs")
-                gifcfgdir = os.path.join(configsdir, "SpiceBot_DictComs")
-                dir_to_scan.append(gifcfgdir)
-
-            if len(botconfig.SpiceBot_DictComs.extra):
-                for extragifcfgdir in botconfig.SpiceBot_DictComs.extra:
-                    dir_to_scan.append(extragifcfgdir)
+            dir_to_scan = botread.get_config_dirs("SpiceBot_DictComs")
 
             valid_dictcom_dict = botread.json_to_dict(dir_to_scan, "Dictionary Commands", "SpiceBot_DictComs")
 

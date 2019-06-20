@@ -20,6 +20,7 @@ from .osd import SopelWrapperOSD, ToolsOSD, SopelOSD, SpiceBot_OSD
 from .Kick import SopelWrapperKICK, SopelKICK, SpiceBot_Kick
 from .Gif import SpiceBot_Gif_MainSection
 from .DictComs import SpiceBot_DictComs_MainSection
+from .Sherlock import SpiceBot_Sherlock_MainSection
 from .AI import SpiceBot_AI_MainSection
 
 
@@ -60,6 +61,8 @@ def setup(bot):
     setup_reddit(bot)
 
     setup_dictcoms(bot)
+
+    setup_sherlock(bot)
 
 
 def setup_config(bot):
@@ -159,3 +162,7 @@ def setup_reddit(bot):
 
 def setup_dictcoms(bot):
     bot.config.define_section("SpiceBot_DictComs", SpiceBot_DictComs_MainSection, validate=False)
+
+
+def setup_sherlock(bot):
+    bot.config.define_section("SpiceBot_Sherlock", SpiceBot_Sherlock_MainSection, validate=False)

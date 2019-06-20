@@ -3,7 +3,6 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 """How to handle gifs"""
 
 from sopel.config.types import StaticSection, ValidatedAttribute, ListAttribute
-import sopel_modules
 
 from .Config import config as botconfig
 from .Read import read as botread
@@ -11,7 +10,6 @@ from .Commands import commands as botcommands
 
 import spicemanip
 
-import os
 from fake_useragent import UserAgent
 import urllib
 import random
@@ -36,15 +34,7 @@ class BotGif():
         self.header = {'User-Agent': str(UserAgent().chrome)}
         self.valid_api = {}
 
-        dir_to_scan = []
-        for plugin_dir in set(sopel_modules.__path__):
-            configsdir = os.path.join(plugin_dir, "SpiceBot_Configs")
-            gifcfgdir = os.path.join(configsdir, "SpiceBot_Gif")
-            dir_to_scan.append(gifcfgdir)
-
-        if len(botconfig.SpiceBot_Gif.extra):
-            for extragifcfgdir in botconfig.SpiceBot_Gif.extra:
-                dir_to_scan.append(extragifcfgdir)
+        dir_to_scan = botread.get_config_dirs("SpiceBot_Gif")
 
         valid_gif_api_dict = botread.json_to_dict(dir_to_scan, "Gif API", "SpiceBot_Gif")
 

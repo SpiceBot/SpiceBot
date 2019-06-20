@@ -10,6 +10,7 @@ from .Update import SpiceBot_Update_MainSection
 from .Gif import SpiceBot_Gif_MainSection
 from .DictComs import SpiceBot_DictComs_MainSection
 from .Reddit import SpiceBot_Reddit_MainSection
+from .Sherlock import SpiceBot_Sherlock_MainSection
 from .Kick import SpiceBot_Kick
 from .osd import SpiceBot_OSD
 
@@ -58,3 +59,6 @@ def configure(config):
 
     config.define_section("SpiceBot_DictComs", SpiceBot_DictComs_MainSection, validate=False)
     config.SpiceBot_DictComs.configure_setting('extra', 'SpiceBot_DictComs API Extra directory')
+
+    config.define_section("SpiceBot_Sherlock", SpiceBot_Sherlock_MainSection, validate=False)
+    config.SpiceBot_Sherlock.configure_setting('extra', 'SpiceBot_Sherlock API Extra directory')

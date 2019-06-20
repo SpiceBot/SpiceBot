@@ -17,15 +17,27 @@ class BotRead():
 
     def get_config_dirs(self, config_dir_name):
         dir_to_scan = []
+
+        # check config directory stored within this project
         for plugin_dir in set(sopel_modules.__path__):
             configsdir = os.path.join(plugin_dir, "SpiceBot_Configs")
             cfgdir = os.path.join(configsdir, config_dir_name)
-            dir_to_scan.append(cfgdir)
+            if os.path.exists(cfgdir) and os.path.isdir(cfgdir):
+                if len(os.listdir(cfgdir)) > 0:
+                    dir_to_scan.append(cfgdir)
 
-        extradir = eval("botconfig." + config_dir_name)
+        # attempt to check for extra directories
+        try:
+            extradir = eval("botconfig." + config_dir_name + ".extra")
+        except Exception as e:
+            extradir = e
+            extradir = []
         if len(extradir):
             for extracfgdir in extradir:
-                dir_to_scan.append(extracfgdir)
+                if os.path.exists(extracfgdir) and os.path.isdir(extracfgdir):
+                    if len(os.listdir(extracfgdir)) > 0:
+                        dir_to_scan.append(extracfgdir)
+
         return dir_to_scan
 
     def json_to_dict(self, directories, configtypename="Config File", log_from='read_directory_json_to_dict', logging=True):
