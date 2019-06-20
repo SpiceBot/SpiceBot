@@ -35,9 +35,9 @@ class BotJSONCommands():
 
         dir_to_scan = botread.get_config_dirs("SpiceBot_DictComs")
 
-        valid_dictcom_dict = botread.json_to_dict(dir_to_scan, "Dictionary Commands", "SpiceBot_DictComs")
+        self.valid_dictcom_dict = botread.json_to_dict(dir_to_scan, "Dictionary Commands", "SpiceBot_DictComs")
 
-        for dict_from_file in list(valid_dictcom_dict.keys()):
+        for dict_from_file in list(self.valid_dictcom_dict.keys()):
 
             dict_from_file["comtype"] = "prefix"
 
