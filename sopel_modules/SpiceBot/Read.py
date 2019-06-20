@@ -5,6 +5,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import sopel_modules
 
 import os
+import sys
 import codecs
 
 from .Logs import logs
@@ -62,7 +63,8 @@ class BotRead():
             # Read dictionary from file, if not, enable an empty dict
             filereadgood = True
             try:
-                inf = codecs.open(str(filepath), "r", encoding='utf-8')
+                sys.stderr(str(filepath))
+                inf = codecs.open(filepath, "r", encoding='utf-8')
                 infread = inf.read()
                 dict_from_file = eval(infread)
             except Exception as e:
@@ -113,7 +115,7 @@ class BotRead():
             # Read dictionary from file, if not, enable an empty dict
             filereadgood = True
             try:
-                inf = codecs.open(str(filepath), "r", encoding='utf-8')
+                inf = codecs.open(filepath, "r", encoding='utf-8')
                 infread = inf.read()
                 dict_from_file = eval(infread)
             except Exception as e:
