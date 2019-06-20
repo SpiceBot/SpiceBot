@@ -64,9 +64,7 @@ class BotJSONCommands():
 
                 # check that type is set, use cases will inherit this if not set
                 if "type" not in list(dict_from_file.keys()):
-                    foldername = dict_from_file["filepath"].split("/" + dict_from_file["filename"])[0]
-                    foldername = str(foldername).split("/")[-1]
-                    dict_from_file["type"] = foldername
+                    dict_from_file["type"] = dict_from_file["foldername"]
                 if dict_from_file["type"] not in self.valid_com_types:
                     dict_from_file["type"] = 'simple'
 

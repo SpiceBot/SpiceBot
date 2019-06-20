@@ -82,6 +82,8 @@ class BotRead():
                 filecount += 1
                 dict_from_file["filepath"] = str(filepath)
                 dict_from_file["filename"] = str(filename_base)
+                dict_from_file["folderpath"] = dict_from_file["filepath"].split("/" + dict_from_file["filename"])[0]
+                dict_from_file["foldername"] = str(dict_from_file["folderpath"]).split("/")[-1]
                 configs_dict[filename_base] = dict_from_file
 
         if filecount:

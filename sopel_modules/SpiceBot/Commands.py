@@ -195,6 +195,8 @@ class BotCommands():
             slashsplit = str(modulefile).split("/")
             filename = slashsplit[-1]
             filename_base = os.path.basename(filename).rsplit('.', 1)[0]
+            folderpath = str(modulefile).split("/" + filename)[0]
+            foldername = str(folderpath).split("/")[-1]
 
             detected_lines = []
             for line in module_file_lines:
@@ -251,7 +253,9 @@ class BotCommands():
                                             "comtype": comtype,
                                             "validcoms": validcoms,
                                             "filepath": str(modulefile),
-                                            "filename": filename_base,
+                                            "filename": str(filename_base),
+                                            "folderpath": str(folderpath),
+                                            "foldername": str(foldername),
                                             }
                             filelinelist.append(validcomdict)
                             currentsuccesslines += 1
