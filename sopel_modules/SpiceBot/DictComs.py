@@ -12,7 +12,7 @@ from sopel.config.types import StaticSection, ListAttribute
 import sopel_modules
 
 from .Config import config as botconfig
-from .Tools import read_directory_json_to_dict
+from .Read import read as botread
 from .Commands import commands as botcommands
 
 import spicemanip
@@ -50,7 +50,7 @@ class BotJSONCommands():
                 for extragifcfgdir in botconfig.SpiceBot_DictComs.extra:
                     dir_to_scan.append(extragifcfgdir)
 
-            valid_dictcom_dict = read_directory_json_to_dict(dir_to_scan, "Dictionary Commands", "SpiceBot_DictComs")
+            valid_dictcom_dict = botread.json_to_dict(dir_to_scan, "Dictionary Commands", "SpiceBot_DictComs")
 
             for dict_from_file in list(valid_dictcom_dict.keys()):
 

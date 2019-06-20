@@ -27,6 +27,7 @@ from .Gif import *
 from .Sherlock import *
 from .Reddit import *
 # from .DictComs import *
+from .Read import *
 
 
 from .configure import *

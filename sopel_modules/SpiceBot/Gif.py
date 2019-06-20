@@ -6,7 +6,7 @@ from sopel.config.types import StaticSection, ValidatedAttribute, ListAttribute
 import sopel_modules
 
 from .Config import config as botconfig
-from .Tools import read_directory_json_to_dict
+from .Read import read as botread
 from .Commands import commands as botcommands
 
 import spicemanip
@@ -46,7 +46,7 @@ class BotGif():
             for extragifcfgdir in botconfig.SpiceBot_Gif.extra:
                 dir_to_scan.append(extragifcfgdir)
 
-        valid_gif_api_dict = read_directory_json_to_dict(dir_to_scan, "Gif API", "SpiceBot_Gif")
+        valid_gif_api_dict = botread.json_to_dict(dir_to_scan, "Gif API", "SpiceBot_Gif")
 
         for gif_api in list(valid_gif_api_dict.keys()):
             botconfig.define_section(gif_api, GifAPISection, validate=False)

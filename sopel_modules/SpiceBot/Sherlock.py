@@ -4,7 +4,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel_modules
 
-from .Tools import read_directory_json_to_dict
+from .Read import read as botread
 
 import os
 from fake_useragent import UserAgent
@@ -24,7 +24,7 @@ class Sherlock():
             usercfgdir = os.path.join(configsdir, "SpiceBot_Sherlock")
             dir_to_scan.append(usercfgdir)
 
-        valid_usernames_dict = read_directory_json_to_dict(dir_to_scan, "Sherlock", "SpiceBot_Sherlock")
+        valid_usernames_dict = botread.json_to_dict(dir_to_scan, "Sherlock", "SpiceBot_Sherlock")
 
         for social_network in list(valid_usernames_dict.keys()):
             self.dict[social_network] = valid_usernames_dict[social_network]
