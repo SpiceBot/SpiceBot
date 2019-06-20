@@ -21,10 +21,10 @@ class Sherlock():
         dir_to_scan = []
         for plugin_dir in set(sopel_modules.__path__):
             configsdir = os.path.join(plugin_dir, "SpiceBot_Configs")
-            usercfgdir = os.path.join(configsdir, "sherlock")
+            usercfgdir = os.path.join(configsdir, "SpiceBot_Sherlock")
             dir_to_scan.append(usercfgdir)
 
-        valid_usernames_dict = read_directory_json_to_dict(dir_to_scan, "Gif API", "SpiceBot_Gif")
+        valid_usernames_dict = read_directory_json_to_dict(dir_to_scan, "Sherlock", "SpiceBot_Sherlock")
 
         for social_network in list(valid_usernames_dict.keys()):
             self.dict[social_network] = valid_usernames_dict[social_network]

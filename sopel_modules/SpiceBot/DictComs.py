@@ -43,7 +43,7 @@ class BotJSONCommands():
             dir_to_scan = []
             for plugin_dir in set(sopel_modules.__path__):
                 configsdir = os.path.join(plugin_dir, "SpiceBot_Configs")
-                gifcfgdir = os.path.join(configsdir, "dictcoms")
+                gifcfgdir = os.path.join(configsdir, "SpiceBot_DictComs")
                 dir_to_scan.append(gifcfgdir)
 
             if len(botconfig.SpiceBot_DictComs.extra):

@@ -63,7 +63,7 @@ class SpiceBot_AI():
         braindirs = []
         for plugin_dir in set(sopel_modules.__path__):
             configsdir = os.path.join(plugin_dir, "SpiceBot_Configs")
-            aimldir = os.path.join(configsdir, "aiml")
+            aimldir = os.path.join(configsdir, "SpiceBot_AI")
             braindirs.append(aimldir)
 
         if len(botconfig.SpiceBot_AI.extra):

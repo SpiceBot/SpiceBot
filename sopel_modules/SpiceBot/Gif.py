@@ -39,7 +39,7 @@ class BotGif():
         dir_to_scan = []
         for plugin_dir in set(sopel_modules.__path__):
             configsdir = os.path.join(plugin_dir, "SpiceBot_Configs")
-            gifcfgdir = os.path.join(configsdir, "gifapi")
+            gifcfgdir = os.path.join(configsdir, "SpiceBot_Gif")
             dir_to_scan.append(gifcfgdir)
 
         if len(botconfig.SpiceBot_Gif.extra):
