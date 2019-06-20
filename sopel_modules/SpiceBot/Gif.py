@@ -34,9 +34,9 @@ class BotGif():
         self.header = {'User-Agent': str(UserAgent().chrome)}
         self.valid_api = {}
 
-        dir_to_scan = botread.get_config_dirs("SpiceBot_Gif")
+        self.dir_to_scan = botread.get_config_dirs("SpiceBot_Gif")
 
-        valid_gif_api_dict = botread.json_to_dict(dir_to_scan, "Gif API", "SpiceBot_Gif")
+        valid_gif_api_dict = botread.json_to_dict(self.dir_to_scan, "Gif API", "SpiceBot_Gif")
 
         for gif_api in list(valid_gif_api_dict.keys()):
             botconfig.define_section(gif_api, GifAPISection, validate=False)
