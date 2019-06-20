@@ -18,7 +18,7 @@ class BotRead():
     def config_dir(self):
         return
 
-    def json_to_dict(directories, configtypename="Config File", log_from='read_directory_json_to_dict', logging=True):
+    def json_to_dict(self, directories, configtypename="Config File", log_from='read_directory_json_to_dict', logging=True):
 
         if not isinstance(directories, list):
             directories = [directories]
