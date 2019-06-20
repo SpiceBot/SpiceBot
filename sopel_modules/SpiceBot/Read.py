@@ -5,7 +5,6 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import sopel_modules
 
 import os
-import sys
 import codecs
 
 from .Logs import logs
@@ -62,10 +61,9 @@ class BotRead():
 
             # Read dictionary from file, if not, enable an empty dict
             filereadgood = True
+            inf = codecs.open(filepath, "r", encoding='utf-8')
+            infread = inf.read()
             try:
-                sys.stderr(str(filepath))
-                inf = codecs.open(filepath, "r", encoding='utf-8')
-                infread = inf.read()
                 dict_from_file = eval(infread)
             except Exception as e:
                 filereadgood = False
@@ -114,14 +112,14 @@ class BotRead():
 
             # Read dictionary from file, if not, enable an empty dict
             filereadgood = True
+            inf = codecs.open(jsonpath, "r", encoding='utf-8')
+            infread = inf.read()
             try:
-                inf = codecs.open(filepath, "r", encoding='utf-8')
-                infread = inf.read()
                 dict_from_file = eval(infread)
             except Exception as e:
                 filereadgood = False
                 if logging:
-                    logs.log("SpiceBot_Modules", "Error loading %s: %s (%s)" % ("Module Commands", e, filepath))
+                    logs.log("SpiceBot_Modules", "Error loading %s: %s (%s)" % ("Module Commands", e, jsonpath))
                 dict_from_file = dict()
             # Close File
             inf.close()
@@ -134,7 +132,7 @@ class BotRead():
             if not filereadgood or not isinstance(dict_from_file, dict):
                 dict_from_file = {}
             else:
-                dict_from_file["filepath"] = str(filepath)
+                dict_from_file["filepath"] = str(jsonpath)
                 dict_from_file["filename"] = str(filename_base)
                 dict_from_file["folderpath"] = dict_from_file["filepath"].split("/" + dict_from_file["filename"])[0]
                 dict_from_file["foldername"] = str(dict_from_file["folderpath"]).split("/")[-1]
