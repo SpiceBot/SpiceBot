@@ -61,17 +61,17 @@ class BotRead():
 
             # Read dictionary from file, if not, enable an empty dict
             filereadgood = True
-            inf = codecs.open(filepath, "r", encoding='utf-8')
-            infread = inf.read()
             try:
+                inf = codecs.open(filepath, "r", encoding='utf-8')
+                infread = inf.read()
+                # Close File
+                inf.close()
                 dict_from_file = eval(infread)
             except Exception as e:
                 filereadgood = False
                 if logging:
                     logs.log(log_from, "Error loading %s: %s (%s)" % (configtypename, e, filepath))
                 dict_from_file = dict()
-            # Close File
-            inf.close()
 
             # gather file stats
             slashsplit = str(filepath).split("/")
@@ -112,17 +112,17 @@ class BotRead():
 
             # Read dictionary from file, if not, enable an empty dict
             filereadgood = True
-            inf = codecs.open(jsonpath, "r", encoding='utf-8')
-            infread = inf.read()
             try:
+                inf = codecs.open(jsonpath, "r", encoding='utf-8')
+                infread = inf.read()
                 dict_from_file = eval(infread)
+                # Close File
+                inf.close()
             except Exception as e:
                 filereadgood = False
                 if logging:
                     logs.log("SpiceBot_Modules", "Error loading %s: %s (%s)" % ("Module Commands", e, jsonpath))
                 dict_from_file = dict()
-            # Close File
-            inf.close()
 
             # gather file stats
             slashsplit = str(filepath).split("/")
