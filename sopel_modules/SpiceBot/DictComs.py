@@ -16,6 +16,8 @@ import requests
 from fake_useragent import UserAgent
 import urllib
 
+import sys
+
 
 class SpiceBot_DictComs_MainSection(StaticSection):
     extra = ListAttribute('extra')
@@ -35,8 +37,10 @@ class BotJSONCommands():
                                     ]
 
             dir_to_scan = botread.get_config_dirs("SpiceBot_DictComs")
+            sys.stderr.write(dir_to_scan)
 
             valid_dictcom_dict = botread.json_to_dict(dir_to_scan, "Dictionary Commands", "SpiceBot_DictComs")
+            sys.stderr.write(valid_dictcom_dict)
 
             for dict_from_file in list(valid_dictcom_dict.keys()):
 
