@@ -29,6 +29,7 @@ class BotRead():
 
         # attempt to check for extra directories
         try:
+            extradir = botconfig.extra
             extradir = eval("botconfig." + config_dir_name + ".extra")
         except Exception as e:
             extradir = e
