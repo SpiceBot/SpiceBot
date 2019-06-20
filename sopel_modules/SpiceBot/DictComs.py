@@ -21,7 +21,7 @@ class SpiceBot_DictComs_MainSection(StaticSection):
     extra = ListAttribute('extra')
 
 
-class BotJSONCommands():
+class BotDictCommands():
 
     def __init__(self):
         self.setup_dictcoms()
@@ -257,4 +257,4 @@ class BotJSONCommands():
         botconfig.define_section("SpiceBot_DictComs", SpiceBot_DictComs_MainSection, validate=False)
 
 
-jsoncommands = BotJSONCommands()
+dictcoms = BotDictCommands()
