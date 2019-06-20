@@ -27,6 +27,7 @@ class BotJSONCommands():
     """This Logs all commands known to the bot"""
     def __init__(self):
         def __init__(self):
+            sys.stderr.write("[here]    test 1 2 2")
             self.setup_dictcoms()
             self.header = {'User-Agent': str(UserAgent().chrome)}
             self.valid_com_types = [
