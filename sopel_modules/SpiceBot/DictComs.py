@@ -39,7 +39,10 @@ class BotJSONCommands():
 
         for dict_from_file in list(self.valid_dictcom_dict.keys()):
 
-            dict_from_file["comtype"] = "prefix"
+            try:
+                dict_from_file["comtype"] = "prefix"
+            except Exception as e:
+                sys.stderr(str(dict_from_file))
 
             # default command to filename
             if "validcoms" not in list(dict_from_file.keys()):
