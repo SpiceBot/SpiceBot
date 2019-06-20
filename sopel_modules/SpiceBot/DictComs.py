@@ -63,47 +63,13 @@ class BotJSONCommands():
                             dict_from_file[var] = tuple_contents_bak
 
                 # check that type is set, use cases will inherit this if not set
-                if "type" not in list(dict_from_file.keys()):
-                    dict_from_file["type"] = dict_from_file["foldername"]
-                if dict_from_file["type"] not in self.valid_com_types:
+                if "type" not in list(dict_from_file.keys()) or dict_from_file["type"] not in self.valid_com_types:
                     dict_from_file["type"] = 'simple'
 
                 # Don't process these.
                 keysprocessed = []
                 keysprocessed.extend(["validcoms", "filepath", "filename"])
-
-                # the command must have an author
-                if "author" not in list(dict_from_file.keys()):
-                    dict_from_file["author"] = "deathbybandaid"
-                keysprocessed.append("author")
-
-                # the command must have a contributors list
-                if "contributors" not in list(dict_from_file.keys()):
-                    dict_from_file["contributors"] = []
-                if not isinstance(dict_from_file["contributors"], list):
-                    dict_from_file["contributors"] = [dict_from_file["contributors"]]
-                if "deathbybandaid" not in dict_from_file["contributors"]:
-                    dict_from_file["contributors"].append("deathbybandaid")
-                if dict_from_file["author"] not in dict_from_file["contributors"]:
-                    dict_from_file["contributors"].append(dict_from_file["author"])
-                keysprocessed.append("contributors")
-
-                if "hardcoded_channel_block" not in list(dict_from_file.keys()):
-                    dict_from_file["hardcoded_channel_block"] = []
-                keysprocessed.append("hardcoded_channel_block")
-
-                if "example" not in list(dict_from_file.keys()):
-                    dict_from_file["example"] = str(botconfig.core.prefix_list[0] + maincom)
-
-                if "exampleresponse" not in list(dict_from_file.keys()):
-                    dict_from_file["exampleresponse"] = None
-
-                if "description" not in list(dict_from_file.keys()):
-                    dict_from_file["description"] = None
-
-                if "privs" not in list(dict_from_file.keys()):
-                    dict_from_file["privs"] = []
-
+                keysprocessed.append("author", "contributors")
                 keysprocessed.extend(["validcoms", "filepath", "filename", "description", "exampleresponse", "example", "privs"])
 
                 # handle basic required dict handling

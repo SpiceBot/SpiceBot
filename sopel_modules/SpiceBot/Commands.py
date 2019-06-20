@@ -13,10 +13,12 @@ import os
 import threading
 
 import spicemanip
+import sopel_modules
 
 from .Logs import logs
 from .Config import config as botconfig
 from .Database import db as botdb
+from .Read import read as botread
 
 
 class SpiceBot_Commands_MainSection(StaticSection):
@@ -29,7 +31,6 @@ class BotCommands():
         self.setup_commands()
         self.lock = threading.Lock()
         self.dict = {
-                    "counts": 0,
                     'nickrules': [],
                     'nickaiml': [],
                     "commands": {
@@ -145,14 +146,10 @@ class BotCommands():
             filepathlisting.append(home_modules_dir)
 
         # pypi installed
-        try:
-            import sopel_modules
-            for plugin_dir in set(sopel_modules.__path__):
-                for pathname in os.listdir(plugin_dir):
-                    pypi_modules_dir = os.path.join(plugin_dir, pathname)
-                    filepathlisting.append(pypi_modules_dir)
-        except Exception as e:
-            logs.log('SpiceBOT_COMMANDS', "sopel_modules not loaded :" + str(e))
+        for plugin_dir in set(sopel_modules.__path__):
+            for pathname in os.listdir(plugin_dir):
+                pypi_modules_dir = os.path.join(plugin_dir, pathname)
+                filepathlisting.append(pypi_modules_dir)
 
         # Extra directories
         for directory in botconfig.extra:
@@ -197,6 +194,15 @@ class BotCommands():
             filename_base = os.path.basename(filename).rsplit('.', 1)[0]
             folderpath = str(modulefile).split("/" + filename)[0]
             foldername = str(folderpath).split("/")[-1]
+
+            # check for json reference file
+            validcomdict = botread.module_json_to_dict(str(modulefile))
+
+            # replace json defaults
+            validcomdict["filepath"] = str(modulefile)
+            validcomdict["filename"] = str(filename_base)
+            validcomdict["folderpath"] = str(folderpath)
+            validcomdict["foldername"] = str(foldername)
 
             detected_lines = []
             for line in module_file_lines:
@@ -249,14 +255,8 @@ class BotCommands():
                                     validcoms.remove(regexcom)
 
                         if len(validcoms):
-                            validcomdict = {
-                                            "comtype": comtype,
-                                            "validcoms": validcoms,
-                                            "filepath": str(modulefile),
-                                            "filename": str(filename_base),
-                                            "folderpath": str(folderpath),
-                                            "foldername": str(foldername),
-                                            }
+                            validcomdict["comtype"] = comtype
+                            validcomdict["validcoms"] = validcoms
                             filelinelist.append(validcomdict)
                             currentsuccesslines += 1
                     except Exception as e:
