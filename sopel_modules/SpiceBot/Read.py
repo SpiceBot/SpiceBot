@@ -61,9 +61,9 @@ class BotRead():
 
             # Read dictionary from file, if not, enable an empty dict
             filereadgood = True
-            inf = codecs.open(filepath, "r", encoding='utf-8')
-            infread = inf.read()
             try:
+                inf = codecs.open(filepath, "r", encoding='utf-8')
+                infread = inf.read()
                 dict_from_file = eval(infread)
             except Exception as e:
                 filereadgood = False
