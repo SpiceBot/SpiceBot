@@ -37,12 +37,11 @@ class BotJSONCommands():
 
         self.valid_dictcom_dict = botread.json_to_dict(self.dir_to_scan, "Dictionary Commands", "SpiceBot_DictComs")
 
-        for dict_from_file in list(self.valid_dictcom_dict.keys()):
+        for jsondict in list(self.valid_dictcom_dict.keys()):
 
-            try:
-                dict_from_file["comtype"] = "prefix"
-            except Exception as e:
-                sys.stderr(str(dict_from_file))
+            dict_from_file = self.valid_dictcom_dict[jsondict]
+
+            dict_from_file["comtype"] = "prefix"
 
             # default command to filename
             if "validcoms" not in list(dict_from_file.keys()):
