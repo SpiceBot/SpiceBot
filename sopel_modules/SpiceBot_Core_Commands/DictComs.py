@@ -11,8 +11,8 @@ import sopel_modules.SpiceBot as SpiceBot
 
 
 @SpiceBot.prerun.prerun('prefix')
-@sopel.module.nickname_commands('(.*)')
-def bot_command_dictcom(bot, trigger):
+@sopel.module.commands('(.*)')
+def command_dictcom(bot, trigger):
 
     if trigger.sb['com'] not in list(SpiceBot.commands.dict['commands']["prefix"].keys()):
         return
