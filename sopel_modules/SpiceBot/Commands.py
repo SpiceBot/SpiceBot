@@ -196,8 +196,7 @@ class BotCommands():
             foldername = str(folderpath).split("/")[-1]
 
             # check for json reference file
-            # validcomdict = botread.module_json_to_dict(str(modulefile))
-            validcomdict = {}
+            validcomdict = botread.module_json_to_dict(str(modulefile))
 
             # replace json defaults
             validcomdict["filepath"] = str(modulefile)
