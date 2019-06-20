@@ -59,13 +59,9 @@ class BotGif():
             if apikey:
                 self.valid_api[gif_api]["apikey"] = apikey
 
-        for validgifapi in list(self.valid_api.keys()):
-            botcommands.dict['counts'] += 1
-            command_dict = {
-                            "comtype": "gif_prefix",
-                            "validcoms": [validgifapi]
-                            }
-            botcommands.register(command_dict)
+            self.valid_api[gif_api]["comtype"] = "gif_prefix"
+            self.valid_api[gif_api]["validcoms"] = [self.valid_api[gif_api]["filename"]]
+            botcommands.register(self.valid_api[gif_api])
 
     def setup_gif(self):
         botconfig.define_section("SpiceBot_Gif", SpiceBot_Gif_MainSection, validate=False)

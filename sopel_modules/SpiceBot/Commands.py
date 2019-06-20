@@ -260,9 +260,6 @@ class BotCommands():
                         if addnothing:
                             currentsuccesslines += 0
 
-                if currentsuccesslines:
-                    self.dict['counts'] += 1
-
                 if len(filelinelist):
                     for vcomdict in filelinelist:
                         self.register(vcomdict)
