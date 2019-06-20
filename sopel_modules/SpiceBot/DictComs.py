@@ -25,6 +25,7 @@ class BotDictCommands():
 
     def __init__(self):
         self.setup_dictcoms()
+        self.validprefixcoms = []
         self.header = {'User-Agent': str(UserAgent().chrome)}
         self.valid_com_types = [
                                 'simple', 'fillintheblank', 'targetplusreason',
@@ -91,6 +92,10 @@ class BotDictCommands():
             keysprocessed.extend(otherkeys)
 
             botcommands.register(dict_from_file)
+
+        for commandtype in self.valid_com_types:
+            if "prefix_" + commandtype in list(botcommands.dict['commands'].keys()):
+                self.validprefixcoms.extend(list(botcommands.dict['commands']["prefix_" + commandtype].keys()))
 
     def bot_dict_use_cases(self, maincom, dict_from_file, process_list):
 
