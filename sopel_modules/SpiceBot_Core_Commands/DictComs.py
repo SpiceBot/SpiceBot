@@ -14,7 +14,11 @@ import sopel_modules.SpiceBot as SpiceBot
 @sopel.module.commands('(.*)')
 def command_dictcom(bot, trigger):
 
-    if trigger.sb['com'] not in list(SpiceBot.dictcoms.validprefixcoms):
+    if trigger.sb['com'] not in list(SpiceBot.commands.dict['commands']["prefix"].keys()):
         return
 
-    bot.say("here")
+    # command aliases
+    if "aliasfor" in list(SpiceBot.commands.dict['commands']["prefix"][trigger.sb['com']].keys()):
+        trigger.sb['com'] = SpiceBot.commands.dict['commands']["prefix"][trigger.sb['com']]["aliasfor"]
+
+    bot.say(str(trigger.sb['com']))

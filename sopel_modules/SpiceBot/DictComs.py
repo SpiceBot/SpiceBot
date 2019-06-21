@@ -25,7 +25,6 @@ class BotDictCommands():
 
     def __init__(self):
         self.setup_dictcoms()
-        self.validprefixcoms = []
         self.header = {'User-Agent': str(UserAgent().chrome)}
         self.valid_com_types = [
                                 'simple', 'fillintheblank', 'targetplusreason',
@@ -66,7 +65,7 @@ class BotDictCommands():
             if "type" not in list(dict_from_file.keys()) or dict_from_file["type"] not in self.valid_com_types:
                 dict_from_file["type"] = 'simple'
 
-            dict_from_file["comtype"] = "prefix_" + dict_from_file["type"]
+            dict_from_file["comtype"] = "prefix" + dict_from_file["type"]
 
             # Don't process these.
             keysprocessed = []
@@ -92,10 +91,6 @@ class BotDictCommands():
             keysprocessed.extend(otherkeys)
 
             botcommands.register(dict_from_file)
-
-        for commandtype in self.valid_com_types:
-            if "prefix_" + commandtype in list(botcommands.dict['commands'].keys()):
-                self.validprefixcoms.extend(list(botcommands.dict['commands']["prefix_" + commandtype].keys()))
 
     def bot_dict_use_cases(self, maincom, dict_from_file, process_list):
 
