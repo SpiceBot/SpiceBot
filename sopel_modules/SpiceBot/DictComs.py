@@ -15,6 +15,7 @@ from .Commands import commands as botcommands
 import requests
 from fake_useragent import UserAgent
 import urllib
+import os
 
 
 class SpiceBot_DictComs_MainSection(StaticSection):
@@ -33,7 +34,16 @@ class BotDictCommands():
                                 "feeds", "search"
                                 ]
 
+        self.prefix_com_load()
+
+    def prefix_com_load(self):
         self.dir_to_scan = botread.get_config_dirs("SpiceBot_DictComs")
+        for directory in self.dir_to_scan:
+            for valid_com_type in self.valid_com_types:
+                poss_path = os.path.join(directory, valid_com_type)
+                if os.path.exists(poss_path) and os.path.isdir(poss_path):
+                    if len(os.listdir(poss_path)) > 0:
+                        self.dir_to_scan.append(poss_path)
 
         self.valid_dictcom_dict = botread.json_to_dict(self.dir_to_scan, "Dictionary Commands", "SpiceBot_DictComs")
 
@@ -75,7 +85,7 @@ class BotDictCommands():
 
             # handle basic required dict handling
             dict_required = ["?default"]
-            dict_from_file = self.bot_dict_use_cases(maincom, dict_from_file, dict_required)
+            dict_from_file = self.prefix_com_load_subtypes(maincom, dict_from_file, dict_required)
             keysprocessed.extend(dict_required)
 
             # remove later
@@ -87,12 +97,12 @@ class BotDictCommands():
                 if otherkey not in keysprocessed:
                     otherkeys.append(otherkey)
             if otherkeys != []:
-                dict_from_file = self.bot_dict_use_cases(maincom, dict_from_file, otherkeys)
+                dict_from_file = self.prefix_com_load_subtypes(maincom, dict_from_file, otherkeys)
             keysprocessed.extend(otherkeys)
 
             botcommands.register(dict_from_file)
 
-    def bot_dict_use_cases(self, maincom, dict_from_file, process_list):
+    def prefix_com_load_subtypes(self, maincom, dict_from_file, process_list):
 
         for mustbe in process_list:
 
