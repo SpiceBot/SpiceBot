@@ -12,10 +12,11 @@ from .Config import config as botconfig
 from .Read import read as botread
 from .Commands import commands as botcommands
 
-import requests
+# import requests
 from fake_useragent import UserAgent
-import urllib
+# import urllib
 import os
+import copy
 
 
 class SpiceBot_DictComs_MainSection(StaticSection):
@@ -33,10 +34,28 @@ class BotDictCommands():
                                 "ascii_art", "gif", "translate", "responses",
                                 "feeds", "search"
                                 ]
+        self.dict_required = ["?default"]
+        self.builtin_keys = [
+                            "filepath", "filename", "folderpath", "foldername",
+                            "comtype", "type", "validcoms",
+                            "author", "contributors",
+                            "description", "exampleresponse", "example",
+                            "privs"
+                            ]
 
-        self.prefix_com_load()
+        self.dictcom_load()
 
-    def prefix_com_load(self):
+    def get_dict(self, triggersb):
+
+        # simplify usage of the bot command going forward
+        # copy dict to not overwrite
+        triggersb['comdict'] = copy.deepcopy(botcommands.dict['commands']["prefix"][triggersb['realcom']])
+
+        # execute function based on command type
+        triggersb['comtype'] = triggersb['comdict']["type"].lower()
+        return triggersb
+
+    def dictcom_load(self):
         self.dir_to_scan = botread.get_config_dirs("SpiceBot_DictComs")
         for directory in self.dir_to_scan:
             for valid_com_type in self.valid_com_types:
@@ -77,32 +96,20 @@ class BotDictCommands():
             if "type" not in list(dict_from_file.keys()) or dict_from_file["type"] not in self.valid_com_types:
                 dict_from_file["type"] = 'simple'
 
-            # Don't process these.
-            keysprocessed = []
-            keysprocessed.extend(["validcoms", "filepath", "filename", "comtype"])
-            keysprocessed.extend(["author", "contributors"])
-            keysprocessed.extend(["validcoms", "filepath", "filename", "description", "exampleresponse", "example", "privs"])
-
             # handle basic required dict handling
-            dict_required = ["?default"]
-            dict_from_file = self.prefix_com_load_subtypes(maincom, dict_from_file, dict_required)
-            keysprocessed.extend(dict_required)
-
-            # remove later
-            keysprocessed.append("type")
+            dict_from_file = self.dictcom_load_usecases(maincom, dict_from_file, self.dict_required)
 
             # all other keys not processed above are considered potential use cases
             otherkeys = []
             for otherkey in list(dict_from_file.keys()):
-                if otherkey not in keysprocessed:
+                if otherkey not in self.builtin_keys:
                     otherkeys.append(otherkey)
             if otherkeys != []:
-                dict_from_file = self.prefix_com_load_subtypes(maincom, dict_from_file, otherkeys)
-            keysprocessed.extend(otherkeys)
+                dict_from_file = self.dictcom_load_usecases(maincom, dict_from_file, otherkeys)
 
             botcommands.register(dict_from_file)
 
-    def prefix_com_load_subtypes(self, maincom, dict_from_file, process_list):
+    def dictcom_load_usecases(self, maincom, dict_from_file, process_list):
 
         for mustbe in process_list:
 
@@ -121,6 +128,9 @@ class BotDictCommands():
                 else:
                     dict_from_file[mustbe]["type"] = "simple"
 
+        return dict_from_file
+
+        """
             # each usecase needs to know if it can be updated. Default is false
             if "updates_enabled" not in list(dict_from_file[mustbe].keys()):
                 dict_from_file[mustbe]["updates_enabled"] = False
@@ -262,6 +272,7 @@ class BotDictCommands():
                 dict_from_file[mustbe]["privs"] = []
 
         return dict_from_file
+        """
 
     def setup_dictcoms(self):
         botconfig.define_section("SpiceBot_DictComs", SpiceBot_DictComs_MainSection, validate=False)
