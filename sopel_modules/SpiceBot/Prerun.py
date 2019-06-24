@@ -53,15 +53,14 @@ class BotPrerun():
                     trigger.sb["args"], trigger.sb["hyphen_arg"] = self.trigger_hyphen_args(trigger.sb["args"])
                     if not trigger.sb["hyphen_arg"]:
                         # check if anything prohibits the nick from running the command
-                        dowerun = self.trigger_runstatus(bot, trigger)
-                        bot.say(str(dowerun))
-                        if dowerun:
+                        if self.trigger_runstatus(bot, trigger):
                             function(bot, trigger, *args, **kwargs)
                     else:
                         self.trigger_hyphen_arg_handler(bot, trigger)
                 quit()
             return internal_prerun
         return actual_decorator
+        quit()
 
     def trigger_args(self, triggerargs_one, trigger_command_type='module'):
         trigger_args = spicemanip.main(triggerargs_one, 'create')
