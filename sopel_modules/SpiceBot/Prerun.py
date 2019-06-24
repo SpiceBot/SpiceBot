@@ -56,6 +56,7 @@ class BotPrerun():
                             function(bot, trigger, *args, **kwargs)
                     else:
                         self.trigger_hyphen_arg_handler(bot, trigger)
+                        quit()
                 return
 
             return internal_prerun

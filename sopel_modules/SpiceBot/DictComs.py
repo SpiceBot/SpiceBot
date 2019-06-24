@@ -28,7 +28,8 @@ class BotDictCommands():
     def __init__(self):
         self.setup_dictcoms()
         self.header = {'User-Agent': str(UserAgent().chrome)}
-        self.valid_com_types = [
+        self.valid_com_types = ['simple']
+        self.valid_com_types_old = [
                                 'simple', 'fillintheblank', 'targetplusreason',
                                 'sayings', "readfromfile", "readfromurl",
                                 "ascii_art", "gif", "translate", "responses",
