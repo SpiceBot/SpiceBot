@@ -69,7 +69,8 @@ class BotPrerun():
                         self.trigger_hyphen_arg_handler(bot, trigger)
                 """
             return internal_prerun
-        return actual_decorator
+        # return actual_decorator
+        actual_decorator(trigger_command_type)
         quit()
 
     def trigger_args(self, triggerargs_one, trigger_command_type='module'):
