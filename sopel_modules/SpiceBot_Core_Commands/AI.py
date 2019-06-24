@@ -36,7 +36,7 @@ def bot_command_rule_ai(bot, trigger):
 
     if str(message).lower().startswith(str(bot.nick).lower()):
         command_type = 'nickname'
-        trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'nickname')
+        trigger_args, trigger_command = SpiceBot.make_trigger_args(message, 'nickname')
         trigger_args.insert(0, trigger_command)
         fulltrigger = bot.nick + " " + spicemanip.main(trigger_args, 0)
         if str(trigger_command).startswith("?"):
@@ -50,7 +50,7 @@ def bot_command_rule_ai(bot, trigger):
         return
     elif str(message).startswith(tuple(bot.config.core.prefix_list)):
         command_type = 'module'
-        trigger_args, trigger_command = SpiceBot.prerun.trigger_args(message, 'module')
+        trigger_args, trigger_command = SpiceBot.make_trigger_args(message, 'module')
         trigger_args.insert(0, trigger_command)
         fulltrigger = spicemanip.main(trigger_args, 0)
         # patch for people typing "...", maybe other stuff, but this verifies that there is still a command here
