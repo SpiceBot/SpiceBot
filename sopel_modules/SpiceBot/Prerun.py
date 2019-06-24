@@ -91,7 +91,6 @@ class BotPrerun():
         return prerun_split
 
     def trigger_runstatus(self, bot, trigger):
-        return True
 
         # Bots can't run commands
         if Identifier(trigger.nick) == bot.nick:
@@ -104,6 +103,9 @@ class BotPrerun():
             else:
                 bot.osd("The admin switch (-a) is for use by authorized nicks ONLY.", 'notice')
                 return False
+
+        if trigger.sb["hyphen_arg"]:
+            return False
 
         # don't run commands that are disabled in channels
         if not trigger.is_privmsg:
