@@ -16,7 +16,7 @@ from .Commands import commands as botcommands
 from .Database import db as botdb
 
 
-def prerun(trigger_command_type='module'):
+def prerun_old(trigger_command_type='module'):
     def actual_decorator(function):
 
         @functools.wraps(function)
@@ -65,7 +65,30 @@ def prerun(trigger_command_type='module'):
                 else:
                     trigger_hyphen_arg_handler(bot, trigger)
             """
-        internal_prerun()
+        return internal_prerun
+    return actual_decorator
+
+
+def prerun(message="this is not privmsg", reply=False):
+
+    def actual_decorator(function):
+        @functools.wraps(function)
+        def _nop(*args, **kwargs):
+            # Assign trigger and bot for easy access later
+            bot, trigger = args[0:2]
+            if not trigger.is_privmsg:
+                if message and not callable(message):
+                    if reply:
+                        bot.reply(message)
+                    else:
+                        bot.say(message)
+            else:
+                return function(*args, **kwargs)
+        return _nop
+
+    # Hack to allow decorator without parens
+    if callable(message):
+        return actual_decorator(message)
     return actual_decorator
 
 
