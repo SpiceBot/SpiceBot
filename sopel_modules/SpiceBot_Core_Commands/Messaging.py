@@ -9,19 +9,19 @@ import spicemanip
 import sopel_modules.SpiceBot as SpiceBot
 
 
-@SpiceBot.prerun.prerun('nickname')
+@SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('action')
 def bot_command_action(bot, trigger):
     bot_command_process(bot, trigger)
 
 
-@SpiceBot.prerun.prerun('nickname')
+@SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('notice')
 def bot_command_notice(bot, trigger):
     bot_command_process(bot, trigger)
 
 
-@SpiceBot.prerun.prerun('nickname')
+@SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('privmsg', 'say', 'msg')
 def bot_command_privmsg(bot, trigger):
     bot_command_process(bot, trigger)
