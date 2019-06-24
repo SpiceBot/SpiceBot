@@ -70,6 +70,7 @@ class BotPrerun():
                 """
             return internal_prerun
         return actual_decorator
+        quit()
 
     def trigger_args(self, triggerargs_one, trigger_command_type='module'):
         trigger_args = spicemanip.main(triggerargs_one, 'create')
