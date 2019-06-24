@@ -16,7 +16,7 @@ from .Commands import commands as botcommands
 from .Database import db as botdb
 
 
-def prerun_old(trigger_command_type='module'):
+def prerun(trigger_command_type='module'):
     def actual_decorator(function):
 
         @functools.wraps(function)
@@ -51,7 +51,7 @@ def prerun_old(trigger_command_type='module'):
                 if trigger_runstatus(bot, trigger):
                     return function(bot, trigger, *args, **kwargs)
             else:
-                return trigger_hyphen_arg_handler(bot, trigger)
+                trigger_hyphen_arg_handler(bot, trigger)
 
             """# Run the function for all splits
             for argsdict in argsdict_list:
@@ -66,27 +66,6 @@ def prerun_old(trigger_command_type='module'):
                     trigger_hyphen_arg_handler(bot, trigger)
             """
         return internal_prerun
-    return actual_decorator
-
-
-def prerun(message="this is not privmsg"):
-    message = "this is not privmsg"
-
-    def actual_decorator(function):
-        @functools.wraps(function)
-        def _nop(*args, **kwargs):
-            # Assign trigger and bot for easy access later
-            bot, trigger = args[0:2]
-            if not trigger.is_privmsg:
-                if message and not callable(message):
-                    bot.say(message)
-            else:
-                return function(*args, **kwargs)
-        return _nop
-
-    # Hack to allow decorator without parens
-    if callable(message):
-        return actual_decorator(message)
     return actual_decorator
 
 
