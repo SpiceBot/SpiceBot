@@ -59,7 +59,6 @@ class BotPrerun():
                 quit()
             return internal_prerun
         return actual_decorator
-        bot.say(str(here))
         quit()
 
     def trigger_args(self, triggerargs_one, trigger_command_type='module'):
