@@ -47,7 +47,6 @@ class BotPrerun():
 
                 # Run the function for all splits
                 for argsdict in argsdict_list:
-                    bot.say(str(argsdict))
                     trigger.sb = copy.deepcopy(argsdict)
 
                     trigger.sb["args"], trigger.sb["hyphen_arg"] = self.trigger_hyphen_args(trigger.sb["args"])
@@ -60,6 +59,7 @@ class BotPrerun():
                 quit()
             return internal_prerun
         return actual_decorator
+        bot.say(str(here))
         quit()
 
     def trigger_args(self, triggerargs_one, trigger_command_type='module'):
