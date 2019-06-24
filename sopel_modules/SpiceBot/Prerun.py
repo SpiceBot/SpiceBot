@@ -47,6 +47,7 @@ class BotPrerun():
 
                 # Run the function for all splits
                 for argsdict in argsdict_list:
+                    bot.say(str(argsdict))
                     trigger.sb = copy.deepcopy(argsdict)
 
                     trigger.sb["args"], trigger.sb["hyphen_arg"] = self.trigger_hyphen_args(trigger.sb["args"])
