@@ -56,8 +56,8 @@ class BotPrerun():
                             function(bot, trigger, *args, **kwargs)
                     else:
                         self.trigger_hyphen_arg_handler(bot, trigger)
-                exit()
             return internal_prerun
+            quit()
         return actual_decorator
 
     def trigger_args(self, triggerargs_one, trigger_command_type='module'):
