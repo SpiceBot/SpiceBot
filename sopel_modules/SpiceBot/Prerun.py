@@ -20,7 +20,10 @@ def prerun(trigger_command_type='module'):
     def actual_decorator(function):
 
         @functools.wraps(function)
-        def internal_prerun(bot, trigger, *args, **kwargs):
+        def internal_prerun(*args, **kwargs):
+
+            # Assign trigger and bot for easy access later
+            bot, trigger = args[0:2]
 
             # Primary command used for trigger, and a list of all words
             trigger_args, trigger_command = make_trigger_args(trigger.args[1], trigger_command_type)
@@ -62,7 +65,7 @@ def prerun(trigger_command_type='module'):
                 else:
                     trigger_hyphen_arg_handler(bot, trigger)
             """
-        return internal_prerun
+        internal_prerun()
     return actual_decorator
 
 
