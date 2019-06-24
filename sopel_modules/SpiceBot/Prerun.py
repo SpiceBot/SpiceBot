@@ -69,9 +69,7 @@ class BotPrerun():
                         self.trigger_hyphen_arg_handler(bot, trigger)
                 """
             return internal_prerun
-        # return actual_decorator
-        actual_decorator(trigger_command_type)
-        quit()
+        return actual_decorator
 
     def trigger_args(self, triggerargs_one, trigger_command_type='module'):
         trigger_args = spicemanip.main(triggerargs_one, 'create')
