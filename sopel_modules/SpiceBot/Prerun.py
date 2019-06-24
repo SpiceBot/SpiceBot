@@ -54,9 +54,8 @@ class BotPrerun():
                     if not trigger.sb["hyphen_arg"]:
                         # check if anything prohibits the nick from running the command
                         dowerun = self.trigger_runstatus(bot, trigger)
-                        if not dowerun:
-                            quit()
-                        else:
+                        bot.say(str(dowerun))
+                        if dowerun:
                             function(bot, trigger, *args, **kwargs)
                     else:
                         self.trigger_hyphen_arg_handler(bot, trigger)
