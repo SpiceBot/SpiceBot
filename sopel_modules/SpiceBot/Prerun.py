@@ -40,11 +40,24 @@ class BotPrerun():
                 argsdict_default["realcom"] = realcom
 
                 # split into && groupings
-                and_split = self.trigger_and_split(trigger_args)
+                # and_split = self.trigger_and_split(trigger_args)
 
                 # Create dict listings for trigger.sb
-                argsdict_list = self.trigger_argsdict_list(argsdict_default, and_split)
+                # argsdict_list = self.trigger_argsdict_list(argsdict_default, and_split)
+                argsdict = self.trigger_argsdict_single(argsdict_default, trigger_args)
 
+                trigger.sb = copy.deepcopy(argsdict)
+
+                trigger.sb["args"], trigger.sb["hyphen_arg"] = self.trigger_hyphen_args(trigger.sb["args"])
+                if not trigger.sb["hyphen_arg"]:
+                    # check if anything prohibits the nick from running the command
+                    if self.trigger_runstatus(bot, trigger):
+                        function(bot, trigger, *args, **kwargs)
+                else:
+                    self.trigger_hyphen_arg_handler(bot, trigger)
+                quit()
+
+                """
                 # Run the function for all splits
                 for argsdict in argsdict_list:
                     trigger.sb = copy.deepcopy(argsdict)
@@ -57,9 +70,9 @@ class BotPrerun():
                     else:
                         self.trigger_hyphen_arg_handler(bot, trigger)
                 quit()
+                """
             return internal_prerun
         return actual_decorator
-        quit()
 
     def trigger_args(self, triggerargs_one, trigger_command_type='module'):
         trigger_args = spicemanip.main(triggerargs_one, 'create')
@@ -89,6 +102,16 @@ class BotPrerun():
                 argsdict_part["adminswitch"] = False
             prerun_split.append(argsdict_part)
         return prerun_split
+
+    def trigger_argsdict_single(self, argsdict_default, trigger_args_part):
+        argsdict_part = copy.deepcopy(argsdict_default)
+        argsdict_part["args"] = spicemanip.main(trigger_args_part, 'create')
+        if len(argsdict_part["args"]) and argsdict_part["args"][0] == "-a":
+            argsdict_part["adminswitch"] = True
+            argsdict_part["args"] = spicemanip.main(argsdict_part["args"], '2+', 'list')
+        else:
+            argsdict_part["adminswitch"] = False
+        return argsdict_part
 
     def trigger_runstatus(self, bot, trigger):
 
