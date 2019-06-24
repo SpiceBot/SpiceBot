@@ -69,7 +69,8 @@ def prerun_old(trigger_command_type='module'):
     return actual_decorator
 
 
-def prerun(trigger_command_type="this is not privmsg"):
+def prerun(message="this is not privmsg"):
+    message = "this is not privmsg"
 
     def actual_decorator(function):
         @functools.wraps(function)
@@ -77,15 +78,15 @@ def prerun(trigger_command_type="this is not privmsg"):
             # Assign trigger and bot for easy access later
             bot, trigger = args[0:2]
             if not trigger.is_privmsg:
-                if trigger_command_type and not callable(trigger_command_type):
-                    bot.say(trigger_command_type)
+                if message and not callable(message):
+                    bot.say(message)
             else:
                 return function(*args, **kwargs)
         return _nop
 
     # Hack to allow decorator without parens
-    if callable(trigger_command_type):
-        return actual_decorator(trigger_command_type)
+    if callable(message):
+        return actual_decorator(message)
     return actual_decorator
 
 
