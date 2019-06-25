@@ -16,7 +16,23 @@ from .Commands import commands as botcommands
 from .Database import db as botdb
 
 
-def prerun(trigger_command_type='module'):
+def prerun(command_list, trigger_command_type='module'):
+
+    if trigger_command_type == 'nickname':
+        def add_attribute(function):
+            if not hasattr(function, "nickname_commands"):
+                function.nickname_commands = []
+            function.nickname_commands.extend(command_list)
+            return function
+        return add_attribute
+    else:
+        def add_attribute(function):
+            if not hasattr(function, "commands"):
+                function.commands = []
+            function.commands.extend(command_list)
+            return function
+        return add_attribute
+
     def actual_decorator(function):
 
         @functools.wraps(function)
@@ -49,7 +65,7 @@ def prerun(trigger_command_type='module'):
             if not trigger.sb["hyphen_arg"]:
                 # check if anything prohibits the nick from running the command
                 if trigger_runstatus(bot, trigger):
-                    return function(bot, trigger, *args, **kwargs)
+                    function(*args, **kwargs)
             else:
                 trigger_hyphen_arg_handler(bot, trigger)
 
