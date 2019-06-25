@@ -33,6 +33,7 @@ def gif_trigger(bot, trigger):
 @SpiceBot.prerun('module')
 @sopel.module.commands('(.*)')
 def gifapi_triggers(bot, trigger):
+    bot.say("here")
 
     if trigger.sb['com'] not in list(SpiceBot.gif.valid_api.keys()):
         return
