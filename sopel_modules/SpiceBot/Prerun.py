@@ -16,12 +16,17 @@ from .Commands import commands as botcommands
 from .Database import db as botdb
 
 
-def prerun(trigger_command_type='module'):
+def prerun(t_command_type='module'):
 
     def actual_decorator(function):
 
         @functools.wraps(function)
         def internal_prerun(bot, trigger, *args, **kwargs):
+
+            if t_command_type.endswith("_match"):
+                trigger_command_type = t_command_type.replace("_match", '')
+            else:
+                trigger_command_type = t_command_type
 
             # Primary command used for trigger, and a list of all words
             trigger_args, trigger_command = make_trigger_args(trigger.args[1], trigger_command_type)

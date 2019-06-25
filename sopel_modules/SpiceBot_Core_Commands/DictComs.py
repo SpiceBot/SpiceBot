@@ -10,7 +10,7 @@ import sopel.module
 import sopel_modules.SpiceBot as SpiceBot
 
 
-@SpiceBot.prerun('prefix')
+@SpiceBot.prerun('prefix_match')
 @sopel.module.commands('(.*)')
 def command_dictcom(bot, trigger):
 

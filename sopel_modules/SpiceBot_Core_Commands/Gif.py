@@ -30,7 +30,7 @@ def gif_trigger(bot, trigger):
         bot.osd(str(gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"])))
 
 
-@SpiceBot.prerun('gif_prefix')
+@SpiceBot.prerun('gif_prefix_match')
 @sopel.module.commands('(.*)')
 def gifapi_triggers(bot, trigger):
 
