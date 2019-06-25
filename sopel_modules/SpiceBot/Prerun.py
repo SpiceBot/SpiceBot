@@ -28,21 +28,20 @@ def prerun(t_command_type='module'):
             # Primary command used for trigger, and a list of all words
             trigger_args, trigger_command = make_trigger_args(trigger.args[1], trigger_command_type)
 
-            bot.say(str(trigger_command_type))
             trigger_command_type = botcommands.find_command_type(trigger_command)
             if not trigger_command_type:
                 return
-            bot.say(str(trigger_command_type))
 
-            for comtypecheck in ["trigger_command_type", "t_command_type"]:
-                comtype = eval(comtypecheck)
+            if trigger_command_type not in list(botcommands.dict["commands"].keys()):
+                return
 
-                if comtype not in list(botcommands.dict["commands"].keys()):
-                    bot.say(str(comtype) + " not valid comtype")
+            if trigger_command not in list(botcommands.dict["commands"][trigger_command_type].keys()):
+                return
+
+            if trigger_command_type != t_command_type:
+                if t_command_type not in list(botcommands.dict["commands"].keys()):
                     return
-
-                if trigger_command not in list(botcommands.dict["commands"][comtype].keys()):
-                    bot.say(str(trigger_command) + " not in " + str(comtype))
+                if trigger_command in list(botcommands.dict["commands"][t_command_type].keys()):
                     return
 
             # Argsdict Defaults
