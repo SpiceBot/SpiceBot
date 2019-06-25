@@ -27,9 +27,8 @@ def prerun(t_command_type='module'):
                 trigger_command_type = t_command_type.replace("_match", '')
             else:
                 trigger_command_type = t_command_type
-
+            bot.say(str(trigger_command_type))
             if trigger_command_type not in list(botcommands.dict["commands"].keys()):
-                bot.say(str(trigger_command_type) + " not valid command type")
                 return
 
             # Primary command used for trigger, and a list of all words
