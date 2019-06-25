@@ -22,10 +22,11 @@ def prerun(trigger_command_type='module'):
 
         @functools.wraps(function)
         def internal_prerun(bot, trigger, *args, **kwargs):
-            return
 
             # Primary command used for trigger, and a list of all words
             trigger_args, trigger_command = make_trigger_args(trigger.args[1], trigger_command_type)
+            if trigger_command == 'uptime':
+                return
 
             # Argsdict Defaults
             argsdict_default = {}
