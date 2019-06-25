@@ -34,7 +34,7 @@ def prerun(t_command_type='module'):
                 return
             bot.say(str(trigger_command_type))
 
-            for comtypecheck in [trigger_command_type, t_command_type]:
+            for comtypecheck in ["trigger_command_type", "t_command_type"]:
                 comtype = eval(comtypecheck)
 
                 if comtype not in list(botcommands.dict["commands"].keys()):
