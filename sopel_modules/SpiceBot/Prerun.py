@@ -32,9 +32,8 @@ def prerun(t_command_type='module'):
             if not trigger_command_type:
                 return
 
-            if t_command_type != trigger_command_type:
-                if trigger_command not in list(botcommands.dict["commands"][trigger_command_type].keys()):
-                    return
+            if trigger_command not in list(botcommands.dict["commands"][trigger_command_type].keys()):
+                return
 
             # Argsdict Defaults
             argsdict_default = {}
