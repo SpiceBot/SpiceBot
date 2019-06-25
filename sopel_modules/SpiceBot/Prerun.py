@@ -35,10 +35,11 @@ def prerun(trigger_command_type='module'):
             argsdict_default["realcom"] = realcom
 
             # split into && groupings
-            # and_split = trigger_and_split(trigger_args)
+            and_split = trigger_and_split(trigger_args)
 
             # Create dict listings for trigger.sb
-            # argsdict_list = trigger_argsdict_list(argsdict_default, and_split)
+            argsdict_list = trigger_argsdict_list(argsdict_default, and_split)
+            """
             argsdict = trigger_argsdict_single(argsdict_default, trigger_args)
 
             trigger.sb = copy.deepcopy(argsdict)
@@ -50,8 +51,9 @@ def prerun(trigger_command_type='module'):
                     function(bot, trigger, *args, **kwargs)
             else:
                 trigger_hyphen_arg_handler(bot, trigger)
+            """
 
-            """# Run the function for all splits
+            # Run the function for all splits
             for argsdict in argsdict_list:
                 trigger.sb = copy.deepcopy(argsdict)
 
@@ -62,7 +64,7 @@ def prerun(trigger_command_type='module'):
                         function(bot, trigger, *args, **kwargs)
                 else:
                     trigger_hyphen_arg_handler(bot, trigger)
-            """
+
         return internal_prerun
     return actual_decorator
 
