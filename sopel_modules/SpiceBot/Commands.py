@@ -58,11 +58,13 @@ class BotCommands():
                     self.dict['nickrules'].append(command)
 
     def find_command_type(self, command):
-        for commandstype in list(self.dict['commands'].keys()):
-            if commandstype not in ['rule']:
-                for com in list(self.dict['commands'][commandstype].keys()):
-                    if com.lower() == command.lower():
-                        return commandstype
+        commandtype_list = list(self.dict['commands'].keys())
+        if 'rule' in commandtype_list:
+            commandtype_list.remove('rule')
+        for commandstype in commandtype_list:
+            for com in list(self.dict['commands'][commandstype].keys()):
+                if com.lower() == command.lower():
+                    return commandstype
         return None
 
     def get_commands_disabled(self, channel):

@@ -28,9 +28,11 @@ def prerun(t_command_type='module'):
             # Primary command used for trigger, and a list of all words
             trigger_args, trigger_command = make_trigger_args(trigger.args[1], trigger_command_type)
 
+            bot.say(str(trigger_command_type))
             trigger_command_type = botcommands.find_command_type(trigger_command)
             if not trigger_command_type:
                 return
+            bot.say(str(trigger_command_type))
 
             for comtype in [trigger_command_type, t_command_type]:
 
