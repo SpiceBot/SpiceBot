@@ -28,10 +28,15 @@ def prerun(t_command_type='module'):
             else:
                 trigger_command_type = t_command_type
 
+            if trigger_command_type not in list(botcommands.dict["commands"].keys()):
+                return
+
             # Primary command used for trigger, and a list of all words
             trigger_args, trigger_command = make_trigger_args(trigger.args[1], trigger_command_type)
-            if trigger_command == 'uptime':
-                return
+
+            if t_command_type.endswith("_match"):
+                if trigger_command in list(botcommands.dict["commands"][trigger_command_type].keys()):
+                    return
 
             # Argsdict Defaults
             argsdict_default = {}
