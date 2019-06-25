@@ -33,10 +33,9 @@ def prerun(t_command_type='module'):
 
             # Primary command used for trigger, and a list of all words
             trigger_args, trigger_command = make_trigger_args(trigger.args[1], trigger_command_type)
-            bot.say(str(trigger_command))
 
             if t_command_type.endswith("_match"):
-                if trigger_command in list(botcommands.dict["commands"][trigger_command_type].keys()):
+                if trigger_command_type in ["module", "nickname"]:
                     return
 
             # Argsdict Defaults
