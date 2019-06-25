@@ -35,9 +35,11 @@ def prerun(t_command_type='module'):
             for comtype in [trigger_command_type, t_command_type]:
 
                 if comtype not in list(botcommands.dict["commands"].keys()):
+                    bot.say(str(comtype) + " not valid comtype")
                     return
 
                 if trigger_command not in list(botcommands.dict["commands"][comtype].keys()):
+                    bot.say(str(trigger_command) + " not in " + str(comtype))
                     return
 
             # Argsdict Defaults
