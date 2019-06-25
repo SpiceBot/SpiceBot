@@ -49,19 +49,6 @@ def prerun(t_command_type='module'):
 
             # Create dict listings for trigger.sb
             argsdict_list = trigger_argsdict_list(argsdict_default, and_split)
-            """
-            argsdict = trigger_argsdict_single(argsdict_default, trigger_args)
-
-            trigger.sb = copy.deepcopy(argsdict)
-
-            trigger.sb["args"], trigger.sb["hyphen_arg"] = trigger_hyphen_args(trigger.sb["args"])
-            if not trigger.sb["hyphen_arg"]:
-                # check if anything prohibits the nick from running the command
-                if trigger_runstatus(bot, trigger):
-                    function(bot, trigger, *args, **kwargs)
-            else:
-                trigger_hyphen_arg_handler(bot, trigger)
-            """
 
             # Run the function for all splits
             for argsdict in argsdict_list:
