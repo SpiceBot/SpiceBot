@@ -97,7 +97,7 @@ class MessageLog():
                 else:
                     message = self.error_message_dict[messagedict["error_id"]]
                 message += " (" + str(messagedict["count"]) + ")"
-                message = self.messagelog_fillin(bot, message, log_id)
+                message = self.messagelog_fillin(message, log_id)
                 current_errors.append(message)
             else:
                 if len(current_errors):
