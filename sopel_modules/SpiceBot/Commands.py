@@ -130,7 +130,7 @@ class BotCommands():
         else:
             raise Exception(str(target.lower()) + " appears to not be a valid user/channel")
 
-    def unset_command_disabled(self, command, target, timestamp, reason, bywhom, disabletype="fully"):
+    def unset_command_disabled(self, command, disabletype="fully"):
         if disabletype not in list(self.dict['disabled'].keys()):
             self.dict['disabled'][disabletype] = {
                                                     "users": {},
