@@ -50,13 +50,13 @@ def prerun(t_command_type='module', t_command_subtype=None):
             argsdict_default["realcom"] = botcommands.get_realcom(argsdict_default["com"], trigger_command_type)
 
             if argsdict_default["type"] == 'nickname':
-                argsdict_default["comtext"] = "'" + bot.nick + " " + argsdict_default["com"] + "'"
-                argsdict_default["realcomtext"] = "'" + bot.nick + " " + argsdict_default["realcom"] + "'"
+                argsdict_default["comtext"] = "'" + bot.nick + " " + str(argsdict_default["com"]) + "'"
+                argsdict_default["realcomtext"] = "'" + bot.nick + " " + str(argsdict_default["realcom"]) + "'"
             else:
-                argsdict_default["comtext"] = "'" + argsdict_default["com"] + "'"
-                argsdict_default["realcomtext"] = "'" + argsdict_default["realcom"] + "'"
+                argsdict_default["comtext"] = "'" + str(argsdict_default["com"]) + "'"
+                argsdict_default["realcomtext"] = "'" + str(argsdict_default["realcom"]) + "'"
 
-            argsdict_default["realcomref"] = argsdict_default["type"] + "_" + argsdict_default["realcom"]
+            argsdict_default["realcomref"] = argsdict_default["type"] + "_" + str(argsdict_default["realcom"])
 
             argsdict_default["dict"] = botcommands.get_command_dict(argsdict_default["realcom"], trigger_command_type)
 
