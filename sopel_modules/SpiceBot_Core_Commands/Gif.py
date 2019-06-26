@@ -11,7 +11,7 @@ import spicemanip
 # TODO custom gif shortcut commands
 
 
-@SpiceBot.prerun('module')
+@SpiceBot.prerun('module', "gif_prefix")
 @sopel.module.commands('gif')
 def gif_trigger(bot, trigger):
 
@@ -33,7 +33,6 @@ def gif_trigger(bot, trigger):
 @SpiceBot.prerun('module')
 @sopel.module.commands('(.*)')
 def gifapi_triggers(bot, trigger):
-    bot.say("here")
 
     if trigger.sb['com'] not in list(SpiceBot.gif.valid_api.keys()):
         return

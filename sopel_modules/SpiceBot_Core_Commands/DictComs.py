@@ -10,12 +10,11 @@ import sopel.module
 import sopel_modules.SpiceBot as SpiceBot
 
 
-@SpiceBot.prerun('module')
+@SpiceBot.prerun('module', 'dictcom')
 @sopel.module.commands('(.*)')
 def command_dictcom(bot, trigger):
-    bot.say("here")
 
-    if trigger.sb['com'] not in list(SpiceBot.commands.dict['commands']["prefix"].keys()):
+    if trigger.sb['com'] not in list(SpiceBot.commands.dict['commands']["dictcom"].keys()):
         return
 
     trigger.sb = SpiceBot.dictcoms.get_dict(trigger.sb)

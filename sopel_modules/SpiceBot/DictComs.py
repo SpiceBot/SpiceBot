@@ -50,7 +50,7 @@ class BotDictCommands():
 
         # simplify usage of the bot command going forward
         # copy dict to not overwrite
-        triggersb['comdict'] = copy.deepcopy(botcommands.dict['commands']["prefix"][triggersb['realcom']])
+        triggersb['comdict'] = copy.deepcopy(botcommands.dict['commands']["dictcom"][triggersb['realcom']])
 
         # execute function based on command type
         triggersb['comtype'] = triggersb['comdict']["type"].lower()
@@ -71,7 +71,7 @@ class BotDictCommands():
 
             dict_from_file = self.valid_dictcom_dict[jsondict]
 
-            dict_from_file["comtype"] = "prefix"
+            dict_from_file["comtype"] = "dictcom"
 
             # default command to filename
             if "validcoms" not in list(dict_from_file.keys()):

@@ -9,6 +9,7 @@ from sopel.tools import Identifier
 import functools
 import copy
 import datetime
+
 import spicemanip
 
 from .Tools import command_permissions_check
@@ -16,7 +17,7 @@ from .Commands import commands as botcommands
 from .Database import db as botdb
 
 
-def prerun(t_command_type='module'):
+def prerun(t_command_type='module', t_command_subtype=None):
 
     def actual_decorator(function):
 
@@ -32,16 +33,8 @@ def prerun(t_command_type='module'):
             if not trigger_command_type:
                 return
 
-            if trigger_command_type not in list(botcommands.dict["commands"].keys()):
-                return
-
-            if trigger_command not in list(botcommands.dict["commands"][trigger_command_type].keys()):
-                return
-
-            if trigger_command_type != t_command_type:
-                if t_command_type not in list(botcommands.dict["commands"].keys()):
-                    return
-                if trigger_command in list(botcommands.dict["commands"][t_command_type].keys()):
+            if t_command_subtype:
+                if trigger_command_type != trigger_command_type:
                     return
 
             # Argsdict Defaults

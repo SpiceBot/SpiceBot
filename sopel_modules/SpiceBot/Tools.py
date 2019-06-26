@@ -9,7 +9,6 @@ import sopel
 import collections
 import os
 import sys
-import codecs
 from difflib import SequenceMatcher
 from operator import itemgetter
 from collections import abc
