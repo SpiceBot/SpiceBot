@@ -27,10 +27,10 @@ class MessageLog():
 
     def messagelog_start(self, bot, trigger, log_id):
 
-        if trigger.is_privmsg:
-            channelname = None
-        else:
+        if not trigger.is_privmsg:
             channelname = trigger.sender
+        else:
+            channelname = None
 
         self.message_display[log_id] = {
                                         "trigger": {
@@ -60,6 +60,10 @@ class MessageLog():
             newloglist.append(newmessagedict)
 
         self.message_display[log_id]["messages"] = newloglist
+
+    def messagelog_error_admins(self, log_id, message):
+        # TODO
+        return
 
     def messagelog(self, log_id, message, recipients=None):
 
