@@ -110,18 +110,23 @@ class MessageLog():
                 messagedict["recipients"] == [messagedict["recipients"]]
 
             if messagedict["type"] == 'error':
+                bot.say("here a")
                 bot.osd(messagedict['message'], self.message_display[log_id]["trigger"]["nick"], 'notice')
 
             elif len(messagedict["recipients"]) > 1:
+                bot.say("here b")
                 bot.osd(messagedict['message'], messagedict["recipients"], 'notice')
 
             elif len(messagedict["recipients"]) == 1:
                 if messagedict["recipients"][0] == self.message_display[log_id]["trigger"]["nick"]:
+                    bot.say("here c")
                     bot.osd(messagedict['message'], self.message_display[log_id]["trigger"]["nick"], 'notice')
                 else:
+                    bot.say("here d")
                     bot.osd(messagedict['message'], messagedict["recipients"], 'say')
 
             else:
+                bot.say("here e")
                 bot.osd(messagedict['message'], messagedict["recipients"], 'say')
 
         self.messagelog_kill(log_id)
