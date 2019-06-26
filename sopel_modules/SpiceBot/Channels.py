@@ -29,6 +29,7 @@ class BotChannels():
 
         self.lock = threading.Lock()
         self.channel_lock = False
+        self.channels = []
         self.dict = {
                     "list": {},
                     "InitialProcess": False
@@ -46,7 +47,7 @@ class BotChannels():
 
         if channel.lower() not in list(self.dict["list"].keys()):
             raise Exception('Channel ' + str(channel.lower()) + " does not seem to be on this server")
-        if 'users' not in list(self.dict["list"][channel.lower()].keys()):
+        if 'users' not in list(self.dict["list"][channel.lower()].keys()) or not self.check_channel_bot(channel):
             raise Exception('Channel ' + str(channel.lower()) + " does not seem to be a channel the bot is in")
 
         nick_ids = self.dict["list"][channel.lower()]['users']
@@ -102,6 +103,8 @@ class BotChannels():
                     self.lock.acquire()
                     del self.dict['list'][channel.lower()]
                     self.lock.release()
+                if channel.lower() in self.channels:
+                    self.channels.remove(channel.lower())
 
     def join_all_channels(self, bot):
         if botconfig.SpiceBot_Channels.joinall:
@@ -111,6 +114,10 @@ class BotChannels():
                         bot.write(('JOIN', bot.nick, self.dict['list'][channel]['name']))
                         if channel not in list(bot.channels.keys()) and botconfig.SpiceBot_Channels.operadmin:
                             bot.write(('SAJOIN', bot.nick, self.dict['list'][channel]['name']))
+
+                        if channel in list(bot.channels.keys()):
+                            if channel.lower() not in self.channels:
+                                self.channels.append(channel.lower())
 
     def chanadmin_all_channels(self, bot):
         # Chan ADMIN +a
@@ -122,6 +129,10 @@ class BotChannels():
                             bot.write(('SAMODE', channel, "+a", bot.nick))
                 else:
                     bot.part(channel)
+
+                    if channel not in list(bot.channels.keys()):
+                        if channel.lower() in self.channels:
+                            self.channels.remove(channel.lower())
 
     def whois_ident(self, nick):
         nick = Identifier(nick)
@@ -138,6 +149,8 @@ class BotChannels():
             self.dict['list'][channel.lower()]['users'] = []
         if nick_id not in self.dict['list'][channel.lower()]['users']:
             self.dict['list'][channel.lower()]['users'].append(int(nick_id))
+        if channel.lower() not in self.channels:
+            self.channels.append(channel.lower())
 
     def remove_from_channel(self, channel, nick, nick_id=None):
         channel = str(channel)
@@ -157,6 +170,8 @@ class BotChannels():
         if 'users' not in self.dict['list'][channel.lower()]:
             self.dict['list'][channel.lower()]['users'] = []
         self.dict['list'][channel.lower()]['users'] = []
+        if channel.lower() in self.channels:
+            self.channels.remove(channel.lower())
 
     def channel_scan(self, bot):
         for channel in list(bot.channels.keys()):
@@ -220,6 +235,14 @@ class BotChannels():
 
     def mode(self, bot, trigger):
         return
+
+    def check_channel_bot(self, channel, allchan=False):
+        if str(channel).lower() in self.channels:
+            return True
+        elif allchan and str(channel).lower() in list(self.dict['list'].keys()):
+            return True
+        else:
+            return False
 
 
 channels = BotChannels()

@@ -15,6 +15,7 @@ import spicemanip
 from .Tools import command_permissions_check
 from .Commands import commands as botcommands
 from .Database import db as botdb
+from .Channels import channels as botchannels
 
 
 def prerun(t_command_type='module', t_command_subtype=None):
@@ -52,8 +53,12 @@ def prerun(t_command_type='module', t_command_subtype=None):
             argsdict_list = trigger_argsdict_list(argsdict_default, and_split)
 
             # Run the function for all splits
+            runcount = 0
             for argsdict in argsdict_list:
+                runcount += 1
                 trigger.sb = copy.deepcopy(argsdict)
+
+                trigger.sb["runcount"] = runcount
 
                 trigger.sb["args"], trigger.sb["hyphen_arg"] = trigger_hyphen_args(trigger.sb["args"])
                 if not trigger.sb["hyphen_arg"]:
@@ -127,16 +132,44 @@ def trigger_runstatus(bot, trigger):
     if trigger.sb["hyphen_arg"]:
         return False
 
+    if trigger.sb["runcount"] > 1:
+        # check channel multirun blocks
+        if not trigger.is_privmsg:
+            channel_disabled_list = botcommands.get_commands_disabled(str(trigger.sender), "multirun")
+            if trigger.sb["realcom"] in list(channel_disabled_list.keys()):
+                reason = channel_disabled_list[trigger.sb["realcom"]]["reason"]
+                timestamp = channel_disabled_list[trigger.sb["realcom"]]["timestamp"]
+                bywhom = channel_disabled_list[trigger.sb["realcom"]]["disabledby"]
+                message = "The " + str(trigger.sb["com"]) + " command multirun usage was disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
+                return trigger_cant_run(bot, trigger, message)
+
+        # don't run commands that are disabled for specific users
+        nick_disabled_list = botcommands.get_commands_disabled(str(trigger.nick), "multirun")
+        if trigger.sb["realcom"] in list(nick_disabled_list.keys()):
+            reason = nick_disabled_list[trigger.sb["realcom"]]["reason"]
+            timestamp = nick_disabled_list[trigger.sb["realcom"]]["timestamp"]
+            bywhom = nick_disabled_list[trigger.sb["realcom"]]["disabledby"]
+            message = "The " + str(trigger.sb["com"]) + " command was multirun unsage disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
+            return trigger_cant_run(bot, trigger, message)
+
     # don't run commands that are disabled in channels
     if not trigger.is_privmsg:
-        commandused = trigger.sb["realcom"]
-        disabled_list = botdb.get_channel_value(trigger.sender, 'commands_disabled') or {}
-        if commandused in list(disabled_list.keys()):
-            reason = disabled_list[trigger.sb["realcom"]]["reason"]
-            timestamp = disabled_list[trigger.sb["realcom"]]["timestamp"]
-            bywhom = disabled_list[trigger.sb["realcom"]]["disabledby"]
-            message = "The " + str(trigger.sb["com"]) + " command was disabled by " + bywhom + " in " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
+        channel_disabled_list = botcommands.get_commands_disabled(str(trigger.sender), "fully")
+        if trigger.sb["realcom"] in list(channel_disabled_list.keys()):
+            reason = channel_disabled_list[trigger.sb["realcom"]]["reason"]
+            timestamp = channel_disabled_list[trigger.sb["realcom"]]["timestamp"]
+            bywhom = channel_disabled_list[trigger.sb["realcom"]]["disabledby"]
+            message = "The " + str(trigger.sb["com"]) + " command was disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
             return trigger_cant_run(bot, trigger, message)
+
+    # don't run commands that are disabled for specific users
+    nick_disabled_list = botcommands.get_commands_disabled(str(trigger.nick), "fully")
+    if trigger.sb["realcom"] in list(nick_disabled_list.keys()):
+        reason = nick_disabled_list[trigger.sb["realcom"]]["reason"]
+        timestamp = nick_disabled_list[trigger.sb["realcom"]]["timestamp"]
+        bywhom = nick_disabled_list[trigger.sb["realcom"]]["disabledby"]
+        message = "The " + str(trigger.sb["com"]) + " command was disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
+        return trigger_cant_run(bot, trigger, message)
 
     return True
 
@@ -177,44 +210,102 @@ def trigger_hyphen_arg_handler(bot, trigger):
         else:
             bot.osd(trigger.sb["com"] + " is a valid command")
         return
+    elif trigger.sb["hyphen_arg"] in [
+                                        'enable', 'disable',
+                                        'block', 'unblock',
+                                        "activate", "deactivate",
+                                        "on", "off"
+                                        ]:
 
-    elif trigger.sb["hyphen_arg"] in ['enable']:
+        target = spicemanip.main(trigger.sb["args"], 1) or None
+        if not target:
+            if trigger.sb["hyphen_arg"] in ['enable', 'unblock', "activate", "on"]:
+                bot.osd("Who/Where am I enabling " + str(trigger.sb["realcom"]) + " usage for?", trigger.sender)
+            else:
+                bot.osd("Who/Where am I disabling " + str(trigger.sb["realcom"]) + " usage for?", trigger.sender)
+            return
+
+        if not botdb.check_nick_id(target) and not botchannels.check_channel_bot(target, True):
+            bot.osd("I don't know who/what " + str(target) + " is.", trigger.sender)
+            return
 
         if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
-            bot.osd("I was unable to disable this command due to privilege issues.")
+            if trigger.sb["hyphen_arg"] in ['enable', 'unblock', "activate", "on"]:
+                bot.osd("I was unable to enable this command for " + str(target) + " due to privilege issues.")
+            else:
+                bot.osd("I was unable to disable this command for " + str(target) + " due to privilege issues.")
             return
 
-        if trigger.is_privmsg:
-            bot.osd("This command must be run in a channel you which to enable it in.", trigger.nick, 'notice')
+        if trigger.sb["hyphen_arg"] in ['enable', 'unblock', "activate", "on"]:
+
+            if not botcommands.check_commands_disabled(trigger.sb["realcom"], target, "fully"):
+                bot.osd(trigger.sb["com"] + " is already enabled for " + str(target), trigger.nick, 'notice')
+                return
+
+            botcommands.unset_command_disabled(trigger.sb["realcom"], target, "fully")
+            bot.osd(trigger.sb["com"] + " is now enabled for " + str(target))
             return
 
-        if not botcommands.check_commands_disabled(trigger.sb["realcom"], trigger.sender):
-            bot.osd(trigger.sb["com"] + " is already enabled in " + str(trigger.sender), trigger.nick, 'notice')
+        else:
+
+            if botcommands.check_commands_disabled(trigger.sb["realcom"], target, "fully"):
+                bot.osd(trigger.sb["com"] + " is already disabled for " + str(target), trigger.nick, 'notice')
+                return
+
+            trailingmessage = spicemanip.main(trigger.sb["args"], 0) or "No reason given."
+            timestamp = str(datetime.datetime.utcnow())
+
+            botcommands.set_command_disabled(trigger.sb["realcom"], target, timestamp, trailingmessage, trigger.nick, "fully")
+            bot.osd(trigger.sb["com"] + " is now disabled for " + str(target))
             return
 
-        botcommands.unset_command_disabled(trigger.sb["realcom"], trigger.sender)
-        bot.osd(trigger.sb["com"] + " is now enabled in " + str(trigger.sender))
-        return
+    if trigger.sb["hyphen_arg"] in ['multirun', 'multiruns']:
 
-    elif trigger.sb["hyphen_arg"] in ['disable']:
+        onoff = spicemanip.main(trigger.sb["args"], 1) or None
+        if not onoff or onoff not in ['enable', 'unblock', "activate", "on"]:
+            bot.osd("Do you want to enable or disable " + str(trigger.sb["realcom"]) + " multirun usage?", trigger.sender)
+            return
+
+        target = spicemanip.main(trigger.sb["args"], 1) or None
+        if not target:
+            if onoff in ['enable', 'unblock', "activate", "on"]:
+                bot.osd("Who/Where am I enabling " + str(trigger.sb["realcom"]) + " multirun usage for?", trigger.sender)
+            else:
+                bot.osd("Who/Where am I disabling " + str(trigger.sb["realcom"]) + " multirun usage for?", trigger.sender)
+            return
+
+        if not botdb.check_nick_id(target) and not botchannels.check_channel_bot(target, True):
+            bot.osd("I don't know who/what " + str(target) + " is.", trigger.sender)
+            return
 
         if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
-            bot.osd("I was unable to disable this command due to privilege issues.")
+            if onoff in ['enable', 'unblock', "activate", "on"]:
+                bot.osd("I was unable to enable multirun usage on " + str(trigger.sb["realcom"]) + " for " + str(target) + " due to privilege issues.")
+            else:
+                bot.osd("I was unable to enable multirun usage on " + str(trigger.sb["realcom"]) + " for " + str(target) + " due to privilege issues.")
             return
 
-        if trigger.is_privmsg:
-            bot.osd("This command must be run in a channel you which to disable it in.", trigger.nick, 'notice')
+        if onoff in ['enable', 'unblock', "activate", "on"]:
+
+            if not botcommands.check_commands_disabled(trigger.sb["realcom"], target, "multirun"):
+                bot.osd(trigger.sb["com"] + " multirun is already enabled for " + str(target), trigger.nick, 'notice')
+                return
+
+            botcommands.unset_command_disabled(trigger.sb["realcom"], target, "multirun")
+            bot.osd(trigger.sb["com"] + " multirun is now enabled for " + str(target))
             return
 
-        if botcommands.check_commands_disabled(trigger.sb["realcom"], trigger.sender):
-            bot.osd(trigger.sb["com"] + " is already disabled in " + str(trigger.sender), trigger.nick, 'notice')
+        else:
+
+            if botcommands.check_commands_disabled(trigger.sb["realcom"], target, "multirun"):
+                bot.osd(trigger.sb["com"] + " multirun is already disabled for " + str(target), trigger.nick, 'notice')
+                return
+
+            trailingmessage = spicemanip.main(trigger.sb["args"], 0) or "No reason given."
+            timestamp = str(datetime.datetime.utcnow())
+
+            botcommands.set_command_disabled(trigger.sb["realcom"], target, timestamp, trailingmessage, trigger.nick, "multirun")
+            bot.osd(trigger.sb["com"] + " multirun is now disabled for " + str(target))
             return
-
-        trailingmessage = spicemanip.main(trigger.sb["args"], 0) or "No reason given."
-        timestamp = str(datetime.datetime.utcnow())
-
-        botcommands.set_command_disabled(trigger.sb["realcom"], trigger.sender, timestamp, trailingmessage, trigger.nick)
-        bot.osd(trigger.sb["com"] + " is now disabled in " + str(trigger.sender))
-        return
 
     return
