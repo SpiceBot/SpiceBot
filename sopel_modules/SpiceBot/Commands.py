@@ -11,6 +11,7 @@ from sopel.config.types import StaticSection, ValidatedAttribute
 
 import os
 import threading
+import copy
 
 import spicemanip
 import sopel_modules
@@ -67,6 +68,14 @@ class BotCommands():
                 if com.lower() == command.lower():
                     return commandstype
         return None
+
+    def get_command_dict(self, command, trigger_command_type=None):
+        if not trigger_command_type:
+            trigger_command_type = self.find_command_type(command)
+            if not trigger_command_type:
+                return {}
+        command_dict = copy.deepcopy(self.dict['commands'][trigger_command_type][command])
+        return command_dict
 
     def get_realcom(self, command, trigger_command_type):
         realcom = command

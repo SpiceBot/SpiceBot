@@ -47,8 +47,9 @@ def prerun(t_command_type='module', t_command_subtype=None):
             # messagelog ID
             argsdict_default["log_id"] = botmessagelog.messagelog_assign()
 
-            realcom = botcommands.get_realcom(argsdict_default["com"], trigger_command_type)
-            argsdict_default["realcom"] = realcom
+            argsdict_default["realcom"] = botcommands.get_realcom(argsdict_default["com"], trigger_command_type)
+
+            argsdict_default["dict"] = botcommands.get_command_dict(argsdict_default["realcom"], trigger_command_type)
 
             # split into && groupings
             and_split = trigger_and_split(trigger_args)
@@ -332,27 +333,27 @@ def trigger_hyphen_arg_handler(bot, trigger):
             return
 
     elif trigger.sb["hyphen_arg"] in ['example', 'usage']:
-        botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["com"] + ": " + str(trigger.sb["example"]))
+        botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["com"] + ": " + str(trigger.sb["dict"]["example"]))
         return
 
     elif trigger.sb["hyphen_arg"] in ['filename', 'filepath']:
-        botmessagelog.messagelog(trigger.sb["log_id"], "The " + str(trigger.sb["com"]) + " file is located at " + str(trigger.sb[trigger.sb["hyphen_arg"]]))
+        botmessagelog.messagelog(trigger.sb["log_id"], "The " + str(trigger.sb["com"]) + " file is located at " + str(trigger.sb["dict"][trigger.sb["hyphen_arg"]]))
         return
 
     elif trigger.sb["hyphen_arg"] in ['foldername', 'folderpath']:
-        botmessagelog.messagelog(trigger.sb["log_id"], "The " + str(trigger.sb["com"]) + " folder is located at " + str(trigger.sb[trigger.sb["hyphen_arg"]]))
+        botmessagelog.messagelog(trigger.sb["log_id"], "The " + str(trigger.sb["com"]) + " folder is located at " + str(trigger.sb["dict"][trigger.sb["hyphen_arg"]]))
         return
 
     elif trigger.sb["hyphen_arg"] in ['author']:
-        botmessagelog.messagelog(trigger.sb["log_id"], "The author of the " + str(trigger.sb["com"]) + " command is " + trigger.sb["author"] + ".")
+        botmessagelog.messagelog(trigger.sb["log_id"], "The author of the " + str(trigger.sb["com"]) + " command is " + trigger.sb["dict"]["author"] + ".")
         return
 
     elif trigger.sb["hyphen_arg"] in ['contribs', 'contrib', "contributors"]:
-        botmessagelog.messagelog(trigger.sb["log_id"], "The contributors of the " + str(trigger.sb["com"]) + " command are " + spicemanip.main(trigger.sb["contributors"], "andlist") + ".")
+        botmessagelog.messagelog(trigger.sb["log_id"], "The contributors of the " + str(trigger.sb["com"]) + " command are " + spicemanip.main(trigger.sb["dict"]["contributors"], "andlist") + ".")
         return
 
     elif trigger.sb["hyphen_arg"] in ['alias', 'aliases']:
-        botmessagelog.messagelog(trigger.sb["log_id"], "The alaises of the " + str(trigger.sb["com"]) + " command are " + spicemanip.main(trigger.sb["validcoms"], "andlist") + ".")
+        botmessagelog.messagelog(trigger.sb["log_id"], "The alaises of the " + str(trigger.sb["com"]) + " command are " + spicemanip.main(trigger.sb["dict"]["validcoms"], "andlist") + ".")
         return
 
     return
