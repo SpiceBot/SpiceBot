@@ -27,7 +27,7 @@ class MessageLog():
 
     def messagelog_start(self, bot, trigger, log_id):
 
-        if not trigger.is_privmsg:
+        if trigger.is_privmsg:
             channelname = None
         else:
             channelname = trigger.sender
