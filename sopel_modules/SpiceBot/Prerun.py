@@ -241,7 +241,7 @@ def trigger_hyphen_arg_handler(bot, trigger):
                                         "on", "off"
                                         ]:
 
-        target = spicemanip.main(trigger.sb["args"], 1) or None
+        target = spicemanip.main(trigger.sb["args"], 1) or trigger.nick
         if not target:
             if trigger.sb["hyphen_arg"] in ['enable', 'unblock', "activate", "on"]:
                 botmessagelog.messagelog_error(trigger.sb["log_id"], "Who/Where am I enabling " + str(trigger.sb["realcom"]) + " usage for?")
@@ -254,11 +254,12 @@ def trigger_hyphen_arg_handler(bot, trigger):
             return
 
         if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
-            if trigger.sb["hyphen_arg"] in ['enable', 'unblock', "activate", "on"]:
-                botmessagelog.messagelog_error(trigger.sb["log_id"], "I was unable to enable this command for " + str(target) + " due to privilege issues.")
-            else:
-                botmessagelog.messagelog_error(trigger.sb["log_id"], "I was unable to disable this command for " + str(target) + " due to privilege issues.")
-            return
+            if target != trigger.nick:
+                if trigger.sb["hyphen_arg"] in ['enable', 'unblock', "activate", "on"]:
+                    botmessagelog.messagelog_error(trigger.sb["log_id"], "I was unable to enable this command for " + str(target) + " due to privilege issues.")
+                else:
+                    botmessagelog.messagelog_error(trigger.sb["log_id"], "I was unable to disable this command for " + str(target) + " due to privilege issues.")
+                return
 
         if trigger.sb["hyphen_arg"] in ['enable', 'unblock', "activate", "on"]:
 
@@ -290,7 +291,7 @@ def trigger_hyphen_arg_handler(bot, trigger):
             botmessagelog.messagelog_error(trigger.sb["log_id"], "Do you want to enable or disable " + str(trigger.sb["realcom"]) + " multirun usage?")
             return
 
-        target = spicemanip.main(trigger.sb["args"], 1) or None
+        target = spicemanip.main(trigger.sb["args"], 1) or trigger.nick
         if not target:
             if onoff in ['enable', 'unblock', "activate", "on"]:
                 botmessagelog.messagelog_error(trigger.sb["log_id"], "Who/Where am I enabling " + str(trigger.sb["realcom"]) + " multirun usage for?")
@@ -303,11 +304,12 @@ def trigger_hyphen_arg_handler(bot, trigger):
             return
 
         if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
-            if onoff in ['enable', 'unblock', "activate", "on"]:
-                botmessagelog.messagelog_error(trigger.sb["log_id"], "I was unable to enable multirun usage on " + str(trigger.sb["realcom"]) + " for " + str(target) + " due to privilege issues.")
-            else:
-                botmessagelog.messagelog_error(trigger.sb["log_id"], "I was unable to enable multirun usage on " + str(trigger.sb["realcom"]) + " for " + str(target) + " due to privilege issues.")
-            return
+            if target != trigger.nick:
+                if onoff in ['enable', 'unblock', "activate", "on"]:
+                    botmessagelog.messagelog_error(trigger.sb["log_id"], "I was unable to enable multirun usage on " + str(trigger.sb["realcom"]) + " for " + str(target) + " due to privilege issues.")
+                else:
+                    botmessagelog.messagelog_error(trigger.sb["log_id"], "I was unable to enable multirun usage on " + str(trigger.sb["realcom"]) + " for " + str(target) + " due to privilege issues.")
+                return
 
         if onoff in ['enable', 'unblock', "activate", "on"]:
 
