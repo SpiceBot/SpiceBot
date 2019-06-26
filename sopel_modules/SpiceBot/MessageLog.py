@@ -6,6 +6,8 @@ This is the SpiceBot Message Log system.
 
 import uuid
 
+from .Config import config as botconfig
+
 
 class MessageLog():
 
@@ -61,7 +63,9 @@ class MessageLog():
 
         self.message_display[log_id]["messages"] = newloglist
 
-    def messagelog_error_admins(self, log_id, message):
+    def messagelog_error_admins(self, bot, log_id, message):
+        recipients = list(botconfig.admins)
+        bot.osd(["Attention Bot Admin: ", message], recipients, 'notice')
         # TODO
         return
 
@@ -110,24 +114,18 @@ class MessageLog():
         for messagedict in current_messages:
 
             if messagedict["type"] == 'error':
-                bot.say("here a")
                 bot.osd(messagedict['message'], self.message_display[log_id]["trigger"]["nick"], 'notice')
 
             elif len(messagedict["recipients"]) > 1:
-                bot.say("here b")
-                bot.say(str(messagedict["recipients"]))
                 bot.osd(messagedict['message'], messagedict["recipients"], 'notice')
 
             elif len(messagedict["recipients"]) == 1:
                 if messagedict["recipients"][0] == self.message_display[log_id]["trigger"]["nick"]:
-                    bot.say("here c")
                     bot.osd(messagedict['message'], self.message_display[log_id]["trigger"]["nick"], 'notice')
                 else:
-                    bot.say("here d")
                     bot.osd(messagedict['message'], messagedict["recipients"], 'say')
 
             else:
-                bot.say("here e")
                 bot.osd(messagedict['message'], messagedict["recipients"], 'say')
 
         self.messagelog_kill(log_id)
