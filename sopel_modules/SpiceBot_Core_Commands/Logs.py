@@ -13,7 +13,7 @@ import sopel_modules.SpiceBot as SpiceBot
 
 
 @SpiceBot.events.check_ready([SpiceBot.events.BOT_LOGS])
-@SpiceBot.prerun.prerun('nickname')
+@SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('logs', 'debug')
 def bot_command_logs(bot, trigger):
 

@@ -23,7 +23,8 @@ class Google():
         self.setup_google()
         self.cache = {
                     "info": {},
-                    "maps": {}
+                    "maps": {},
+                    "youtube": {}
                     }
 
     def setup_google(self):

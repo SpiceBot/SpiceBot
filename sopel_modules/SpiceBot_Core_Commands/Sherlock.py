@@ -9,7 +9,7 @@ import spicemanip
 import sopel_modules.SpiceBot as SpiceBot
 
 
-@SpiceBot.prerun.prerun('module')
+@SpiceBot.prerun('module')
 @sopel.module.commands('sherlock', 'username')
 def bot_command_sherlock(bot, trigger):
 

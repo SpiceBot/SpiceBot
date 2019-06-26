@@ -13,6 +13,7 @@ import aiml
 
 from .Database import db as botdb
 from .Config import config as botconfig
+from .Read import read as botread
 
 import spicemanip
 
@@ -59,16 +60,7 @@ class SpiceBot_AI():
             self.save_brain()
 
     def load_brain(self):
-        import sopel_modules
-        braindirs = []
-        for plugin_dir in set(sopel_modules.__path__):
-            configsdir = os.path.join(plugin_dir, "SpiceBot_Configs")
-            aimldir = os.path.join(configsdir, "aiml")
-            braindirs.append(aimldir)
-
-        if len(botconfig.SpiceBot_AI.extra):
-            for extrabraindir in botconfig.SpiceBot_AI.extra:
-                braindirs.append(extrabraindir)
+        braindirs = botread.get_config_dirs("SpiceBot_AI")
 
         # learn directories
         self.learn(braindirs)
