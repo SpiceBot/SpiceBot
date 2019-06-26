@@ -69,9 +69,12 @@ class MessageLog():
 
         if not recipients:
             if self.message_display[log_id]["trigger"]["sender"]:
-                recipients = self.message_display[log_id]["trigger"]["sender"]
+                recipients = [self.message_display[log_id]["trigger"]["sender"]]
             else:
-                recipients = self.message_display[log_id]["trigger"]["nick"]
+                recipients = [self.message_display[log_id]["trigger"]["nick"]]
+
+        if not isinstance(recipients, list):
+            recipients == [recipients]
 
         messagedict = {"type": "normal", "message": message, "recipients": recipients}
 
@@ -105,9 +108,6 @@ class MessageLog():
             current_errors = []
 
         for messagedict in current_messages:
-
-            if not isinstance(messagedict["recipients"], list):
-                messagedict["recipients"] == [messagedict["recipients"]]
 
             if messagedict["type"] == 'error':
                 bot.say("here a")
