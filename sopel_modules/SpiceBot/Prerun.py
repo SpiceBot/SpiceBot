@@ -191,7 +191,17 @@ def trigger_cant_run(bot, trigger, message=None):
 def trigger_hyphen_args(trigger_args_part):
     valid_hyphen_args = [
                         'check',
-                        'enable', 'disable'
+                        'enable', 'disable',
+                        'block', 'unblock',
+                        "activate", "deactivate",
+                        "on", "off",
+                        'multirun', 'multiruns',
+                        'example', 'usage',
+                        'filename', 'filepath',
+                        'foldername', 'folderpath',
+                        "author",
+                        'contribs', 'contrib', "contributors",
+                        'alias', 'aliases'
                         ]
     hyphen_args = []
     trigger_args_unhyphend = []
