@@ -231,5 +231,9 @@ class BotUsers():
     def targetcheck(self):
         return True
 
+        # idk whois
+        if not botdb.check_nick_id(posstarget):
+            return
+
 
 users = BotUsers()
