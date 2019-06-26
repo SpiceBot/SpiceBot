@@ -49,7 +49,7 @@ def prerun(t_command_type='module', t_command_subtype=None):
 
             argsdict_default["realcom"] = botcommands.get_realcom(argsdict_default["com"], trigger_command_type)
 
-            if trigger.sb["type"] == 'nickname':
+            if argsdict_default["type"] == 'nickname':
                 argsdict_default["comtext"] = bot.nick + " " + trigger.sb["com"]
                 argsdict_default["realcomtext"] = bot.nick + " " + trigger.sb["com"]
             else:
