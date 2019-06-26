@@ -153,11 +153,15 @@ def trigger_runstatus(bot, trigger):
         # don't run commands that are disabled for specific users
         nick_disabled_list = botcommands.get_commands_disabled(str(trigger.nick), "multirun")
         if trigger.sb["realcom"] in list(nick_disabled_list.keys()):
-            reason = nick_disabled_list[trigger.sb["realcom"]]["reason"]
-            timestamp = nick_disabled_list[trigger.sb["realcom"]]["timestamp"]
             bywhom = nick_disabled_list[trigger.sb["realcom"]]["disabledby"]
-            message = "The " + str(trigger.sb["com"]) + " command was multirun unsage disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
-            return trigger_cant_run(bot, trigger, message)
+            if bywhom != trigger.nick:
+                reason = nick_disabled_list[trigger.sb["realcom"]]["reason"]
+                timestamp = nick_disabled_list[trigger.sb["realcom"]]["timestamp"]
+                message = "The " + str(trigger.sb["com"]) + " command was multirun unsage disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
+                return trigger_cant_run(bot, trigger, message)
+            else:
+                botcommands.unset_command_disabled(trigger.sb["realcom"], trigger.nick, "multirun")
+                botmessagelog.messagelog_error(trigger.sb["log_id"], trigger.sb["com"] + " multirun is now enabled for " + str(trigger.nick))
 
     # don't run commands that are disabled in channels
     if not trigger.is_privmsg:
@@ -168,15 +172,19 @@ def trigger_runstatus(bot, trigger):
             bywhom = channel_disabled_list[trigger.sb["realcom"]]["disabledby"]
             message = "The " + str(trigger.sb["com"]) + " command was disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
             return trigger_cant_run(bot, trigger, message)
+        else:
+            botcommands.unset_command_disabled(trigger.sb["realcom"], trigger.nick, "fully")
+            botmessagelog.messagelog_error(trigger.sb["log_id"], trigger.sb["com"] + " multirun is now enabled for " + str(trigger.nick))
 
     # don't run commands that are disabled for specific users
     nick_disabled_list = botcommands.get_commands_disabled(str(trigger.nick), "fully")
     if trigger.sb["realcom"] in list(nick_disabled_list.keys()):
-        reason = nick_disabled_list[trigger.sb["realcom"]]["reason"]
-        timestamp = nick_disabled_list[trigger.sb["realcom"]]["timestamp"]
         bywhom = nick_disabled_list[trigger.sb["realcom"]]["disabledby"]
-        message = "The " + str(trigger.sb["com"]) + " command was disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
-        return trigger_cant_run(bot, trigger, message)
+        if bywhom != trigger.nick:
+            reason = nick_disabled_list[trigger.sb["realcom"]]["reason"]
+            timestamp = nick_disabled_list[trigger.sb["realcom"]]["timestamp"]
+            message = "The " + str(trigger.sb["com"]) + " command was disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
+            return trigger_cant_run(bot, trigger, message)
 
     return True
 
