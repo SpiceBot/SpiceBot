@@ -211,11 +211,18 @@ def trigger_hyphen_arg_handler(bot, trigger):
 
     # Commands that cannot run via privmsg
     if trigger.sb["hyphen_arg"] in ['check']:
-        if trigger.sb["com"].lower() != trigger.sb["realcom"]:
-            botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["com"] + " is a valid alias command for " + trigger.sb["realcom"])
+        if trigger.sb["type"] == 'nickname':
+            if trigger.sb["com"].lower() != trigger.sb["realcom"]:
+                botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["com"] + " is a valid alias command for " + bot.nick + " " + trigger.sb["realcom"])
+            else:
+                botmessagelog.messagelog(trigger.sb["log_id"], bot.nick + " " + trigger.sb["com"] + " is a valid command")
         else:
-            botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["com"] + " is a valid command")
+            if trigger.sb["com"].lower() != trigger.sb["realcom"]:
+                botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["com"] + " is a valid alias command for " + trigger.sb["realcom"])
+            else:
+                botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["com"] + " is a valid command")
         return
+
     elif trigger.sb["hyphen_arg"] in [
                                         'enable', 'disable',
                                         'block', 'unblock',
