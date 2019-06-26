@@ -101,8 +101,22 @@ class MessageLog():
             current_errors = []
 
         for messagedict in current_messages:
+
+            if not isinstance(messagedict["recipients"], list):
+                messagedict["recipients"] == [messagedict["recipients"]]
+
             if messagedict["type"] == 'error':
                 bot.osd(messagedict['message'], self.message_display[log_id]["trigger"]["nick"], 'notice')
+
+            elif len(messagedict["recipients"]) > 1:
+                bot.osd(messagedict['message'], messagedict["recipients"], 'notice')
+
+            elif len(messagedict["recipients"]) == 1:
+                if messagedict["recipients"][0] == self.message_display[log_id]["trigger"]["nick"]:
+                    bot.osd(messagedict['message'], self.message_display[log_id]["trigger"]["nick"], 'notice')
+                else:
+                    bot.osd(messagedict['message'], messagedict["recipients"], 'say')
+
             else:
                 bot.osd(messagedict['message'], messagedict["recipients"], 'say')
 
