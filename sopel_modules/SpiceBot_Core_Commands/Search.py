@@ -10,7 +10,7 @@ import spicemanip
 import sopel_modules.SpiceBot as SpiceBot
 
 
-@SpiceBot.prerun.prerun('module')
+@SpiceBot.prerun('module')
 @sopel.module.commands('search', 'find', 'google', 'lookup')
 def search_main(bot, trigger):
 
@@ -26,7 +26,7 @@ def search_main(bot, trigger):
         bot.osd(["[Information search for '" + str(searchterm) + "']", str(searchreturn)])
 
 
-@SpiceBot.prerun.prerun('module')
+@SpiceBot.prerun('module')
 @sopel.module.commands("where", "whereis")
 def search_where(bot, trigger):
 
@@ -42,7 +42,7 @@ def search_where(bot, trigger):
         bot.osd(["[Location search for " + str(searchterm) + "]", str(searchreturn)])
 
 
-@SpiceBot.prerun.prerun('module')
+@SpiceBot.prerun('module')
 @sopel.module.commands("what", "whatis")
 def search_what(bot, trigger):
 
@@ -58,7 +58,7 @@ def search_what(bot, trigger):
         bot.osd(["[Information search for '" + str(searchterm) + "']", str(searchreturn)])
 
 
-@SpiceBot.prerun.prerun('module')
+@SpiceBot.prerun('module')
 @sopel.module.commands("youtube", "video")
 def search_video(bot, trigger):
 

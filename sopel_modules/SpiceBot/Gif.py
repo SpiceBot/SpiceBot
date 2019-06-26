@@ -3,15 +3,13 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 """How to handle gifs"""
 
 from sopel.config.types import StaticSection, ValidatedAttribute, ListAttribute
-import sopel_modules
 
 from .Config import config as botconfig
-from .Tools import read_directory_json_to_dict
+from .Read import read as botread
 from .Commands import commands as botcommands
 
 import spicemanip
 
-import os
 from fake_useragent import UserAgent
 import urllib
 import random
@@ -36,17 +34,9 @@ class BotGif():
         self.header = {'User-Agent': str(UserAgent().chrome)}
         self.valid_api = {}
 
-        dir_to_scan = []
-        for plugin_dir in set(sopel_modules.__path__):
-            configsdir = os.path.join(plugin_dir, "SpiceBot_Configs")
-            gifcfgdir = os.path.join(configsdir, "gifapi")
-            dir_to_scan.append(gifcfgdir)
+        self.dir_to_scan = botread.get_config_dirs("SpiceBot_Gif")
 
-        if len(botconfig.SopelGifSearch.extra):
-            for extragifcfgdir in botconfig.SopelGifSearch.extra:
-                dir_to_scan.append(extragifcfgdir)
-
-        valid_gif_api_dict = read_directory_json_to_dict(dir_to_scan, "Gif API", "SpiceBot_Gif")
+        valid_gif_api_dict = botread.json_to_dict(self.dir_to_scan, "Gif API", "SpiceBot_Gif")
 
         for gif_api in list(valid_gif_api_dict.keys()):
             botconfig.define_section(gif_api, GifAPISection, validate=False)
@@ -59,16 +49,12 @@ class BotGif():
             if apikey:
                 self.valid_api[gif_api]["apikey"] = apikey
 
-        for validgifapi in list(self.valid_api.keys()):
-            command_dict = {
-                            "comtype": "gif_prefix",
-                            "validcoms": validgifapi
-                            }
-            botcommands.dict['counts'] += 1
-            botcommands.register(command_dict)
+            self.valid_api[gif_api]["comtype"] = "gif_prefix"
+            self.valid_api[gif_api]["validcoms"] = [self.valid_api[gif_api]["filename"]]
+            botcommands.register(self.valid_api[gif_api])
 
     def setup_gif(self):
-        botconfig.define_section("SopelGifSearch", SpiceBot_Gif_MainSection, validate=False)
+        botconfig.define_section("SpiceBot_Gif", SpiceBot_Gif_MainSection, validate=False)
 
     def get_gif(self, searchdict):
 
@@ -90,7 +76,7 @@ class BotGif():
                     for remx in query_defaults["gifsearchremove"]:
                         searchdict["gifsearch"].remove(remx)
 
-        if botconfig.SopelGifSearch.nsfw:
+        if botconfig.SpiceBot_Gif.nsfw:
             query_defaults["nsfw"] = True
 
         # verify query is there to search

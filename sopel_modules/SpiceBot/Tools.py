@@ -9,7 +9,6 @@ import sopel
 import collections
 import os
 import sys
-import codecs
 from difflib import SequenceMatcher
 from operator import itemgetter
 from collections import abc
@@ -316,57 +315,3 @@ def service_manip(servicename, dowhat, log_from='service_manip'):
         os.system("sudo service " + str(servicename) + " " + str(dowhat))
     except Exception as e:
         logs.log(log_from, str(dowhat).title() + "ing " + str(servicename) + ".service Failed: " + str(e))
-
-
-"""Config Reading Functions"""
-
-
-def read_directory_json_to_dict(directories, configtypename="Config File", log_from='read_directory_json_to_dict', logging=True):
-
-    if not isinstance(directories, list):
-        directories = [directories]
-
-    configs_dict = {}
-    filesprocess, fileopenfail, filecount = [], 0, 0
-    for directory in directories:
-        if os.path.exists(directory) and os.path.isdir(directory):
-            if len(os.listdir(directory)) > 0:
-                for file in os.listdir(directory):
-                    filepath = os.path.join(directory, file)
-                    if os.path.isfile(filepath) and filepath.endswith('.json'):
-                        filesprocess.append(filepath)
-
-    for filepath in filesprocess:
-
-        # Read dictionary from file, if not, enable an empty dict
-        filereadgood = True
-        inf = codecs.open(filepath, "r", encoding='utf-8')
-        infread = inf.read()
-        try:
-            dict_from_file = eval(infread)
-        except Exception as e:
-            filereadgood = False
-            if logging:
-                logs.log(log_from, "Error loading %s: %s (%s)" % (configtypename, e, filepath))
-            dict_from_file = dict()
-        # Close File
-        inf.close()
-
-        if filereadgood and isinstance(dict_from_file, dict):
-            filecount += 1
-            slashsplit = str(filepath).split("/")
-            filename = slashsplit[-1]
-            filename_base = os.path.basename(filename).rsplit('.', 1)[0]
-            configs_dict[filename_base] = dict_from_file
-        else:
-            fileopenfail += 1
-
-    if filecount:
-        if logging:
-            logs.log(log_from, 'Registered %d %s dict files,' % (filecount, configtypename))
-            logs.log(log_from, '%d %s dict files failed to load' % (fileopenfail, configtypename), True)
-    else:
-        if logging:
-            logs.log(log_from, "Warning: Couldn't load any %s dict files" % (configtypename))
-
-    return configs_dict

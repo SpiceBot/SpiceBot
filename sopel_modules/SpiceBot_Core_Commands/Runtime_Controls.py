@@ -9,7 +9,7 @@ import spicemanip
 import sopel_modules.SpiceBot as SpiceBot
 
 
-@SpiceBot.prerun.prerun('nickname')
+@SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('update')
 def nickname_comand_update(bot, trigger):
 

@@ -33,10 +33,15 @@ def bot_startup_monologue_channels(bot, trigger):
 @sopel.module.event(SpiceBot.events.BOT_COMMANDS)
 @sopel.module.rule('.*')
 def bot_startup_monologue_commands(bot, trigger):
-    availablecomsnum, availablecomsfiles = 0, 0
+    availablecomsnum, availablecomsfiles = 0, []
     for commandstype in list(SpiceBot.commands.dict['commands'].keys()):
         availablecomsnum += len(list(SpiceBot.commands.dict['commands'][commandstype].keys()))
-    availablecomsfiles += SpiceBot.commands.dict['counts']
+        for validcom in list(SpiceBot.commands.dict['commands'][commandstype].keys()):
+            if "filepath" in list(SpiceBot.commands.dict['commands'][commandstype][validcom].keys()):
+                filepath = SpiceBot.commands.dict['commands'][commandstype][validcom]["filepath"].lower()
+                if filepath not in availablecomsfiles:
+                    availablecomsfiles.append(filepath)
+    availablecomsfiles = len(availablecomsfiles)
     displayval = "There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files."
     SpiceBot.startupmonologue.dict["commands"] = displayval
     SpiceBot.logs.log('SpiceBot_StartupMonologue', displayval)

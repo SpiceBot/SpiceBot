@@ -8,6 +8,9 @@ from .Google import SpiceBot_Google_MainSection
 from .AI import SpiceBot_AI_MainSection
 from .Update import SpiceBot_Update_MainSection
 from .Gif import SpiceBot_Gif_MainSection
+from .DictComs import SpiceBot_DictComs_MainSection
+from .Reddit import SpiceBot_Reddit_MainSection
+from .Sherlock import SpiceBot_Sherlock_MainSection
 from .Kick import SpiceBot_Kick
 from .osd import SpiceBot_OSD
 
@@ -47,5 +50,15 @@ def configure(config):
     config.SpiceBot_Google.configure_setting('search_api', 'api key for google searching')
 
     config.define_section("SpiceBot_Gif", SpiceBot_Gif_MainSection, validate=False)
-    config.SopelGifSearch.configure_setting('extra', 'SpiceBot_Gif API Extra directory')
-    config.SopelGifSearch.configure_setting('nsfw', 'SpiceBot_Gif API nsfw content')
+    config.SpiceBot_Gif.configure_setting('extra', 'SpiceBot_Gif API Extra directory')
+    config.SpiceBot_Gif.configure_setting('nsfw', 'SpiceBot_Gif API nsfw content')
+
+    config.define_section("SpiceBot_Reddit", SpiceBot_Reddit_MainSection, validate=False)
+    config.SpiceBot_Gif.configure_setting('client_id', 'SpiceBot_Reddit client_id')
+    config.SpiceBot_Gif.configure_setting('client_secret', 'SpiceBot_Reddit client_secret')
+
+    config.define_section("SpiceBot_DictComs", SpiceBot_DictComs_MainSection, validate=False)
+    config.SpiceBot_DictComs.configure_setting('extra', 'SpiceBot_DictComs API Extra directory')
+
+    config.define_section("SpiceBot_Sherlock", SpiceBot_Sherlock_MainSection, validate=False)
+    config.SpiceBot_Sherlock.configure_setting('extra', 'SpiceBot_Sherlock API Extra directory')

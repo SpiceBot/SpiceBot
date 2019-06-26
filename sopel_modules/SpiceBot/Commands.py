@@ -13,10 +13,12 @@ import os
 import threading
 
 import spicemanip
+import sopel_modules
 
 from .Logs import logs
 from .Config import config as botconfig
 from .Database import db as botdb
+from .Read import read as botread
 
 
 class SpiceBot_Commands_MainSection(StaticSection):
@@ -29,7 +31,6 @@ class BotCommands():
         self.setup_commands()
         self.lock = threading.Lock()
         self.dict = {
-                    "counts": 0,
                     'nickrules': [],
                     'nickaiml': [],
                     "commands": {
@@ -57,11 +58,13 @@ class BotCommands():
                     self.dict['nickrules'].append(command)
 
     def find_command_type(self, command):
-        for commandstype in list(self.dict['commands'].keys()):
-            if commandstype not in ['rule']:
-                for com in list(self.dict['commands'][commandstype].keys()):
-                    if com.lower() == command.lower():
-                        return commandstype
+        commandtype_list = list(self.dict['commands'].keys())
+        if 'rule' in commandtype_list:
+            commandtype_list.remove('rule')
+        for commandstype in commandtype_list:
+            for com in list(self.dict['commands'][commandstype].keys()):
+                if com.lower() == command.lower():
+                    return commandstype
         return None
 
     def get_commands_disabled(self, channel):
@@ -107,27 +110,24 @@ class BotCommands():
         self.lock.acquire()
 
         command_type = command_dict["comtype"]
-        validcoms = command_dict["validcoms"]
-
-        if not isinstance(validcoms, list):
-            validcoms = [validcoms]
-
         if command_type not in list(self.dict['commands'].keys()):
             self.dict['commands'][command_type] = dict()
 
-        dict_from_file = dict()
-
         # default command to filename
-        if "validcoms" not in list(dict_from_file.keys()):
-            dict_from_file["validcoms"] = validcoms
+        if "validcoms" not in list(command_dict.keys()):
+            command_dict["validcoms"] = [command_dict["filename"]]
 
-        maincom = dict_from_file["validcoms"][0]
-        if len(dict_from_file["validcoms"]) > 1:
-            comaliases = spicemanip.main(dict_from_file["validcoms"], '2+', 'list')
+        validcoms = command_dict["validcoms"]
+        if not isinstance(validcoms, list):
+            validcoms = [validcoms]
+
+        maincom = command_dict["validcoms"][0]
+        if len(command_dict["validcoms"]) > 1:
+            comaliases = spicemanip.main(command_dict["validcoms"], '2+', 'list')
         else:
             comaliases = []
 
-        self.dict['commands'][command_type][maincom] = dict_from_file
+        self.dict['commands'][command_type][maincom] = command_dict
         for comalias in comaliases:
             if comalias not in list(self.dict['commands'][command_type].keys()):
                 self.dict['commands'][command_type][comalias] = {"aliasfor": maincom}
@@ -148,14 +148,10 @@ class BotCommands():
             filepathlisting.append(home_modules_dir)
 
         # pypi installed
-        try:
-            import sopel_modules
-            for plugin_dir in set(sopel_modules.__path__):
-                for pathname in os.listdir(plugin_dir):
-                    pypi_modules_dir = os.path.join(plugin_dir, pathname)
-                    filepathlisting.append(pypi_modules_dir)
-        except Exception as e:
-            logs.log('SpiceBOT_COMMANDS', "sopel_modules not loaded :" + str(e))
+        for plugin_dir in set(sopel_modules.__path__):
+            for pathname in os.listdir(plugin_dir):
+                pypi_modules_dir = os.path.join(plugin_dir, pathname)
+                filepathlisting.append(pypi_modules_dir)
 
         # Extra directories
         for directory in botconfig.extra:
@@ -194,6 +190,22 @@ class BotCommands():
                 module_file_lines.append(line)
             module_file.close()
 
+            # gather file stats
+            slashsplit = str(modulefile).split("/")
+            filename = slashsplit[-1]
+            filename_base = os.path.basename(filename).rsplit('.', 1)[0]
+            folderpath = str(modulefile).split("/" + filename)[0]
+            foldername = str(folderpath).split("/")[-1]
+
+            # check for json reference file
+            validcomdict = botread.module_json_to_dict(str(modulefile))
+
+            # replace json defaults
+            validcomdict["filepath"] = str(modulefile)
+            validcomdict["filename"] = str(filename_base)
+            validcomdict["folderpath"] = str(folderpath)
+            validcomdict["foldername"] = str(foldername)
+
             detected_lines = []
             for line in module_file_lines:
 
@@ -222,38 +234,41 @@ class BotCommands():
                 filelinelist = []
                 currentsuccesslines = 0
                 for detected_line in detected_lines:
+                    try:
 
-                    # Commands
-                    if str(detected_line).startswith("commands"):
-                        comtype = "module"
-                        validcoms = eval(str(detected_line).split("commands")[-1])
-                    elif str(detected_line).startswith("nickname_commands"):
-                        comtype = "nickname"
-                        validcoms = eval(str(detected_line).split("nickname_commands")[-1])
-                    elif str(detected_line).startswith("rule"):
-                        comtype = "rule"
-                        validcoms = eval(str(detected_line).split("rule")[-1])
+                        # Commands
+                        if str(detected_line).startswith("commands"):
+                            comtype = "module"
+                            validcoms = eval(str(detected_line).split("commands")[-1])
+                        elif str(detected_line).startswith("nickname_commands"):
+                            comtype = "nickname"
+                            validcoms = eval(str(detected_line).split("nickname_commands")[-1])
+                        elif str(detected_line).startswith("rule"):
+                            comtype = "rule"
+                            validcoms = eval(str(detected_line).split("rule")[-1])
 
-                    if isinstance(validcoms, tuple):
-                        validcoms = list(validcoms)
-                    else:
-                        validcoms = [validcoms]
-                    for regexcom in ["(.*)", '^\?(.*)']:
-                        if regexcom in validcoms:
-                            while regexcom in validcoms:
-                                validcoms.remove(regexcom)
+                        if isinstance(validcoms, tuple):
+                            validcoms = list(validcoms)
+                        else:
+                            validcoms = [validcoms]
+                        for regexcom in ["(.*)", '^\?(.*)']:
+                            if regexcom in validcoms:
+                                while regexcom in validcoms:
+                                    validcoms.remove(regexcom)
 
-                    if len(validcoms):
-                        validcomdict = {"comtype": comtype, "validcoms": validcoms}
-                        filelinelist.append(validcomdict)
-                        currentsuccesslines += 1
-
-                if currentsuccesslines:
-                    self.dict['counts'] += 1
+                        if len(validcoms):
+                            validcomdict["comtype"] = comtype
+                            validcomdict["validcoms"] = validcoms
+                            filelinelist.append(validcomdict)
+                            currentsuccesslines += 1
+                    except Exception as e:
+                        addnothing = e
+                        if addnothing:
+                            currentsuccesslines += 0
 
                 if len(filelinelist):
-                    for atlinefound in filelinelist:
-                        self.register(atlinefound)
+                    for vcomdict in filelinelist:
+                        self.register(vcomdict)
 
 
 commands = BotCommands()

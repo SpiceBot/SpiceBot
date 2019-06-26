@@ -2,33 +2,37 @@
 from __future__ import unicode_literals, absolute_import, division, print_function
 """A way to search google"""
 
-import sopel_modules
+from sopel.config.types import StaticSection, ListAttribute
 
-from .Tools import read_directory_json_to_dict
+from .Read import read as botread
+from .Config import config as botconfig
 
-import os
 from fake_useragent import UserAgent
 import requests
 import time
 
 
+class SpiceBot_Sherlock_MainSection(StaticSection):
+    extra = ListAttribute('extra')
+
+
 class Sherlock():
 
     def __init__(self):
+        self.setup_sherlock()
         self.header = {'User-Agent': str(UserAgent().chrome)}
         self.dict = {}
 
-        dir_to_scan = []
-        for plugin_dir in set(sopel_modules.__path__):
-            configsdir = os.path.join(plugin_dir, "SpiceBot_Configs")
-            usercfgdir = os.path.join(configsdir, "sherlock")
-            dir_to_scan.append(usercfgdir)
+        dir_to_scan = botread.get_config_dirs("SpiceBot_Sherlock")
 
-        valid_usernames_dict = read_directory_json_to_dict(dir_to_scan, "Gif API", "SpiceBot_Gif")
+        valid_usernames_dict = botread.json_to_dict(dir_to_scan, "Sherlock", "SpiceBot_Sherlock")
 
         for social_network in list(valid_usernames_dict.keys()):
             self.dict[social_network] = valid_usernames_dict[social_network]
             self.dict[social_network]["cache"] = dict()
+
+    def setup_sherlock(self):
+        botconfig.define_section("SpiceBot_Sherlock", SpiceBot_Sherlock_MainSection, validate=False)
 
     def check_network(self, username, social_network):
         username = str(username).lower()

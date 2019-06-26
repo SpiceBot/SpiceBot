@@ -13,7 +13,7 @@ import sopel_modules.SpiceBot as SpiceBot
 
 
 @SpiceBot.events.check_ready([SpiceBot.events.BOT_COMMANDS])
-@SpiceBot.prerun.prerun('nickname')
+@SpiceBot.prerun('nickname_match')
 @sopel.module.nickname_commands('(.*)')
 def query_detection_nick(bot, trigger):
 
@@ -79,7 +79,7 @@ def query_detection_nick(bot, trigger):
 
 
 @SpiceBot.events.check_ready([SpiceBot.events.BOT_COMMANDS])
-@SpiceBot.prerun.prerun('query')
+@SpiceBot.prerun('query')
 @sopel.module.rule('^\?(.*)')
 def query_detection(bot, trigger):
 
