@@ -15,6 +15,7 @@ class MessageLog():
         self.dict = {}
         self.message_display = dict()
         self.used_ids = [0]
+        self.used_error_ids = [0]
         self.error_message_dict = {
                                     "command_inchan_only": "$command must be run in channel.",
                                     "admin_switch_unauth": "The admin switch (-a) is for use by authorized nicks ONLY.",
@@ -25,6 +26,17 @@ class MessageLog():
         while unique_id in self.used_ids:
             unique_id = uuid.uuid4()
         self.used_ids.append(unique_id)
+        return unique_id
+
+    def messagelog_error_get(self, errormsg):
+        for error_id in list(self.error_message_dict.keys()):
+            if self.error_message_dict[error_id] == errormsg:
+                return error_id
+        unique_id = 0
+        while unique_id in self.used_error_ids:
+            unique_id = uuid.uuid4()
+        self.used_error_ids.append(unique_id)
+        self.error_message_dict[unique_id] = errormsg
         return unique_id
 
     def messagelog_start(self, bot, trigger, log_id):
@@ -49,6 +61,9 @@ class MessageLog():
 
         newloglist = []
         error_exists_prior = False
+
+        if error_id not in self.error_message_dict:
+            error_id = self.messagelog_error_get(error_id)
 
         for existing_messagedict in self.message_display[log_id]["messages"]:
             if existing_messagedict["type"] == "error":
