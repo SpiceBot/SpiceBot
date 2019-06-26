@@ -49,6 +49,13 @@ def prerun(t_command_type='module', t_command_subtype=None):
 
             argsdict_default["realcom"] = botcommands.get_realcom(argsdict_default["com"], trigger_command_type)
 
+            if trigger.sb["type"] == 'nickname':
+                argsdict_default["comtext"] = bot.nick + " " + trigger.sb["com"]
+                argsdict_default["realcomtext"] = bot.nick + " " + trigger.sb["com"]
+            else:
+                argsdict_default["comtext"] = trigger.sb["com"]
+                argsdict_default["realcomtext"] = trigger.sb["com"]
+
             argsdict_default["dict"] = botcommands.get_command_dict(argsdict_default["realcom"], trigger_command_type)
 
             # split into && groupings
@@ -147,7 +154,7 @@ def trigger_runstatus(bot, trigger):
                 reason = channel_disabled_list[trigger.sb["realcom"]]["reason"]
                 timestamp = channel_disabled_list[trigger.sb["realcom"]]["timestamp"]
                 bywhom = channel_disabled_list[trigger.sb["realcom"]]["disabledby"]
-                message = "The " + str(trigger.sb["com"]) + " command multirun usage was disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
+                message = "The " + str(trigger.sb["comtext"]) + " command multirun usage was disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
                 return trigger_cant_run(bot, trigger, message)
 
         # don't run commands that are disabled for specific users
@@ -157,11 +164,11 @@ def trigger_runstatus(bot, trigger):
             if bywhom != trigger.nick:
                 reason = nick_disabled_list[trigger.sb["realcom"]]["reason"]
                 timestamp = nick_disabled_list[trigger.sb["realcom"]]["timestamp"]
-                message = "The " + str(trigger.sb["com"]) + " command was multirun unsage disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
+                message = "The " + str(trigger.sb["comtext"]) + " command was multirun unsage disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
                 return trigger_cant_run(bot, trigger, message)
             else:
                 botcommands.unset_command_disabled(trigger.sb["realcom"], trigger.nick, "multirun")
-                botmessagelog.messagelog_error(trigger.sb["log_id"], trigger.sb["com"] + " multirun is now enabled for " + str(trigger.nick))
+                botmessagelog.messagelog_error(trigger.sb["log_id"], trigger.sb["comtext"] + " multirun is now enabled for " + str(trigger.nick))
 
     # don't run commands that are disabled in channels
     if not trigger.is_privmsg:
@@ -170,7 +177,7 @@ def trigger_runstatus(bot, trigger):
             reason = channel_disabled_list[trigger.sb["realcom"]]["reason"]
             timestamp = channel_disabled_list[trigger.sb["realcom"]]["timestamp"]
             bywhom = channel_disabled_list[trigger.sb["realcom"]]["disabledby"]
-            message = "The " + str(trigger.sb["com"]) + " command was disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
+            message = "The " + str(trigger.sb["comtext"]) + " command was disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
             return trigger_cant_run(bot, trigger, message)
 
     # don't run commands that are disabled for specific users
@@ -180,11 +187,11 @@ def trigger_runstatus(bot, trigger):
         if bywhom != trigger.nick:
             reason = nick_disabled_list[trigger.sb["realcom"]]["reason"]
             timestamp = nick_disabled_list[trigger.sb["realcom"]]["timestamp"]
-            message = "The " + str(trigger.sb["com"]) + " command was disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
+            message = "The " + str(trigger.sb["comtext"]) + " command was disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
             return trigger_cant_run(bot, trigger, message)
         else:
             botcommands.unset_command_disabled(trigger.sb["realcom"], trigger.nick, "fully")
-            botmessagelog.messagelog_error(trigger.sb["log_id"], trigger.sb["com"] + " multirun is now enabled for " + str(trigger.nick))
+            botmessagelog.messagelog_error(trigger.sb["log_id"], trigger.sb["comtext"] + " multirun is now enabled for " + str(trigger.nick))
 
     return True
 
@@ -230,16 +237,10 @@ def trigger_hyphen_arg_handler(bot, trigger):
 
     # Commands that cannot run via privmsg
     if trigger.sb["hyphen_arg"] in ['check']:
-        if trigger.sb["type"] == 'nickname':
-            if trigger.sb["com"].lower() != trigger.sb["realcom"]:
-                botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["com"] + " is a valid alias command for " + bot.nick + " " + trigger.sb["realcom"])
-            else:
-                botmessagelog.messagelog(trigger.sb["log_id"], bot.nick + " " + trigger.sb["com"] + " is a valid command")
+        if trigger.sb["com"].lower() != trigger.sb["realcom"]:
+            botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["comtext"] + " is a valid alias command for " + trigger.sb["realcomtext"])
         else:
-            if trigger.sb["com"].lower() != trigger.sb["realcom"]:
-                botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["com"] + " is a valid alias command for " + trigger.sb["realcom"])
-            else:
-                botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["com"] + " is a valid command")
+            botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["comtext"] + " is a valid command")
         return
 
     elif trigger.sb["hyphen_arg"] in [
@@ -252,9 +253,9 @@ def trigger_hyphen_arg_handler(bot, trigger):
         target = spicemanip.main(trigger.sb["args"], 1) or trigger.nick
         if not target:
             if trigger.sb["hyphen_arg"] in ['enable', 'unblock', "activate", "on"]:
-                botmessagelog.messagelog_error(trigger.sb["log_id"], "Who/Where am I enabling " + str(trigger.sb["realcom"]) + " usage for?")
+                botmessagelog.messagelog_error(trigger.sb["log_id"], "Who/Where am I enabling " + str(trigger.sb["comtext"]) + " usage for?")
             else:
-                botmessagelog.messagelog_error(trigger.sb["log_id"], "Who/Where am I disabling " + str(trigger.sb["realcom"]) + " usage for?")
+                botmessagelog.messagelog_error(trigger.sb["log_id"], "Who/Where am I disabling " + str(trigger.sb["comtext"]) + " usage for?")
             return
 
         if not botdb.check_nick_id(target) and not botchannels.check_channel_bot(target, True):
@@ -272,39 +273,39 @@ def trigger_hyphen_arg_handler(bot, trigger):
         if trigger.sb["hyphen_arg"] in ['enable', 'unblock', "activate", "on"]:
 
             if not botcommands.check_commands_disabled(trigger.sb["realcom"], target, "fully"):
-                botmessagelog.messagelog_error(trigger.sb["log_id"], trigger.sb["com"] + " is already enabled for " + str(target))
+                botmessagelog.messagelog_error(trigger.sb["log_id"], trigger.sb["comtext"] + " is already enabled for " + str(target))
                 return
 
             botcommands.unset_command_disabled(trigger.sb["realcom"], target, "fully")
-            botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["com"] + " is now enabled for " + str(target))
+            botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["comtext"] + " is now enabled for " + str(target))
             return
 
         else:
 
             if botcommands.check_commands_disabled(trigger.sb["realcom"], target, "fully"):
-                botmessagelog.messagelog_error(trigger.sb["log_id"], trigger.sb["com"] + " is already disabled for " + str(target))
+                botmessagelog.messagelog_error(trigger.sb["log_id"], trigger.sb["comtext"] + " is already disabled for " + str(target))
                 return
 
             trailingmessage = spicemanip.main(trigger.sb["args"], 0) or "No reason given."
             timestamp = str(datetime.datetime.utcnow())
 
             botcommands.set_command_disabled(trigger.sb["realcom"], target, timestamp, trailingmessage, trigger.nick, "fully")
-            botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["com"] + " is now disabled for " + str(target))
+            botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["comtext"] + " is now disabled for " + str(target))
             return
 
     if trigger.sb["hyphen_arg"] in ['multirun', 'multiruns']:
 
         onoff = spicemanip.main(trigger.sb["args"], 1) or None
         if not onoff or onoff not in ['enable', 'unblock', "activate", "on"]:
-            botmessagelog.messagelog_error(trigger.sb["log_id"], "Do you want to enable or disable " + str(trigger.sb["realcom"]) + " multirun usage?")
+            botmessagelog.messagelog_error(trigger.sb["log_id"], "Do you want to enable or disable " + str(trigger.sb["comtext"]) + " multirun usage?")
             return
 
         target = spicemanip.main(trigger.sb["args"], 1) or trigger.nick
         if not target:
             if onoff in ['enable', 'unblock', "activate", "on"]:
-                botmessagelog.messagelog_error(trigger.sb["log_id"], "Who/Where am I enabling " + str(trigger.sb["realcom"]) + " multirun usage for?")
+                botmessagelog.messagelog_error(trigger.sb["log_id"], "Who/Where am I enabling " + str(trigger.sb["comtext"]) + " multirun usage for?")
             else:
-                botmessagelog.messagelog_error(trigger.sb["log_id"], "Who/Where am I disabling " + str(trigger.sb["realcom"]) + " multirun usage for?")
+                botmessagelog.messagelog_error(trigger.sb["log_id"], "Who/Where am I disabling " + str(trigger.sb["comtext"]) + " multirun usage for?")
             return
 
         if not botdb.check_nick_id(target) and not botchannels.check_channel_bot(target, True):
@@ -314,56 +315,56 @@ def trigger_hyphen_arg_handler(bot, trigger):
         if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
             if target != trigger.nick:
                 if onoff in ['enable', 'unblock', "activate", "on"]:
-                    botmessagelog.messagelog_error(trigger.sb["log_id"], "I was unable to enable multirun usage on " + str(trigger.sb["realcom"]) + " for " + str(target) + " due to privilege issues.")
+                    botmessagelog.messagelog_error(trigger.sb["log_id"], "I was unable to enable multirun usage on " + str(trigger.sb["comtext"]) + " for " + str(target) + " due to privilege issues.")
                 else:
-                    botmessagelog.messagelog_error(trigger.sb["log_id"], "I was unable to enable multirun usage on " + str(trigger.sb["realcom"]) + " for " + str(target) + " due to privilege issues.")
+                    botmessagelog.messagelog_error(trigger.sb["log_id"], "I was unable to enable multirun usage on " + str(trigger.sb["comtext"]) + " for " + str(target) + " due to privilege issues.")
                 return
 
         if onoff in ['enable', 'unblock', "activate", "on"]:
 
             if not botcommands.check_commands_disabled(trigger.sb["realcom"], target, "multirun"):
-                botmessagelog.messagelog_error(trigger.sb["log_id"], trigger.sb["com"] + " multirun is already enabled for " + str(target))
+                botmessagelog.messagelog_error(trigger.sb["log_id"], trigger.sb["comtext"] + " multirun is already enabled for " + str(target))
                 return
 
             botcommands.unset_command_disabled(trigger.sb["realcom"], target, "multirun")
-            botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["com"] + " multirun is now enabled for " + str(target))
+            botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["comtext"] + " multirun is now enabled for " + str(target))
             return
 
         else:
 
             if botcommands.check_commands_disabled(trigger.sb["realcom"], target, "multirun"):
-                botmessagelog.messagelog_error(trigger.sb["log_id"], trigger.sb["com"] + " multirun is already disabled for " + str(target))
+                botmessagelog.messagelog_error(trigger.sb["log_id"], trigger.sb["comtext"] + " multirun is already disabled for " + str(target))
                 return
 
             trailingmessage = spicemanip.main(trigger.sb["args"], 0) or "No reason given."
             timestamp = str(datetime.datetime.utcnow())
 
             botcommands.set_command_disabled(trigger.sb["realcom"], target, timestamp, trailingmessage, trigger.nick, "multirun")
-            botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["com"] + " multirun is now disabled for " + str(target))
+            botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["comtext"] + " multirun is now disabled for " + str(target))
             return
 
     elif trigger.sb["hyphen_arg"] in ['example', 'usage']:
-        botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["com"] + ": " + str(trigger.sb["dict"]["example"]))
+        botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["comtext"] + ": " + str(trigger.sb["dict"]["example"]))
         return
 
     elif trigger.sb["hyphen_arg"] in ['filename', 'filepath']:
-        botmessagelog.messagelog(trigger.sb["log_id"], "The " + str(trigger.sb["com"]) + " file is located at " + str(trigger.sb["dict"][trigger.sb["hyphen_arg"]]))
+        botmessagelog.messagelog(trigger.sb["log_id"], "The " + str(trigger.sb["comtext"]) + " file is located at " + str(trigger.sb["dict"][trigger.sb["hyphen_arg"]]))
         return
 
     elif trigger.sb["hyphen_arg"] in ['foldername', 'folderpath']:
-        botmessagelog.messagelog(trigger.sb["log_id"], "The " + str(trigger.sb["com"]) + " folder is located at " + str(trigger.sb["dict"][trigger.sb["hyphen_arg"]]))
+        botmessagelog.messagelog(trigger.sb["log_id"], "The " + str(trigger.sb["comtext"]) + " folder is located at " + str(trigger.sb["dict"][trigger.sb["hyphen_arg"]]))
         return
 
     elif trigger.sb["hyphen_arg"] in ['author']:
-        botmessagelog.messagelog(trigger.sb["log_id"], "The author of the " + str(trigger.sb["com"]) + " command is " + trigger.sb["dict"]["author"] + ".")
+        botmessagelog.messagelog(trigger.sb["log_id"], "The author of the " + str(trigger.sb["comtext"]) + " command is " + trigger.sb["dict"]["author"] + ".")
         return
 
     elif trigger.sb["hyphen_arg"] in ['contribs', 'contrib', "contributors"]:
-        botmessagelog.messagelog(trigger.sb["log_id"], "The contributors of the " + str(trigger.sb["com"]) + " command are " + spicemanip.main(trigger.sb["dict"]["contributors"], "andlist") + ".")
+        botmessagelog.messagelog(trigger.sb["log_id"], "The contributors of the " + str(trigger.sb["comtext"]) + " command are " + spicemanip.main(trigger.sb["dict"]["contributors"], "andlist") + ".")
         return
 
     elif trigger.sb["hyphen_arg"] in ['alias', 'aliases']:
-        botmessagelog.messagelog(trigger.sb["log_id"], "The alaises of the " + str(trigger.sb["com"]) + " command are " + spicemanip.main(trigger.sb["dict"]["validcoms"], "andlist") + ".")
+        botmessagelog.messagelog(trigger.sb["log_id"], "The alaises of the " + str(trigger.sb["comtext"]) + " command are " + spicemanip.main(trigger.sb["dict"]["validcoms"], "andlist") + ".")
         return
 
     return
