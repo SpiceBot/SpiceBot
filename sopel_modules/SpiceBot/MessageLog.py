@@ -115,6 +115,7 @@ class MessageLog():
 
             elif len(messagedict["recipients"]) > 1:
                 bot.say("here b")
+                bot.say(str(messagedict["recipients"]))
                 bot.osd(messagedict['message'], messagedict["recipients"], 'notice')
 
             elif len(messagedict["recipients"]) == 1:
