@@ -34,7 +34,7 @@ def prerun(t_command_type='module', t_command_subtype=None):
                 return
 
             if t_command_subtype:
-                if trigger_command_type != trigger_command_type:
+                if trigger_command_type != t_command_subtype:
                     return
 
             # Argsdict Defaults
