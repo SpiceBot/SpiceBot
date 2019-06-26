@@ -48,7 +48,6 @@ def prerun(t_command_type='module', t_command_subtype=None):
             argsdict_default["log_id"] = botmessagelog.messagelog_assign()
 
             argsdict_default["realcom"] = botcommands.get_realcom(argsdict_default["com"], trigger_command_type)
-            argsdict_default["realcom"] = str(argsdict_default["realcom"])
 
             if argsdict_default["type"] == 'nickname':
                 argsdict_default["comtext"] = "'" + bot.nick + " " + argsdict_default["com"] + "'"
