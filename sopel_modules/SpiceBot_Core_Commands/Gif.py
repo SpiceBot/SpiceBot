@@ -11,7 +11,7 @@ import spicemanip
 # TODO custom gif shortcut commands
 
 
-@SpiceBot.prerun('module', "gif_prefix")
+@SpiceBot.prerun('module')
 @sopel.module.commands('gif')
 def gif_trigger(bot, trigger):
 
@@ -30,7 +30,7 @@ def gif_trigger(bot, trigger):
         bot.osd(str(gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"])))
 
 
-@SpiceBot.prerun('module')
+@SpiceBot.prerun('module', "gif_prefix")
 @sopel.module.commands('(.*)')
 def gifapi_triggers(bot, trigger):
 
