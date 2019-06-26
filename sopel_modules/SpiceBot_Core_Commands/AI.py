@@ -9,8 +9,25 @@ import sopel_modules.SpiceBot as SpiceBot
 import spicemanip
 
 
+@SpiceBot.prerun('nickname')
+@sopel.module.nickname_commands('ai')
+def ai_trigger(bot, trigger):
+    bot.osd("I have the capability of responding to many requests, but I am not YET sentient.")
+
+
 @sopel.module.rule('(.*)')
 def bot_command_rule_ai(bot, trigger):
+
+    # don't run commands that are disabled in channels
+    if not trigger.is_privmsg:
+        channel_disabled_list = SpiceBot.commands.get_commands_disabled(str(trigger.sender), "fully")
+        if "ai" in list(channel_disabled_list.keys()):
+            return
+
+    # don't run commands that are disabled for specific users
+    nick_disabled_list = SpiceBot.commands.get_commands_disabled(str(trigger.nick), "fully")
+    if "ai" in list(nick_disabled_list.keys()):
+        return
 
     # TODO add config limits
     # but still allow in privmsg

@@ -191,7 +191,7 @@ def trigger_runstatus(bot, trigger):
             return trigger_cant_run(bot, trigger, message)
         else:
             botcommands.unset_command_disabled(trigger.sb["realcom"], trigger.nick, "fully")
-            botmessagelog.messagelog_error(trigger.sb["log_id"], trigger.sb["comtext"] + " multirun is now enabled for " + str(trigger.nick))
+            botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["comtext"] + " is now enabled for " + str(trigger.nick))
 
     return True
 
