@@ -95,9 +95,8 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
         @functools.wraps(function)
         def internal_prerun(bot, trigger, *args, **kwargs):
 
-            if t_command_subtype:
-                if t_command_subtype != 'query':
-                    return
+            if t_command_subtype != t_command_type:
+                return
 
             trigger_command_type = str(t_command_type)
 
