@@ -12,8 +12,14 @@ import spicemanip
 import sopel_modules.SpiceBot as SpiceBot
 
 
+@SpiceBot.prerun('nickname')
+@sopel.module.nickname_commands('query')
+def query_trigger(bot, trigger):
+    bot.osd("I have been programmed to help find new commands by using `?`.")
+
+
 @SpiceBot.events.check_ready([SpiceBot.events.BOT_COMMANDS])
-@SpiceBot.prerun('nickname_match')
+@SpiceBot.prerun_query('nickname', 'nickname')
 @sopel.module.nickname_commands('(.*)')
 def query_detection_nick(bot, trigger):
 
@@ -21,7 +27,7 @@ def query_detection_nick(bot, trigger):
     if not trigger.sb['com'] or not len(trigger.sb['com']):
         return
 
-    if not trigger.sb['com'][0] == "?":
+    if not trigger.sb['com'][0] == bot.config.SpiceBot_Commands.query_prefix:
         return
     trigger.sb['com'] = trigger.sb['com'][1:]
 
@@ -54,7 +60,7 @@ def query_detection_nick(bot, trigger):
         bot.osd("The following " + bot.nick + " commands match " + str(trigger.sb['com']) + ": " + spicemanip.main(validcomlist, 'andlist') + ".", trigger.nick, 'notice')
         return
 
-    if trigger.sb['com'].endswith("?"):
+    if trigger.sb['com'].endswith(bot.config.SpiceBot_Commands.query_prefix):
 
         trigger.sb['com'] = trigger.sb['com'][:-1]
         if not trigger.sb['com'] or not len(trigger.sb['com']):
@@ -79,7 +85,7 @@ def query_detection_nick(bot, trigger):
 
 
 @SpiceBot.events.check_ready([SpiceBot.events.BOT_COMMANDS])
-@SpiceBot.prerun('query')
+@SpiceBot.prerun_query('module', 'module')
 @sopel.module.rule('^\?(.*)')
 def query_detection(bot, trigger):
 
