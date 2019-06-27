@@ -121,10 +121,7 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
             trigger_command_type = str(t_command_type)
 
             # Primary command used for trigger, and a list of all words
-            prefixnick = False
-            if t_command_type == "nickname":
-                prefixnick = True
-            trigger_args, trigger_command, trigger_prefix = make_trigger_args(trigger.args[1], trigger_command_type, prefixnick)
+            trigger_args, trigger_command, trigger_prefix = make_trigger_args(trigger.args[1], trigger_command_type)
 
             if trigger_prefix != botconfig.SpiceBot_Commands.query_prefix:
                 return
@@ -174,16 +171,13 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
     return actual_decorator
 
 
-def make_trigger_args(triggerargs_one, trigger_command_type='module', prefixnick=False):
+def make_trigger_args(triggerargs_one, trigger_command_type='module'):
     trigger_args = spicemanip.main(triggerargs_one, 'create')
     if trigger_command_type in ['nickname']:
         trigger_prefix = spicemanip.main(trigger_args, 2).lower()[0]
         if trigger_prefix.isupper() or trigger_prefix.islower():
             trigger_prefix = None
-        if not prefixnick:
-            trigger_command = spicemanip.main(trigger_args, 2).lower()
-        else:
-            trigger_command = spicemanip.main(trigger_args, 2).lower()[1:]
+        trigger_command = spicemanip.main(trigger_args, 2).lower()
         trigger_args = spicemanip.main(trigger_args, '3+', 'list')
     else:
         trigger_prefix = spicemanip.main(trigger_args, 1).lower()[0]
