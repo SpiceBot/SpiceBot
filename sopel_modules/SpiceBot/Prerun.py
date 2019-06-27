@@ -88,12 +88,16 @@ def prerun(t_command_type='module', t_command_subtype=None):
     return actual_decorator
 
 
-def prerun_q(t_command_type='module'):
+def prerun_query(t_command_type='module', t_command_subtype=None):
 
     def actual_decorator(function):
 
         @functools.wraps(function)
         def internal_prerun(bot, trigger, *args, **kwargs):
+
+            if t_command_subtype:
+                if t_command_subtype != 'query':
+                    return
 
             trigger_command_type = str(t_command_type)
 
@@ -117,7 +121,7 @@ def prerun_q(t_command_type='module'):
                 argsdict_default["comtext"] = "'?query_command'"
                 argsdict_default["realcomtext"] = "'?query_command'"
 
-            argsdict_default["realcomref"] = "query_query"
+            argsdict_default["realcomref"] = "nickname_query"
 
             argsdict_default["dict"] = {
                                         "author": "deathbybandaid",
