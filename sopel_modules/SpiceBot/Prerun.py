@@ -17,6 +17,7 @@ from .Commands import commands as botcommands
 from .Database import db as botdb
 from .Channels import channels as botchannels
 from .MessageLog import messagelog as botmessagelog
+from .Config import config as botconfig
 
 
 def prerun(t_command_type='module', t_command_subtype=None):
@@ -26,12 +27,18 @@ def prerun(t_command_type='module', t_command_subtype=None):
         @functools.wraps(function)
         def internal_prerun(bot, trigger, *args, **kwargs):
 
+            if t_command_type == "nickname" and not str(trigger.args[1]).lower().startswith(str(bot.nick).lower()):
+                return
+            else:
+                if not str(trigger.args[1]).startswith(tuple(botconfig.core.prefix_list)):
+                    return
+
             trigger_command_type = str(t_command_type)
 
             # Primary command used for trigger, and a list of all words
             trigger_args, trigger_command, trigger_prefix = make_trigger_args(trigger.args[1], trigger_command_type)
 
-            if trigger_prefix == "?":
+            if trigger_prefix == botconfig.SpiceBot_Commands.query_prefix:
                 return
 
             trigger_command_type = botcommands.find_command_type(trigger_command)
@@ -98,6 +105,12 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
         @functools.wraps(function)
         def internal_prerun(bot, trigger, *args, **kwargs):
 
+            if t_command_type == "nickname" and not str(trigger.args[1]).lower().startswith(str(bot.nick).lower()):
+                return
+            else:
+                if not str(trigger.args[1]).startswith(tuple(botconfig.core.prefix_list)):
+                    return
+
             if t_command_subtype != t_command_type:
                 return
 
@@ -106,7 +119,7 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
             # Primary command used for trigger, and a list of all words
             trigger_args, trigger_command, trigger_prefix = make_trigger_args(trigger.args[1], trigger_command_type)
 
-            if trigger_prefix != "?":
+            if trigger_prefix != botconfig.SpiceBot_Commands.query_prefix:
                 return
 
             # Argsdict Defaults

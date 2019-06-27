@@ -56,13 +56,13 @@ def bot_command_rule_ai(bot, trigger):
         trigger_args, trigger_command = SpiceBot.make_trigger_args(message, 'nickname')
         trigger_args.insert(0, trigger_command)
         fulltrigger = bot.nick + " " + spicemanip.main(trigger_args, 0)
-        if str(trigger_command).startswith("?"):
+        if str(trigger_command).startswith(bot.config.SpiceBot_Commands.query_prefix):
             return
         if fulltrigger in SpiceBot.commands.dict['nickrules']:
             return
         if trigger_command in list(SpiceBot.commands.dict['commands']["nickname"].keys()):
             return
-    elif str(message).lower().startswith("?"):
+    elif str(message).lower().startswith(bot.config.SpiceBot_Commands.query_prefix):
         # no query commands detection here
         return
     elif str(message).startswith(tuple(bot.config.core.prefix_list)):

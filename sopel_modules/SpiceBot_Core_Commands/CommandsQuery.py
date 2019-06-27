@@ -27,7 +27,7 @@ def query_detection_nick(bot, trigger):
     if not trigger.sb['com'] or not len(trigger.sb['com']):
         return
 
-    if not trigger.sb['com'][0] == "?":
+    if not trigger.sb['com'][0] == bot.config.SpiceBot_Commands.query_prefix:
         return
     trigger.sb['com'] = trigger.sb['com'][1:]
 
@@ -60,7 +60,7 @@ def query_detection_nick(bot, trigger):
         bot.osd("The following " + bot.nick + " commands match " + str(trigger.sb['com']) + ": " + spicemanip.main(validcomlist, 'andlist') + ".", trigger.nick, 'notice')
         return
 
-    if trigger.sb['com'].endswith("?"):
+    if trigger.sb['com'].endswith(bot.config.SpiceBot_Commands.query_prefix):
 
         trigger.sb['com'] = trigger.sb['com'][:-1]
         if not trigger.sb['com'] or not len(trigger.sb['com']):
