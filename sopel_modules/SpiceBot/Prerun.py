@@ -118,19 +118,7 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
 
             argsdict_default["realcomref"] = "nickname_query"
 
-            argsdict_default["dict"] = {
-                                        "author": "deathbybandaid",
-                                        "contributors": [],
-                                        "example": "",
-                                        "exampleresponse": "",
-                                        "description": "",
-                                        "privs": [],
-                                        "filename": "",
-                                        "filepath": "",
-                                        "foldername": "",
-                                        "folderpath": "",
-                                        "validcoms": [],
-                                        }
+            argsdict_default["dict"] = botcommands.get_command_dict("query", 'nickname')
 
             # split into && groupings
             and_split = trigger_and_split(trigger_args)
