@@ -87,7 +87,7 @@ class BotCommands():
             return realcom
 
         if "aliasfor" in self.dict['commands'][trigger_command_type][command].keys():
-            realcom = self.dict['commands'][trigger_command_type][command]
+            realcom = self.dict['commands'][trigger_command_type][command]["aliasfor"]
 
         return realcom
 
