@@ -88,6 +88,79 @@ def prerun(t_command_type='module', t_command_subtype=None):
     return actual_decorator
 
 
+def prerun_q(t_command_type='module'):
+
+    def actual_decorator(function):
+
+        @functools.wraps(function)
+        def internal_prerun(bot, trigger, *args, **kwargs):
+
+            trigger_command_type = str(t_command_type)
+
+            # Primary command used for trigger, and a list of all words
+            trigger_args, trigger_command = make_trigger_args(trigger.args[1], trigger_command_type)
+
+            # Argsdict Defaults
+            argsdict_default = {}
+            argsdict_default["type"] = trigger_command_type
+            argsdict_default["com"] = trigger_command
+
+            # messagelog ID
+            argsdict_default["log_id"] = botmessagelog.messagelog_assign()
+
+            argsdict_default["realcom"] = "query_command"
+
+            if argsdict_default["type"] == 'nickname':
+                argsdict_default["comtext"] = "'" + bot.nick + " ?query_command'"
+                argsdict_default["realcomtext"] = "'" + bot.nick + " ?query_command'"
+            else:
+                argsdict_default["comtext"] = "'?query_command'"
+                argsdict_default["realcomtext"] = "'?query_command'"
+
+            argsdict_default["realcomref"] = "query_query"
+
+            argsdict_default["dict"] = {
+                                        "author": "deathbybandaid",
+                                        "contributors": [],
+                                        "example": "",
+                                        "exampleresponse": "",
+                                        "description": "",
+                                        "privs": [],
+                                        "filename": "",
+                                        "filepath": "",
+                                        "foldername": "",
+                                        "folderpath": "",
+                                        "validcoms": [],
+                                        }
+
+            # split into && groupings
+            and_split = trigger_and_split(trigger_args)
+
+            # Create dict listings for trigger.sb
+            argsdict_list = trigger_argsdict_list(argsdict_default, and_split)
+
+            # Run the function for all splits
+            botmessagelog.messagelog_start(bot, trigger, argsdict_default["log_id"])
+            runcount = 0
+            for argsdict in argsdict_list:
+                runcount += 1
+                trigger.sb = copy.deepcopy(argsdict)
+
+                trigger.sb["runcount"] = runcount
+
+                trigger.sb["args"], trigger.sb["hyphen_arg"] = trigger_hyphen_args(trigger.sb["args"])
+                if not trigger.sb["hyphen_arg"]:
+                    # check if anything prohibits the nick from running the command
+                    if trigger_runstatus(bot, trigger):
+                        function(bot, trigger, *args, **kwargs)
+                else:
+                    trigger_hyphen_arg_handler(bot, trigger)
+            botmessagelog.messagelog_exit(bot, argsdict_default["log_id"])
+
+        return internal_prerun
+    return actual_decorator
+
+
 def make_trigger_args(triggerargs_one, trigger_command_type='module'):
     trigger_args = spicemanip.main(triggerargs_one, 'create')
     if trigger_command_type in ['nickname']:
