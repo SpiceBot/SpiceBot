@@ -105,8 +105,8 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
 
             # Argsdict Defaults
             argsdict_default = {}
-            argsdict_default["type"] = 'nickname'
-            argsdict_default["com"] = "query"
+            argsdict_default["type"] = trigger_command_type
+            argsdict_default["com"] = trigger_command
 
             # messagelog ID
             argsdict_default["log_id"] = botmessagelog.messagelog_assign()
