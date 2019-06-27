@@ -27,8 +27,10 @@ def prerun(t_command_type='module', t_command_subtype=None):
         @functools.wraps(function)
         def internal_prerun(bot, trigger, *args, **kwargs):
 
-            if t_command_type == "nickname" and not str(trigger.args[1]).lower().startswith(str(bot.nick).lower()):
-                return
+            if t_command_type == "nickname":
+                check_nick = spicemanip.main(trigger.args[1], 1).lower()
+                if check_nick != str(bot.nick).lower():
+                    return
             else:
                 if not str(trigger.args[1]).startswith(tuple(botconfig.core.prefix_list)):
                     return
@@ -105,8 +107,10 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
         @functools.wraps(function)
         def internal_prerun(bot, trigger, *args, **kwargs):
 
-            if t_command_type == "nickname" and not str(trigger.args[1]).lower().startswith(str(bot.nick).lower()):
-                return
+            if t_command_type == "nickname":
+                check_nick = spicemanip.main(trigger.args[1], 1).lower()
+                if check_nick != str(bot.nick).lower():
+                    return
             else:
                 if not str(trigger.args[1]).startswith(tuple(botconfig.core.prefix_list)):
                     return
