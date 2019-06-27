@@ -105,20 +105,16 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
 
             # Argsdict Defaults
             argsdict_default = {}
-            argsdict_default["type"] = trigger_command_type
-            argsdict_default["com"] = trigger_command
+            argsdict_default["type"] = 'nickname'
+            argsdict_default["com"] = "query"
 
             # messagelog ID
             argsdict_default["log_id"] = botmessagelog.messagelog_assign()
 
             argsdict_default["realcom"] = "query_command"
 
-            if argsdict_default["type"] == 'nickname':
-                argsdict_default["comtext"] = "'" + bot.nick + " ?query_command'"
-                argsdict_default["realcomtext"] = "'" + bot.nick + " ?query_command'"
-            else:
-                argsdict_default["comtext"] = "'?query_command'"
-                argsdict_default["realcomtext"] = "'?query_command'"
+            argsdict_default["comtext"] = "'" + bot.nick + " query'"
+            argsdict_default["realcomtext"] = "'" + bot.nick + " query'"
 
             argsdict_default["realcomref"] = "nickname_query"
 
