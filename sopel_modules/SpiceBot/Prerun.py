@@ -29,7 +29,10 @@ def prerun(t_command_type='module', t_command_subtype=None):
             trigger_command_type = str(t_command_type)
 
             # Primary command used for trigger, and a list of all words
-            trigger_args, trigger_command = make_trigger_args(trigger.args[1], trigger_command_type)
+            trigger_args, trigger_command, trigger_prefix = make_trigger_args(trigger.args[1], trigger_command_type)
+
+            if trigger_prefix == "?":
+                return
 
             trigger_command_type = botcommands.find_command_type(trigger_command)
             if not trigger_command_type:
@@ -101,7 +104,10 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
             trigger_command_type = str(t_command_type)
 
             # Primary command used for trigger, and a list of all words
-            trigger_args, trigger_command = make_trigger_args(trigger.args[1], trigger_command_type)
+            trigger_args, trigger_command, trigger_prefix = make_trigger_args(trigger.args[1], trigger_command_type)
+
+            if trigger_prefix != "?":
+                return
 
             # Argsdict Defaults
             argsdict_default = {}
@@ -151,12 +157,16 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
 def make_trigger_args(triggerargs_one, trigger_command_type='module'):
     trigger_args = spicemanip.main(triggerargs_one, 'create')
     if trigger_command_type in ['nickname']:
+        trigger_prefix = spicemanip.main(trigger_args, 2).lower()[0]
+        if trigger_prefix.isupper() or trigger_prefix.islower():
+            trigger_prefix = None
         trigger_command = spicemanip.main(trigger_args, 2).lower()
         trigger_args = spicemanip.main(trigger_args, '3+', 'list')
     else:
+        trigger_prefix = spicemanip.main(trigger_args, 1).lower()[0]
         trigger_command = spicemanip.main(trigger_args, 1).lower()[1:]
         trigger_args = spicemanip.main(trigger_args, '2+', 'list')
-    return trigger_args, trigger_command
+    return trigger_args, trigger_command, trigger_prefix
 
 
 def trigger_and_split(trigger_args):
