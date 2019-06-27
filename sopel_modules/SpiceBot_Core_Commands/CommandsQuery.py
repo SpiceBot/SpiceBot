@@ -20,7 +20,7 @@ def query_trigger(bot, trigger):
 
 @SpiceBot.events.check_ready([SpiceBot.events.BOT_COMMANDS])
 @SpiceBot.prerun_query('nickname', 'nickname')
-@sopel.module.nickname_commands('(.*)')
+@sopel.module.nickname_commands('^\?(.*)')
 def query_detection_nick(bot, trigger):
 
     # command issued, check if valid
