@@ -209,7 +209,7 @@ def bot_command_rule_ai(bot, trigger):
 
         # elif fulltrigger.lower().startswith(tuple(["have you seen"])):
         #    posstarget = spicemanip.main(trigger_args, 4) or 0
-        #    message = seen_search(bot, botcom, posstarget)
+        #    message = seen_search(bot, trigger, posstarget)
         #    bot.osd(message)
         #    return
         # TODO
