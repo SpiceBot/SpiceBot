@@ -1,0 +1,15 @@
+{
+"validcoms": ['hf', 'highfive', 'high-five', 'highfives'],
+"?default": {
+              "type": "target",
+              "selection_allowed": False,
+              "responses": [
+                            "$instigator high five $target, maintaining eye contact the entire time!",
+                            "$instigator drops everything they are doing and goes to high five $target, but they miss.",
+                            "$instigator overestimated their capabilities and knocks themselves out.",
+                            "$instigator goes and trips before they can manage to high five $target.",
+                            "$instigator high-fives $target too enthusiastically and breaks their hand."
+                            ],
+              },
+
+}

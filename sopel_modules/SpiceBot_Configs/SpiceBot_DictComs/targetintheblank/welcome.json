@@ -1,0 +1,13 @@
+{
+"?default": {
+              "type": "target",
+              "responses": ["$instigator welcomes $target to $channel."],
+              "response_fail": ["Who are you happy to see?"],
+              },
+"major": {
+              "type": "target",
+              "responses": ["$instigator is really glad to see $target again."],
+              "response_fail": ["Who are you happy to see?"],
+              },
+
+}

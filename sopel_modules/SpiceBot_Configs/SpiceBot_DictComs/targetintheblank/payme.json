@@ -1,0 +1,8 @@
+{
+"?default": {
+              "type": "target",
+              "responses": ["$target, fuck you, pay me!"],
+              "response_fail": ["Like I always say, 'Fuck you, pay me!'"],
+              },
+
+}

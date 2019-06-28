@@ -142,7 +142,7 @@ def bot_dictcom_process(bot, trigger):
     trigger.sb["target"] = False
 
     trigger.sb["success"] = True
-    if trigger.sb["dict"][trigger.sb["responsekey"]]["type"] in ['simple', 'fillintheblank', "target", 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "translate", "responses"]:
+    if trigger.sb["dict"][trigger.sb["responsekey"]]["type"] in ['simple', 'fillintheblank', "targetintheblank", 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "translate", "responses"]:
         return bot_dictcom_responses(bot, trigger)
     else:
         command_function_run = str('bot_dictcom_' + trigger.sb["dict"][trigger.sb["responsekey"]]["type"] + '(bot, botcom)')

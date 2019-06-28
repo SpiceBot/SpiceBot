@@ -1,0 +1,13 @@
+{
+"validcoms": ['tap', 'mic'],
+"?default": {
+              "type": "target",
+              "responses": ["Hey $target,,,, you there?"],
+              "response_fail": [
+                                "For Fucks Sake $instigator, of course it's bloody well on!",
+                                ["*a clocks $instigator around the head with a mic stand", "$instigator, if you do that again you'll be eating a speaker.",],
+                                "*Tap, Tap* ...is this thing on?"
+                                ],
+              },
+
+}

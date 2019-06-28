@@ -1,0 +1,9 @@
+{
+"validcoms": ['butts', 'butt'],
+"?default": {
+              "type": "target",
+              "responses": ["*a rains butts down on $target"],
+              "response_fail": ["*a rains butts down on everyone."],
+              },
+
+}

@@ -1,0 +1,11 @@
+{
+"?default": {
+              "type": "target",
+              "responses": [
+                            "$instigator removes $targets pants and whacks him with a fish",
+                            ],
+              "target_backup": "random",
+              "target_bypass": ['self'],
+              },
+
+}

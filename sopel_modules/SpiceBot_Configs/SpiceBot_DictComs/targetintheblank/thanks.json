@@ -1,0 +1,12 @@
+{
+"validcoms": ['thank', 'thanks'],
+"?default": {
+              "type": "target",
+              "responses": [
+                            "$instigator thanks $target for that.",
+                            "Thanks for nothing $target.",
+                            ],
+              "response_fail": ["*a tells $instigator Thanks for nothing you useless prick."],
+              },
+
+}

@@ -1,0 +1,11 @@
+{
+
+"?default": {
+              "type": "target",
+              "responses": ["$instigator clocks $target around the head with a mic stand."],
+              "response_fail": ["*a clocks $instigator around the head with a mic stand.", "Come on $instigator, is that really necessary?"],
+              "react_bot": ["You know what? I'm not going to do that."],
+              "react_self": ["*a silently passes $instigator a mic stand."],
+              },
+
+}

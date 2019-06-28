@@ -1,0 +1,9 @@
+{
+
+"?default": {
+              "type": "target",
+              "responses": ["ALL HAIL $target."],
+              "response_fail": ["Hail Hydra"],
+              },
+
+}

@@ -1,0 +1,9 @@
+{
+
+"?default": {
+              "type": "target",
+              "responses": ["$instigator prods $target with a big stick"],
+              "response_fail": ["$instigator points awkwardly at nothing."],
+              },
+
+}

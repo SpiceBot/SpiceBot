@@ -1,0 +1,12 @@
+{
+"?default": {
+              "type": "target",
+              "responses": [
+                            "$instigator gives $target a nice big nohomo hug!",
+                            "*a wants to hug $target and squeeze $target and call them George"
+                            ],
+              "target_backup": "themself",
+              "target_bypass": ['self'],
+              },
+
+}

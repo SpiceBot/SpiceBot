@@ -1,0 +1,125 @@
+{
+"?default": {
+              "type": "simple",
+              "target_backup": "instigator",
+              "responses": [
+                        "Current options for this module are: $specialoptions",
+                        ],
+              },
+
+"brightlights": {
+              "type": "simple",
+              "responses": [
+                        "Individuals sensitive to bright lights or with epilepsy may find the quick bright text the bot speaks with to be troublesome. Any epileptic reaction is not the fault of the bot, the channel, or its denizens.",
+                        ],
+              },
+
+"doctor": {
+              "type": "target",
+              "target_backup": "instigator",
+              "responses": [
+                        "$target is not your doctor. The views/opinions/information expressed by $target are not intended or implied to be a substitute for professional medical advice, diagnosis or treatment.",
+                        ],
+              },
+
+"EULA": {
+              "type": "simple",
+              "responses": [
+                        "$botnick may occasionally (read 'frequently') use colorful language to carry out its tasks. By remaining in this channel and continuing to use the bot you acknowledge that you are not, in fact, too weak to handle this.",
+                        ],
+},
+
+"IT": {
+              "type": "target",
+              "target_backup": "instigator",
+              "responses": [
+                        "While most members of this channel have some level of technical knowledge, your decision to trust the recommendations of $target are entirely your own risk.",
+                        ],
+              },
+
+("legal", "law"): {
+              "type": "target",
+              "target_backup": "instigator",
+              "responses": [
+                        "Please note that $target is not a lawyer. Any and all advice given by $target is to be taken with a whole lot of salt. $target, Freenode, Spiceworks, Microsoft, Aperture Science, Black Mesa, and/or Vault-Tec™ cannot be held liable for any injuries resulting from taking aforementioned advice.",
+                        ],
+              },
+
+"parent": {
+              "type": "target",
+              "target_backup": "instigator",
+              "responses": [
+                        "$target is not your parent. Don't expect them to deal with your shit.",
+                        ],
+              },
+
+("porn", "pornhub"): {
+              "type": "simple",
+              "responses": [
+                        "Remember, NOTHING is as common as porn would have you believe.",
+                        ],
+              },
+
+("Cipher", "Cipher-0"): {
+              "type": "target",
+              "target_backup": "instigator",
+              "responses": [
+                        "Frivolously pestering Cipher comes with a high risk of termination, $target",
+                        ],
+              },
+
+"IT_Sean": {
+              "type": "simple",
+              "responses": [
+                        "Should you ever encounter gases released by Sean, please be sure to inform your nearest biosafety agency of the incident.",
+                        ],
+              },
+
+("penis","penispump"): {
+              "type": "target",
+              "target_backup": "instigator",
+              "responses": [
+                        "Please note that $target is not a penis enlarger manufacturer. $target is, however, not only their best tester but also their largest purchaser. Any views on penis enlargers given by $target should be taken as if it is a Michelin Star review, as they are seen as the utmost living expert on the subject of phallic enlargement devices.",
+                        ],
+              },
+
+"prop56": {
+              "type": "target",
+              "target_backup": "instigator",
+              "responses": [
+                        "$target can expose you to chemicals which are known to the State of California to cause cancer or birth defects or other reproductive harm.",
+                        ],
+              },
+
+"proof": {
+              "type": "target",
+              "target_backup": "instigator",
+              "responses": [
+                        "You know the rules, $target: pictures or it never happened."
+                        ],
+              },
+
+"vet": {
+            "type": "target",
+            "target_backup": "instigator",
+            "responses": [
+                      "$target is not a vet. The views/opinions/information expressed by $target are not intended or implied to be a substitute for professional advice, diagnosis or treatment. Treat any advice regarding sleeping with the patients of $target as a bad idea.",
+                      ],
+            },
+
+"engineer": {
+              "type": "target",
+              "target_backup": "instigator",
+              "responses": [
+                        "$target is not an engineer. Any electrical work or recommendations made by $target should be taken with extreme caution. In the event of electrocution and/or death, the fault remains solely with whosoever listened to $target in the first place.",
+                        ],
+              },
+
+"options": {
+              "type": "simple",
+              "target_backup": "instigator",
+              "responses": [
+                        "Current options for this module are: $specialoptions",
+                        ],
+              },
+}

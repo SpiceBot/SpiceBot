@@ -1,0 +1,9 @@
+{
+"validcoms": ['num', 'numbered'],
+"?default": {
+              "type": "target",
+              "responses": ["Your days are numbered, $target."],
+              "response_fail": ["$instigators days are numbered."],
+              },
+
+}

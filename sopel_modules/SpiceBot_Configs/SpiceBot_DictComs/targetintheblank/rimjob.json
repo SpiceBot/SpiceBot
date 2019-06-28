@@ -1,0 +1,9 @@
+{
+"validcoms": ['rimjob'],
+"?default": {
+              "type": "target",
+              "responses": ["$botnick carefully licks the outer edge of $target's balloon knot, bringing them to completion."],
+              "response_fail": ["$botnick carefully licks the outer edge of $instigator's balloon knot, bringing them to completion."],
+              },
+
+}

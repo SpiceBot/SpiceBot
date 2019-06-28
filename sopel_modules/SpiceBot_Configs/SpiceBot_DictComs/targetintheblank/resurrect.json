@@ -1,0 +1,15 @@
+{
+
+"?default": {
+              "type": "target",
+              "selection_allowed": False,
+              "responses": [
+                            "$instigator starts chanting over $target's body.",
+                            "$instigator successfully brings $target back to life!! Yay??",
+                            "$instigator tries to resurrect $target's and instead gets really hungry. Yum yum in my tum tum.",
+                            "$instigator tries to resurrect $target's body and fails.",
+                            ],
+              "react_self": ["You are not able to resurrect yourself dumbass"],
+              "react_bot": ["I hope you realize that I am immortal (and immoral)"],
+              },
+}

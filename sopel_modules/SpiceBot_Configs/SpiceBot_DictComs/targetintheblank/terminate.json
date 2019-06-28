@@ -1,0 +1,9 @@
+{
+
+"?default": {
+              "type": "target",
+              "responses": ["*a $target with extreme prejudice."],
+              "response_fail": ["Terminate it with extreme prejudice."],
+              },
+
+}

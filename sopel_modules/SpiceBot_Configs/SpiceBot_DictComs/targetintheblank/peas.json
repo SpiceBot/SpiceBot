@@ -1,0 +1,20 @@
+{
+"?default": {
+              "type": "target",
+              "responses": ["With the power of magic and the love of small children, $target has done the impossible. He has brought on whirled peas."],
+              "target_backup": "instigator",
+              },
+
+"goober": {
+              "type": "simple",
+              "responses": [
+                            [
+                              "Peas, peas, peas, peas",
+                              "Eating goober peas",
+                              "Goodness, how delicious,",
+                              "Eating goober peas.",
+                              ],
+                            ],
+              },
+
+}

@@ -1,0 +1,9 @@
+{
+"validcoms": ['pube', 'carpet', 'drapes'],
+"?default": {
+              "type": "target",
+              "responses": ["$instigator wants to know if $targets carpets matches the drapes."],
+              "target_backup": "random",
+              },
+
+}

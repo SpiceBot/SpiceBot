@@ -1,0 +1,9 @@
+{
+"validcoms": ['boogiebass', 'bass'],
+"?default": {
+              "type": "target",
+              "responses": ["$target runs on batteries, not gas, IS a funky boogie bass!"],
+              "target_backup": "instigator",
+              },
+
+}

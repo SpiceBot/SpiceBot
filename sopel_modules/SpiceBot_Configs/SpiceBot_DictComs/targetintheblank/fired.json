@@ -1,0 +1,8 @@
+{
+"?default": {
+              "type": "target",
+              "responses": ["$target, You're fired!!!"],
+              "target_backup": "random",
+              },
+
+}

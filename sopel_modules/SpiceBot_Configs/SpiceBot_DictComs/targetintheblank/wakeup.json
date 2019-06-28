@@ -1,0 +1,9 @@
+{
+"validcoms": ['wakeup'],
+"?default": {
+              "type": "target",
+              "responses": ["Wake up, Mr. $target. Wake up and, smell the ashes..."],
+              },
+              "response_fail": ["Wake up, Mr. $instigator. Wake up and, smell the ashes..."],
+
+}
