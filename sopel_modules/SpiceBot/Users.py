@@ -6,7 +6,6 @@ from sopel.tools import Identifier
 
 from .Database import db as botdb
 from .Tools import is_number, inlist, similar, array_arrangesort
-from .Channels import channels as botchannels
 
 import spicemanip
 
@@ -328,7 +327,10 @@ class BotUsers():
         if trigger.is_privmsg:
             validtargs.extend([str(bot.nick), trigger.nick])
         else:
-            validtargs.extend(botchannels.dict["list"][str(trigger.sender).lower()]['users'])
+            for nick_id in self.dict["online"]:
+                if str(trigger.sender).lower() in self.dict["current"][nick_id]["channels"]:
+                    nick = self.dict["all"][nick_id][0]
+                    validtargs.append(nick)
         if outputtype == 'list':
             return validtargs
         elif outputtype == 'random':
