@@ -25,8 +25,7 @@ class BotDictCommands():
 
     def __init__(self):
         self.setup_dictcoms()
-        self.valid_com_types = ['simple']
-        self.valid_com_types_old = [
+        self.valid_com_types = [
                                 'simple', 'fillintheblank', 'targetplusreason',
                                 'sayings', "readfromfile", "readfromurl",
                                 "ascii_art", "gif", "translate", "responses",
