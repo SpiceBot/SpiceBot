@@ -30,21 +30,21 @@ def bot_command_privmsg(bot, trigger, botcom):
 def bot_command_process(bot, trigger):
 
     if not SpiceBot.command_permissions_check(bot, trigger, ['admins', 'owner']):
-        SpiceBot.messagelog.messagelog_error("I was unable to process this Bot Nick command due to privilege issues.")
+        SpiceBot.messagelog.messagelog_error(trigger.sb["log_id"], "I was unable to process this Bot Nick command due to privilege issues.")
         return
 
     if trigger.sb['com'] in ['say', 'msg']:
         trigger.sb['com'] = 'privmsg'
 
     if not len(trigger.sb['args']):
-        SpiceBot.messagelog.messagelog_error("You must specify a channel or nick.")
+        SpiceBot.messagelog.messagelog_error(trigger.sb["log_id"], "You must specify a channel or nick.")
         return
 
     target = spicemanip.main(trigger.sb['args'], 1)
     if (target not in ['allchans', 'allnicks']
             and not SpiceBot.inlist(target.lower(), list(SpiceBot.channels.dict['list'].keys()))
             and not SpiceBot.inlist(target.lower(), bot.users)):
-        SpiceBot.messagelog.messagelog_error("Channel/nick name {} not valid.".format(target))
+        SpiceBot.messagelog.messagelog_error(trigger.sb["log_id"], "Channel/nick name {} not valid.".format(target))
         return
 
     trigger.sb['args'] = spicemanip.main(trigger.sb['args'], '2+', 'list')
@@ -58,7 +58,7 @@ def bot_command_process(bot, trigger):
 
     botmessage = spicemanip.main(trigger.sb['args'], 0)
     if not botmessage:
-        SpiceBot.messagelog.messagelog_error("You must specify a message to send.")
+        SpiceBot.messagelog.messagelog_error(trigger.sb["log_id"], "You must specify a message to send.")
         return
 
     bot.osd(botmessage, targetsendlist, trigger.sb['com'].upper())

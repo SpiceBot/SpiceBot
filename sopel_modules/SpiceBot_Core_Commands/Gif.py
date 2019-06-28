@@ -16,7 +16,7 @@ import spicemanip
 def gif_trigger(bot, trigger, botcom):
 
     if not len(trigger.sb['args']):
-        return SpiceBot.messagelog.messagelog_error("Please present a query to search.")
+        return SpiceBot.messagelog.messagelog_error(trigger.sb["log_id"], "Please present a query to search.")
 
     query = spicemanip.main(trigger.sb['args'], 0)
     searchapis = list(SpiceBot.gif.valid_api.keys())
@@ -25,7 +25,7 @@ def gif_trigger(bot, trigger, botcom):
     gifdict = SpiceBot.gif.get_gif(searchdict)
 
     if gifdict["error"]:
-        SpiceBot.messagelog.messagelog_error(gifdict["error"])
+        SpiceBot.messagelog.messagelog_error(trigger.sb["log_id"], gifdict["error"])
     else:
         bot.osd(str(gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"])))
 
@@ -38,7 +38,7 @@ def gifapi_triggers(bot, trigger, botcom):
         return
 
     if not len(trigger.sb['args']):
-        return SpiceBot.messagelog.messagelog_error("Please present a query to search.")
+        return SpiceBot.messagelog.messagelog_error(trigger.sb["log_id"], "Please present a query to search.")
 
     query = spicemanip.main(trigger.sb['args'], 0)
     searchdict = {"query": query, "gifsearch": trigger.sb['com']}
@@ -46,6 +46,6 @@ def gifapi_triggers(bot, trigger, botcom):
     gifdict = SpiceBot.gif.get_gif(searchdict)
 
     if gifdict["error"]:
-        SpiceBot.messagelog.messagelog_error(gifdict["error"])
+        SpiceBot.messagelog.messagelog_error(trigger.sb["log_id"], gifdict["error"])
     else:
         bot.osd(str(gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"])))
