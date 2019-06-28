@@ -399,6 +399,7 @@ def trigger_hyphen_arg_handler(bot, trigger):
             else:
                 botmessagelog.messagelog_error(trigger.sb["log_id"], "Who/Where am I disabling " + str(trigger.sb["comtext"]) + " usage for?")
             return
+        trigger.sb["args"] = spicemanip.main(trigger.sb["args"], "2+", "list")
 
         if not botdb.check_nick_id(target) and not botchannels.check_channel_bot(target, True):
             botmessagelog.messagelog_error(trigger.sb["log_id"], "I don't know who/what " + str(target) + " is.")
@@ -449,6 +450,7 @@ def trigger_hyphen_arg_handler(bot, trigger):
             else:
                 botmessagelog.messagelog_error(trigger.sb["log_id"], "Who/Where am I disabling " + str(trigger.sb["comtext"]) + " multirun usage for?")
             return
+        trigger.sb["args"] = spicemanip.main(trigger.sb["args"], "2+", "list")
 
         if not botdb.check_nick_id(target) and not botchannels.check_channel_bot(target, True):
             botmessagelog.messagelog_error(trigger.sb["log_id"], "I don't know who/what " + str(target) + " is.")
