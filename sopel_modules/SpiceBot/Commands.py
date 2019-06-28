@@ -21,6 +21,7 @@ from .Config import config as botconfig
 from .Database import db as botdb
 from .Read import read as botread
 from .Channels import channels as botchannels
+from .Users import users as botusers
 
 
 class SpiceBot_Commands_MainSection(StaticSection):
@@ -91,21 +92,32 @@ class BotCommands():
 
         return realcom
 
+    def chan_or_nick(self, target):
+        if botchannels.check_channel_bot(target, True):
+            return "channel"
+        elif botdb.check_nick_id(target):
+            return "nick"
+        else:
+            raise Exception(str(target.lower()) + " appears to not be a valid user/channel")
+
     def get_commands_disabled(self, target, disabletype="fully"):
         disabletype = str(disabletype)
+        target_type = self.chan_or_nick(target)
         if disabletype not in list(self.dict['disabled'].keys()):
             self.dict['disabled'][disabletype] = {
-                                                    "users": {},
-                                                    "channels": {}
+                                                    "nick": {},
+                                                    "channel": {}
                                                     }
-        if botdb.check_nick_id(target):
-            if target not in list(self.dict['disabled'][disabletype]["users"].keys()):
-                self.dict['disabled'][disabletype]["users"][target] = botdb.get_nick_value(target, 'commands_' + disabletype + 'disabled') or {}
-            return self.dict['disabled'][disabletype]["users"][target]
-        elif botchannels.check_channel_bot(target, True):
-            if target not in list(self.dict['disabled'][disabletype]["channels"].keys()):
-                self.dict['disabled'][disabletype]["channels"][target] = botdb.get_channel_value(target, 'commands_' + disabletype + 'disabled') or {}
-            return self.dict['disabled'][disabletype]["channels"][target]
+        if target_type == "nick":
+            nick_id = botusers.ID(target)
+            if nick_id not in list(self.dict['disabled'][disabletype]["nick"].keys()):
+                self.dict['disabled'][disabletype]["nick"][nick_id] = botdb.get_nick_value(target, 'commands_' + disabletype + 'disabled') or {}
+            return self.dict['disabled'][disabletype]["nick"][nick_id]
+        elif target_type == "channel":
+            target = str(target).lower()
+            if target not in list(self.dict['disabled'][disabletype]["channel"].keys()):
+                self.dict['disabled'][disabletype]["channel"][target] = botdb.get_channel_value(target, 'commands_' + disabletype + 'disabled') or {}
+            return self.dict['disabled'][disabletype]["channel"][target]
         else:
             raise Exception(str(target.lower()) + " appears to not be a valid user/channel")
 
@@ -116,42 +128,50 @@ class BotCommands():
             return False
 
     def set_command_disabled(self, command, target, timestamp, reason, bywhom, disabletype="fully"):
+        disabletype = str(disabletype)
+        target_type = self.chan_or_nick(target)
         if disabletype not in list(self.dict['disabled'].keys()):
             self.dict['disabled'][disabletype] = {
-                                                    "users": {},
-                                                    "channels": {}
+                                                    "nick": {},
+                                                    "channel": {}
                                                     }
-        if botdb.check_nick_id(target):
-            if target not in list(self.dict['disabled'][disabletype]["users"].keys()):
-                self.dict['disabled'][disabletype]["users"][target] = botdb.get_nick_value(target, 'commands_' + disabletype + 'disabled') or {}
-            self.dict['disabled'][disabletype]["users"][target][command] = {"reason": reason, "timestamp": timestamp, "disabledby": bywhom}
-            botdb.set_nick_value(target, 'commands_' + disabletype + 'disabled', self.dict['disabled'][disabletype]["users"][target])
-        elif botchannels.check_channel_bot(target, True):
-            if target not in list(self.dict['disabled'][disabletype]["channels"].keys()):
-                self.dict['disabled'][disabletype]["channels"][target] = botdb.get_channel_value(target, 'commands_' + disabletype + 'disabled') or {}
-            self.dict['disabled'][disabletype]["channels"][target][command] = {"reason": reason, "timestamp": timestamp, "disabledby": bywhom}
-            botdb.set_channel_value(target, 'commands_' + disabletype + 'disabled', self.dict['disabled'][disabletype]["channels"][target])
+        if target_type == "nick":
+            nick_id = botusers.ID(target)
+            if nick_id not in list(self.dict['disabled'][disabletype]["nick"].keys()):
+                self.dict['disabled'][disabletype]["nick"][nick_id] = botdb.get_nick_value(target, 'commands_' + disabletype + 'disabled') or {}
+            self.dict['disabled'][disabletype]["nick"][nick_id][command] = {"reason": reason, "timestamp": timestamp, "disabledby": bywhom}
+            botdb.set_nick_value(target, 'commands_' + disabletype + 'disabled', self.dict['disabled'][disabletype]["nick"][target])
+        elif target_type == "channel":
+            target = str(target).lower()
+            if target not in list(self.dict['disabled'][disabletype]["channel"].keys()):
+                self.dict['disabled'][disabletype]["channel"][target] = botdb.get_channel_value(target, 'commands_' + disabletype + 'disabled') or {}
+            self.dict['disabled'][disabletype]["channel"][target][command] = {"reason": reason, "timestamp": timestamp, "disabledby": bywhom}
+            botdb.set_channel_value(target, 'commands_' + disabletype + 'disabled', self.dict['disabled'][disabletype]["channel"][target])
         else:
             raise Exception(str(target.lower()) + " appears to not be a valid user/channel")
 
     def unset_command_disabled(self, command, target, disabletype="fully"):
+        disabletype = str(disabletype)
+        target_type = self.chan_or_nick(target)
         if disabletype not in list(self.dict['disabled'].keys()):
             self.dict['disabled'][disabletype] = {
-                                                    "users": {},
-                                                    "channels": {}
+                                                    "nick": {},
+                                                    "channel": {}
                                                     }
-        if botdb.check_nick_id(target):
-            if target not in list(self.dict['disabled'][disabletype]["users"].keys()):
-                self.dict['disabled'][disabletype]["users"][target] = botdb.get_nick_value(target, 'commands_' + disabletype + 'disabled') or {}
-            if command in list(self.dict['disabled'][disabletype]["users"].keys()):
-                del self.dict['disabled'][disabletype]["users"][target][command]
-            botdb.set_nick_value(target, 'commands_' + disabletype + 'disabled', self.dict['disabled'][disabletype]["users"][target])
-        elif botchannels.check_channel_bot(target, True):
-            if target not in list(self.dict['disabled'][disabletype]["channels"].keys()):
-                self.dict['disabled'][disabletype]["users"][target] = botdb.get_channel_value(target, 'commands_' + disabletype + 'disabled') or {}
-            if command in list(self.dict['disabled'][disabletype]["channels"][target]):
-                del self.dict['disabled'][disabletype]["channels"][target][command]
-            botdb.set_channel_value(target, 'commands_' + disabletype + 'disabled', self.dict['disabled'][disabletype]["channels"][target])
+        if target_type == "nick":
+            nick_id = botusers.ID(target)
+            if nick_id not in list(self.dict['disabled'][disabletype]["nick"].keys()):
+                self.dict['disabled'][disabletype]["nick"][nick_id] = botdb.get_nick_value(target, 'commands_' + disabletype + 'disabled') or {}
+            if command in list(self.dict['disabled'][disabletype]["nick"].keys()):
+                del self.dict['disabled'][disabletype]["nick"][nick_id][command]
+            botdb.set_nick_value(target, 'commands_' + disabletype + 'disabled', self.dict['disabled'][disabletype]["nick"][target])
+        elif target_type == "channel":
+            target = str(target).lower()
+            if target not in list(self.dict['disabled'][disabletype]["channel"].keys()):
+                self.dict['disabled'][disabletype]["nick"][target] = botdb.get_channel_value(target, 'commands_' + disabletype + 'disabled') or {}
+            if command in list(self.dict['disabled'][disabletype]["channel"][target]):
+                del self.dict['disabled'][disabletype]["channel"][target][command]
+            botdb.set_channel_value(target, 'commands_' + disabletype + 'disabled', self.dict['disabled'][disabletype]["channel"][target])
         else:
             raise Exception(str(target.lower()) + " appears to not be a valid user/channel")
 

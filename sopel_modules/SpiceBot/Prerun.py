@@ -247,7 +247,7 @@ def trigger_runstatus_query(bot, trigger):
 
     # don't run commands that are disabled in channels
     if not trigger.is_privmsg:
-        channel_disabled_list = botcommands.get_commands_disabled(str(trigger.sender), "fully")
+        channel_disabled_list = botcommands.get_commands_disabled(str(trigger.sender))
         if trigger.sb["realcomref"] in list(channel_disabled_list.keys()):
             reason = channel_disabled_list[trigger.sb["realcomref"]]["reason"]
             timestamp = channel_disabled_list[trigger.sb["realcomref"]]["timestamp"]
@@ -256,7 +256,7 @@ def trigger_runstatus_query(bot, trigger):
             return trigger_cant_run(bot, trigger, message)
 
     # don't run commands that are disabled for specific users
-    nick_disabled_list = botcommands.get_commands_disabled(str(trigger.nick), "fully")
+    nick_disabled_list = botcommands.get_commands_disabled(str(trigger.nick))
     if trigger.sb["realcomref"] in list(nick_disabled_list.keys()):
         bywhom = nick_disabled_list[trigger.sb["realcomref"]]["disabledby"]
         if botusers.ID(bywhom) != botusers.ID(trigger.nick):
@@ -265,7 +265,7 @@ def trigger_runstatus_query(bot, trigger):
             message = "The " + str(trigger.sb["comtext"]) + " command was disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
             return trigger_cant_run(bot, trigger, message)
         else:
-            botcommands.unset_command_disabled(trigger.sb["realcomref"], trigger.nick, "fully")
+            botcommands.unset_command_disabled(trigger.sb["realcomref"], trigger.nick)
             botmessagelog.messagelog_error(trigger.sb["log_id"], trigger.sb["comtext"] + " is now enabled for " + str(trigger.nick))
 
     return True
