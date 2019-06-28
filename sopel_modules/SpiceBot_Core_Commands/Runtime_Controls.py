@@ -14,7 +14,7 @@ import sopel_modules.SpiceBot as SpiceBot
 def nickname_comand_update(bot, trigger, botcom):
 
     if not SpiceBot.command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
-        SpiceBot.messagelog.messagelog_error("I was unable to process this Bot Nick command due to privilege issues.")
+        SpiceBot.messagelog.messagelog_error(trigger.sb["log_id"], "I was unable to process this Bot Nick command due to privilege issues.")
         return
 
     if not len(trigger.sb['args']):
@@ -23,7 +23,7 @@ def nickname_comand_update(bot, trigger, botcom):
         commandused = spicemanip.main(trigger.sb['args'], 1).lower()
 
     if commandused not in ['deps', 'nodeps']:
-        SpiceBot.messagelog.messagelog_error("Please specify deps or nodeps")
+        SpiceBot.messagelog.messagelog_error(trigger.sb["log_id"], "Please specify deps or nodeps")
         return
 
     trigger.sb['args'] = spicemanip.main(trigger.sb['args'], '2+', 'list')
@@ -45,7 +45,7 @@ def nickname_comand_update(bot, trigger, botcom):
 def nickname_comand_restart(bot, trigger, botcom):
 
     if not trigger.admin:
-        SpiceBot.messagelog.messagelog_error("You are not authorized to perform this function.")
+        SpiceBot.messagelog.messagelog_error(trigger.sb["log_id"], "You are not authorized to perform this function.")
 
     quitmessage = "Received command from " + trigger.nick + " to restart. Be Back Soon!"
     SpiceBot.logs.log('SpiceBot_Restart', quitmessage)
