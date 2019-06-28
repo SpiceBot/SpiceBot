@@ -275,7 +275,7 @@ class BotUsers():
                 return {"targetgood": False, "error": "I am a bot and cannot be targeted.", "reason": "bot"}
         if "bots" not in targetbypass:
             if inlist(target, bot.nick):
-                return {"targetgood": False, "error": self.nick_actual(bot, target) + " is a bot and cannot be targeted.", "reason": "bots"}
+                return {"targetgood": False, "error": self.nick_actual(target) + " is a bot and cannot be targeted.", "reason": "bots"}
 
         nick_id = self.whois_ident(target, usercreate=False)
 
@@ -307,18 +307,18 @@ class BotUsers():
         # User offline
         if "offline" not in targetbypass:
             if not self.target_online(target, nick_id):
-                return {"targetgood": False, "error": "It looks like " + self.nick_actual(bot, target) + " is offline right now!", "reason": "offline"}
+                return {"targetgood": False, "error": "It looks like " + self.nick_actual(target) + " is offline right now!", "reason": "offline"}
 
         # Private Message
         if "privmsg" not in targetbypass:
             if trigger.is_privmsg and not inlist(target, trigger.nick):
-                return {"targetgood": False, "error": "Leave " + self.nick_actual(bot, target) + " out of this private conversation!", "reason": "privmsg"}
+                return {"targetgood": False, "error": "Leave " + self.nick_actual(target) + " out of this private conversation!", "reason": "privmsg"}
 
         # not in the same channel
         if "diffchannel" not in targetbypass:
             if not trigger.is_privmsg and self.target_online(target, nick_id):
                 if str(trigger.sender).lower() not in self.dict["current"][nick_id]["channels"]:
-                    return {"targetgood": False, "error": "It looks like " + self.nick_actual(bot, target) + " is online right now, but in a different channel.", "reason": "diffchannel"}
+                    return {"targetgood": False, "error": "It looks like " + self.nick_actual(target) + " is online right now, but in a different channel.", "reason": "diffchannel"}
 
         return targetgood
 
