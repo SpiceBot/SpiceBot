@@ -70,10 +70,10 @@ def bot_dictcom_process(bot, trigger):
     if trigger.sb["dict"][trigger.sb["responsekey"]]["updates_enabled"]:
         if trigger.sb["dict"][trigger.sb["responsekey"]]["updates_enabled"] == "shared":
             SpiceBot.dictcoms.adjust_nick_array(str(SpiceBot.config.nick), 'sayings', trigger.sb["realcom"] + "_" + str(trigger.sb["responsekey"]), trigger.sb["dict"][trigger.sb["responsekey"]]["responses"], 'startup')
-            trigger.sb["dict"][trigger.sb["responsekey"]]["responses"] = SpiceBot.get_nick_value(str(bot.nick), trigger.sb["dict"]["validcoms"][0] + "_" + str(trigger.sb["responsekey"]), 'sayings') or []
+            trigger.sb["dict"][trigger.sb["responsekey"]]["responses"] = SpiceBot.db.get_nick_value(str(bot.nick), trigger.sb["dict"]["validcoms"][0] + "_" + str(trigger.sb["responsekey"]), 'sayings') or []
         elif trigger.sb["dict"][trigger.sb["responsekey"]]["updates_enabled"] == "user":
             SpiceBot.dictcoms.adjust_nick_array(str(trigger.nick), 'sayings', trigger.sb["realcom"] + "_" + str(trigger.sb["responsekey"]), trigger.sb["dict"][trigger.sb["responsekey"]]["responses"], 'startup')
-            trigger.sb["dict"][trigger.sb["responsekey"]]["responses"] = SpiceBot.get_nick_value(str(trigger.nick), trigger.sb["dict"]["validcoms"][0] + "_" + str(trigger.sb["responsekey"]), 'sayings') or []
+            trigger.sb["dict"][trigger.sb["responsekey"]]["responses"] = SpiceBot.db.get_nick_value(str(trigger.nick), trigger.sb["dict"]["validcoms"][0] + "_" + str(trigger.sb["responsekey"]), 'sayings') or []
 
     if trigger.sb["specified"] == 'special':
         nonstockoptions = spicemanip.main(trigger.sb["nonstockoptions"], "andlist")
