@@ -23,8 +23,11 @@ def nickname_comand_channels(bot, trigger):
     trigger.sb['args'] = spicemanip.main(trigger.sb['args'], '2+', 'list')
 
     if commandused == 'list':
+        botcount = len(list(bot.channels.keys()))
+        servercount = len(list(SpiceBot.channels.dict['list'].keys()))
+        displayval = "I am in " + str(botcount) + " of " + str(servercount) + " channel(s) available on this server."
         chanlist = spicemanip.main(list(bot.channels.keys()), 'andlist')
-        bot.osd("You can find me in " + chanlist)
+        bot.osd([displayval, "You can find me in " + chanlist])
         return
 
     elif commandused == 'total':

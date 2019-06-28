@@ -24,6 +24,20 @@ def nickname_comand_commands(bot, trigger):
     else:
         commandused = spicemanip.main(trigger.sb['args'], 1).lower()
 
+    if commandused == 'list':
+        availablecomsnum, availablecomsfiles = 0, []
+        for commandstype in list(SpiceBot.commands.dict['commands'].keys()):
+            availablecomsnum += len(list(SpiceBot.commands.dict['commands'][commandstype].keys()))
+            for validcom in list(SpiceBot.commands.dict['commands'][commandstype].keys()):
+                if "filepath" in list(SpiceBot.commands.dict['commands'][commandstype][validcom].keys()):
+                    filepath = SpiceBot.commands.dict['commands'][commandstype][validcom]["filepath"].lower()
+                    if filepath not in availablecomsfiles:
+                        availablecomsfiles.append(filepath)
+        availablecomsfiles = len(availablecomsfiles)
+        displayval = "There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files."
+        bot.osd(displayval)
+        return
+
     commands_list = []
     for commandstype in list(SpiceBot.commands.dict['commands'].keys()):
         if commandstype not in ['rule']:
@@ -34,14 +48,10 @@ def nickname_comand_commands(bot, trigger):
                     else:
                         commands_list.append(com)
 
-    if commandused == 'list':
-        bot.osd(spicemanip.main(commands_list, 'andlist'), trigger.nick, 'NOTICE')
-        return
-
-    elif commandused == 'total':
+    if commandused == 'total':
         bot.osd("I have " + str(len(commands_list)) + " commands available.")
         return
 
-    elif commandused == 'random':
+    if commandused == 'random':
         bot.osd(["Here's a random command for you:", spicemanip.main(commands_list, 'random')])
         return

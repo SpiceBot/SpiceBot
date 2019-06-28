@@ -12,7 +12,10 @@ import spicemanip
 @SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('ai')
 def ai_trigger(bot, trigger):
-    bot.osd("I have the capability of responding to many requests, but I am not YET sentient.")
+    availablecomsnum = SpiceBot.botai.dict['patterncounts']
+    availablecomsfiles = SpiceBot.botai.dict['filecounts']
+    displayval = "There are " + str(availablecomsnum) + " AI pattern matches available in " + str(availablecomsfiles) + " files."
+    bot.osd(displayval)
 
 
 @sopel.module.rule('(.*)')
