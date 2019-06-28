@@ -164,14 +164,14 @@ class BotCommands():
                 self.dict['disabled'][disabletype]["nick"][nick_id] = botdb.get_nick_value(target, 'commands_' + disabletype + 'disabled') or {}
             if command in list(self.dict['disabled'][disabletype]["nick"].keys()):
                 del self.dict['disabled'][disabletype]["nick"][nick_id][command]
-            botdb.set_nick_value(target, 'commands_' + disabletype + 'disabled', self.dict['disabled'][disabletype]["nick"][target])
+            botdb.set_nick_value(target, 'commands_' + disabletype + 'disabled', self.dict['disabled'][disabletype]["nick"][nick_id])
         elif target_type == "channel":
             target = str(target).lower()
             if target not in list(self.dict['disabled'][disabletype]["channel"].keys()):
                 self.dict['disabled'][disabletype]["nick"][target] = botdb.get_channel_value(target, 'commands_' + disabletype + 'disabled') or {}
             if command in list(self.dict['disabled'][disabletype]["channel"][target]):
                 del self.dict['disabled'][disabletype]["channel"][target][command]
-            botdb.set_channel_value(target, 'commands_' + disabletype + 'disabled', self.dict['disabled'][disabletype]["channel"][nick_id])
+            botdb.set_channel_value(target, 'commands_' + disabletype + 'disabled', self.dict['disabled'][disabletype]["channel"][target])
         else:
             raise Exception(str(target.lower()) + " appears to not be a valid user/channel")
 
