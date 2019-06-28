@@ -3,3 +3,4 @@ gitpython
 pygit2
 fake-useragent
 google-api-python-client
+num2words
