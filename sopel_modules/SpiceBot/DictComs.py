@@ -264,7 +264,7 @@ class BotDictCommands():
 
         return dict_from_file
 
-    def adjust_nick_array(nick, sortingkey, usekey, values, direction):
+    def adjust_nick_array(self, nick, sortingkey, usekey, values, direction):
 
         if not isinstance(values, list):
             values = [values]
