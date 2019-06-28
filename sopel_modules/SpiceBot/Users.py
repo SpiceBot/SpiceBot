@@ -101,7 +101,6 @@ class BotUsers():
                     self.dict["offline"].remove(nick_id)
 
     def join(self, bot, trigger):
-        bot.osd("JOIN", "deathbybandaid", "notice")
         if trigger.nick == bot.nick:
             for user in list(bot.channels[trigger.sender].privileges.keys()):
                 # Identify
@@ -139,7 +138,6 @@ class BotUsers():
             self.dict["offline"].remove(nick_id)
 
     def quit(self, bot, trigger):
-        bot.osd("QUIT", "deathbybandaid", "notice")
         if trigger.nick == bot.nick:
             return
         # Identify
@@ -159,7 +157,6 @@ class BotUsers():
             self.dict["offline"].append(int(nick_id))
 
     def part(self, bot, trigger):
-        bot.osd("PART", "deathbybandaid", "notice")
         if trigger.nick == bot.nick:
             for nick_id in list(self.dict["current"].keys()):
                 if str(trigger.sender).lower() in self.dict["current"][nick_id]["channels"]:
@@ -186,7 +183,6 @@ class BotUsers():
             self.dict["offline"].append(int(nick_id))
 
     def kick(self, bot, trigger):
-        bot.osd("KICK", "deathbybandaid", "notice")
         targetnick = Identifier(str(trigger.args[1]))
         if targetnick == bot.nick:
             for nick_id in list(self.dict["current"].keys()):
@@ -214,7 +210,6 @@ class BotUsers():
             self.dict["offline"].append(int(nick_id))
 
     def nick(self, bot, trigger):
-        bot.osd("NICK", "deathbybandaid", "notice")
         newnick = Identifier(trigger)
         if trigger.nick == bot.nick or newnick == bot.nick:
             return
