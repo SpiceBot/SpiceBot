@@ -39,7 +39,7 @@ class MessageLog():
         self.error_message_dict[unique_id] = errormsg
         return unique_id
 
-    def messagelog_start(self, bot, trigger, log_id):
+    def messagelog_start(self, bot, trigger, log_id, commandname):
 
         if not trigger.is_privmsg:
             channelname = trigger.sender
@@ -55,6 +55,7 @@ class MessageLog():
                                                 "nick": bot.nick
                                                 },
                                         "messages": [],
+                                        "commandname": commandname,
                                         }
 
     def messagelog_error(self, log_id, error_id):

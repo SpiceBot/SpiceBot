@@ -81,7 +81,7 @@ def prerun(t_command_type='module', t_command_subtype=None):
             argsdict_list = trigger_argsdict_list(argsdict_default, and_split)
 
             # Run the function for all splits
-            botmessagelog.messagelog_start(bot, trigger, argsdict_default["log_id"])
+            botmessagelog.messagelog_start(bot, trigger, argsdict_default["log_id"], argsdict_default["realcomtext"])
             runcount = 0
             for argsdict in argsdict_list:
                 runcount += 1
@@ -151,7 +151,7 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
             argsdict = trigger_argsdict_single(argsdict_default, trigger_args)
 
             # Run the function for all splits
-            botmessagelog.messagelog_start(bot, trigger, argsdict_default["log_id"])
+            botmessagelog.messagelog_start(bot, trigger, argsdict_default["log_id"], argsdict_default["realcomtext"])
 
             trigger.sb = copy.deepcopy(argsdict)
 
