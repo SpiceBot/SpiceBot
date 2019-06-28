@@ -1,0 +1,9 @@
+{
+"validcoms": ['hay',],
+"?default": {
+              "type": "simple",
+              "responses": ["Hay is for horses",
+                            "Hay is for horses, straw is cheap, but grass is free."],
+              },
+
+}

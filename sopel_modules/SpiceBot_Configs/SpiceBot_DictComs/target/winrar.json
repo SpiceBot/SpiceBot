@@ -1,0 +1,9 @@
+{
+
+"?default": {
+              "type": "target",
+              "responses": ["$target paid for winrar."],
+              "target_backup": "instigator",
+              },
+
+}

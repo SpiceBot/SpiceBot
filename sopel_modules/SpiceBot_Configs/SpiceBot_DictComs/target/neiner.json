@@ -1,0 +1,9 @@
+{
+
+"?default": {
+              "type": "target",
+              "selection_allowed": False,
+              "responses": ["*a yells neiner neiner at $target."],
+              "target_backup": "instigator",
+              },
+}

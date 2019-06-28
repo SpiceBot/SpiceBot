@@ -1,0 +1,8 @@
+{
+"validcoms": ['milk', 'lemonade'],
+"?default": {
+              "type": "simple",
+              "responses": ["Milk milk lemonade, around the corner fudge is made"],
+              },
+
+}

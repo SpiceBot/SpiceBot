@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": ["You need moar RAM! Get it here: https://downloadmoreram.com/"],
+              },
+
+}

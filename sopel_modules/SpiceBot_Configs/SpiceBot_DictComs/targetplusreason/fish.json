@@ -1,0 +1,37 @@
+{
+"validcoms": ['fish', 'slap'],
+"?default": {
+              "type": "targetplusreason",
+              "responses": ["$instigator slaps $target with a $replyvariation $blank"],
+              "blank_required": False,
+              "blank_phrasehandle": ["because", "for"],
+              "replyvariation": [
+                                  "Pike", "Carp", "Marlin", "Trout", "Cod", "Anchovy", "Venezuelan Beaverfish", "Fish", "Ocean Sunfish",
+                                  "Blobfish", "Red-bellied Pacu", "Oyster Toadfish", "Slippery Dick", "Humuhumunukunukuāpuaʻa", "Giant Goliath Tiger Fish",
+                                  "Red-lipped Batfish", "Suckermouth Catfish", "Northern Red Snapper", "Tasseled Wobbegong", "Sarcastic Fringehead",
+                                  "Collared Carpetshark", "Naked-back Knifefish",
+                                ],
+              },
+"bear": {
+              "type": "targetplusreason",
+              "responses": ["$instigator feeds $target a tasty $replyvariation $blank"],
+              "blank_required": False,
+              "blank_phrasehandle": ["because", "for"],
+              "replyvariation": [
+                                  "Pike", "Carp", "Marlin", "Trout", "Cod", "Anchovy", "Venezuelan Beaverfish", "Fish", "Ocean Sunfish",
+                                  "Blobfish", "Red-bellied Pacu", "Oyster Toadfish", "Slippery Dick", "Humuhumunukunukuāpuaʻa", "Giant Goliath Tiger Fish",
+                                  "Red-lipped Batfish", "Suckermouth Catfish", "Northern Red Snapper", "Tasseled Wobbegong", "Sarcastic Fringehead",
+                                  "Collared Carpetshark", "Naked-back Knifefish",
+                                ],
+              },
+"everyone": {
+                "type": "targetplusreason",
+                "responses": ["$instigator slaps everyone $replyvariation $blank"],
+                "blank_required": False,
+                "blank_phrasehandle": ["because", "for"],
+                "replyvariation": [
+                                    "on the back","on the butt","on the face","on the stomach",
+                                  ],
+                },
+
+}

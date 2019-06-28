@@ -1,0 +1,8 @@
+{
+"validcoms": ['mf', 'motherfuckers'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["Y'all motherfuckers need $blank!"],
+              "blank_backup": 'Surak',
+              },
+}

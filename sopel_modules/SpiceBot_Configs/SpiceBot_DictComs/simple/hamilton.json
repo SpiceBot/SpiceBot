@@ -1,0 +1,16 @@
+{
+"validcoms": ['hamilton', 'myshot'],
+"?default": {
+              "type": "simple",
+              "responses": [
+                              "I am not throwing away my shot!",
+                              "If you stand for nothing, Burr, what'll you fall for?",
+                              "You have no control, who lives, who dies, who tells your story.",
+                              "Teach me how to say goodbye.",
+                              "I’m just like my country—I’m young, scrappy, and hungry, and I am not throwing away my shot.",
+                              ["Raise a glass to Freedom,", "Something they can never take away."],
+                              "Talk less, smile more. Don’t let them know what you’re against or what you’re for.",
+                            ],
+              },
+
+}

@@ -1,0 +1,8 @@
+{
+"?default": {
+              "type": "target",
+              "responses": ["Space: the final frontier. These are the voyages of $target. $targets mission: to explore strange new worlds. To seek out new life and new civilizations. To boldly go where $target hasn't gone before!"],
+              "target_backup": "instigator",
+              },
+
+}

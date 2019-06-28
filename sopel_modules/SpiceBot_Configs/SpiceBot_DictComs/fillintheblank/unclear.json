@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["Instructions unclear, $blank!"],
+              "blank_backup": 'dick stuck in ceiling fan',
+              },
+}

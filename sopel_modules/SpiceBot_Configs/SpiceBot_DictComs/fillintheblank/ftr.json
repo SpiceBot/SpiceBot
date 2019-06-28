@@ -1,0 +1,9 @@
+{
+
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["For the record: $blank"],
+              "blank_backup": "it was not my fault",
+              },
+
+}

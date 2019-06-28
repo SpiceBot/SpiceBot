@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": ["relative path directory traversal motherfucker, do you use it?"],
+              },
+
+}

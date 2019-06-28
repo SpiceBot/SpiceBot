@@ -1,0 +1,7 @@
+{
+
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["$blank??? is THAT what the kids are calling it these days?"],
+              },
+}

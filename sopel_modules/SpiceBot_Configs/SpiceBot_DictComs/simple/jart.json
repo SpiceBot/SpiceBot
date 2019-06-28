@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": ["$instigator farts in a jar to save it for a rainy day."],
+              },
+
+}

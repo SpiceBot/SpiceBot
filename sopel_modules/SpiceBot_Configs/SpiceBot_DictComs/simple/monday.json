@@ -1,0 +1,8 @@
+{
+"validcoms": ['monday'],
+"?default": {
+              "type": "simple",
+              "responses": ["https://pbs.twimg.com/media/Dum26LaW0AETg9F.jpg"],
+              },
+
+}

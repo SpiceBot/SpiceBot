@@ -1,0 +1,19 @@
+{
+"validcoms": ['wargame','wargames','wg'],
+
+"?default": {
+              "type": "simple",
+              "responses": ["Would you want to play a game?"],
+              },
+
+"chess": {
+              "type": "simple",
+              "responses": ["Do you want to play thermonuclear war?"],
+              },
+
+"thermonuclear": {
+              "type": "simple",
+              "responses": ["Wouldn't you like a good game of chess"],
+              },
+
+}

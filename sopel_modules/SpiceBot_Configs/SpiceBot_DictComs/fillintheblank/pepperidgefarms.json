@@ -1,0 +1,11 @@
+{
+"validcoms": ['pepperidgefarms', 'pf'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["Pepperidge Farms remembers $blank"],
+              "response_fail": [
+                              "You're so old Pepperidge Farms doesn't even remember that.",
+                              ],
+              },
+
+}

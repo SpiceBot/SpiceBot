@@ -1,0 +1,11 @@
+{
+
+"validcoms": ['onion', 'theonion'],
+
+"?default": {
+              "type": "feeds",
+              "responses": "theonion",
+              "selection_allowed": False,
+              },
+
+}

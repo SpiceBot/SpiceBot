@@ -1,0 +1,7 @@
+{
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["Piping to bash is dangerous, this pipe only accessible to $blank"],
+              "blank_backup": "Mario",
+              },
+}

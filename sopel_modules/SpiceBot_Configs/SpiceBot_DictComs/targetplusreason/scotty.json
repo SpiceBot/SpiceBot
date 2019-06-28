@@ -1,0 +1,13 @@
+{
+"?default": {
+              "type": "targetplusreason",
+              "responses": ["*a beams $target to $blank"],
+              "blank_fail": ["What coordinates am I setting for transport?",],
+              "target_backup": 'instigator',
+              },
+"know": {
+              "type": "simple",
+              "responses": ["Scotty Doesn't Know     https://www.youtube.com/watch?v=0Vyj1C8ogtE"],
+              },
+
+}

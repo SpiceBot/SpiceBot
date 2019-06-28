@@ -1,0 +1,9 @@
+{
+"?default": {
+              "type": "targetplusreason",
+              "responses": ["Vaccines cause $blank just look at $target."],
+              "blank_backup": 'cancer',
+              "target_backup": 'random',
+              },
+
+}

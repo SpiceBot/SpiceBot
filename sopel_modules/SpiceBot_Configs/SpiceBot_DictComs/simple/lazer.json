@@ -1,0 +1,11 @@
+{
+"validcoms": ['lazer'],
+"?default": {
+              "type": "simple",
+              "responses": ["(does or says something...maybe...prolly?)",
+                            "lazer dudes",
+                            "lazer dudesses",
+                            "pew-pew"],
+              },
+
+}

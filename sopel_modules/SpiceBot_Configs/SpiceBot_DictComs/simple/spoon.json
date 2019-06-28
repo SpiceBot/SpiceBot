@@ -1,0 +1,8 @@
+{
+"validcoms": ['spoon', 'Spoon'],
+"?default": {
+              "type": "simple",
+              "responses": ["There is no spoon.", "It is not the spoon that bends - it is you."],
+              },
+
+}

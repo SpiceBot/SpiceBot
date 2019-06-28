@@ -1,0 +1,17 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": [
+                            "There once was a man from Nantucket; Who kept all his cash in a bucket.; But his daughter, named Nan,; Ran away with a man; And as for the bucket, Nantucket.",
+                            "But he followed the pair to Pawtucket,; The man and the girl with the bucket; And he said to the man,; He was welcome to Nan,; But as for the bucket, Pawtucket.",
+                            "Then the pair followed Pa to Manhasset,; Where he still held the cash as an asset,; But Nan and the man; Stole the money and ran,; And as for the bucket, Manhasset.",
+                            ],
+              },
+
+"dirty": {
+              "type": "simple",
+              "responses": ["There was a young man from Nantucket; Whose dick was so long he could suck it.; He said with a grin; As he wiped off his chin,; If my ear was a cunt I would fuck it."],
+              },
+
+}

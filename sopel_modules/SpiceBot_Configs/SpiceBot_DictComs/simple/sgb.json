@@ -1,0 +1,8 @@
+{
+"validcoms": ['sgb'],
+"?default": {
+              "type": "simple",
+              "responses": ["https://www.youtube.com/watch?v=syhlPzqEpkE"],
+              },
+
+}

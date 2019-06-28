@@ -1,0 +1,22 @@
+{
+"validcoms": ['dd', 'doubled'],
+"?default": {
+              "type": "target",
+              "responses": [
+                            "*a punches $target who is clearly a motherfucker, in the $replyvariation.",
+                            "*a punches $target who is clearly a prick, in the $replyvariation.",
+                            "*a punches $target who is clearly a wanker, in the $replyvariation.",
+                            "*a punches $target who is clearly a cunt, in the $replyvariation.",
+                            "*a punches $target who is clearly a douchenozzle, in the $replyvariation.",
+                            "*a punches $target who is clearly a cockwomble, in the $replyvariation.",
+                            ],
+              "response_fail": ["Who are you pissed at now?"],
+              "replyvariation": ["mouth", "bacon-hole", "cock-holster", "kisser",],
+              },
+
+("cert", "certification"): {
+          "type": "simple",
+          "responses": ["Here is the link to DD link for the noobs who have never seen it before. https://ibb.co/ibxD2n"],
+          },
+
+}

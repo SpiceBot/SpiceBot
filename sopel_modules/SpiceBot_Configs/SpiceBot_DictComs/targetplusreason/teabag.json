@@ -1,0 +1,10 @@
+{
+"validcoms": ['teabag', 'teabaggin', 'teabagging'],
+"?default": {
+              "type": "targetplusreason",
+              "responses": ["$instigator lowers their balls into $targets mouth $blank"],
+              "blank_required": False,
+              "blank_phrasehandle": ["because", "for"],
+              },
+
+}

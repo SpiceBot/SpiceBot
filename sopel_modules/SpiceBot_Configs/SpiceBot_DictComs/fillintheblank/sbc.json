@@ -1,0 +1,11 @@
+{
+
+"?default": {
+              "type": "fillintheblank",
+              "prefixtext": "<secret_bot_code> ",
+              "suffixtext": " </secret_bot_code>",
+              "responses": ["$blank"],
+              "translations": ["underscore"],
+              "blank_backup": 'whisper_whisper_whisper',
+              },
+}

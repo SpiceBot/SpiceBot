@@ -1,0 +1,14 @@
+{
+"validcoms": ['suicide', 'savealife'],
+"?default": {
+              "type": "simple",
+              "responses": [
+                            [
+                              "If you or someone you know is having a crisis and needs someone to talk to,",
+                              "Call 1-800-273-8255",
+                              "OR visit: https://suicidepreventionlifeline.org/",
+                              ]
+                            ],
+              },
+
+}

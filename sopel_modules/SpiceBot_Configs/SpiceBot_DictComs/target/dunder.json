@@ -1,0 +1,11 @@
+{
+"?default": {
+              "type": "target",
+              "responses": [
+                            """ ""'You miss 100% of the shots you don't take.' -Wayne Gretzky" - Michael Scott" - $target """,
+                            ],
+              "target_backup": "instigator",
+              "target_bypass": ['self'],
+              },
+
+}

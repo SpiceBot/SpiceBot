@@ -1,0 +1,9 @@
+{
+"validcoms": ['ea', 'eagames', "pride", "intent"],
+"?default": {
+              "type": "target",
+              "responses": ["The intent is to provide $target with a sense of pride and accomplishment..."],
+              "target_backup": "instigator",
+              },
+
+}

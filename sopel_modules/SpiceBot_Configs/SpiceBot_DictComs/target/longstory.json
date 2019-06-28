@@ -1,0 +1,9 @@
+{
+"validcoms": ['story', 'long'],
+"?default": {
+              "type": "target",
+              "responses": ["This a long story, $target?"],
+              "response_fail": ["This a long story?"],
+              },
+
+}

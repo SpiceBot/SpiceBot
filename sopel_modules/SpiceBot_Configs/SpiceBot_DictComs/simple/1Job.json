@@ -1,0 +1,8 @@
+{
+"validcoms": ['1job', 'onejob'],
+"?default": {
+              "type": "simple",
+              "responses": ["You had ONE job!!!"],
+              },
+
+}

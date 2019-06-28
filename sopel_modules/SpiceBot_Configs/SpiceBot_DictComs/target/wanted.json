@@ -1,0 +1,9 @@
+{
+"?default": {
+              "type": "target",
+              "responses": ["$target was never wanted as a child, but now is wanted in $randnum states!"],
+              "randnum": [0, 50],
+              "target_backup": "instigator",
+              },
+
+}

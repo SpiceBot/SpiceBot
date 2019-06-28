@@ -1,0 +1,11 @@
+{
+
+"validcoms": ['dilbert'],
+
+"?default": {
+              "type": "feeds",
+              "responses": "dilbert",
+              "selection_allowed": False,
+              },
+
+}

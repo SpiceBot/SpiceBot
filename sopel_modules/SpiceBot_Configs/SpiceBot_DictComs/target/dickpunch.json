@@ -1,0 +1,10 @@
+{
+"validcoms": ['dick', 'dickpunch'],
+"?default": {
+              "type": "target",
+              "responses": [
+                            "*a punches $target who is clearly a wanker, in the dick.",
+                            ],
+              "response_fail": ["*a punches $instigator in the dick."],
+              },
+}

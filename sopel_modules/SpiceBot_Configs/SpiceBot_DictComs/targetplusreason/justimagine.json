@@ -1,0 +1,11 @@
+{
+"validcoms": ['imagine', 'justimagine'],
+"?default": {
+              "type": "targetplusreason",
+              "responses": ["Just imagine if $target had $blank"],
+              "blank_required": False,
+              "blank_backup": 'all the time in the world',
+              "target_backup": 'instigator',
+              },
+
+}

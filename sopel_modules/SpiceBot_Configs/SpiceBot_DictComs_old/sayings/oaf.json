@@ -1,0 +1,14 @@
+{
+"?default": {
+              "type": "target",
+              "updates_enabled": "shared",
+              "target_backup": "instigator",
+              "prefixtext": "$target is so old they remember shit like ",
+              "responses": [
+                            "BBS Servers",
+                            "Rev drives",
+                            "Tape storage",
+                            ],
+              },
+
+}

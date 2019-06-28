@@ -1,0 +1,12 @@
+{
+"validcoms": ['blowjob'],
+"?default": {
+              "type": "target",
+              "responses": [
+                            "*a gives $target a blowjob.",
+                            "*a gives $target a sloppy blowjob.",
+                            ],
+              "response_fail": ["*a gives $instigator a blowjob."],
+              },
+
+}

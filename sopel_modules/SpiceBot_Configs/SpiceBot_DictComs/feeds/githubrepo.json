@@ -1,0 +1,22 @@
+{
+
+"validcoms": ['github', 'repo'],
+
+"?default": {
+              "type": "simple",
+              "responses": ['You have two choices. master or dev'],
+              },
+
+"master": {
+              "type": "feeds",
+              "responses": "githubrepomaster",
+              "selection_allowed": False,
+              },
+
+("dev", "development"): {
+                          "type": "feeds",
+                          "responses": "githubrepodev",
+                          "selection_allowed": False,
+                          },
+
+}

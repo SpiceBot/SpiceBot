@@ -1,0 +1,9 @@
+{
+"validcoms": ['beach'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["$instigator wants to start a ransomware company on the beach because of $blank!"],
+              "blank_backup": "money",
+              },
+
+}

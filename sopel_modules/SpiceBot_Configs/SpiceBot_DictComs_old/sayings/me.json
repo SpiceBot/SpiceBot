@@ -1,0 +1,8 @@
+{
+"?default": {
+              "type": "simple",
+              "updates_enabled": "user",
+              "responses": ["Please use --add to create custom sayings!"],
+              },
+
+}

@@ -1,0 +1,9 @@
+{
+"validcoms": ['mondays'],
+"?default": {
+              "type": "target",
+              "responses": ["$target has a case of the Mondays."],
+              "response_fail": ["$instigator has a case of the Mondays."],
+              },
+
+}

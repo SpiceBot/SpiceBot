@@ -1,0 +1,9 @@
+{
+"validcoms": ['dual', 'duals'],
+"?default": {
+              "type": "target",
+              "responses": ["I think one $target is enough for this world."],
+              "target_backup": "instigator",
+              },
+
+}

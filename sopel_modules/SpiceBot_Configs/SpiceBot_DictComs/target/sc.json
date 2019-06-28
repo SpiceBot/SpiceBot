@@ -1,0 +1,9 @@
+{
+"validcoms": ['sc'],
+"?default": {
+              "type": "target",
+              "responses": ["$target is being so stupid that jimender2 looks smart."],
+              "response_fail": ["$instigator is making jimender2 looks smart right now."],
+              },
+
+}

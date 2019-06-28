@@ -1,0 +1,8 @@
+{
+"validcoms": ['power'],
+"?default": {
+              "type": "simple",
+              "responses": ["POWER OVERWHELMING, and UNLIMITED POWER"],
+              },
+
+}

@@ -1,0 +1,9 @@
+{
+"validcoms": ['airbiscuit', 'float', 'fart', 'farts'],
+"?default": {
+              "type": "target",
+              "responses": ["$instigator teaches $target a lesson with a swift kick in the butt."],
+              "response_fail": ["$botname teaches $instigator a lesson by sitting $instigator's face."],
+              },
+
+}

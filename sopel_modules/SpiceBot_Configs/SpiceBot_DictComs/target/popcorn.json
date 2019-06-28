@@ -1,0 +1,16 @@
+{
+"validcoms": ['popcorn', 'pc'],
+"?default": {
+              "type": "target",
+              "responses": ["*a grabs popcorn and goes to watch $target's situation unfold."],
+              "response_fail": [
+                                [
+
+                                "*a grabs popcorn and goes to watch the action",
+                                "https://media2.giphy.com/media/daJWXqaZFqh0s/giphy.gif",
+                                "*a munch, munch",
+                                ]
+                              ]
+              },
+
+}

@@ -1,0 +1,10 @@
+{
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["$instigator struggles with $blank"],
+              "response_fail": [
+                              "You don't know me! You don't know my struggles!",
+                              ],
+              },
+
+}

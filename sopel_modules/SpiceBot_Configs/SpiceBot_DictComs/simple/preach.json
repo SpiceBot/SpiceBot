@@ -1,0 +1,10 @@
+{
+"validcoms": ['preach'],
+"?default": {
+              "type": "simple",
+              "responses": ["Preach it to the choir baby.",
+                            "Preach it baby",
+                            "Your preaching to the choir"],
+              },
+
+}

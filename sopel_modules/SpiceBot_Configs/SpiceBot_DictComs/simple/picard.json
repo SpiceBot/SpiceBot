@@ -1,0 +1,8 @@
+{
+"validcoms": ['picard', 'makeitso', 'mis'],
+"?default": {
+              "type": "simple",
+              "responses": ["Make it so."],
+              },
+
+}

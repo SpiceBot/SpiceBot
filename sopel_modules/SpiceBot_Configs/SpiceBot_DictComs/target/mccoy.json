@@ -1,0 +1,46 @@
+{
+"?default": {
+              "type": "target",
+              "responses": ["He's dead, $target."],
+              "target_backup": "Jim",
+              },
+
+"not": {
+              "type": "fillintheblank",
+              "responses": [
+                            "Dammit Jim, I'm a doctor, not $blank!!!",
+                            "What am I, a doctor or $blank",
+                            "I'm not $blank, Spock, just an old country doctor.",
+                            "Damn it, man, I'm a doctor, not $blank!",
+                            ],
+              "blank_backup": "$replyvariation",
+              "blank_phrasehandle": ["a"],
+              "replyvariation": [
+                                "a moon shuttle conductor",
+                                "a bricklayer",
+                                "a psychiatrist",
+                                "an escalator",
+                                "a mechanic",
+                                "an engineer",
+                                "a magician",
+                                "a coal miner",
+                                "a torpedo technician",
+                                "a convicted murderer",
+                                "a botanist",
+                                "an historian",
+                                "a decorator",
+                                "a voyeur",
+                                "a performer",
+                                "a counterinsurgent",
+                                "a database",
+                                "a peeping Tom",
+                                "a battery",
+                                "a dragon-slayer",
+                                "a zookeeper",
+                                "a nightlight",
+                                "a doorstop",
+                                "a commando",
+                                ],
+              },
+
+}

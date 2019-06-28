@@ -1,0 +1,8 @@
+{
+"validcoms": ['mex', 'mexican'],
+"?default": {
+              "type": "simple",
+              "responses": ["Are you a MexiCAN or a MexiCAN'T?",],
+              },
+
+}

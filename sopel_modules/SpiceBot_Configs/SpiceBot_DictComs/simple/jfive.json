@@ -1,0 +1,8 @@
+{
+"validcoms": ['jfive', 'j5'],
+"?default": {
+              "type": "simple",
+              "responses": ["Johnny Five needs moar innnnnpuuuuuut"],
+              },
+
+}

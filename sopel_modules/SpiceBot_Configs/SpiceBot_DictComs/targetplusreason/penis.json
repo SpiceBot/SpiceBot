@@ -1,0 +1,16 @@
+{
+"validcoms": ['penis', 'dickslap'],
+"?default": {
+              "type": "targetplusreason",
+              "responses": ["$instigator slaps $target with a $replyvariation $blank"],
+              "blank_required": False,
+              "blank_phrasehandle": ["because", "for"],
+              "replyvariation": [
+                                  "Venezuelan Beaverpenis", "penis", "Ocean Sunpenis", "Blobpenis", "Oyster Toadpenis",
+                                  "Slippery Dick", "Humuhumunukunukuāpuaʻa", "Giant Goliath Tiger penis", "Red-lipped Batpenis", "Suckermouth Catpenis",
+                                  "Collared Carpetshark", "Naked-back Knifepenis",
+                                ],
+              },
+
+
+}

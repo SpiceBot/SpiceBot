@@ -1,0 +1,9 @@
+{
+"validcoms": ['thuglife'],
+"?default": {
+              "type": "target",
+              "responses": ["$target lives the thug life."],
+              "response_fail": ["$instigator lives the thug life."],
+              },
+
+}

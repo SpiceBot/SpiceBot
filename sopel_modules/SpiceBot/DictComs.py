@@ -11,10 +11,8 @@ from sopel.config.types import StaticSection, ListAttribute
 from .Config import config as botconfig
 from .Read import read as botread
 from .Commands import commands as botcommands
+from .Database import db as botdb
 
-# import requests
-from fake_useragent import UserAgent
-# import urllib
 import os
 import copy
 
@@ -27,10 +25,8 @@ class BotDictCommands():
 
     def __init__(self):
         self.setup_dictcoms()
-        self.header = {'User-Agent': str(UserAgent().chrome)}
-        self.valid_com_types = ['simple']
-        self.valid_com_types_old = [
-                                'simple', 'fillintheblank', 'targetplusreason',
+        self.valid_com_types = [
+                                'simple', 'fillintheblank', 'target', 'targetplusreason',
                                 'sayings', "readfromfile", "readfromurl",
                                 "ascii_art", "gif", "translate", "responses",
                                 "feeds", "search"
@@ -129,9 +125,6 @@ class BotDictCommands():
                 else:
                     dict_from_file[mustbe]["type"] = "simple"
 
-        return dict_from_file
-
-        """
             # each usecase needs to know if it can be updated. Default is false
             if "updates_enabled" not in list(dict_from_file[mustbe].keys()):
                 dict_from_file[mustbe]["updates_enabled"] = False
@@ -180,9 +173,9 @@ class BotDictCommands():
                 if not isinstance(dict_from_file[mustbe]["response_fail"], list):
                     dict_from_file[mustbe]["response_fail"] = [dict_from_file[mustbe]["response_fail"]]
 
-            # if dict_from_file[mustbe]["updates_enabled"]:
-            #    adjust_nick_array(bot, str(bot.nick), 'long', 'sayings', maincom + "_" + str(mustbe), dict_from_file[mustbe]["responses"], 'startup')
-            #    dict_from_file[mustbe]["responses"] = get_nick_value(bot, str(bot.nick), 'long', 'sayings', maincom + "_" + str(mustbe)) or []
+            if dict_from_file[mustbe]["updates_enabled"]:
+                self.adjust_nick_array(str(botconfig.nick), 'sayings', maincom + "_" + str(mustbe), dict_from_file[mustbe]["responses"], 'startup')
+                dict_from_file[mustbe]["responses"] = botdb.get_plugin_value("dictcom", maincom + "_" + str(mustbe)) or []
 
             # each usecase needs a response
             if "responses" not in list(dict_from_file[mustbe].keys()):
@@ -190,20 +183,17 @@ class BotDictCommands():
 
             # verify responses are in list form
             if not isinstance(dict_from_file[mustbe]["responses"], list):
-                # TODO read text files
-                # if dict_from_file[mustbe]["responses"] in bot.memory["botdict"]["tempvals"]['txt_files'].keys():
-                #    dict_from_file[mustbe]["responses"] = bot.memory["botdict"]["tempvals"]['txt_files'][dict_from_file[mustbe]["responses"]]
-                if str(dict_from_file[mustbe]["responses"]).startswith(tuple(["https://", "http://"])):
-                    try:
-                        page = requests.get(dict_from_file[mustbe]["responses"], headers=self.header)
-                    except Exception as e:
-                        page = e
-                        page = None
 
-                    if page and not str(page.status_code).startswith(tuple(["4", "5"])):
-                        htmlfile = urllib.request.urlopen(dict_from_file[mustbe]["responses"])
-                        lines = htmlfile.read().splitlines()
-                        dict_from_file[mustbe]["responses"] = lines
+                # text files
+                if dict_from_file[mustbe]["responses"] in list(botread.dict["text"].keys()):
+                    dict_from_file[mustbe]["responses"] = botread.dict["text"][dict_from_file[mustbe]["responses"]]["lines"]
+
+                if str(dict_from_file[mustbe]["responses"]).startswith(tuple(["https://", "http://"])):
+                    botread.webpage_to_list(dict_from_file[mustbe]["responses"])
+                    # TODO assign dict value, but don't load until needed
+                    # TODO use botdb to store an offline version
+                    if dict_from_file[mustbe]["responses"] in list(botread.dict["webpage"].keys()):
+                        dict_from_file[mustbe]["responses"] = botread.dict["webpage"][dict_from_file[mustbe]["responses"]]["lines"]
                 else:
                     dict_from_file[mustbe]["responses"] = [dict_from_file[mustbe]["responses"]]
 
@@ -273,7 +263,34 @@ class BotDictCommands():
                 dict_from_file[mustbe]["privs"] = []
 
         return dict_from_file
-        """
+
+    def adjust_nick_array(self, nick, sortingkey, usekey, values, direction):
+
+        if not isinstance(values, list):
+            values = [values]
+
+        oldvalues = botdb.get_nick_value(nick, usekey, sortingkey) or []
+
+        # startup entries
+        if direction == 'startup':
+            if oldvalues == []:
+                direction == 'add'
+            else:
+                return
+
+        # adjust
+        for value in values:
+            if direction == 'add':
+                if value not in oldvalues:
+                    oldvalues.append(value)
+            elif direction == 'startup':
+                if value not in oldvalues:
+                    oldvalues.append(value)
+            elif direction in ['del', 'remove']:
+                if value in oldvalues:
+                    oldvalues.remove(value)
+
+        botdb.set_nick_value(nick, usekey, oldvalues, sortingkey)
 
     def setup_dictcoms(self):
         botconfig.define_section("SpiceBot_DictComs", SpiceBot_DictComs_MainSection, validate=False)

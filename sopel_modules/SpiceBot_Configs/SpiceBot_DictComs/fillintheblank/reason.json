@@ -1,0 +1,8 @@
+{
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["The reason I gathered you all here today is... $blank!"],
+              "blank_required": False,
+              },
+
+}

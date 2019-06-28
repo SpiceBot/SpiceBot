@@ -1,0 +1,8 @@
+{
+"validcoms": ['burning','bdth'],
+"?default": {
+              "type": "simple",
+              "responses": ["burning down the house"],
+              },
+
+}

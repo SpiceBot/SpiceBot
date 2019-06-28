@@ -1,0 +1,10 @@
+{
+"?default": {
+              "type": "target",
+              "updates_enabled": "shared",
+              "target_backup": "instigator",
+              "prefixtext": "Today I Learned that ",
+              "responses": ["This command needs more outputs!"],
+              },
+
+}

@@ -1,0 +1,9 @@
+
+{
+"validcoms": ['hell'],
+"?default": {
+              "type": "simple",
+              "responses": ["Hell No!!"],
+              },
+
+}

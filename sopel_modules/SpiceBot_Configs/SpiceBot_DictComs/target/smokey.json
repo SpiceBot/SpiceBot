@@ -1,0 +1,8 @@
+{
+"?default": {
+              "type": "target",
+              "responses": ["Remember... Only $target Can Prevent Forest Fires!!!"],
+              "target_backup": "YOU",
+              },
+
+}

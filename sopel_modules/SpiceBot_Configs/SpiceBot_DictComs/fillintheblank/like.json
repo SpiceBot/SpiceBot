@@ -1,0 +1,9 @@
+{
+
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["I like $blank!"],
+              "blank_backup": "$replyvariation",
+              "replyvariation": ["porn", "turtles", "trains"],
+              },
+}

@@ -1,0 +1,9 @@
+{
+
+"?default": {
+              "type": "target",
+              "target_backup": "instigator",
+              "responses": ["Tell me about the bunnies, $target... BLAM!"],
+              },
+
+}

@@ -1,0 +1,13 @@
+{
+"?default": {
+              "type": "target",
+              "responses": ["$target should put on some mad max gear, drop acid, and ride a motorcycle through the desert, while listening to some CoC."],
+              "target_backup": "instigator",
+              },
+
+"slow": {
+              "type": "simple",
+              "responses": ["Slow ride https://www.youtube.com/watch?v=T4287tw_dwk"],
+              },
+
+}

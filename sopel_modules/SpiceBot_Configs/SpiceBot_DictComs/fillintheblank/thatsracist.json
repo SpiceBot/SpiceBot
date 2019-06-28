@@ -1,0 +1,8 @@
+{
+"validcoms": ['tr', 'thatsracist'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["That's Racist against $blank!"],
+              "response_fail": "That's Racist!™",
+              },
+}

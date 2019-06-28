@@ -1,0 +1,9 @@
+{
+
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["Really ?? We dont have a $blank yet??"],
+              "blank_backup": "new",
+              },
+
+}

@@ -1,0 +1,7 @@
+{
+"?default": {
+              "type": "gif",
+              "responses": "facepalm",
+              "search_fail": ["There is not enough facepalm in the world for this"],
+              },
+}

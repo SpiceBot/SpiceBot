@@ -1,0 +1,17 @@
+{
+"validcoms": ['knights', 'python', 'holygrail'],
+"?default": {
+              "type": "simple",
+              "responses": [
+                            "Ni!",
+                            "Ekky-ekky-ekky-ekky-z'Bang, zoom-Boing, z'nourrrwringnmmm",
+                            "'tis but a flesh wound.",
+                            "WHAT is the airspeed velocity of an unladen swallow?",
+                            "Help, I'm being oppressed. Come and see the violence inherent in the system.",
+                            "It's just a scratch. I've had worse.",
+                            "I fart in your general direction! Your mother was a hamster, and your father smelt of elderberries!",
+                            "You can't expect to wield supreme executive power just because some watery tart threw a sword at you.",
+                            ],
+              },
+
+}

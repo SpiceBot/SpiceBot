@@ -1,0 +1,8 @@
+{
+"validcoms": ['fire'],
+"?default": {
+              "type": "simple",
+              "responses": ["Ready... Aim... FIRE!!!", "I'd tell you to fire, but I'm pretty sure you'd miss.", "*a fires at $instigator"],
+              },
+
+}

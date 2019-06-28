@@ -1,0 +1,10 @@
+{
+"?default": {
+              "type": "targetplusreason",
+              "responses": ["$instigator rolls their eyes at $target $blank"],
+              "blank_required": False,
+              "blank_phrasehandle": ["because", "for"],
+              "response_fail": "*a rolls eyes at $instigator.",
+              },
+
+}

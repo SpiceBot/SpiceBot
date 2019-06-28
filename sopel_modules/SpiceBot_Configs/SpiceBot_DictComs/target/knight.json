@@ -1,0 +1,12 @@
+{
+"?default": {
+              "type": "target",
+              "responses": [
+                            "Knight Rider, a shadowy flight into the dangerous world of a man who does not exist. $target, a young loner on a crusade to champion the cause of the innocent, the helpless, the powerless, in a world of criminals who operate above the law.",
+                            "$target, a lone crusader in a dangerous world. The world... of the Knight Rider.",
+                            ],
+              "target_backup": "Michael Knight",
+              "target_bypass": ['self'],
+              },
+
+}

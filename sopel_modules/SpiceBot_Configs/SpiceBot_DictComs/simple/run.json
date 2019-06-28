@@ -1,0 +1,8 @@
+{
+"validcoms": ['run', 'gingerbread'],
+"?default": {
+              "type": "simple",
+              "responses": ["Run run gingerbread man, you can't catch me I'm the gingerbread man"],
+              },
+
+}

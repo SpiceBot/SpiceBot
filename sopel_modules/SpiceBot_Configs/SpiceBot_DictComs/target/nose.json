@@ -1,0 +1,9 @@
+{
+
+"?default": {
+              "type": "target",
+              "responses": ["$instigator got your nose, $target."],
+              "response_fail": ["$instigator , quit being so nosey!"],
+              },
+
+}

@@ -1,0 +1,9 @@
+{
+"validcoms": ['batman'],
+"?default": {
+              "type": "simple",
+              "responses": ["In the criminal justice system of Gotham City, there are 3 groups. The Police, who investigate, the DA's who prosecute and the goddamn Batman.",
+                            "Have you ever seen me and batman in the same room? No? Therefore I am Batman"],
+              },
+
+}

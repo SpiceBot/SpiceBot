@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["Wait...What? there's a $blank now?"],
+              "blank_backup": 'wait what',
+              },
+}

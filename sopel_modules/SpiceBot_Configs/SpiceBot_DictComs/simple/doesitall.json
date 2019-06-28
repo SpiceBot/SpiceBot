@@ -1,0 +1,11 @@
+{
+"validcoms": ['doesitall', 'dia'],
+"?default": {
+              "type": "simple",
+              "responses": [
+                            "Sneeze more than once a week? Want to have sex with attractive women? Wish your penis was larger? Try Doesitall™!",
+                            "Side effects include: Anal leakage, penile shrinkage, halitosis, HIV, GhonoherpesyphilAIDS, and a wonky eye",
+                            ],
+              },
+
+}

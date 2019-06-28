@@ -1,0 +1,8 @@
+{
+"validcoms": ['wwkd'],
+"?default": {
+              "type": "simple",
+              "responses": ["What would Kevin do??"],
+              },
+
+}

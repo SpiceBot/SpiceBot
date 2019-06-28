@@ -1,0 +1,14 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": [
+                            [
+                              "It was a dark an stormy night.",
+                              "But not any stormy night. You were alone in the house when you heard a creak right behind you. You turn around and can't believe your eyes.",
+                              "You turn around and see it is $randuser",
+                              ]
+                            ],
+              },
+
+}

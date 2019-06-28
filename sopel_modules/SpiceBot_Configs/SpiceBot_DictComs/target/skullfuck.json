@@ -1,0 +1,9 @@
+{
+
+"?default": {
+              "type": "target",
+              "responses": ["$instigator pokes out $targets eye and skullfucks them."],
+              "response_fail": ["$instigator is apparently flexible enough to skullfuck themself!"],
+              },
+
+}

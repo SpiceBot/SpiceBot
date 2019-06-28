@@ -1,0 +1,9 @@
+{
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["$blank"],
+              "translations": ["binaryinvert"],
+              "blank_backup": 'Please Enter some input',
+              },
+
+}

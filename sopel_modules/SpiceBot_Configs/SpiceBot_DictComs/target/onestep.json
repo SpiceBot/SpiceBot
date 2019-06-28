@@ -1,0 +1,9 @@
+{
+"validcoms": ['step', 'onestep', 'spiceman'],
+"?default": {
+              "type": "target",
+              "responses": ["One small step for $target; one giant leap for morons!"],
+              "response_fail": ["One small step for botkind; one giant leap for SkyNet!"],
+              },
+
+}

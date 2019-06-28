@@ -1,0 +1,9 @@
+{
+"?default": {
+              "type": "fillintheblank",
+              "translations": ["upper"],
+              "responses": ["THE $blank IS TOO DAMN HIGH!"],
+              "blank_backup": "RENT",
+              },
+
+}

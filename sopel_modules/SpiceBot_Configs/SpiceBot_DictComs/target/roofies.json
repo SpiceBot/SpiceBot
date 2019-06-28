@@ -1,0 +1,9 @@
+{
+"validcoms": ['roofie', 'roofies'],
+"?default": {
+              "type": "target",
+              "responses": ["Hey $target, feeling sleepy?"],
+              "response_fail": ["$instigator puts a roofie in their own cup."],
+              },
+
+}

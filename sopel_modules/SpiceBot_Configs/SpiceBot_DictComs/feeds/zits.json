@@ -1,0 +1,11 @@
+{
+
+"validcoms": ['zits'],
+
+"?default": {
+              "type": "feeds",
+              "responses": "zits",
+              "selection_allowed": False,
+              },
+
+}

@@ -1,0 +1,10 @@
+{
+"?default": {
+              "type": "targetplusreason",
+              "responses": ["$target didn't choose the $blank life, the $blank life chose $target"],
+              "blank_required": False,
+              "blank_backup": 'thug',
+              "target_backup": 'instigator',
+              },
+
+}

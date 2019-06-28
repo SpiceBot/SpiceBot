@@ -1,0 +1,13 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": ["This is just a warning. Overuse of the bot can get you kicked or banned by an operator. If you want to purely play with the bot, go to #Spicebottest, or send Spicebot a PrivateMessage."],
+              },
+
+"moar": {
+              "type": "simple",
+              "responses": ["This is just a warning. Underuse of the bot can get you kicked or banned by an operator. If you want to not play with the bot, go to Canada or some other place that no one cares about."],
+              },
+
+}

@@ -1,0 +1,8 @@
+{
+"validcoms": ['undead'],
+"?default": {
+              "type": "simple",
+              "responses": ["BRAINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNS"],
+              },
+
+}

@@ -1,0 +1,7 @@
+{
+"validcoms": ['rage', 'anger'],
+"?default": {
+              "type": "simple",
+              "responses": [' щ(ಠ益ಠщ) '],
+              },
+}

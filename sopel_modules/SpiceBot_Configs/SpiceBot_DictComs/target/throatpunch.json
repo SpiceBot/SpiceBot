@@ -1,0 +1,9 @@
+{
+"validcoms": ['throatpunch'],
+"?default": {
+              "type": "target",
+              "responses": ["$instigator punches $target in the throat."],
+              "response_fail": ["*a punches $instigator in the throat."],
+              },
+
+}

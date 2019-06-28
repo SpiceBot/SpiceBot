@@ -1,0 +1,7 @@
+{
+"validcoms": ['tableflip', 'flip', 'tflip'],
+"?default": {
+              "type": "simple",
+              "responses": [' (╯°□°）╯︵ ┻━┻ '],
+              },
+}
