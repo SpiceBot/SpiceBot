@@ -54,6 +54,8 @@ class BotUsers():
         except Exception as e:
             nick_id = e
             nick_id = None
+        if usercreate:
+            self.add_to_all(nick, nick_id)
         return int(nick_id)
 
     def save_user_db(self):
