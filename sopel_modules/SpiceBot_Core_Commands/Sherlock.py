@@ -11,7 +11,7 @@ import sopel_modules.SpiceBot as SpiceBot
 
 @SpiceBot.prerun('module')
 @sopel.module.commands('sherlock', 'username')
-def bot_command_sherlock(bot, trigger):
+def bot_command_sherlock(bot, trigger, botcom):
 
     netlist = list(SpiceBot.sherlock.dict.keys())
 
