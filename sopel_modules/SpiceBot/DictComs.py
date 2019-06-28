@@ -26,7 +26,7 @@ class BotDictCommands():
     def __init__(self):
         self.setup_dictcoms()
         self.valid_com_types = [
-                                'simple', 'fillintheblank', 'targetintheblank', 'targetplusreason',
+                                'simple', 'fillintheblank', 'target', 'targetplusreason',
                                 'sayings', "readfromfile", "readfromurl",
                                 "ascii_art", "gif", "translate", "responses",
                                 "feeds", "search"
@@ -134,7 +134,7 @@ class BotDictCommands():
 
             # each usecase needs to know if it needs a target
             if "target_required" not in list(dict_from_file[mustbe].keys()):
-                if dict_from_file[mustbe]["type"] in ['targetintheblank', 'targetplusreason']:
+                if dict_from_file[mustbe]["type"] in ['target', 'targetplusreason']:
                     dict_from_file[mustbe]["target_required"] = True
                 else:
                     dict_from_file[mustbe]["target_required"] = False
