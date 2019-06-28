@@ -248,25 +248,25 @@ def trigger_runstatus_query(bot, trigger):
     # don't run commands that are disabled in channels
     if not trigger.is_privmsg:
         channel_disabled_list = botcommands.get_commands_disabled(str(trigger.sender), "fully")
-        if "nickname_query" in list(channel_disabled_list.keys()):
-            reason = channel_disabled_list["nickname_query"]["reason"]
-            timestamp = channel_disabled_list["nickname_query"]["timestamp"]
-            bywhom = channel_disabled_list["nickname_query"]["disabledby"]
+        if trigger.sb["realcomref"] in list(channel_disabled_list.keys()):
+            reason = channel_disabled_list[trigger.sb["realcomref"]]["reason"]
+            timestamp = channel_disabled_list[trigger.sb["realcomref"]]["timestamp"]
+            bywhom = channel_disabled_list[trigger.sb["realcomref"]]["disabledby"]
             message = "The " + str(trigger.sb["comtext"]) + " command was disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
             return trigger_cant_run(bot, trigger, message)
 
     # don't run commands that are disabled for specific users
     nick_disabled_list = botcommands.get_commands_disabled(str(trigger.nick), "fully")
-    if "nickname_query" in list(nick_disabled_list.keys()):
-        bywhom = nick_disabled_list["nickname_query"]["disabledby"]
-        if bywhom != trigger.nick:
-            reason = nick_disabled_list["nickname_query"]["reason"]
-            timestamp = nick_disabled_list["nickname_query"]["timestamp"]
+    if trigger.sb["realcomref"] in list(nick_disabled_list.keys()):
+        bywhom = nick_disabled_list[trigger.sb["realcomref"]]["disabledby"]
+        if botusers.ID(bywhom) != botusers.ID(trigger.nick):
+            reason = nick_disabled_list[trigger.sb["realcomref"]]["reason"]
+            timestamp = nick_disabled_list[trigger.sb["realcomref"]]["timestamp"]
             message = "The " + str(trigger.sb["comtext"]) + " command was disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
             return trigger_cant_run(bot, trigger, message)
         else:
             botcommands.unset_command_disabled(trigger.sb["realcomref"], trigger.nick, "fully")
-            botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["comtext"] + " is now enabled for " + str(trigger.nick))
+            botmessagelog.messagelog_error(trigger.sb["log_id"], trigger.sb["comtext"] + " is now enabled for " + str(trigger.nick))
 
     return True
 
