@@ -1,5 +1,4 @@
 {
-"validcoms": ['1job', 'onejob'],
 "?default": {
               "type": "simple",
               "responses": ["I want sharks with frickin' laser beams attached to their heads"],
