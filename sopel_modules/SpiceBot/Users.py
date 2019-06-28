@@ -236,13 +236,6 @@ class BotUsers():
     def mode(self, bot, trigger):
         return
 
-    def targetcheck(self, target):
-        return True
-
-        # idk whois
-        if not botdb.check_nick_id(target):
-            return
-
     def nick_actual(self, nick, altlist=None):
         nick_id = self.whois_ident(nick)
         nick_actual = self.ID(nick_id)
