@@ -259,7 +259,7 @@ def bot_dictcom_reply_shared(bot, trigger):
 
             # translation
             if trigger.sb["dict"][trigger.sb["responsekey"]]["translations"]:
-                rply = SpiceBot.translate.bot_translate_process(bot, rply, trigger.sb["dict"][trigger.sb["responsekey"]]["translations"])
+                rply = SpiceBot.translate.bot_translate_process(rply, trigger.sb["dict"][trigger.sb["responsekey"]]["translations"])
 
             # text to precede the output
             if trigger.sb["dict"][trigger.sb["responsekey"]]["prefixtext"] and trigger.sb["success"]:
@@ -276,7 +276,7 @@ def bot_dictcom_reply_shared(bot, trigger):
             # random user
             if "$randuser" in rply:
                 if not trigger.is_privmsg:
-                    randuser = spicemanip.main(SpiceBot.users.random_valid_target(bot, trigger, 'random'))
+                    randuser = spicemanip.main(SpiceBot.users.random_valid_target(trigger, 'random'))
                 else:
                     randuser = trigger.nick
                 rply = rply.replace("$randuser", randuser)
@@ -352,7 +352,7 @@ def bot_dictcom_gif(bot, trigger):
     if "queryapi" in trigger.sb["dict"].keys():
         searchapis = trigger.sb["dict"][trigger.sb["responsekey"]]["queryapi"]
     else:
-        searchapis = bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys()
+        searchapis = list(SpiceBot.gif.valid_api.keys())
 
     if trigger.sb["specified"]:
         if trigger.sb["specified"] > len(queries):
