@@ -134,7 +134,7 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
             # messagelog ID
             argsdict_default["log_id"] = botmessagelog.messagelog_assign()
 
-            argsdict_default["realcom"] = "query_command"
+            argsdict_default["realcom"] = "query"
 
             argsdict_default["comtext"] = "'" + bot.nick + " query'"
             argsdict_default["realcomtext"] = "'" + bot.nick + " query'"
@@ -143,28 +143,19 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
 
             argsdict_default["dict"] = botcommands.get_command_dict("query", 'nickname')
 
-            # split into && groupings
-            and_split = trigger_and_split(trigger_args)
-
             # Create dict listings for trigger.sb
-            argsdict_list = trigger_argsdict_list(argsdict_default, and_split)
+            argsdict = trigger_argsdict_single(argsdict_default, trigger_args)
 
             # Run the function for all splits
             botmessagelog.messagelog_start(bot, trigger, argsdict_default["log_id"])
-            runcount = 0
-            for argsdict in argsdict_list:
-                runcount += 1
-                trigger.sb = copy.deepcopy(argsdict)
 
-                trigger.sb["runcount"] = runcount
+            trigger.sb = copy.deepcopy(argsdict)
 
-                trigger.sb["args"], trigger.sb["hyphen_arg"] = trigger_hyphen_args(trigger.sb["args"])
-                if not trigger.sb["hyphen_arg"]:
-                    # check if anything prohibits the nick from running the command
-                    if trigger_runstatus(bot, trigger):
-                        function(bot, trigger, *args, **kwargs)
-                else:
-                    trigger_hyphen_arg_handler(bot, trigger)
+            trigger.sb["runcount"] = 1
+
+            # check if anything prohibits the nick from running the command
+            if trigger_runstatus_query(bot, trigger):
+                function(bot, trigger, *args, **kwargs)
             botmessagelog.messagelog_exit(bot, argsdict_default["log_id"])
 
         return internal_prerun
@@ -198,9 +189,12 @@ def trigger_argsdict_list(argsdict_default, and_split):
     for trigger_args_part in and_split:
         argsdict_part = copy.deepcopy(argsdict_default)
         argsdict_part["args"] = spicemanip.main(trigger_args_part, 'create')
-        if len(argsdict_part["args"]) and argsdict_part["args"][0] == "-a":
+        if len(argsdict_part["args"]) and (argsdict_part["args"][0] == "-a" or argsdict_part["args"][-1] == "-a"):
             argsdict_part["adminswitch"] = True
-            argsdict_part["args"] = spicemanip.main(argsdict_part["args"], '2+', 'list')
+            if argsdict_part["args"][0] == "-a":
+                argsdict_part["args"] = spicemanip.main(argsdict_part["args"], '2+', 'list')
+            elif argsdict_part["args"][-1] == "-a":
+                del argsdict_part["args"][-1]
         else:
             argsdict_part["adminswitch"] = False
         prerun_split.append(argsdict_part)
@@ -210,12 +204,66 @@ def trigger_argsdict_list(argsdict_default, and_split):
 def trigger_argsdict_single(argsdict_default, trigger_args_part):
     argsdict_part = copy.deepcopy(argsdict_default)
     argsdict_part["args"] = spicemanip.main(trigger_args_part, 'create')
-    if len(argsdict_part["args"]) and argsdict_part["args"][0] == "-a":
+    if len(argsdict_part["args"]) and (argsdict_part["args"][0] == "-a" or argsdict_part["args"][-1] == "-a"):
         argsdict_part["adminswitch"] = True
-        argsdict_part["args"] = spicemanip.main(argsdict_part["args"], '2+', 'list')
+        if argsdict_part["args"][0] == "-a":
+            argsdict_part["args"] = spicemanip.main(argsdict_part["args"], '2+', 'list')
+        elif argsdict_part["args"][-1] == "-a":
+            del argsdict_part["args"][-1]
     else:
         argsdict_part["adminswitch"] = False
     return argsdict_part
+
+
+def trigger_runstatus_query(bot, trigger):
+
+    # Bots can't run commands
+    if Identifier(trigger.nick) == bot.nick:
+        return False
+
+    # Allow permissions for enabling and disabling commands via hyphenargs
+    if trigger.sb["adminswitch"]:
+        if command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
+            return True
+        else:
+            botmessagelog.messagelog_error(trigger.sb["log_id"], "The admin switch (-a) is for use by authorized nicks ONLY.")
+            return False
+
+    # don't run commands that are disabled in channels
+    if not trigger.is_privmsg:
+        channel_disabled_list = botcommands.get_commands_disabled(str(trigger.sender), "fully")
+        if "nickname_query" in list(channel_disabled_list.keys()):
+            return False
+
+    # don't run commands that are disabled for specific users
+    nick_disabled_list = botcommands.get_commands_disabled(str(trigger.nick), "fully")
+    if "nickname_query" in list(nick_disabled_list.keys()):
+        return False
+
+    # don't run commands that are disabled in channels
+    if not trigger.is_privmsg:
+        channel_disabled_list = botcommands.get_commands_disabled(str(trigger.sender), "fully")
+        if "nickname_query" in list(channel_disabled_list.keys()):
+            reason = channel_disabled_list["nickname_query"]["reason"]
+            timestamp = channel_disabled_list["nickname_query"]["timestamp"]
+            bywhom = channel_disabled_list["nickname_query"]["disabledby"]
+            message = "The " + str(trigger.sb["comtext"]) + " command was disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
+            return trigger_cant_run(bot, trigger, message)
+
+    # don't run commands that are disabled for specific users
+    nick_disabled_list = botcommands.get_commands_disabled(str(trigger.nick), "fully")
+    if "nickname_query" in list(nick_disabled_list.keys()):
+        bywhom = nick_disabled_list["nickname_query"]["disabledby"]
+        if bywhom != trigger.nick:
+            reason = nick_disabled_list["nickname_query"]["reason"]
+            timestamp = nick_disabled_list["nickname_query"]["timestamp"]
+            message = "The " + str(trigger.sb["comtext"]) + " command was disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
+            return trigger_cant_run(bot, trigger, message)
+        else:
+            botcommands.unset_command_disabled(trigger.sb["realcomref"], trigger.nick, "fully")
+            botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["comtext"] + " is now enabled for " + str(trigger.nick))
+
+    return True
 
 
 def trigger_runstatus(bot, trigger):
