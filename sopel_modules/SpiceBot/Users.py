@@ -101,6 +101,7 @@ class BotUsers():
                     self.dict["offline"].remove(nick_id)
 
     def join(self, bot, trigger):
+        bot.osd("JOIN", "deathbybandaid", "notice")
         if trigger.nick == bot.nick:
             for user in list(bot.channels[trigger.sender].privileges.keys()):
                 # Identify
@@ -138,6 +139,7 @@ class BotUsers():
             self.dict["offline"].remove(nick_id)
 
     def quit(self, bot, trigger):
+        bot.osd("QUIT", "deathbybandaid", "notice")
         if trigger.nick == bot.nick:
             return
         # Identify
@@ -157,6 +159,7 @@ class BotUsers():
             self.dict["offline"].append(int(nick_id))
 
     def part(self, bot, trigger):
+        bot.osd("PART", "deathbybandaid", "notice")
         if trigger.nick == bot.nick:
             for nick_id in list(self.dict["current"].keys()):
                 if str(trigger.sender).lower() in self.dict["current"][nick_id]["channels"]:
@@ -183,6 +186,7 @@ class BotUsers():
             self.dict["offline"].append(int(nick_id))
 
     def kick(self, bot, trigger):
+        bot.osd("KICK", "deathbybandaid", "notice")
         targetnick = Identifier(str(trigger.args[1]))
         if targetnick == bot.nick:
             for nick_id in list(self.dict["current"].keys()):
@@ -210,6 +214,7 @@ class BotUsers():
             self.dict["offline"].append(int(nick_id))
 
     def nick(self, bot, trigger):
+        bot.osd("NICK", "deathbybandaid", "notice")
         newnick = Identifier(trigger)
         if trigger.nick == bot.nick or newnick == bot.nick:
             return
@@ -236,11 +241,11 @@ class BotUsers():
     def mode(self, bot, trigger):
         return
 
-    def targetcheck(self, posstarget):
+    def targetcheck(self, target):
         return True
 
         # idk whois
-        if not botdb.check_nick_id(posstarget):
+        if not botdb.check_nick_id(target):
             return
 
     def nick_actual(self, nick, altlist=None):
@@ -279,11 +284,9 @@ class BotUsers():
             if inlist(target, bot.nick):
                 return {"targetgood": False, "error": self.nick_actual(target) + " is a bot and cannot be targeted.", "reason": "bots"}
 
-        nick_id = self.whois_ident(target, usercreate=False)
-
         # Not a valid user
         if "unknown" not in targetbypass:
-            if not nick_id:
+            if not botdb.check_nick_id(target):
                 sim_user, sim_num = [], []
                 for nick_id in list(self.dict["all"].keys()):
                     nick_list = self.dict["all"][nick_id]
@@ -305,6 +308,8 @@ class BotUsers():
                 else:
                     targetgooderror = "I am not sure who that is."
                 return {"targetgood": False, "error": targetgooderror, "reason": "unknown"}
+
+        nick_id = self.whois_ident(target, usercreate=False)
 
         # User offline
         if "offline" not in targetbypass:
