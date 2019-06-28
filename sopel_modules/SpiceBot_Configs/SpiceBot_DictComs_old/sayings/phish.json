@@ -1,0 +1,9 @@
+{
+"validcoms": ['phish', 'catphish'],
+"?default": {
+              "type": "simple",
+              "updates_enabled": "shared",
+              "responses": ["A/S/L ??"],
+              },
+
+}

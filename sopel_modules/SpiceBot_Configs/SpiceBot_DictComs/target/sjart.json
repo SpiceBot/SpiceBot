@@ -1,0 +1,12 @@
+{
+"validcoms": ['sniperjart', 'sjart'],
+"?default": {
+              "type": "target",
+              "responses": ["$instigator sends a SniperClif™ Jart™ to $target."],
+              "response_fail": [
+                                "Someone opened a SniperClif™ Jart™, that was truly disgusting!",
+                                "$instigator orders a Jart™ with the unique scent of a SniperClif™ fart. DISCLAIMER: While it is quite potent, the SniperClif™ Jart™ is a short term scent. It might evoke a gag reflex and vomiting but, within 5 minutes, the scent has faded. It has also been known to bring on PTSD in people who have been removed from exposure for extended periods of time.",
+                                ],
+              },
+
+}

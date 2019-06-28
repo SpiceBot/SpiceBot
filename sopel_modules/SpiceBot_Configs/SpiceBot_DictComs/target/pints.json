@@ -1,0 +1,12 @@
+{
+"validcoms": ['pints', 'pint'],
+"?default": {
+              "type": "target",
+              "responses": [
+                            "$instigator buys a pint for $target.",
+                            ],
+              "target_backup": "everybody",
+              "react_self": ["$instigator buys a pint for themself."],
+              },
+
+}

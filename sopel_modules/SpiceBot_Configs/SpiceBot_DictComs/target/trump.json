@@ -1,0 +1,9 @@
+{
+
+"?default": {
+              "type": "target",
+              "responses": ["*a builds a wall around $target."],
+              "target_backup": "instigator",
+              },
+
+}

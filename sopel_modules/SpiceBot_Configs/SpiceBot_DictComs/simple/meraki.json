@@ -1,0 +1,19 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": ["Which free meraki device would you like? Options are: $specialoptions."],
+              },
+"mx": {
+              "type": "simple",
+              "responses": ['MX: https://meraki.cisco.com/tc/freemx (free with subscription)'],
+              },
+"switch": {
+              "type": "simple",
+              "responses": ['Switch: https://meraki.cisco.com/tc/freeswitch (free with subscription)'],
+              },
+"ap": {
+              "type": "simple",
+              "responses": ['AP: https://meraki.cisco.com/tc/freeap (free with subscription)'],
+              },
+}

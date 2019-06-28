@@ -1,0 +1,9 @@
+{
+"?default": {
+              "type": "targetplusreason",
+              "responses": ["$target picked the wrong week to stop $blank?"],
+              "blank_backup": 'sniffing glue',
+              "target_backup": 'instigator',
+              },
+
+}

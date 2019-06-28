@@ -1,0 +1,9 @@
+{
+"validcoms": ['longlink'],
+"?default": {
+              "type": "target",
+              "responses": ["Long link is long $target."],
+              "response_fail": ["$instigator wishes his ding-a-ling is shorter than his link."],
+              },
+
+}

@@ -1,0 +1,9 @@
+{
+"?default": {
+              "type": "fillintheblank",
+              "blank_phrasehandle": ["a", "an"],
+              "responses": ["Only those people who risk $blank too far, ever find out how far they can $blanking!"],
+              "blank_backup": "the klingons",
+              },
+
+}

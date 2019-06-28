@@ -1,0 +1,8 @@
+{
+"validcoms": ['tg', 'thatsgay'],
+"?default": {
+              "type": "simple",
+              "responses": ["That's Gay!™"],
+              },
+
+}

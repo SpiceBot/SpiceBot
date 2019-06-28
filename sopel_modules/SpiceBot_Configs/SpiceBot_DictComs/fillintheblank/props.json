@@ -1,0 +1,8 @@
+{
+"validcoms": ['props','prop'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["I'll give you props for doing that $blank!"],
+              "blank_required": False,
+              },
+}

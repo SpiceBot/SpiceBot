@@ -1,0 +1,12 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": [
+                            "Shots fired!",
+                            "Ain't my fault you got an STD, go find your treatment/sympathy somewhere else",
+                            "*a prepares the syringes",
+                            ],
+              },
+
+}

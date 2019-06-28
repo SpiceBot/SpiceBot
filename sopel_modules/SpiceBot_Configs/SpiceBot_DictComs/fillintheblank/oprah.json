@@ -1,0 +1,9 @@
+{
+"?default": {
+              "type": "fillintheblank",
+              "blank_phrasehandle": ["a", "an"],
+              "responses": ["You get $blank! And You get $blank! Everyone gets $blank!"],
+              "blank_backup": "car",
+              },
+
+}

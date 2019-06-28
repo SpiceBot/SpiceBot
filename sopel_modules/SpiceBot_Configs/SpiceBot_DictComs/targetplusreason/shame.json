@@ -1,0 +1,9 @@
+{
+"?default": {
+              "type": "targetplusreason",
+              "responses": ["$instigator thinks $target has been a bad boy $blank"],
+              "blank_required": False,
+              "blank_phrasehandle": ["because", "for"],
+              },
+
+}

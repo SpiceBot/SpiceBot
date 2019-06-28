@@ -1,0 +1,8 @@
+{
+"validcoms": ['boop', 'r2d2'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["$botnick boops $instigator softly because $input!"],
+              "response_fail": "$botnick boops $instigator softly!",
+              },
+}

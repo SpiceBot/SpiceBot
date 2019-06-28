@@ -1,0 +1,10 @@
+{
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["to be honest; $blank"],
+              "response_fail": [
+                              "Lets be honest...",
+                              ],
+              },
+
+}

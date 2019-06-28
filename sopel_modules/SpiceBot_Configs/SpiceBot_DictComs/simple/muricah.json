@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": ["$instigator shoots a toaster or something."],
+              },
+
+}

@@ -1,0 +1,11 @@
+{
+"?default": {
+              "type": "simple",
+              "responses": ["Pictures or it never happened."],
+              },
+"crime": {
+              "type": "simple",
+              "responses": ["No evidence, no crime."],
+              },
+
+}

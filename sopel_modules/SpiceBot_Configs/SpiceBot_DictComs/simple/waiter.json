@@ -1,0 +1,8 @@
+{
+"validcoms": ['waiter'],
+"?default": {
+              "type": "simple",
+              "responses": ["Oh waiter, can you come here please. There's a SniperClif in my soup"],
+              },
+
+}

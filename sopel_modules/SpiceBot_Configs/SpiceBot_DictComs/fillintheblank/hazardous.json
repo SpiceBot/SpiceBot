@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["Too much $blank is bad for your health."],
+              "blank_backup": '$instigator',
+              },
+}

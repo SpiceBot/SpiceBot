@@ -1,0 +1,8 @@
+{
+"validcoms": ['bwtm', 'butwaittheresmore'],
+"?default": {
+              "type": "simple",
+              "responses": ["But Wait.... Theres more"],
+              },
+
+}

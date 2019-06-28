@@ -1,0 +1,8 @@
+{
+"validcoms": ['she', 'twss'],
+"?default": {
+              "type": "simple",
+              "responses": ["That's what she said..."],
+              },
+
+}

@@ -1,0 +1,11 @@
+{
+
+"validcoms": ['stardate'],
+
+"?default": {
+              "type": "feeds",
+              "responses": "stardates",
+              "selection_allowed": False,
+              },
+
+}

@@ -1,0 +1,8 @@
+{
+"validcoms": ['lies'],
+"?default": {
+              "type": "simple",
+              "responses": ["I see through the lies of the Jedi"],
+              },
+
+}

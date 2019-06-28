@@ -1,0 +1,18 @@
+{
+"validcoms": ['hashbrown', 'hb'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["hashbrown $blank"],
+              "blank_backup": 'fail',
+              },
+"fwp": {
+              "type": "fillintheblank",
+              "responses": ["hashbrown $blank"],
+              "blank_backup": 'firstworldproblems',
+              },
+"ym": {
+              "type": "fillintheblank",
+              "responses": ["hashbrown $blank"],
+              "blank_backup": 'yo momma',
+              },
+}

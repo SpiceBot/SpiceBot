@@ -1,0 +1,7 @@
+{
+"?default": {
+              "type": "gif",
+              "responses": "Jeri Ryan",
+              "search_fail": ["Resistance is futile"],
+              },
+}

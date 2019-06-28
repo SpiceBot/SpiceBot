@@ -1,0 +1,8 @@
+{
+"?default": {
+              "type": "target",
+              "responses": ["Screw you $target, $instigator is going home."],
+              "target_backup": "guys",
+              },
+
+}

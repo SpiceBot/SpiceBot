@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": ["Nuke it from orbit... it's the only way to be sure?"],
+              },
+
+}

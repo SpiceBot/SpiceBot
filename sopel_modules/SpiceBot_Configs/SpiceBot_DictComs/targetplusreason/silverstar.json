@@ -1,0 +1,12 @@
+{
+"?default": {
+              "type": "targetplusreason",
+              "responses": ["$instigator gives  $target a silver star $blank"],
+              "response_fail": ["Who deserves a silver star?"],
+              "blank_backup": 'for participation',
+              "blank_phrasehandle": ["for"],
+              "react_bot": ["*a blushes"],
+              "react_self": ["Awww. Why don't you pat yourself on the back while you're at it?"],
+              },
+
+}

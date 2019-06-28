@@ -1,0 +1,7 @@
+{
+"validcoms": ['rules', 'rule'],
+"?default": {
+              "type": "simple",
+              "responses": "internet_rules",
+              },
+}

@@ -1,0 +1,8 @@
+{
+"validcoms": ['scooby'],
+"?default": {
+              "type": "simple",
+              "responses": ["and you would have getten away with it too, if it wasn't for those damn meddling kids and their dog"],
+              },
+
+}

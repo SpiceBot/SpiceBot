@@ -1,0 +1,7 @@
+{
+"validcoms": ['proverb', 'proverbs'],
+"?default": {
+              "type": "simple",
+              "responses": "proverbs",
+              },
+}

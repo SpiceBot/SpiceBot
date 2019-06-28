@@ -1,0 +1,11 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": [
+                            "Save a horse, ride a cowboy!",
+                            "yeeeee-HAW!"
+                            ],
+              },
+
+}

@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": ['Shields Up, Captain $instigator!!'],
+              },
+
+}

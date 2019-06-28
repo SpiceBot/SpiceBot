@@ -1,0 +1,10 @@
+{
+"?default": {
+              "type": "target",
+              "responses": ["$botnick points at $target and laughs."],
+              "response_fail": ["Who are we laughing at?"],
+              "react_bot": ["I like to laugh, but not at my own expense."],
+              "react_self": ["Is your self esteem really that low?"],
+              },
+
+}

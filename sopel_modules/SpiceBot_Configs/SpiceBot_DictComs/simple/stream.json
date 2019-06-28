@@ -1,0 +1,9 @@
+{
+"validcoms": ['stream'],
+"?default": {
+              "type": "simple",
+              "responses": ["Never cross the streams",
+                            "Over the river and through the woods to grandmothers house we go"],
+              },
+
+}

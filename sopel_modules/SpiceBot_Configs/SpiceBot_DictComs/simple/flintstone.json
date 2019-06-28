@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": ["Yabba dabba doo!!!", "Wiiiillllllmmmmmmaaaaaaa!!!"],
+              },
+
+}

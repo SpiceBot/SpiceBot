@@ -1,0 +1,11 @@
+{
+"validcoms": ['wtf', 'whatthefuck'],
+"?default": {
+              "type": "targetplusreason",
+              "responses": ["What The $replyvariation $target $blank", "What The $replyvariation $target $blank", "What The $replyvariation $target $blank", "Well that's fantastic.", "What The $replyvariation $target $blank",],
+              "blank_required": False,
+              "blank_phrasehandle": [". Why are you "],
+              "replyvariation": ["flying fuck", "frickle frackal", "fuck", "fudgical"],
+              },
+
+}

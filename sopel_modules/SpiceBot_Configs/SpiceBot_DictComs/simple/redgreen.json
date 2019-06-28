@@ -1,0 +1,16 @@
+{
+"validcoms": ['rg', 'redgreen'],
+"?default": {
+              "type": "simple",
+              "responses": [
+                            "The handyman's secret weapon, duct tape.",
+                            "If it ain't broke, you're not trying.",
+                            "If the women don't find you handsome, they should at least find you handy.",
+                            "Keep your stick on the ice.",
+                            "Remember, I'm pulling for you. We're all in this together.",
+                            "Quando omni flunkus, moritati.",
+                            "I'm a man, but I can change, If I have to, I guess.",
+                            ],
+              },
+
+}

@@ -1,0 +1,10 @@
+{
+"validcoms": ['piglatin', 'pl'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["$blank"],
+              "translations": ["piglatin"],
+              "response_fail": ["Oink oink"],
+              },
+
+}

@@ -1,0 +1,8 @@
+{
+"?default": {
+              "type": "target",
+              "responses": ["Im sorry, $target, but I cannot help you."],
+              "target_backup": "Dave",
+              },
+
+}

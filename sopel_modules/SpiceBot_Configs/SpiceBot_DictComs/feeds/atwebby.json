@@ -1,0 +1,11 @@
+{
+
+"validcoms": ['atwebby', 'actualtechwebby'],
+
+"?default": {
+              "type": "feeds",
+              "responses": "actualtechwebby",
+              "selection_allowed": False,
+              },
+
+}

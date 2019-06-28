@@ -1,0 +1,11 @@
+{
+"validcoms": ['madness', 'sparta'],
+"?default": {
+              "type": "fillintheblank",
+              "prefixtext": "Madness? ",
+              "responses": ["THIS-IS-$blank"],
+              "translations": ["upper", "hyphen"],
+              "blank_backup": 'SPARTA',
+              },
+
+}

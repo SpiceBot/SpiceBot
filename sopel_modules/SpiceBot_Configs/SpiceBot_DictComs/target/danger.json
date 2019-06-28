@@ -1,0 +1,8 @@
+{
+"?default": {
+              "type": "target",
+              "responses": ["Danger $target Danger"],
+              "target_backup": "Will Robinson",
+              },
+
+}

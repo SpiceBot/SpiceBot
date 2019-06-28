@@ -1,0 +1,9 @@
+{
+"validcoms": ['shaves', 'shave'],
+"?default": {
+              "type": "target",
+              "responses": ["$instigator shaves $target until there is not a single hair left on their body."],
+              "response_fail": ["$instigator shaves head to toe in front of everybody."],
+              },
+
+}

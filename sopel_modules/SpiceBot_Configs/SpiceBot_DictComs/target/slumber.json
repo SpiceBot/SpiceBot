@@ -1,0 +1,9 @@
+{
+"validcoms": ['slumber'],
+"?default": {
+              "type": "target",
+              "responses": ["$instigator disturbs $target's slumber"],
+              "response_fail": ["Who dares to disturb $instigator's slumber?"],
+              },
+
+}

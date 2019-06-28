@@ -1,0 +1,8 @@
+{
+"?default": {
+              "type": "target",
+              "responses": ["$instigator updates their stalker journal entry for $target."],
+              "response_fail": ["$instigator updates their stalker journal."],
+              },
+
+}

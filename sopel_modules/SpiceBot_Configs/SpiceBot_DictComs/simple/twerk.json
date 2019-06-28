@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": ["$instigator shakes their booty in some random fuckery way!"],
+              },
+
+}

@@ -1,0 +1,8 @@
+{
+"?default": {
+              "type": "target",
+              "responses": ["$botnick grabs $target with a hook and drags them out of the room."],
+              "react_bot": ["$botnick grabs $instigator with a hook and drags them out of the room because they tried to gong $botnick."],
+              },
+
+}

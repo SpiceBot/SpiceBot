@@ -1,0 +1,11 @@
+{
+"?default": {
+              "type": "target",
+              "responses": [
+                            "$target didn't choose the snowflake life, the snowflake life chose $target.",
+                            ],
+              "target_backup": "instigator",
+              "target_bypass": ['self'],
+              },
+
+}

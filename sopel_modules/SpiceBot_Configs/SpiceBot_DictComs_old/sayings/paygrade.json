@@ -1,0 +1,12 @@
+{
+"validcoms": ['paygrade'],
+"?default": {
+              "type": "simple",
+              "updates_enabled": "shared",
+              "responses": [
+                            "Thats above my paygrade.",
+                            "Thats above my fucking paygrade.",
+                            ],
+              },
+
+}

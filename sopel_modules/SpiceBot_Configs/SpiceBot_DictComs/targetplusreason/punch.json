@@ -1,0 +1,13 @@
+{
+"?default": {
+              "type": "targetplusreason",
+              "responses": [
+                            "$instigator punches $target $blank",
+                            "*a punches $instigator in the face",
+                            "*a punches $target in the face on behalf of $instigator (who is apparently too much of a bitch to do it themselves)."
+                            ],
+              "blank_backup": ["until morale improves.", "in the head", "because they can"],
+              "blank_required": False,
+              },
+
+}

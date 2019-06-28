@@ -1,0 +1,10 @@
+{
+"?default": {
+              "type": "targetplusreason",
+              "responses": ["$instigator beats $target $blank"],
+              "blank_backup": 'until moral improves.',
+              "blank_required": False,
+              "blank_phrasehandle": ["because", "for"],
+              },
+
+}

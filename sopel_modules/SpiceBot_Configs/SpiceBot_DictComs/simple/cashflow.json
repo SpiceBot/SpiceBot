@@ -1,0 +1,9 @@
+{
+"validcoms": ['cashflow'],
+"?default": {
+              "type": "simple",
+              "responses": ["*a makes it rain on dem hoes",
+                            "*instigator makes it rain down in africa, https://www.youtube.com/watch?v=FTQbiNvZqaY&list=RDFTQbiNvZqaY#t=7"],
+              },
+
+}

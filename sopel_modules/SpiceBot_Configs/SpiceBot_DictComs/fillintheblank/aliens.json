@@ -1,0 +1,10 @@
+{
+"validcoms": ['notsaying', 'aliens'],
+"?default": {
+              "type": "fillintheblank",
+              "blank_phrasehandle": ["a", "an"],
+              "responses": ["I'm not saying it was $blank, but it was $blank!"],
+              "blank_backup": "aliens",
+              },
+
+}

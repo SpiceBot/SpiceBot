@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["How can you have any $blank if you don't eat your meat!?!"],
+              "blank_backup": 'anything good',
+              },
+}

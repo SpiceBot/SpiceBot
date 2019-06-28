@@ -1,0 +1,8 @@
+{
+"validcoms": ['th', 'thatsHomophobic'],
+"?default": {
+              "type": "simple",
+              "responses": ["That's Homophobic!™"],
+              },
+
+}

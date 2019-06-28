@@ -1,0 +1,8 @@
+{
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["We're gonna need a bigger $blank!"],
+              "blank_backup": 'boat',
+              },
+
+}

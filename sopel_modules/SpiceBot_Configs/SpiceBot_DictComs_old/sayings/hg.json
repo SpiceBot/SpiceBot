@@ -1,0 +1,11 @@
+{
+"validcoms": ['hg'],
+"?default": {
+              "type": "simple",
+              "updates_enabled": "shared",
+              "responses": [
+                          "That's HomoGlyphic™",
+                          ],
+              },
+
+}

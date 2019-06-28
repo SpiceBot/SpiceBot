@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": ["https://www.youtube.com/watch?v=b1BZeosawnw"],
+              },
+
+}

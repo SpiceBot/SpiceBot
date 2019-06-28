@@ -1,0 +1,9 @@
+{
+"validcoms": ['cdh', 'colddeadhands'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["You can have my $blank, when you pry it from my cold dead hands!!"],
+              "blank_backup": 'gun',
+              },
+
+}

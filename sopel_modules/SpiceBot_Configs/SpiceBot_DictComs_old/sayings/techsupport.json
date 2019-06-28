@@ -1,0 +1,25 @@
+{
+"validcoms": ['techsupport', 'itsupport'],
+"?default": {
+              "type": "simple",
+              "updates_enabled": "shared",
+              "responses": [
+                          "Have you tried turning it off and on again?",
+                          "Four! I mean five! I mean FIRE!",
+                          "Have you tried clicking on it repeatedly?",
+                          "No, 'any' key means push any key you like. There is no specific 'any' key.",
+                          "Let me just remote in and... yes, that's me moving your mouse. No, I'm not a virus. You know who I am. You've met me. Oh for... stop moving the mouse while I'm fixing things!",
+                          "Oh, you've Googled the issue yourself and tried to fix it yourself before lodging a ticket? Thanks for that.",
+                          "Have you tried chewing the cable?",
+                          "Instructions unclear, dick stuck in ceiling fan.",
+                          "YOU MUST CONSTRUCT ADDITIONAL PYLONS!",
+                          "Have you tried flinging feces at it?",
+                          "Did you try licking the mouse? Double-lick?",
+                          "Did you try replacing all the ones with zeros?",
+                          "Try cooling it with a jug of water.",
+                          "Error: Keyboard not detected. Press 'F1' to continue.",
+                          ],
+              },
+
+
+}

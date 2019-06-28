@@ -1,0 +1,8 @@
+{
+"validcoms": ['quit'],
+"?default": {
+              "type": "simple",
+              "responses": ["you can quit, we can help!"],
+              },
+
+}

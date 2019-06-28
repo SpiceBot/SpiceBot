@@ -1,0 +1,13 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": [
+                            [
+                            '*a uses drumsticks to hit both the head and the rim of the drum, then the cymbal.',
+                            '*Ba Dum Tss!!!*'
+                            ]
+                            ],
+              },
+
+}

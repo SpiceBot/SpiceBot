@@ -1,0 +1,8 @@
+{
+"validcoms": ['threaten'],
+"?default": {
+              "type": "simple",
+              "responses": ["$instigator picks $input up by the collar and issues a verbal lashing"],
+              },
+
+}

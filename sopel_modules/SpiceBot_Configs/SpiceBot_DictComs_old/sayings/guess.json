@@ -1,0 +1,12 @@
+{
+"?default": {
+              "type": "simple",
+              "updates_enabled": "shared",
+              "responses": [
+                        "I dunno",
+                        "I don't wanna",
+                        "*shrug*"
+                        ],
+              },
+
+}

@@ -1,0 +1,9 @@
+{
+"validcoms": ['fuckbucket', 'fb'],
+"?default": {
+              "type": "target",
+              "responses": ["You know what, $instigator? I don't think $target has any fucks in their fuckbucket to give."],
+              "response_fail": ["*a checks the fuckbucket, finds no fucks to give.", "Let me check my fuckbucket... Oh, look at that - it's empty."],
+              },
+
+}

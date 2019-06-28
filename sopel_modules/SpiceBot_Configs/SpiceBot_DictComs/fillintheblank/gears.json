@@ -1,0 +1,8 @@
+{
+"validcoms": ['grind', 'gears', 'grinds', 'gears'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["You know what grinds my gears?? $blank"],
+              "blank_required": False,
+              },
+}

@@ -1,0 +1,9 @@
+{
+"validcoms": ['trademark', 'tm'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["$blankᵀᴹ"],
+              "blank_backup": "",
+              },
+
+}

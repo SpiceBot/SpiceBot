@@ -1,0 +1,46 @@
+{
+
+"validcoms": ['free'],
+
+"?default": {
+              "type": "simple",
+              "responses": ["Available Options Include: $specialoptions"],
+              },
+
+"gog": {
+              "type": "simple",
+              "prefixtext": "[Free on $responsekey] (Link $index): ",
+              "responses": [
+                            "https://www.gog.com/games?page=1&sort=popularity&price=free",
+                            ],
+              },
+
+"steam": {
+              "type": "simple",
+              "prefixtext": "[Free on $responsekey] (Link $index): ",
+              "responses": [
+                            "https://store.steampowered.com/genre/Free%20to%20Play/",
+                            ],
+              },
+
+"ebooks": {
+            "type": "simple",
+            "prefixtext": "[Free on $responsekey] (Link $index): ",
+            "responses": [
+                          "https://www.packtpub.com/packt/offers/free-learning",
+                          ],
+            },
+
+"psn": {
+            "type": "simple",
+            "prefixtext": "[Free on $responsekey] (Link $index): ",
+            "responses": [
+                          "https://www.playstation.com/en-nz/explore/playstation-plus/this-month-on-ps-plus/",
+                          ],
+            },
+
+"beer": {
+            "type": "simple",
+            "responses": ["Yep, everything in this module is free as in 'free beer'."],
+            },
+}

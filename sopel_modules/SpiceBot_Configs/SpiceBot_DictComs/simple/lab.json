@@ -1,0 +1,8 @@
+{
+"validcoms": ['lab'],
+"?default": {
+              "type": "simple",
+              "responses": ["Like a boss!!"],
+              },
+
+}

@@ -1,0 +1,11 @@
+{
+
+"validcoms": ['packt'],
+
+"?default": {
+              "type": "feeds",
+              "responses": "packt",
+              "selection_allowed": False,
+              },
+
+}

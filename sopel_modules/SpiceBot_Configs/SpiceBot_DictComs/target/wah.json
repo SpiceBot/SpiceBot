@@ -1,0 +1,9 @@
+{
+"validcoms": ['wah', 'wahmbulance'],
+"?default": {
+              "type": "target",
+              "responses": ["$instigator calls the waaaaaaaaaaahhhhhhmbulance for $target."],
+              "response_fail": ["$instigator calls the waaaaaaaaaaahhhhhhmbulance."],
+              },
+
+}

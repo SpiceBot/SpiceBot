@@ -1,0 +1,9 @@
+{
+"validcoms": ['ibb', 'illbeback'],
+"?default": {
+              "type": "gif",
+              "responses": "I'll be back terminator",
+              "search_fail": ["https://tenor.com/view/arnold-schwarzenegger-the-terminator-ill-be-back-gif-4367793"],
+              },
+
+}

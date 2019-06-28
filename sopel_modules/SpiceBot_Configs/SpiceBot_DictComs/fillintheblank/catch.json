@@ -1,0 +1,8 @@
+{
+"validcoms": ['catch', 'first'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["The first $blank of the day!"],
+              "blank_backup": 'catch',
+              },
+}

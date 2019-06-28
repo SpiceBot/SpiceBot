@@ -1,0 +1,16 @@
+{
+"validcoms": ['no', 'nope', 'yeahnah', 'na', 'ne', 'nein', 'niet', 'non', 'ug', 'yuk'],
+"?default": {
+              "type": "simple",
+              "updates_enabled": "shared",
+              "responses": [
+                          "Can you trust an End User?",
+                          "Is anyone in I.T. sane?",
+                          "Is there a God?",
+                          "Can you lick your elbow?",
+                          "Is ice warm?",
+                          "Not at all...",
+                          ],
+              },
+
+}

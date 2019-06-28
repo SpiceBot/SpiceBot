@@ -1,0 +1,26 @@
+{
+
+"validcoms": ['sysadmin'],
+
+"?default": {
+              "type": "simple",
+              "responses": ["Available Options Include: $specialoptions"],
+              },
+
+"day": {
+        "type": "feeds",
+        "responses": "sysadminday",
+        "selection_allowed": False,
+        },
+
+"tools": {
+              "type": "simple",
+              "prefixtext": "[SysAdmin $responsekey] (Link $index): ",
+              "responses": [
+                            "https://sysadmin.it-landscape.info/",
+                            "https://sysadmin.libhunt.com/",
+                            "https://github.com/n1trux/awesome-sysadmin",
+                            "https://docs.microsoft.com/en-us/sysinternals/"
+                            ],
+              },
+}

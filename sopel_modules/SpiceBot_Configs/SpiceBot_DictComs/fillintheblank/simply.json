@@ -1,0 +1,8 @@
+{
+"validcoms": ['simply', 'lotr'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["One does not simply $blank"],
+              "blank_backup": 'walk into mordor',
+              },
+}

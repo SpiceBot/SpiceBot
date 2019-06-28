@@ -1,0 +1,9 @@
+{
+"validcoms": ['ticket'],
+"?default": {
+              "type": "target",
+              "responses": ["$botnick submits a ticket to $target. Subject: $input."],
+              "response_fail": ["$botnick submits a ticket to $instigator. Subject: Get a job."],
+              },
+
+}

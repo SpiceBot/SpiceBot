@@ -1,0 +1,8 @@
+{
+"validcoms": ['ich', 'icanhaz'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["I can haz $blank??"],
+              "blank_backup": 'stuff',
+              },
+}

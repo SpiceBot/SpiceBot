@@ -1,0 +1,11 @@
+{
+"validcoms": ['fun', 'games'],
+"?default": {
+              "type": "target",
+              "responses": [
+                            "It's all fun and games until $target gets hurt.",
+                            "It's all fun and games until $target gets hurt. Then it's hilarious.",
+                            ],
+              "response_fail": ["It's all fun and games until someone gets hurt.",],
+              },
+}

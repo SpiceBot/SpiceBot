@@ -1,0 +1,9 @@
+{
+"validcoms": ['bird'],
+"?default": {
+              "type": "simple",
+              "responses": ["Bird bird bird, bird is the word",
+                            "Bird is the word"],
+              },
+
+}

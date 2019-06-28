@@ -1,0 +1,8 @@
+{
+"validcoms": ['yf', 'yourface'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["Your face is a $blank!"],
+              "blank_backup": 'horrendous attack on the senses',
+              },
+}

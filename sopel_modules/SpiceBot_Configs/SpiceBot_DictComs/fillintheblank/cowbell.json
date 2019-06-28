@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["Needs Moar $blank!!"],
+              "blank_backup": 'cowbell',
+              },
+}

@@ -1,0 +1,8 @@
+{
+"validcoms": ['wonder', 'wonders'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["$instigator wonders if $blank!"],
+              "response_fail": "$instigator wonders if everything is ok in the chat room",
+              },
+}

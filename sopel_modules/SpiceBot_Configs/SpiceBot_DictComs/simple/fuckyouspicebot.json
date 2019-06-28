@@ -1,0 +1,8 @@
+{
+"validcoms": ['fuckyouspicebot', 'fuckspicebot', 'banspicebot', 'kickspicebot', 'hatespicebot', 'fuckoffspicebot'],
+"?default": {
+              "type": "simple",
+              "responses": ["$instigator, I'm sorry I offended you. Lets try to be friends."],
+              },
+
+}

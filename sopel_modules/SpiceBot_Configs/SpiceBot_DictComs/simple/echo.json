@@ -1,0 +1,10 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": [
+                            [" $input", " $input", " $input"]
+                            ],
+              },
+
+}

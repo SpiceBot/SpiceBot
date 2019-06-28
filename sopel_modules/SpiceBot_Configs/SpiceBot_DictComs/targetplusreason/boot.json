@@ -1,0 +1,11 @@
+{
+"?default": {
+              "type": "targetplusreason",
+              "responses": ["$instigator kicks $target with a big old boot $blank"],
+              "target_backup": 'random',
+              "blank_backup": 'for that.',
+              "blank_required": False,
+              "blank_phrasehandle": ["for", "because"],
+              },
+
+}

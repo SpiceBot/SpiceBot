@@ -1,0 +1,10 @@
+{
+"?default": {
+              "type": "target",
+              "responses": [
+                            "$target needs more plebs!"
+                            ],
+              "response_fail": ["Plebs are needed!"],
+              },
+
+}

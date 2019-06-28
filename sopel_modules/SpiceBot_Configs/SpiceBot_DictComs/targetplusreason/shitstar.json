@@ -1,0 +1,12 @@
+{
+"?default": {
+              "type": "targetplusreason",
+              "responses": ["$instigator gives  $target a star made of shit $blank"],
+              "response_fail": ["Who deserves a star made of shit?"],
+              "blank_backup": 'for participation',
+              "blank_phrasehandle": ["for"],
+              "react_bot": ["*a blushes"],
+              "react_self": ["Awww. Why don't you shit yourself while you're at it?"],
+              },
+
+}

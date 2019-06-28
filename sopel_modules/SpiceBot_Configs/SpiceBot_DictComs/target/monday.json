@@ -1,0 +1,11 @@
+{
+"?default": {
+              "type": "target",
+              "responses": [
+                            "Sounds like $target has a case of the Mondays.",
+                            ],
+              "target_backup": "instigator",
+              "target_bypass": ['self'],
+              },
+
+}

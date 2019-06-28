@@ -1,0 +1,13 @@
+{
+
+"?default": {
+              "type": "target",
+              "selection_allowed": False,
+              "responses": [
+                            "$instigator blows chunks onto $target. $target you can go home and clean up.",
+                            "$instigator feels a little woozy and hits $target with $instigators lunch.",
+                            ],
+              "react_self": ["$instigator leaves his shoes looking like Cambells soup. Chunky."],
+              },
+
+}

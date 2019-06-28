@@ -1,0 +1,10 @@
+{
+"validcoms": ['hehe', 'laugh', 'laughs'],
+"?default": {
+              "type": "targetplusreason",
+              "responses": ["*a laughs at $target $blank"],
+              "blank_required": False,
+              "blank_phrasehandle": ["because", "for"],
+              },
+
+}

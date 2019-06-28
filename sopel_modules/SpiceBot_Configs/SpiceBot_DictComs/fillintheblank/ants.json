@@ -1,0 +1,8 @@
+{
+"validcoms": ['ants', 'ant'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["Do you want $blank cause that's how you get $blank!"],
+              "blank_backup": 'ants',
+              },
+}

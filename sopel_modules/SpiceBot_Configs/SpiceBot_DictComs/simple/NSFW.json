@@ -1,0 +1,11 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": [
+                            "WARNING: The following is not suitable for work (or jimender2)",
+                            "Click at your own caution",
+                            ],
+              },
+
+}

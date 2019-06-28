@@ -1,0 +1,52 @@
+{
+"validcoms": ['poop', 'poops', 'shit', 'shits'],
+"?default": {
+              "type": "target",
+              "selection_allowed": False,
+              "responses": [
+                            "$instigator drops their pants and squats on $target's desk, but all they manage to do is fart.",
+                            "$instigator overestimated their capabilities and poops themselves. $target is not impressed.",
+                            "$instigator gets halfway through pooping before realizing that this is their own desk, not $target's.",
+                            "$instigator trips over taking their pants off and shits everywhere BUT $target's desk.",
+                            "$instigator poops on $target's desk, maintaining eye contact the entire time!"
+                            ],
+              "react_self": ["$instigator shits their pants for a sweet bowel release."],
+              },
+
+"boss": {
+              "type": "target",
+              "responses": ["Boss makes a dollar, $target makes a dime. That's why $target poops on company time.",
+                            "https://media1.tenor.com/images/059c954a23ff4373b00808b08d98325f/tenor.gif?itemid=7404606"],
+              "target_backup": "instigator",
+              },
+
+"corner": {
+              "type": "simple",
+              "responses": ["$instigator poops in the designated corner!"],
+              },
+
+"group": {
+              "type": "target",
+              "responses": ["$target, get your poop in a group."],
+              "target_backup": "instigator",
+              },
+
+('all', 'everyone', 'everyones'): {
+                                    "type": "simple",
+                                    "responses": ["$instigator poops on everyone's desk, one at a time!"],
+                                    },
+
+"random": {
+              "type": "target",
+              "selection_allowed": False,
+              "responses": [
+                            "$instigator drops their pants and squats on $target's desk, but all they manage to do is fart.",
+                            "$instigator overestimated their capabilities and poops themselves. $target is not impressed.",
+                            "$instigator gets halfway through pooping before realizing that this is their own desk, not $target's.",
+                            "$instigator trips over taking their pants off and shits everywhere BUT $target's desk.",
+                            "$instigator poops on $target's desk, maintaining eye contact the entire time!"
+                            ],
+              "react_self": ["$instigator shits their pants for a sweet bowel release."],
+              "target_backup": "random",
+              },
+}

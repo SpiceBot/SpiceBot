@@ -1,0 +1,10 @@
+{
+"validcoms": ['pat', 'pats'],
+"?default": {
+              "type": "targetplusreason",
+              "responses": ["$instigator pats $target on the back $blank"],
+              "blank_required": False,
+              "blank_phrasehandle": ["because", "for"],
+              },
+
+}

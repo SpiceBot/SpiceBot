@@ -1,0 +1,9 @@
+{
+
+"?default": {
+              "type": "target",
+              "responses": ["That's no fun $target."],
+              "response_fail": ["But... but .... that's no fun."],
+              },
+
+}

@@ -1,0 +1,8 @@
+{
+"validcoms": ['danny'],
+"?default": {
+              "type": "simple",
+              "responses": ["Danny was here and he didn't make no damn sammich for no one"],
+              },
+
+}

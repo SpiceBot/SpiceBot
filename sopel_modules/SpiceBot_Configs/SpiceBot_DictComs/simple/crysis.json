@@ -1,0 +1,8 @@
+{
+"validcoms": ['crysis', 'canit'],
+"?default": {
+              "type": "simple",
+              "responses": ["But can it run Crysis?"],
+              },
+
+}

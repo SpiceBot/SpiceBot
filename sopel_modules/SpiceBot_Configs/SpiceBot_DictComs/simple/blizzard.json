@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": ["Do you guys not have phones?"],
+              },
+
+}
