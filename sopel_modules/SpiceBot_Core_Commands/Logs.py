@@ -15,7 +15,7 @@ import sopel_modules.SpiceBot as SpiceBot
 @SpiceBot.events.check_ready([SpiceBot.events.BOT_LOGS])
 @SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('logs', 'debug')
-def bot_command_logs(bot, trigger):
+def bot_command_logs(bot, trigger, botcom):
 
     if not SpiceBot.command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
         bot.osd("I was unable to process this Bot Nick command due to privilege issues.")

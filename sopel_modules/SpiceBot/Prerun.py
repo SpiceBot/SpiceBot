@@ -12,7 +12,7 @@ import datetime
 
 import spicemanip
 
-from .Tools import command_permissions_check
+from .Tools import command_permissions_check, class_create
 from .Commands import commands as botcommands
 from .Database import db as botdb
 from .Channels import channels as botchannels
@@ -26,6 +26,8 @@ def prerun(t_command_type='module', t_command_subtype=None):
 
         @functools.wraps(function)
         def internal_prerun(bot, trigger, *args, **kwargs):
+
+            botcom = class_create('botcom')
 
             if t_command_type == "nickname":
                 check_nick = spicemanip.main(trigger.args[1], 1).lower()
@@ -91,7 +93,7 @@ def prerun(t_command_type='module', t_command_subtype=None):
                 if not trigger.sb["hyphen_arg"]:
                     # check if anything prohibits the nick from running the command
                     if trigger_runstatus(bot, trigger):
-                        function(bot, trigger, *args, **kwargs)
+                        function(bot, trigger, botcom, *args, **kwargs)
                 else:
                     trigger_hyphen_arg_handler(bot, trigger)
             botmessagelog.messagelog_exit(bot, argsdict_default["log_id"])
@@ -106,6 +108,8 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
 
         @functools.wraps(function)
         def internal_prerun(bot, trigger, *args, **kwargs):
+
+            botcom = class_create('botcom')
 
             if t_command_type == "nickname":
                 check_nick = spicemanip.main(trigger.args[1], 1).lower()
@@ -155,7 +159,7 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
 
             # check if anything prohibits the nick from running the command
             if trigger_runstatus_query(bot, trigger):
-                function(bot, trigger, *args, **kwargs)
+                function(bot, trigger, botcom, *args, **kwargs)
             botmessagelog.messagelog_exit(bot, argsdict_default["log_id"])
 
         return internal_prerun

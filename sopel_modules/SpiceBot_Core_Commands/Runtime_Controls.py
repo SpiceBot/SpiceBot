@@ -11,7 +11,7 @@ import sopel_modules.SpiceBot as SpiceBot
 
 @SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('update')
-def nickname_comand_update(bot, trigger):
+def nickname_comand_update(bot, trigger, botcom):
 
     if not SpiceBot.command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
         bot.osd("I was unable to process this Bot Nick command due to privilege issues.")
@@ -42,7 +42,7 @@ def nickname_comand_update(bot, trigger):
 
 
 @sopel.module.nickname_commands('restart')
-def nickname_comand_restart(bot, trigger):
+def nickname_comand_restart(bot, trigger, botcom):
 
     if not trigger.admin:
         bot.osd("You are not authorized to perform this function.")

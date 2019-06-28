@@ -17,7 +17,7 @@ from random import randint
 
 @SpiceBot.prerun('module', 'dictcom')
 @sopel.module.commands('(.*)')
-def command_dictcom(bot, trigger):
+def command_dictcom(bot, trigger, botcom):
 
     if trigger.sb['com'] not in list(SpiceBot.commands.dict['commands']["dictcom"].keys()):
         return

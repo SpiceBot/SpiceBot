@@ -11,19 +11,19 @@ import sopel_modules.SpiceBot as SpiceBot
 
 @SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('action')
-def bot_command_action(bot, trigger):
+def bot_command_action(bot, trigger, botcom):
     bot_command_process(bot, trigger)
 
 
 @SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('notice')
-def bot_command_notice(bot, trigger):
+def bot_command_notice(bot, trigger, botcom):
     bot_command_process(bot, trigger)
 
 
 @SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('privmsg', 'say', 'msg')
-def bot_command_privmsg(bot, trigger):
+def bot_command_privmsg(bot, trigger, botcom):
     bot_command_process(bot, trigger)
 
 

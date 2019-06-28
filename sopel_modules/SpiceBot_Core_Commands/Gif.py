@@ -13,7 +13,7 @@ import spicemanip
 
 @SpiceBot.prerun('module')
 @sopel.module.commands('gif')
-def gif_trigger(bot, trigger):
+def gif_trigger(bot, trigger, botcom):
 
     if not len(trigger.sb['args']):
         return bot.osd("Please present a query to search.")
@@ -32,7 +32,7 @@ def gif_trigger(bot, trigger):
 
 @SpiceBot.prerun('module', "gif_prefix")
 @sopel.module.commands('(.*)')
-def gifapi_triggers(bot, trigger):
+def gifapi_triggers(bot, trigger, botcom):
 
     if trigger.sb['com'] not in list(SpiceBot.gif.valid_api.keys()):
         return

@@ -12,7 +12,7 @@ import sopel_modules.SpiceBot as SpiceBot
 
 @SpiceBot.prerun('module')
 @sopel.module.commands('search', 'find', 'google', 'lookup')
-def search_main(bot, trigger):
+def search_main(bot, trigger, botcom):
 
     searchterm = spicemanip.main(trigger.sb['args'], 0) or None
     if not searchterm:
@@ -28,7 +28,7 @@ def search_main(bot, trigger):
 
 @SpiceBot.prerun('module')
 @sopel.module.commands("where", "whereis")
-def search_where(bot, trigger):
+def search_where(bot, trigger, botcom):
 
     searchterm = spicemanip.main(trigger.sb['args'], 0) or None
     if not searchterm:
@@ -44,7 +44,7 @@ def search_where(bot, trigger):
 
 @SpiceBot.prerun('module')
 @sopel.module.commands("what", "whatis")
-def search_what(bot, trigger):
+def search_what(bot, trigger, botcom):
 
     searchterm = spicemanip.main(trigger.sb['args'], 0) or None
     if not searchterm:
@@ -60,7 +60,7 @@ def search_what(bot, trigger):
 
 @SpiceBot.prerun('module')
 @sopel.module.commands("youtube", "video")
-def search_video(bot, trigger):
+def search_video(bot, trigger, botcom):
 
     searchterm = spicemanip.main(trigger.sb['args'], 0) or None
     if not searchterm:
