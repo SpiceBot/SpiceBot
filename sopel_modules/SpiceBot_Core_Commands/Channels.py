@@ -13,7 +13,7 @@ import sopel_modules.SpiceBot as SpiceBot
 @SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
 @SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('channels', 'channel')
-def nickname_comand_channels(bot, trigger):
+def nickname_comand_channels(bot, trigger, botcom):
 
     if not len(trigger.sb['args']):
         commandused = 'list'
@@ -49,7 +49,7 @@ def nickname_comand_channels(bot, trigger):
 
     elif commandused == 'update':
         if not trigger.admin:
-            bot.osd("You do not have permission to update the channel listing.")
+            SpiceBot.messagelog.messagelog_error("You do not have permission to update the channel listing.")
             return
         SpiceBot.channels.bot_part_empty(bot)
         SpiceBot.channels.channel_list_request(bot)
@@ -64,11 +64,11 @@ def nickname_comand_channels(bot, trigger):
 
     elif commandused == 'topic':
         if not len(trigger.sb['args']):
-            bot.osd("Channel name input missing.")
+            SpiceBot.messagelog.messagelog_error("Channel name input missing.")
             return
         channel = spicemanip.main(trigger.sb['args'], 1)
         if not SpiceBot.inlist(channel.lower(), list(SpiceBot.channels.dict['list'].keys())):
-            bot.osd("Channel name {} not valid.".format(channel))
+            SpiceBot.messagelog.messagelog_error("Channel name {} not valid.".format(channel))
             return
         topic = SpiceBot.channels.dict['list'][channel.lower()]['topic']
         channel = SpiceBot.channels.dict['list'][channel.lower()]['name']
@@ -78,17 +78,17 @@ def nickname_comand_channels(bot, trigger):
     if commandused.upper() in ['OP', 'HOP', 'VOICE', 'OWNER', 'ADMIN']:
         if not len(trigger.sb['args']):
             if trigger.is_privmsg:
-                bot.osd("Channel name required.")
+                SpiceBot.messagelog.messagelog_error("Channel name required.")
                 return
             else:
                 channel = trigger.sender
         else:
             channel = spicemanip.main(trigger.sb['args'], 1)
             if not SpiceBot.inlist(channel.lower(), list(SpiceBot.channels.dict['list'].keys())):
-                bot.osd("Channel name {} not valid.".format(channel))
+                SpiceBot.messagelog.messagelog_error("Channel name {} not valid.".format(channel))
                 return
             if not SpiceBot.inlist(channel.lower(), list(bot.channels.keys())):
-                bot.osd("I need to be in {} to see nick privileges.".format(channel))
+                SpiceBot.messagelog.messagelog_error("I need to be in {} to see nick privileges.".format(channel))
                 return
 
         privlist = SpiceBot.channel_privs(bot, channel, commandused.upper())
@@ -105,10 +105,10 @@ def nickname_comand_channels(bot, trigger):
     if commandused == 'users':
         channel = spicemanip.main(trigger.sb['args'], 1)
         if not SpiceBot.inlist(channel.lower(), list(SpiceBot.channels.dict['list'].keys())):
-            bot.osd("Channel name {} not valid.".format(channel))
+            SpiceBot.messagelog.messagelog_error("Channel name {} not valid.".format(channel))
             return
         if not SpiceBot.inlist(channel.lower(), list(bot.channels.keys())):
-            bot.osd("I need to be in {} to see user list.".format(channel))
+            SpiceBot.messagelog.messagelog_error("I need to be in {} to see user list.".format(channel))
             return
         dispmsg = []
         if not len(list(bot.channels[channel].privileges.keys())):

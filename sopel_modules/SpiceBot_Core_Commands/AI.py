@@ -11,7 +11,7 @@ import spicemanip
 
 @SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('ai')
-def ai_trigger(bot, trigger):
+def ai_trigger(bot, trigger, botcom):
     availablecomsnum = SpiceBot.botai.dict['patterncounts']
     availablecomsfiles = SpiceBot.botai.dict['filecounts']
     displayval = "There are " + str(availablecomsnum) + " AI pattern matches available in " + str(availablecomsfiles) + " files."
@@ -209,7 +209,7 @@ def bot_command_rule_ai(bot, trigger):
 
         # elif fulltrigger.lower().startswith(tuple(["have you seen"])):
         #    posstarget = spicemanip.main(trigger_args, 4) or 0
-        #    message = seen_search(bot, botcom, posstarget)
+        #    message = seen_search(bot, trigger, posstarget)
         #    bot.osd(message)
         #    return
         # TODO

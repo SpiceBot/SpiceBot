@@ -13,10 +13,10 @@ import spicemanip
 
 @SpiceBot.prerun('module')
 @sopel.module.commands('gif')
-def gif_trigger(bot, trigger):
+def gif_trigger(bot, trigger, botcom):
 
     if not len(trigger.sb['args']):
-        return bot.osd("Please present a query to search.")
+        return SpiceBot.messagelog.messagelog_error("Please present a query to search.")
 
     query = spicemanip.main(trigger.sb['args'], 0)
     searchapis = list(SpiceBot.gif.valid_api.keys())
@@ -25,20 +25,20 @@ def gif_trigger(bot, trigger):
     gifdict = SpiceBot.gif.get_gif(searchdict)
 
     if gifdict["error"]:
-        bot.osd(gifdict["error"])
+        SpiceBot.messagelog.messagelog_error(gifdict["error"])
     else:
         bot.osd(str(gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"])))
 
 
 @SpiceBot.prerun('module', "gif_prefix")
 @sopel.module.commands('(.*)')
-def gifapi_triggers(bot, trigger):
+def gifapi_triggers(bot, trigger, botcom):
 
     if trigger.sb['com'] not in list(SpiceBot.gif.valid_api.keys()):
         return
 
     if not len(trigger.sb['args']):
-        return bot.osd("Please present a query to search.")
+        return SpiceBot.messagelog.messagelog_error("Please present a query to search.")
 
     query = spicemanip.main(trigger.sb['args'], 0)
     searchdict = {"query": query, "gifsearch": trigger.sb['com']}
@@ -46,6 +46,6 @@ def gifapi_triggers(bot, trigger):
     gifdict = SpiceBot.gif.get_gif(searchdict)
 
     if gifdict["error"]:
-        bot.osd(gifdict["error"])
+        SpiceBot.messagelog.messagelog_error(gifdict["error"])
     else:
         bot.osd(str(gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"])))

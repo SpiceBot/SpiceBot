@@ -17,7 +17,7 @@ from random import randint
 
 @SpiceBot.prerun('module', 'dictcom')
 @sopel.module.commands('(.*)')
-def command_dictcom(bot, trigger):
+def command_dictcom(bot, trigger, botcom):
 
     if trigger.sb['com'] not in list(SpiceBot.commands.dict['commands']["dictcom"].keys()):
         return
@@ -145,7 +145,7 @@ def bot_dictcom_process(bot, trigger):
     if trigger.sb["dict"][trigger.sb["responsekey"]]["type"] in ['simple', 'fillintheblank', "target", 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "translate", "responses"]:
         return bot_dictcom_responses(bot, trigger)
     else:
-        command_function_run = str('bot_dictcom_' + trigger.sb["dict"][trigger.sb["responsekey"]]["type"] + '(bot, botcom)')
+        command_function_run = str('bot_dictcom_' + trigger.sb["dict"][trigger.sb["responsekey"]]["type"] + '(bot, trigger)')
         eval(command_function_run)
 
 
@@ -404,5 +404,5 @@ def bot_dictcom_feeds(bot, trigger):
     """
 
 
-def bot_dictcom_search(bot, botcom):
+def bot_dictcom_search(bot, trigger):
     bot.say("testing done")
