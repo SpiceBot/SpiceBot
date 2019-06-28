@@ -1,0 +1,8 @@
+{
+"validcoms": ['redbull', 'wings'],
+"?default": {
+              "type": "simple",
+              "responses": ["Redbull gives you winnngggggssssssssssssssss"],
+              },
+
+}

@@ -1,0 +1,8 @@
+{
+"validcoms": ['sf', 'seemsfair', 'fair'],
+"?default": {
+              "type": "simple",
+              "responses": ["Seems fair™."],
+              },
+
+}

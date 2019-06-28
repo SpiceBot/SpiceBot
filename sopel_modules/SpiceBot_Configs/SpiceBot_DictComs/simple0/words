@@ -1,0 +1,10 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": [
+                            "All I see is random words that make no sense.",
+                            ],
+              },
+
+}

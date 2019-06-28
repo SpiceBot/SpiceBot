@@ -1,0 +1,6 @@
+{
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["Am I the only one around here who $blank???"],
+              },
+}

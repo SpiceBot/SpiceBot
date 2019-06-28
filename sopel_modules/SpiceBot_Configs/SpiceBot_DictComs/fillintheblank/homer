@@ -1,0 +1,18 @@
+{
+
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["mmmmmmm $blank"],
+              "blank_backup": 'donuts',
+              },
+
+('good', 'g'): {
+              "type": "simple",
+              "responses": ["WooHoo!"],
+              },
+
+('bad', 'b', 'bad?', 'good?'): {
+              "type": "simple",
+              "responses": ["D'ooooh!"],
+              },
+}

@@ -1,0 +1,11 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": [
+                            "Good morning. I'm Wilford Brimley and I'd like to talk to you about Diabeetus.",
+                            "If you have type 2 Diabeetus, you can get your testing supplies free...",
+                            ],
+              },
+
+}

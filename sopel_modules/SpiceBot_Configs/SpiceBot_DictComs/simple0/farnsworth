@@ -1,0 +1,20 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": [
+                            "Great News Everyone!",
+                            "Great News Everyone!!",
+                            "Great News Everyone!!!",
+                            "Great News Everyone!!!!",
+                            "Great News Everyone!!!!!",
+                            "Great News Everyone!!!!!!",
+                            "Great News Everyone!!!!!!!",
+                            "Great News Everyone!!!!!!!!",
+                            "Great News Everyone!!!!!!!!!",
+                            "Great News Everyone!!!!!!!!!!",
+                            "Great News Everyone!!!!!!!!!!!",
+                            ],
+              },
+
+}

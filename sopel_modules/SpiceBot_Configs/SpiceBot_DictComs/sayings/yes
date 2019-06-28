@@ -1,0 +1,16 @@
+{
+"validcoms": ['yes', 'yep', 'yeahnahyeah', 'aye', 'ayo', 'da', 'hai', 'ja', 'jes', 'oui', 'si', 'ya', 'yea', 'yebo', 'yo', 'yoh', 'yup', 'correct'],
+"?default": {
+              "type": "simple",
+              "updates_enabled": "shared",
+              "responses": [
+                          "Does the Pope shit in the woods?",
+                          "Are end-users horrifyingly stupid at times?",
+                          "would dysonparkes do this https://www.youtube.com/watch?v=TtC666biAUY",
+                          "Is stupidity infectious?",
+                          "Is Angie a lovely woman?",
+                          "Does licking a live wire hurt?"
+                          ],
+              },
+
+}

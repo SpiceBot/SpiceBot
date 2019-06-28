@@ -1,0 +1,14 @@
+{
+"validcoms": ['maybe', 'possible'],
+"?default": {
+              "type": "simple",
+              "updates_enabled": "shared",
+              "responses": [
+                          "Possibly (In wife talk: hell no)",
+                          "Lets come back to this",
+                          "Lets think about it",
+                          ],
+              },
+
+
+}

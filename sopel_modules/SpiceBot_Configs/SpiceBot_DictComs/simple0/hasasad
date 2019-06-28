@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": ["*a sits in the corner and cries."],
+              },
+
+}

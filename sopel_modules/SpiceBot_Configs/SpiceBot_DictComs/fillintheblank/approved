@@ -1,0 +1,7 @@
+{
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["$instigator approves $blank"],
+              "blank_backup": 'that',
+              },
+}

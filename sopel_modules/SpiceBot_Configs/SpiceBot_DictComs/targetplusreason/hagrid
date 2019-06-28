@@ -1,0 +1,10 @@
+{
+"validcoms": ['hagrid', 'wizard', 'harry'],
+"?default": {
+              "type": "targetplusreason",
+              "responses": "You're a $blank, $target",
+              "blank_backup": "wizard",
+              "target_backup": "Harry",
+              },
+
+}

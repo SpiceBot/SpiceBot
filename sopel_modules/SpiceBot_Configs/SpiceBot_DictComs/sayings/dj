@@ -1,0 +1,26 @@
+{
+"contributors": ["jimender2", "dysonparkes"],
+"?default": {
+              "type": "simple",
+              "responses": ["What playlist would you like? Options are: $specialoptions."],
+              },
+
+"party": {
+          "responses": "jukebox_party",
+          "prefixtext": "$instigator puts a nickel in the jukebox and it starts to play ",
+          "updates_enabled": "shared",
+          },
+
+"friday": {
+          "responses": "jukebox_friday",
+          "prefixtext": "$instigator puts a nickel in the jukebox and it starts to play ",
+          "updates_enabled": "shared",
+          },
+
+"christmas": {
+        "responses": "jukebox_christmas",
+        "prefixtext": "$instigator puts a nickel in the jukebox and it starts to play ",
+        "updates_enabled": "shared",
+        },
+
+}

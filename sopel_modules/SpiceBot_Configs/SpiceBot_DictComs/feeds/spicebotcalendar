@@ -1,0 +1,11 @@
+{
+
+"validcoms": ['gcal', 'spicebotcal', 'spicecal'],
+
+"?default": {
+              "type": "feeds",
+              "responses": "spicebotcalendar",
+              "selection_allowed": False,
+              },
+
+}

@@ -1,0 +1,11 @@
+{
+"validcoms": ["spank", "paddle", "paddlin"],
+"?default": {
+              "type": "targetplusreason",
+              "responses": ["$instigator spanks $target with a $replyvariation $blank"],
+              "blank_required": False,
+              "blank_phrasehandle": ["because", "for"],
+              "replyvariation": ['paddle', 'belt'],
+              },
+
+}

@@ -1,0 +1,8 @@
+{
+"validcoms": ['got', 'milk'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["Got $blank?"],
+              "blank_backup": 'milk',
+              },
+}

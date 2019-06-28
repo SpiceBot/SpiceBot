@@ -1,0 +1,8 @@
+{
+"validcoms": ['vegan'],
+"?default": {
+              "type": "simple",
+              "responses": ["GRAINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNS"],
+              },
+
+}

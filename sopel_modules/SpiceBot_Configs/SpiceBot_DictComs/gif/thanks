@@ -1,0 +1,9 @@
+{
+"validcoms": ['thanks', 'thanksspicebot'],
+"?default": {
+              "type": "gif",
+              "responses": "your welcome",
+              "search_fail": ["You're welcome!"],
+              },
+
+}

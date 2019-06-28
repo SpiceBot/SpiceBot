@@ -1,0 +1,10 @@
+{
+"validcoms": ['let', 'letit', 'letitgo'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["Let it $blank, let it $blank; Can't hold it back anymore; Let it $blank, let it $blank; Turn away and slam the door; I don't care what they're going to say; Let the storm rage on; The cold never bothered me anyway; Let it $blank, let it $blank; Can't hold it back anymore; Let it $blank, let it $blank; Turn away and slam the door"],
+              "blank_backup": "go",
+              # "blank_phrasehandle": ["a", "an"],
+              },
+
+}

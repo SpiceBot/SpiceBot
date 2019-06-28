@@ -1,0 +1,11 @@
+{
+
+"validcoms": ['twitlive'],
+
+"?default": {
+              "type": "feeds",
+              "responses": "twitlive",
+              "selection_allowed": False,
+              },
+
+}

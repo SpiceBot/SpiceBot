@@ -1,0 +1,8 @@
+{
+"validcoms": ['lie', 'cake'],
+"?default": {
+              "type": "simple",
+              "responses": ["The cake is a lie!"],
+              },
+
+}

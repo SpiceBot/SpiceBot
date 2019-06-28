@@ -1,0 +1,26 @@
+{
+"?default": {
+              "type": "target",
+              "updates_enabled": "shared",
+              "target_backup": "instigator",
+              "prefixtext": ["$target has been diagnosed with "],
+              "suffixtext": [
+                              " and is being treated.",
+                              " and has died abruptly.",
+                              " and is recovering.",
+                              ],
+              "responses": [
+                            "Ischemic heart disease",
+                            "Stroke",
+                            "Lower respiratory infections",
+                            "Chronic obstructive pulmonary disease",
+                            "Trachea, bronchus, and lung cancer",
+                            "Diabetes mellitus",
+                            "Alzheimer’s disease",
+                            "Dehydration",
+                            "Tuberculosis",
+                            "Cirrhosis",
+                            ],
+              },
+
+}

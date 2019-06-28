@@ -1,0 +1,10 @@
+{
+"validcoms": ['onetozero', '120'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["$blank"],
+              "translations": ["onetozero"],
+              "blank_backup": 'Please Enter some input',
+              },
+
+}

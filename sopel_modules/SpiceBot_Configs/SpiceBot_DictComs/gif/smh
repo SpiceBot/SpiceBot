@@ -1,0 +1,7 @@
+{
+"?default": {
+              "type": "gif",
+              "responses": "smh",
+              "search_fail": ['*a shakes head violently...'],
+              },
+}

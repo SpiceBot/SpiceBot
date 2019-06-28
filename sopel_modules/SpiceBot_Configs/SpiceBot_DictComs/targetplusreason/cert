@@ -1,0 +1,9 @@
+{
+"?default": {
+              "type": "targetplusreason",
+              "responses": ["*a  presents $target with a certificate for $blank"],
+              "blank_backup": 'being lazy',
+              "blank_phrasehandle": ["for", "because"],
+              },
+
+}

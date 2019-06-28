@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["$instigator thinks it's starting to get a little misty up in $blank"],
+              "blank_backup": 'this biznatch',
+              },
+}

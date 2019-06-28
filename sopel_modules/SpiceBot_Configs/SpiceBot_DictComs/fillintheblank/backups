@@ -1,0 +1,9 @@
+{
+"validcoms": ['backup', 'backups'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["$blank? weee dun neeeed no steenkin $blank!!"],
+              "blank_backup": "backups"
+              },
+
+}

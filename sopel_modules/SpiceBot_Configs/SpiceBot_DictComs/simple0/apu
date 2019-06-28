@@ -1,0 +1,11 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": [
+                            "Who needs the Kwik-E-Mart? I do...",
+                            "Thank you, come again.",
+                            ],
+              },
+
+}

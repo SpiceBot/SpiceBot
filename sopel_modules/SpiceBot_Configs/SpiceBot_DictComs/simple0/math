@@ -1,0 +1,12 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": [
+                            "BURN THE WITCH!",
+                            "Common Core motherfucker, do you use it?",
+                            "All I see are numbers that make no sense.",
+                            ],
+              },
+
+}

@@ -1,0 +1,8 @@
+{
+"validcoms": ['knob', 'slob'],
+"?default": {
+              "type": "simple",
+              "responses": ["*a slobs on $instigator's knob", "Go slob on a knob."],
+              },
+
+}

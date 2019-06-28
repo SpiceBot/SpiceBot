@@ -1,0 +1,7 @@
+{
+"validcoms": ['sword', 'link', 'zelda'],
+"?default": {
+              "type": "simple",
+              "responses": ["It's dangerous to go alone take this 0==|======>"],
+              },
+}

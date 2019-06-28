@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": ["This link is definately NOT a Rickroll   https://goo.gl/SsAhv"],
+              },
+
+}

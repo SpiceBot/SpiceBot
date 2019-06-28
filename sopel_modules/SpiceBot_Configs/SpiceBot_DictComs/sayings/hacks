@@ -1,0 +1,8 @@
+{
+"?default": {
+              "type": "simple",
+              "updates_enabled": "shared",
+              "responses": ["I'm a l33t H4x0r"],
+              },
+
+}

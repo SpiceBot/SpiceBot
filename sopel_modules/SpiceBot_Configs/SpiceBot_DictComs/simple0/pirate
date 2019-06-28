@@ -1,0 +1,11 @@
+{
+"validcoms": ['pirate', 'piracy'],
+"?default": {
+              "type": "simple",
+              "responses": [
+                            "You Wouldn't download a car!",
+                            "Piracy, It's a Crime"
+                            ],
+              },
+
+}

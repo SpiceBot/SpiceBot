@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": ["$instigator vomits in to a mesh waste basket, spraying it in every direction"],
+              },
+
+}

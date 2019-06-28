@@ -1,0 +1,11 @@
+{
+"validcoms": ['thump', 'thumps'],
+"?default": {
+              "type": "targetplusreason",
+              "responses": ["*a thumps $target on behalf of $instigator $blank"],
+              "target_backup": 'random',
+              "blank_required": False,
+              "blank_phrasehandle": ["for", "because"],
+              },
+
+}

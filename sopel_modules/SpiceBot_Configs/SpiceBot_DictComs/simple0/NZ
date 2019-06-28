@@ -1,0 +1,17 @@
+{
+"validcoms": ['NZ', 'nz', 'NewZealand'],
+"?default": {
+              "type": "simple",
+              "responses": [
+                            "This is the New Zealand National Anthem: https://www.youtube.com/watch?v=PZuHAsf6qO0",
+                            "In case you were wondering, the bridge from NZ to Australia is 4,155km long.",
+                            "The Taniwha is the national pet of New Zealand.",
+                            "A possum/merino wool blend comes from an animal hybrid. Scientists say breeding it was 'challenging but rewarding.'",
+                            "Everyone in New Zealand knows each other.",
+                            ],
+              },
+"anthem": {
+            "type": "simple",
+            "responses": ["This is the New Zealand National Anthem: https://www.youtube.com/watch?v=PZuHAsf6qO0",],
+            },
+}

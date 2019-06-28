@@ -1,0 +1,11 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": [
+                            "*a jumps and screams",
+                            "You scared me!",
+                            ],
+              },
+
+}

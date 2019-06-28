@@ -1,0 +1,9 @@
+{
+
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["I just can't ever bring myself to trust $blank again. I can never forgive $blank for the death of my boy."],
+              "blank_backup": "the klingons",
+              },
+
+}

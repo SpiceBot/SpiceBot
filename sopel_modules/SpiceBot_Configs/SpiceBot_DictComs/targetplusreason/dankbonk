@@ -1,0 +1,10 @@
+{
+"?default": {
+              "type": "targetplusreason",
+              "responses": ["$instigator whacks $target with a 42 pound sack of primo cheeba $blank"],
+              "blank_required": False,
+              "blank_phrasehandle": ["to"],
+              "react_bot": ["*a teaches $instigator a lesson by sitting on $instigator"],
+              },
+
+}

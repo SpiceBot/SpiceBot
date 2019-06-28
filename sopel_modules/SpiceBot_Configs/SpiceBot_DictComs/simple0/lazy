@@ -1,0 +1,8 @@
+{
+"validcoms": ['lazy', 'lazyfuckingspicebot', 'fuckinglazyspicebot', 'lazyspicebot'],
+"?default": {
+              "type": "simple",
+              "responses": ['I do not tell you how to do your job, $instigator!!!'],
+              },
+
+}

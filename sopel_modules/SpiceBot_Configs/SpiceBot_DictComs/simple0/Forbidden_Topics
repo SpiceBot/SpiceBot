@@ -1,0 +1,8 @@
+{
+"validcoms": ['sign', 'politics', 'religion', 'genders'],
+"?default": {
+              "type": "simple",
+              "responses": ["NO POLITICS, RELIGION, OR EXCESSIVE GENDER/SJWing IN $channel!"],
+              },
+
+}

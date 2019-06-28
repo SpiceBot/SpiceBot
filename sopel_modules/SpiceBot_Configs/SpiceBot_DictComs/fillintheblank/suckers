@@ -1,0 +1,8 @@
+{
+"validcoms": ['suckers', 'sucker'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["$blanks are for suckers!!!!"],
+              },
+
+}

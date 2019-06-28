@@ -1,0 +1,8 @@
+{
+"validcoms": ['slowclap'],
+"?default": {
+              "type": "simple",
+              "responses": ["$instigator slowly claps...."],
+              },
+
+}

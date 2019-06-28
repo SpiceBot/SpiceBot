@@ -1,0 +1,13 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": [
+                            "I did not kill chat. (This time)",
+                            "Is it just me or is chat dead?",
+                            "Who killed chat?",
+                            "Attention: I am trying to revive chat. Please help",
+                            ],
+              },
+
+}

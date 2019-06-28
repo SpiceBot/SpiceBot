@@ -1,0 +1,12 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": [
+                            "KILL THE GRAMMAR NAZI!",
+                            "Grammar fucker, do you understand it?",
+                            "Eats, Shoots and Leaves or Eats Shoots and Leaves?",
+                            ],
+              },
+
+}

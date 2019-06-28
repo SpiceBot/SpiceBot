@@ -1,0 +1,12 @@
+{
+"validcoms": ['squatty'],
+"?default": {
+              "type": "simple",
+              "responses": ["https://www.squattypotty.com/",
+                            "https://www.youtube.com/watch?v=YbYWhdLO43Q",
+                            "https://www.youtube.com/watch?v=qPLbyk7c-KM",
+                            "Unicorn gold",
+                            "Rainbow hershey squirts"],
+              },
+
+}

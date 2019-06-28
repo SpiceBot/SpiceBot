@@ -1,0 +1,11 @@
+{
+
+"validcoms": ['xkcd'],
+
+"?default": {
+              "type": "feeds",
+              "responses": "xkcd",
+              "selection_allowed": False,
+              },
+
+}

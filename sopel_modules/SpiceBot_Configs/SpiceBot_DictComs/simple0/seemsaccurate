@@ -1,0 +1,8 @@
+{
+"validcoms": ['sa', 'seemsaccurate'],
+"?default": {
+              "type": "simple",
+              "responses": ["Seems accurate™."],
+              },
+
+}

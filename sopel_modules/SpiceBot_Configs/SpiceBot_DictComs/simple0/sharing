@@ -1,0 +1,8 @@
+{
+"validcoms": ['share','sharing'],
+"?default": {
+              "type": "simple",
+              "responses": ["Sharing and caring are cool!!"],
+              },
+
+}

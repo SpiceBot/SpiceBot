@@ -1,0 +1,11 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": [
+                            "May the Schwartz be with you",
+                            "I see my Schwartz is bigger than yours",
+                            ],
+              },
+
+}

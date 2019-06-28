@@ -1,0 +1,11 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": [
+                            "What about Bob?",
+                            "Where is clippy when you need help?"
+                            ],
+              },
+
+}

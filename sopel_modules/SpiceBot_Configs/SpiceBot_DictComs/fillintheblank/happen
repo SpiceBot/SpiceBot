@@ -1,0 +1,8 @@
+{
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["Stop trying to make $blank happen. It's not going to happen!"],
+              "blank_backup": "stuff",
+              },
+
+}

@@ -1,0 +1,8 @@
+{
+"validcoms": ['ts', 'thatssexist'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["That's sexist against $blank! (you misogynistic prick!)"],
+              "response_fail": "That's Sexist!™ (you misogynistic prick!)",
+              },
+}

@@ -1,0 +1,12 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": [
+                            "BURN THE WITCH!",
+                            "All I see are numbers and letters that make no sense.",
+                            "Why are there letters in this IP?!",
+                            ],
+              },
+
+}

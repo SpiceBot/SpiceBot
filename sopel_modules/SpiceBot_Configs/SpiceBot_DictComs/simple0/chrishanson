@@ -1,0 +1,8 @@
+{
+"validcoms": ['chrishanson','ch'],
+"?default": {
+              "type": "simple",
+              "responses": ["To catch a predator, you get it!"],
+              },
+
+}

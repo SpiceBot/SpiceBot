@@ -1,0 +1,8 @@
+{
+"validcoms": ['hiesinburg', 'hiesenburg', 'heisenburg'],
+"?default": {
+              "type": "simple",
+              "responses": ["You're god damned right"],
+              },
+
+}

@@ -1,0 +1,8 @@
+{
+"?default": {
+              "type": "gif",
+              "responses": "bullshit",
+              "search_fail": ["https://media.giphy.com/media/iqGVHdU2tEBq9JSrtm/giphy.gif"],
+              },
+
+}

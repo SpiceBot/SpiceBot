@@ -1,0 +1,11 @@
+{
+"validcoms": ['world'],
+"?default": {
+              "type": "simple",
+              "updates_enabled": "shared",
+              "responses": [
+                          "Welcome to my world brah",
+                          ],
+              },
+
+}

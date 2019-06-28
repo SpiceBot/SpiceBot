@@ -1,0 +1,8 @@
+{
+"validcoms": ['deathclock', 'num'],
+"?default": {
+              "type": "simple",
+              "responses": ["www.deathclock.com"],
+              },
+
+}

@@ -1,0 +1,8 @@
+{
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["NO $blank FOR YOU!"],
+              "blank_backup": 'soup',
+              "translations": ["upper"],
+              },
+}

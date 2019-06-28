@@ -1,0 +1,7 @@
+{
+"validcoms": ['success', 'winner'],
+"?default": {
+              "type": "simple",
+              "responses": [' ٩( ᐛ )و '],
+              },
+}

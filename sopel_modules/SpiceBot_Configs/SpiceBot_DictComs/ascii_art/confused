@@ -1,0 +1,7 @@
+{
+"validcoms": ['confused', 'wat'],
+"?default": {
+              "type": "simple",
+              "responses": [' (●__●)??? '],
+              },
+}

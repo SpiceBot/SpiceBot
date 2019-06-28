@@ -1,0 +1,11 @@
+{
+
+"validcoms": ['comptiawebby'],
+
+"?default": {
+              "type": "feeds",
+              "responses": "comptiawebby",
+              "selection_allowed": False,
+              },
+
+}

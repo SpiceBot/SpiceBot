@@ -1,0 +1,9 @@
+{
+"validcoms": ['nike', 'justdoit', 'doit'],
+"?default": {
+              "type": "gif",
+              "responses": "Just do it",
+              "search_fail": ['*a thinks you should stop being a little bitch and just do it.'],
+              },
+
+}

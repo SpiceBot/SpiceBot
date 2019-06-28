@@ -1,0 +1,13 @@
+{
+"validcoms": ['fix', 'user'],
+"?default": {
+              "type": "simple",
+              "updates_enabled": "shared",
+              "responses": [
+                            "User complained monitor was hurting their eyes. Cut out users eyes.",
+                            "User complained mouse was too small for their hand. Cut off half users hand to fit mouse.",
+                            ],
+              },
+
+
+}

@@ -1,0 +1,11 @@
+{
+
+"validcoms": ['truthinit'],
+
+"?default": {
+              "type": "feeds",
+              "responses": "truthinit",
+              "selection_allowed": False,
+              },
+
+}

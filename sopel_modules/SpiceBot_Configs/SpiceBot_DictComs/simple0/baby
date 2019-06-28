@@ -1,0 +1,8 @@
+{
+"validcoms": ['baby'],
+"?default": {
+              "type": "simple",
+              "responses": ["Never put baby in the corner"],
+              },
+
+}

@@ -1,0 +1,14 @@
+{
+
+"?default": {
+              "type": "simple",
+              "replyvariation": [
+                                  "Do you know the muffin man? ",
+                                  "Do you know the muffin man who lives on Luray lane",
+                                  ],
+              "responses": [
+                            ["$replyvariation"],
+                            ],
+              },
+
+}

@@ -1,0 +1,11 @@
+{
+
+"validcoms": ['spicewebby', 'spiceworkswebby'],
+
+"?default": {
+              "type": "feeds",
+              "responses": "spiceworkswebby",
+              "selection_allowed": False,
+              },
+
+}

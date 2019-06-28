@@ -1,0 +1,11 @@
+{
+"validcoms": ['helpbot'],
+"?default": {
+              "type": "simple",
+              "updates_enabled": "shared",
+              "responses": [
+                            "New Here Did you say you need help putting on your pants",
+                            ],
+              },
+
+}

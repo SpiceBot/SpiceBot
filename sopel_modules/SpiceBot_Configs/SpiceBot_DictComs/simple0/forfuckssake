@@ -1,0 +1,8 @@
+{
+"validcoms": ['forfuckssake','ffs'],
+"?default": {
+              "type": "simple",
+              "responses": ["For fuck sakes lizard people, get your shit together!!"],
+              },
+
+}

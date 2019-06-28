@@ -1,0 +1,8 @@
+{
+"validcoms": ['micdrop', 'crickets'],
+"?default": {
+              "type": "simple",
+              "responses": ["     "],
+              },
+
+}

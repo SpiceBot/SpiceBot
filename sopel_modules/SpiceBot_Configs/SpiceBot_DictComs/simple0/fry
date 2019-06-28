@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": ["Shuddup and take my money!"],
+              },
+
+}

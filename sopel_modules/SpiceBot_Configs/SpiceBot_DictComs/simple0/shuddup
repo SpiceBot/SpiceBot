@@ -1,0 +1,16 @@
+{
+
+"?default": {
+              "type": "simple",
+              "replyvariation": [
+                                  "Watch this https://www.youtube.com/watch?v=lJLEXgkddPQ",
+                                  "This is what you need to do https://www.youtube.com/watch?v=sFacWGBJ_cs",
+                                  "SHUDDUP",
+                                  "shuddup",
+                                  ],
+              "responses": [
+                            ["$instigator says: $replyvariation"],
+                            ],
+              },
+
+}

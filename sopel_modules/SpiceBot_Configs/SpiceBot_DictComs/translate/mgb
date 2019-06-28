@@ -1,0 +1,10 @@
+{
+"?default": {
+              "type": "fillintheblank",
+              "prefixtext": "mumble-grumble-",
+              "responses": ["$blank"],
+              "translations": ["hyphen"],
+              "blank_backup": 'bullshit',
+              },
+
+}

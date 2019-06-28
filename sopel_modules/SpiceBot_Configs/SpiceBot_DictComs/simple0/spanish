@@ -1,0 +1,8 @@
+{
+"validcoms": ['spanish'],
+"?default": {
+              "type": "simple",
+              "responses": ["el hearo what i'm el sayingo?"],
+              },
+
+}

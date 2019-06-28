@@ -1,0 +1,8 @@
+{
+"validcoms": ['iao', 'iamoffended'],
+"?default": {
+              "type": "simple",
+              "responses": [["I am so offended that , that I just can't even. #i-am-offended", "http://ringoffire.chat/assets/BUTTHURT-REPORT.jpg"]],
+              },
+
+}

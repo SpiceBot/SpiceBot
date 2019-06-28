@@ -1,0 +1,10 @@
+{
+"validcoms": ['never'],
+"?default": {
+              "type": "fillintheblank",
+              "blank_phrasehandle": ["a", "an"],
+              "responses": ["they say there's never a $blank around when you need them"],
+              "blank_backup": "cop",
+              },
+
+}

@@ -1,0 +1,15 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": ['You have two choices. redpill or bluepill'],
+              },
+("red","redpill"): {
+              "type": "simple",
+              "responses": ['You take the red pill, you stay in Wonderland, and I show you how deep the rabbit hole goes.'],
+              },
+("blue","bluepill"): {
+              "type": "simple",
+              "responses": ['You take the blue pill, the story ends. You wake up in your bed and believe whatever you want to believe.'],
+              },
+}

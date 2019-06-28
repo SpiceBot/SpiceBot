@@ -1,0 +1,13 @@
+{
+"validcoms": ['totes', 'millennial'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["$instigator thinks that $blank is totes obvi."],
+              "response_fail": [
+                                "I will have a non-fat double chocolate expresso mocho soy cappachino express latte?",
+                                "I want a participation medel",
+                                "My mommy says I'm a special snowflake"
+                                ],
+              },
+
+}

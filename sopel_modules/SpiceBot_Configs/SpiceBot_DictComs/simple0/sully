@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": ["You funny guy, I kill you last."],
+              },
+
+}

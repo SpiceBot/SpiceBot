@@ -1,0 +1,8 @@
+{
+"validcoms": ['moron', 'dumbass','dumbarse'],
+"?default": {
+              "type": "simple",
+              "responses": ["Hi jimender2!", "What? Where?", "You know what? Screw you buddy.", "Yes. Yes you are."],
+              },
+
+}

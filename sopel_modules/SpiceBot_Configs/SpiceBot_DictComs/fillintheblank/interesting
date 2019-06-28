@@ -1,0 +1,7 @@
+{
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["I don't always $blank, but when I do, I drink Dos Equis."],
+              "blank_backup": 'drink beer',
+              },
+}

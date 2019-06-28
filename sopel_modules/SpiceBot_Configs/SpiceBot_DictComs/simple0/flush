@@ -1,0 +1,13 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": [
+                            [
+                            '*a jiggles toilet tank lever.',
+                            '*splsssssssssssssshhhhhhh gurgle gurgle gurgle*'
+                            ]
+                            ],
+              },
+
+}

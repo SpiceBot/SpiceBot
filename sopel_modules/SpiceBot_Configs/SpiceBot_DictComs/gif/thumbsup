@@ -1,0 +1,9 @@
+{
+"?default": {
+              "type": "gif",
+              "responses": "thumbs up",
+              "replyvariation": [' a thumbs up.', ' a pat on the back.', ' a sarcastic smile.', ' a high five.'],
+              "search_fail": ["gives $instigator $replyvariation"],
+              },
+
+}

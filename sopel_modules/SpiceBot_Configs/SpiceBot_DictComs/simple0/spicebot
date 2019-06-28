@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": ["That's my name. Don't wear it out!"],
+              },
+
+}

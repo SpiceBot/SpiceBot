@@ -1,0 +1,10 @@
+{
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["$instigator introduces a backdoor into $blank system"],
+              "response_fail": [
+                              "$instigator introduces a backdoor into my system... Ohhh... It tickles.",
+                              ],
+              },
+
+}

@@ -1,0 +1,8 @@
+{
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["Fine! I'll build my own $blank, with blackjack and hookers. In fact, forget the $blank and the blackjack. Ahh, screw the whole thing!"],
+              "blank_backup": "lunar lander",
+              },
+
+}

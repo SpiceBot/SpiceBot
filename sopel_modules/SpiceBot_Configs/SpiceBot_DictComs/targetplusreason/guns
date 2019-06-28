@@ -1,0 +1,10 @@
+{
+"validcoms": ['guns', 'gun'],
+"?default": {
+              "type": "targetplusreason",
+              "responses": ["$blank don't kill people. $target kills people. With $blank"],
+              "blank_backup": 'guns',
+              "target_backup": 'instigator',
+              },
+
+}

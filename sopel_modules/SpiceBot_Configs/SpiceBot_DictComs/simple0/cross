@@ -1,0 +1,8 @@
+{
+"validcoms": ['cross', 'streams'],
+"?default": {
+              "type": "simple",
+              "responses": ["Don't cross the streams"],
+              },
+
+}

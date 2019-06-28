@@ -1,0 +1,8 @@
+{
+"validcoms": ['be', 'bee'],
+"?default": {
+              "type": "simple",
+              "responses": ["Be Happy, Be Healthy"],
+              },
+
+}

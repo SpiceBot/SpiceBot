@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["sudo $blank"],
+              "blank_backup": 'Go make me a sandwich',
+              },
+}

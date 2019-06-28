@@ -1,0 +1,9 @@
+{
+"validcoms": ['rrr', 'reducereuserecycle'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["Reduce, Reuse, Recycle $blank"],
+              "blank_backup": 'everything',
+              },
+
+}

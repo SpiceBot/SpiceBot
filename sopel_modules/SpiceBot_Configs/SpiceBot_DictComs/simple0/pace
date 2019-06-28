@@ -1,0 +1,10 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": [
+                            "Get a rope!",
+                            ],
+              },
+
+}

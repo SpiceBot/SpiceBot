@@ -1,0 +1,8 @@
+{
+"?default": {
+              "type": "gif",
+              "responses": "Darwin Award",
+              "search_fail": ["$instigator is not a contender for the Darwin award, thank fuck."],
+              },
+
+}

@@ -1,0 +1,8 @@
+{
+"validcoms": ['steenkin', 'dontneed'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["$blank? weee dun neeeed no steenkin $blank!!"],
+              },
+
+}

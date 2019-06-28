@@ -1,0 +1,10 @@
+{
+"validcoms": ['network'],
+"?default": {
+              "type": "simple",
+              "responses": ["THE NETWORK IS FUCKED",
+                            "CREATE A LOOPBACK",
+                            "Christmas tree mode"],
+              },
+
+}

@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["Are you trying to $blank cause that's how you $blank!"],
+              "blank_backup": 'run this command',
+              },
+}
