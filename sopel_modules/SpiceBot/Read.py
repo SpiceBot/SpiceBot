@@ -6,6 +6,9 @@ import sopel_modules
 
 import os
 import codecs
+import requests
+import urllib
+from fake_useragent import UserAgent
 
 from .Logs import logs
 from .Config import config as botconfig
@@ -14,7 +17,46 @@ from .Config import config as botconfig
 class BotRead():
 
     def __init__(self):
-        self.dict = dict()
+        self.header = {'User-Agent': str(UserAgent().chrome)}
+        self.dict = {
+                    "text": {},
+                    "webpage": {},
+                    }
+        self.load_txt_files()
+
+    def load_txt_files(self):
+        dir_to_scan = []
+        for plugin_dir in set(sopel_modules.__path__):
+            textdir = os.path.join(plugin_dir, "SpiceBot_Text")
+            if os.path.exists(textdir) and os.path.isdir(textdir):
+                if len(os.listdir(textdir)) > 0:
+                    dir_to_scan.append(textdir)
+        # iterate over files within
+        for directory in dir_to_scan:
+            for txtfile in os.listdir(directory):
+                text_file_list = []
+                text_file = open(os.path.join(directory, txtfile), 'r')
+                lines = text_file.readlines()
+                for line in lines:
+                    text_file_list.append(line)
+                text_file.close()
+                self.dict["text"][txtfile] = {
+                                                "lines": text_file_list
+                                                }
+
+    def webpage_to_list(self, url):
+        try:
+            page = requests.get(url, headers=self.header)
+        except Exception as e:
+            page = e
+            page = None
+
+        if page and not str(page.status_code).startswith(tuple(["4", "5"])):
+            htmlfile = urllib.request.urlopen(url)
+            lines = htmlfile.read().splitlines()
+            self.dict["webpage"][url] = {
+                                        "lines": lines
+                                        }
 
     def get_config_dirs(self, config_dir_name):
         dir_to_scan = []
