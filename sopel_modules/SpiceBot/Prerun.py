@@ -332,7 +332,7 @@ def trigger_runstatus(bot, trigger):
             return trigger_cant_run(bot, trigger, message)
         else:
             botcommands.unset_command_disabled(trigger.sb["realcomref"], trigger.nick, "fully")
-            botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["comtext"] + " is now enabled for " + str(trigger.nick))
+            botmessagelog.messagelog_error(trigger.sb["log_id"], trigger.sb["comtext"] + " is now enabled for " + str(trigger.nick))
 
     return True
 
