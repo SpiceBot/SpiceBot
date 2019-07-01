@@ -31,7 +31,10 @@ def bot_events_connected(bot, trigger):
         if len(SpiceBot.events.dict["trigger_queue"]):
             pretriggerdict = SpiceBot.events.dict["trigger_queue"][0]
             SpiceBot.events.dispatch(bot, pretriggerdict)
-            del SpiceBot.events.dict["trigger_queue"][0]
+            try:
+                del SpiceBot.events.dict["trigger_queue"][0]
+            except IndexError:
+                pass
 
 
 @sopel.module.event(SpiceBot.events.BOT_WELCOME)
