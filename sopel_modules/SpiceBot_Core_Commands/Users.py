@@ -10,6 +10,6 @@ import sopel_modules.SpiceBot as SpiceBot
 
 @SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('users', 'user')
-def nickname_comand_channels(bot, trigger, botcom):
+def nickname_comand_users(bot, trigger, botcom):
     bot.say("WIP")
     return
