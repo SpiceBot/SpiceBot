@@ -91,6 +91,20 @@ class BotChannels():
         topic = re.sub(actual_topic, r'\1', topic)
         return topic
 
+    def add_channel(self, channel):
+        channel = str(channel).lower()
+        self.lock.acquire()
+        if channel not in self.channels:
+            self.channels.append(channel)
+        self.lock.release()
+
+    def remove_channel(self, channel):
+        channel = str(channel).lower()
+        self.lock.acquire()
+        if channel in self.channels:
+            self.channels.remove(channel)
+        self.lock.release()
+
     def bot_part_empty(self, bot):
         """Don't stay in empty channels"""
         ignorepartlist = []
@@ -103,8 +117,7 @@ class BotChannels():
                     self.lock.acquire()
                     del self.dict['list'][channel.lower()]
                     self.lock.release()
-                if channel.lower() in self.channels:
-                    self.channels.remove(channel.lower())
+                self.remove_channel(channel)
 
     def join_all_channels(self, bot):
         if botconfig.SpiceBot_Channels.joinall:
@@ -116,13 +129,13 @@ class BotChannels():
                             bot.write(('SAJOIN', bot.nick, self.dict['list'][channel]['name']))
 
                         if channel in list(bot.channels.keys()):
-                            if channel.lower() not in self.channels:
-                                self.channels.append(channel.lower())
+                            self.add_channel(channel)
 
     def chanadmin_all_channels(self, bot):
         # Chan ADMIN +a
         for channel in list(bot.channels.keys()):
             if channel.startswith("#"):
+                self.add_channel(channel)
                 if channel not in botconfig.SpiceBot_Channels.chanignore:
                     if botconfig.SpiceBot_Channels.operadmin:
                         if not bot.channels[channel].privileges[bot.nick] < sopel.module.ADMIN:
@@ -131,8 +144,7 @@ class BotChannels():
                     bot.part(channel)
 
                     if channel not in list(bot.channels.keys()):
-                        if channel.lower() in self.channels:
-                            self.channels.remove(channel.lower())
+                        self.remove_channel(channel)
 
     def whois_ident(self, nick):
         nick = Identifier(nick)
@@ -140,31 +152,36 @@ class BotChannels():
         return nick_id
 
     def add_to_channel(self, channel, nick, nick_id=None):
-        channel = str(channel)
+        channel = str(channel).lower()
+        self.lock.acquire()
         if not nick_id:
             nick_id = self.whois_ident(nick)
         if channel.lower() not in list(self.dict['list'].keys()):
             self.dict['list'][channel.lower()] = dict()
         if 'users' not in self.dict['list'][channel.lower()]:
             self.dict['list'][channel.lower()]['users'] = []
-        if nick_id not in self.dict['list'][channel.lower()]['users']:
+        if int(nick_id) not in self.dict['list'][channel.lower()]['users']:
             self.dict['list'][channel.lower()]['users'].append(int(nick_id))
         if channel.lower() not in self.channels:
             self.channels.append(channel.lower())
+        self.lock.release()
 
     def remove_from_channel(self, channel, nick, nick_id=None):
-        channel = str(channel)
+        channel = str(channel).lower()
+        self.lock.acquire()
         if not nick_id:
             nick_id = self.whois_ident(nick)
         if channel.lower() not in list(self.dict['list'].keys()):
             self.dict['list'][channel.lower()] = dict()
         if 'users' not in self.dict['list'][channel.lower()]:
             self.dict['list'][channel.lower()]['users'] = []
-        if nick_id in self.dict['list'][channel.lower()]['users']:
-            self.dict['list'][channel.lower()]['users'].remove(nick_id)
+        if int(nick_id) in self.dict['list'][channel.lower()]['users']:
+            self.dict['list'][channel.lower()]['users'].remove(int(nick_id))
+        self.lock.release()
 
     def remove_all_from_channel(self, channel):
-        channel = str(channel)
+        channel = str(channel).lower()
+        self.lock.acquire()
         if channel.lower() not in list(self.dict['list'].keys()):
             self.dict['list'][channel.lower()] = dict()
         if 'users' not in self.dict['list'][channel.lower()]:
@@ -172,6 +189,7 @@ class BotChannels():
         self.dict['list'][channel.lower()]['users'] = []
         if channel.lower() in self.channels:
             self.channels.remove(channel.lower())
+        self.lock.release()
 
     def channel_scan(self, bot):
         for channel in list(bot.channels.keys()):
