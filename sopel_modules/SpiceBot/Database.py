@@ -39,7 +39,7 @@ class Nicknames(BASE):
     __tablename__ = 'spice_nicknames'
     nick_id = Column(Integer, ForeignKey('spice_nick_ids.nick_id'), primary_key=True)
     slug = Column(String(255), primary_key=True)
-    canonical = Column(String(255))
+    canonical = Column(String(255), unicode=True)
 
 
 class NickValues(BASE):
@@ -50,7 +50,7 @@ class NickValues(BASE):
     nick_id = Column(Integer, ForeignKey('spice_nick_ids.nick_id'), primary_key=True)
     namespace = Column(String(255), primary_key=True)
     key = Column(String(255), primary_key=True)
-    value = Column(Text())
+    value = Column(Text(), unicode=True)
 
 
 class ChannelValues(BASE):
@@ -61,7 +61,7 @@ class ChannelValues(BASE):
     channel = Column(String(255), primary_key=True)
     namespace = Column(String(255), primary_key=True)
     key = Column(String(255), primary_key=True)
-    value = Column(Text())
+    value = Column(Text(), unicode=True)
 
 
 class PluginValues(BASE):
@@ -72,7 +72,7 @@ class PluginValues(BASE):
     plugin = Column(String(255), primary_key=True)
     namespace = Column(String(255), primary_key=True)
     key = Column(String(255), primary_key=True)
-    value = Column(Text())
+    value = Column(Text(), unicode=True)
 
 
 class SpiceDB(object):
