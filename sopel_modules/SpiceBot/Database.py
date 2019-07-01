@@ -573,7 +573,7 @@ class BotDatabase():
             SopelDB.url = URL(drivername=drivername, username=db_user, password=db_pass,
                            host=db_host, port=db_port, database=db_name, query={'charset': 'utf8'})
 
-        SopelDB.engine = create_engine(SopelDB.url, encoding='utf-8')
+        SopelDB.engine = create_engine(SopelDB.url, encoding='utf-8', convert_unicode=True)
 
         SopelDB.nick_id_lock = threading.Lock()
 
