@@ -139,3 +139,17 @@ def channels_users_mode(bot, trigger):
 def bot_channelscan(bot, trigger):
     while True:
         SpiceBot.channels.channel_scan(bot)
+
+
+@sopel.module.event(SpiceBot.events.RPL_NAMREPLY)
+@sopel.module.rule('(.*)')
+def handle_names(bot, trigger):
+    SpiceBot.channels.rpl_names(bot, trigger)
+
+
+@sopel.module.event(SpiceBot.events.RPL_WHOREPLY)
+@sopel.module.rule('.*')
+@sopel.module.priority('high')
+@sopel.module.unblockable
+def recv_who(bot, trigger):
+    SpiceBot.channels.rpl_who(bot, trigger)
