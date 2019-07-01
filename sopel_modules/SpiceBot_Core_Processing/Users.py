@@ -51,7 +51,6 @@ def bot_channelscan_users(bot, trigger):
     SpiceBot.users.channel_scan(bot)
 
 
-"""
 @sopel.module.rule('.*')
 def bot_users_chat(bot, trigger):
     SpiceBot.users.chat(bot, trigger)
@@ -81,4 +80,3 @@ def account_notify(bot, trigger):
 @sopel.module.rule('.*')
 def track_notify(bot, trigger):
     SpiceBot.users.track_notify(bot, trigger)
-"""

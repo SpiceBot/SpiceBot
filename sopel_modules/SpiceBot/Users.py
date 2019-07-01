@@ -20,18 +20,17 @@ class BotUsers():
 
     def __init__(self):
         self.lock = threading.Lock()
+        # TODO AWAY
         self.dict = {
                     "all": botdb.get_bot_value('users') or {},
                     "online": [],
                     "offline": [],
-                    "away": [],  # TODO
+                    "away": [],
                     "current": {},
                     }
         """during setup, all users from database are offline until marked online"""
         for user_id in list(self.dict["all"].keys()):
-            self.lock.acquire()
-            self.dict["offline"].append(int(user_id))
-            self.lock.release()
+            self.mark_user_offline(user_id)
 
     def __getattr__(self, name):
         ''' will only get called for undefined attributes '''
@@ -42,20 +41,20 @@ class BotUsers():
             raise Exception('User dict does not contain a function or key ' + str(name.lower()))
 
     def ID(self, nickinput):
-        self.lock.acquire()
         if is_number(nickinput):
             nick_id = nickinput
-            if nick_id in list(self.dict["current"].keys()):
-                nick = self.dict["current"][nick_id]["nick"]
-            elif nick_id in list(self.dict["all"].keys()) and len(self.dict["all"][int(nick_id)]):
+            self.lock.acquire()
+            if int(nick_id) in list(self.dict["current"].keys()):
+                nick = self.dict["current"][int(nick_id)]["nick"]
+                self.lock.release()
+            elif int(nick_id) in list(self.dict["all"].keys()) and len(self.dict["all"][int(nick_id)]):
                 nick = self.dict["all"][int(nick_id)][0]
+                self.lock.release()
             else:
                 raise Exception('ID ' + str(nickinput) + ' does not appear to be associated with a nick')
-            self.lock.release()
             return nick
         else:
             nick_id = self.whois_ident(nickinput)
-            self.lock.release()
             return int(nick_id)
 
     def whois_ident(self, nick, usercreate=True):
@@ -65,7 +64,7 @@ class BotUsers():
         except Exception as e:
             nick_id = e
             nick_id = None
-        if usercreate:
+        if usercreate and nick_id:
             self.add_to_all(nick, nick_id)
         return int(nick_id)
 
