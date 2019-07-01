@@ -612,6 +612,9 @@ class BotDatabase():
     def alias_nick(self, nick, alias):
         return self.db.alias_nick(nick, alias)
 
+    def unalias_nick(self, alias):
+        return self.db.unalias_nick(alias)
+
     def check_nick_id(self, nick):
         try:
             self.db.get_nick_id(nick, create=False)
