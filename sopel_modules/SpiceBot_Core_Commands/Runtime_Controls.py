@@ -41,6 +41,7 @@ def nickname_comand_update(bot, trigger, botcom):
     SpiceBot.spicebot_reload(bot, 'SpiceBot_Update', quitmessage)
 
 
+@SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('restart')
 def nickname_comand_restart(bot, trigger, botcom):
 
