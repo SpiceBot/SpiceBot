@@ -240,24 +240,27 @@ class BotUsers():
         self.mark_user_offline(nick_id)
 
     def nick(self, bot, trigger):
+        oldnick = trigger.nick
+        old_nick_id = self.whois_ident(oldnick)
         newnick = Identifier(trigger)
-        if trigger.nick == bot.nick or newnick == bot.nick:
+        if oldnick == bot.nick or newnick == bot.nick:
             return
-        # alias the nick
-        if not botdb.check_nick_id(newnick):
-            botdb.alias_nick(trigger.nick, newnick)
-        # Identify
-        nick_id = self.whois_ident(newnick)
         # Verify nick is in the all list
-        self.add_to_all(newnick, nick_id)
+        self.add_to_all(oldnick, old_nick_id)
         # Verify nick is in the all list
-        self.add_to_current(newnick, nick_id)
+        self.add_to_current(oldnick, old_nick_id)
         # set current nick
-        self.mark_current_nick(newnick, nick_id)
+        self.mark_current_nick(newnick, old_nick_id)
         # add joined channel to nick list
-        self.add_channel(trigger.sender, nick_id)
+        self.add_channel(trigger.sender, old_nick_id)
         # mark user as online
-        self.mark_user_online(nick_id)
+        self.mark_user_online(old_nick_id)
+        # alias the nick
+        try:
+            botdb.alias_nick(oldnick, newnick)
+        except Exception as e:
+            old_nick_id = e
+            return
 
     def mode(self, bot, trigger):
         return

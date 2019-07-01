@@ -52,13 +52,13 @@ def bot_channelscan_users(bot, trigger):
 
 
 @sopel.module.rule('.*')
-def bot_users_chat(bot, trigger):
+def bot_users_chat_users(bot, trigger):
     SpiceBot.users.chat(bot, trigger)
 
 
 @sopel.module.event(SpiceBot.events.RPL_NAMREPLY)
 @sopel.module.rule('(.*)')
-def handle_names(bot, trigger):
+def handle_names_users(bot, trigger):
     SpiceBot.users.rpl_names(bot, trigger)
 
 
@@ -66,17 +66,17 @@ def handle_names(bot, trigger):
 @sopel.module.rule('.*')
 @sopel.module.priority('high')
 @sopel.module.unblockable
-def recv_who(bot, trigger):
+def recv_who_users(bot, trigger):
     SpiceBot.users.rpl_who(bot, trigger)
 
 
 @sopel.module.event('ACCOUNT')
 @sopel.module.rule('.*')
-def account_notify(bot, trigger):
+def account_notify_users(bot, trigger):
     SpiceBot.users.account(bot, trigger)
 
 
 @sopel.module.event('AWAY')
 @sopel.module.rule('.*')
-def track_notify(bot, trigger):
+def track_notify_users(bot, trigger):
     SpiceBot.users.track_notify(bot, trigger)
