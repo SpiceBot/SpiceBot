@@ -142,7 +142,7 @@ def bot_channelscan(bot, trigger):
 
 @sopel.module.event(SpiceBot.events.RPL_NAMREPLY)
 @sopel.module.rule('(.*)')
-def handle_names(bot, trigger):
+def handle_names_channels(bot, trigger):
     SpiceBot.channels.rpl_names(bot, trigger)
 
 
@@ -150,5 +150,5 @@ def handle_names(bot, trigger):
 @sopel.module.rule('.*')
 @sopel.module.priority('high')
 @sopel.module.unblockable
-def recv_who(bot, trigger):
+def recv_who_channels(bot, trigger):
     SpiceBot.channels.rpl_who(bot, trigger)
