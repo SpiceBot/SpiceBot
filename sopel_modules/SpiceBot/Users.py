@@ -2,6 +2,7 @@
 from __future__ import unicode_literals, absolute_import, division, print_function
 """A way to track users"""
 
+import sopel
 from sopel.tools import Identifier
 
 from .Database import db as botdb
@@ -10,6 +11,7 @@ from .Tools import is_number, inlist, similar, array_arrangesort
 import spicemanip
 
 import threading
+import re
 
 # TODO timestamp for new .seen
 
@@ -260,6 +262,83 @@ class BotUsers():
 
     def mode(self, bot, trigger):
         return
+
+    def rpl_names(self, bot, trigger):
+        """Handle NAMES response, happens when joining to channels."""
+        names = trigger.split()
+
+        # TODO specific to one channel type. See issue 281.
+        channels = re.search(r'(#\S*)', trigger.raw)
+        if not channels:
+            return
+        channel = Identifier(channels.group(1))
+
+        mapping = {'+': sopel.module.VOICE,
+                   '%': sopel.module.HALFOP,
+                   '@': sopel.module.OP,
+                   '&': sopel.module.ADMIN,
+                   '~': sopel.module.OWNER}
+
+        for name in names:
+            nick = Identifier(name.lstrip(''.join(mapping.keys())))
+            # Identify
+            nick_id = self.whois_ident(nick)
+            # Verify nick is in the all list
+            self.add_to_all(nick, nick_id)
+            # Verify nick is in the all list
+            self.add_to_current(nick, nick_id)
+            # set current nick
+            self.mark_current_nick(nick, nick_id)
+            # add joined channel to nick list
+            self.add_channel(channel, nick_id)
+            # mark user as online
+            self.mark_user_online(nick_id)
+
+    def rpl_who(self, bot, trigger):
+        if len(trigger.args) < 2 or trigger.args[1] not in self.who_reqs:
+            # Ignored, some module probably called WHO
+            return
+        if len(trigger.args) != 8:
+            return
+        _, _, channel, user, host, nick, status, account = trigger.args
+        nick = Identifier(nick)
+        channel = Identifier(channel)
+        # Identify
+        nick_id = self.whois_ident(nick)
+        # Verify nick is in the all list
+        self.add_to_all(nick, nick_id)
+        # Verify nick is in the all list
+        self.add_to_current(nick, nick_id)
+        # set current nick
+        self.mark_current_nick(nick, nick_id)
+        # add joined channel to nick list
+        self.add_channel(channel, nick_id)
+        # mark user as online
+        self.mark_user_online(nick_id)
+
+    def account(self, bot, trigger):
+        # Identify
+        nick_id = self.whois_ident(trigger.nick)
+        # Verify nick is in the all list
+        self.add_to_all(trigger.nick, nick_id)
+        # Verify nick is in the all list
+        self.add_to_current(trigger.nick, nick_id)
+        # set current nick
+        self.mark_current_nick(trigger.nick, nick_id)
+        # mark user as online
+        self.mark_user_online(nick_id)
+
+    def track_notify(self, bot, trigger):
+        # Identify
+        nick_id = self.whois_ident(trigger.nick)
+        # Verify nick is in the all list
+        self.add_to_all(trigger.nick, nick_id)
+        # Verify nick is in the all list
+        self.add_to_current(trigger.nick, nick_id)
+        # set current nick
+        self.mark_current_nick(trigger.nick, nick_id)
+        # mark user as online
+        self.mark_user_online(nick_id)
 
     def nick_actual(self, nick, altlist=None):
         nick_id = self.whois_ident(nick)

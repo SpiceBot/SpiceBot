@@ -26,7 +26,7 @@ class BotChannels():
     """This Logs all channels known to the server"""
     def __init__(self):
         self.setup_channels()
-
+        self.who_reqs = {}
         self.lock = threading.Lock()
         self.channel_lock = False
         self.channels = []
@@ -253,6 +253,38 @@ class BotChannels():
 
     def mode(self, bot, trigger):
         return
+
+    def rpl_names(self, bot, trigger):
+        """Handle NAMES response, happens when joining to channels."""
+        names = trigger.split()
+
+        # TODO specific to one channel type. See issue 281.
+        channels = re.search(r'(#\S*)', trigger.raw)
+        if not channels:
+            return
+        channel = Identifier(channels.group(1))
+        self.add_channel(channel)
+
+        mapping = {'+': sopel.module.VOICE,
+                   '%': sopel.module.HALFOP,
+                   '@': sopel.module.OP,
+                   '&': sopel.module.ADMIN,
+                   '~': sopel.module.OWNER}
+
+        for name in names:
+            nick = Identifier(name.lstrip(''.join(mapping.keys())))
+            self.add_to_channel(channel, nick)
+
+    def rpl_who(self, bot, trigger):
+        if len(trigger.args) < 2 or trigger.args[1] not in self.who_reqs:
+            # Ignored, some module probably called WHO
+            return
+        if len(trigger.args) != 8:
+            return
+        _, _, channel, user, host, nick, status, account = trigger.args
+        nick = Identifier(nick)
+        channel = Identifier(channel)
+        self.add_to_channel(channel, nick)
 
     def check_channel_bot(self, channel, allchan=False):
         if str(channel).lower() in self.channels:
