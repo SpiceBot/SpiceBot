@@ -240,12 +240,13 @@ class BotUsers():
         self.mark_user_offline(nick_id)
 
     def nick(self, bot, trigger):
+        oldnick = trigger.nick
         newnick = Identifier(trigger)
-        if trigger.nick == bot.nick or newnick == bot.nick:
+        if oldnick == bot.nick or newnick == bot.nick:
             return
         # alias the nick
         if not botdb.check_nick_id(newnick):
-            botdb.alias_nick(trigger.nick, newnick)
+            botdb.alias_nick(oldnick, newnick)
         # Identify
         nick_id = self.whois_ident(newnick)
         # Verify nick is in the all list
