@@ -571,7 +571,7 @@ class BotDatabase():
             db_name = botconfig.core.db_name  # Optional, depending on DB
 
             SopelDB.url = URL(drivername=drivername, username=db_user, password=db_pass,
-                           host=db_host, port=db_port, database=db_name, query={'charset': 'utf8'})
+                           host=db_host, port=db_port, database=db_name, use_unicode=1, query={'charset': 'utf8'})
 
         SopelDB.engine = create_engine(SopelDB.url, encoding='utf-8')
 
