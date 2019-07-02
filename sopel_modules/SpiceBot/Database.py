@@ -50,7 +50,7 @@ class NickValues(BASE):
     nick_id = Column(Integer, ForeignKey('spice_nick_ids.nick_id'), primary_key=True)
     namespace = Column(String(255), primary_key=True)
     key = Column(String(255), primary_key=True)
-    value = Column(Text())
+    value = Column(Text(collation='utf8mb4_bin'))
 
 
 class ChannelValues(BASE):
@@ -61,7 +61,7 @@ class ChannelValues(BASE):
     channel = Column(String(255), primary_key=True)
     namespace = Column(String(255), primary_key=True)
     key = Column(String(255), primary_key=True)
-    value = Column(Text())
+    value = Column(Text(collation='utf8mb4_bin'))
 
 
 class PluginValues(BASE):
@@ -72,7 +72,7 @@ class PluginValues(BASE):
     plugin = Column(String(255), primary_key=True)
     namespace = Column(String(255), primary_key=True)
     key = Column(String(255), primary_key=True)
-    value = Column(Text())
+    value = Column(Text(collation='utf8mb4_bin'))
 
 
 class SpiceDB(object):
@@ -571,7 +571,7 @@ class BotDatabase():
             db_name = botconfig.core.db_name  # Optional, depending on DB
 
             SopelDB.url = URL(drivername=drivername, username=db_user, password=db_pass,
-                           host=db_host, port=db_port, database=db_name)
+                           host=db_host, port=db_port, database=db_name, query={'charset': 'utf8mb4'})
 
         SopelDB.engine = create_engine(SopelDB.url)
 
