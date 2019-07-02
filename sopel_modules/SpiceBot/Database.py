@@ -36,8 +36,8 @@ class Nicknames(BASE):
     """
     __tablename__ = 'spice_nicknames'
     nick_id = Column(Integer, ForeignKey('spice_nick_ids.nick_id'), primary_key=True)
-    slug = Column(Text(), primary_key=True)
-    canonical = Column(Text())
+    slug = Column(String(255), primary_key=True)
+    canonical = Column(String(255))
 
 
 class NickValues(BASE):
@@ -46,8 +46,8 @@ class NickValues(BASE):
     """
     __tablename__ = 'spice_nick_values'
     nick_id = Column(Integer, ForeignKey('spice_nick_ids.nick_id'), primary_key=True)
-    namespace = Column(Text(), primary_key=True)
-    key = Column(Text(), primary_key=True)
+    namespace = Column(String(255), primary_key=True)
+    key = Column(String(255), primary_key=True)
     value = Column(Text())
 
 
@@ -56,9 +56,9 @@ class ChannelValues(BASE):
     ChannelValues SQLAlchemy Class
     """
     __tablename__ = 'spice_channel_values'
-    channel = Column(Text(), primary_key=True)
-    namespace = Column(Text(), primary_key=True)
-    key = Column(Text(), primary_key=True)
+    channel = Column(String(255), primary_key=True)
+    namespace = Column(String(255), primary_key=True)
+    key = Column(String(255), primary_key=True)
     value = Column(Text())
 
 
@@ -67,9 +67,9 @@ class PluginValues(BASE):
     PluginValues SQLAlchemy Class
     """
     __tablename__ = 'spice_plugin_values'
-    plugin = Column(Text(), primary_key=True)
-    namespace = Column(Text(), primary_key=True)
-    key = Column(Text(), primary_key=True)
+    plugin = Column(String(255), primary_key=True)
+    namespace = Column(String(255), primary_key=True)
+    key = Column(String(255), primary_key=True)
     value = Column(Text())
 
 
