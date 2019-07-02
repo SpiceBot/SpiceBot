@@ -11,14 +11,12 @@ from sopel.db import SopelDB, _deserialize
 
 from .Config import config as botconfig
 
-from sqlalchemy.engine.url import URL
-from sqlalchemy import create_engine, Column, String, ForeignKey, Integer, Text
+from sqlalchemy import Column, String, ForeignKey, Integer, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import SQLAlchemyError
 
 import json
 import threading
-import os
 
 
 BASE = declarative_base()
@@ -532,48 +530,6 @@ class SpiceDB(object):
 class BotDatabase():
 
     def __init__(self):
-
-        db_type = botconfig.core.db_type
-
-        if db_type == 'sqlite':
-            path = botconfig.core.db_filename
-            config_dir, config_file = os.path.split(botconfig.filename)
-            config_name, _ = os.path.splitext(config_file)
-            if path is None:
-                path = os.path.join(config_dir, config_name + '.db')
-            path = os.path.expanduser(path)
-            if not os.path.isabs(path):
-                path = os.path.normpath(os.path.join(config_dir, path))
-            SopelDB.filename = path
-            SopelDB.url = 'sqlite:///%s' % path
-        # Otherwise, handle all other database engines
-        else:
-
-            if db_type == 'mysql':
-                drivername = botconfig.core.db_driver or 'mysql'
-            elif db_type == 'postgres':
-                drivername = botconfig.core.db_driver or 'postgresql'
-            elif db_type == 'oracle':
-                drivername = botconfig.core.db_driver or 'oracle'
-            elif db_type == 'mssql':
-                drivername = botconfig.core.db_driver or 'mssql+pymssql'
-            elif db_type == 'firebird':
-                drivername = botconfig.core.db_driver or 'firebird+fdb'
-            elif db_type == 'sybase':
-                drivername = botconfig.core.db_driver or 'sybase+pysybase'
-            else:
-                raise Exception('Unknown db_type')
-
-            db_user = botconfig.core.db_user
-            db_pass = botconfig.core.db_pass
-            db_host = botconfig.core.db_host
-            db_port = botconfig.core.db_port  # Optional
-            db_name = botconfig.core.db_name  # Optional, depending on DB
-
-            SopelDB.url = URL(drivername=drivername, username=db_user, password=db_pass,
-                           host=db_host, port=db_port, database=db_name, query={'charset': 'utf8mb4'})
-
-        SopelDB.engine = create_engine(SopelDB.url)
 
         SopelDB.nick_id_lock = threading.Lock()
 
