@@ -12,12 +12,14 @@ import spicemanip
 import sopel_modules.SpiceBot as SpiceBot
 
 
+@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
 @SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('query')
 def query_trigger(bot, trigger, botcom):
     bot.osd("I have been programmed to help find new commands by using `?`.")
 
 
+@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
 @SpiceBot.events.check_ready([SpiceBot.events.BOT_COMMANDS])
 @SpiceBot.prerun_query('nickname', 'nickname')
 @sopel.module.nickname_commands('(.*)')

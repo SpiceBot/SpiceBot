@@ -10,6 +10,7 @@ import spicemanip
 import sopel_modules.SpiceBot as SpiceBot
 
 
+@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
 @SpiceBot.prerun('module')
 @sopel.module.commands('search', 'find', 'google', 'lookup')
 def search_main(bot, trigger, botcom):
@@ -26,6 +27,7 @@ def search_main(bot, trigger, botcom):
         bot.osd(["[Information search for '" + str(searchterm) + "']", str(searchreturn)])
 
 
+@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
 @SpiceBot.prerun('module')
 @sopel.module.commands("where", "whereis")
 def search_where(bot, trigger, botcom):
@@ -42,6 +44,7 @@ def search_where(bot, trigger, botcom):
         bot.osd(["[Location search for " + str(searchterm) + "]", str(searchreturn)])
 
 
+@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
 @SpiceBot.prerun('module')
 @sopel.module.commands("what", "whatis")
 def search_what(bot, trigger, botcom):

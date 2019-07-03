@@ -9,6 +9,7 @@ import spicemanip
 import sopel_modules.SpiceBot as SpiceBot
 
 
+@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
 @SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('update')
 def nickname_comand_update(bot, trigger, botcom):
@@ -41,6 +42,7 @@ def nickname_comand_update(bot, trigger, botcom):
     SpiceBot.spicebot_reload(bot, 'SpiceBot_Update', quitmessage)
 
 
+@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
 @SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('restart')
 def nickname_comand_restart(bot, trigger, botcom):

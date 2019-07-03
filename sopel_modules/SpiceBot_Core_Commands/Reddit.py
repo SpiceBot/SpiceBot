@@ -7,16 +7,23 @@ import sopel.module
 import sopel_modules.SpiceBot as SpiceBot
 
 
+@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
 @sopel.module.rule(r"""(?:)u/
           (
             (?:\\/ | [^/])+
           )
           """)
+def bot_command_reddit_user(bot, trigger):
+    message = SpiceBot.reddit.prerun(trigger)
+    bot.osd(message)
+
+
+@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
 @sopel.module.rule(r"""(?:)r/
           (
             (?:\\/ | [^/])+
           )
           """)
-def bot_command_reddit_syntax(bot, trigger):
+def bot_command_reddit_subreddit(bot, trigger):
     message = SpiceBot.reddit.prerun(trigger)
     bot.osd(message)

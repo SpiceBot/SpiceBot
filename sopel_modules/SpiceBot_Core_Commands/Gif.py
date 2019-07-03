@@ -11,6 +11,7 @@ import spicemanip
 # TODO custom gif shortcut commands
 
 
+@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
 @SpiceBot.prerun('module')
 @sopel.module.commands('gif')
 def gif_trigger(bot, trigger, botcom):

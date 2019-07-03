@@ -10,6 +10,7 @@ import sopel.module
 import sopel_modules.SpiceBot as SpiceBot
 
 
+@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
 @sopel.module.nickname_commands('database')
 def bot_command_database(bot, trigger):
     bot.osd("Database is " + SpiceBot.config.db_type)

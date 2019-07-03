@@ -9,6 +9,7 @@ import sopel_modules.SpiceBot as SpiceBot
 import spicemanip
 
 
+@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
 @SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('ai')
 def ai_trigger(bot, trigger, botcom):
@@ -18,6 +19,7 @@ def ai_trigger(bot, trigger, botcom):
     bot.osd(displayval)
 
 
+@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
 @sopel.module.rule('(.*)')
 def bot_command_rule_ai(bot, trigger):
 
