@@ -5,6 +5,7 @@ These are the core SpiceBot Classes
 
 This module contains references only for other modules to utilize.
 """
+# pylama:ignore=W0401,W0611
 
 from .Config import *
 from .Logs import *
