@@ -10,7 +10,6 @@ import spicemanip
 import sopel_modules.SpiceBot as SpiceBot
 
 
-@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
 @SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('channels', 'channel')
 def nickname_comand_channels(bot, trigger, botcom):
