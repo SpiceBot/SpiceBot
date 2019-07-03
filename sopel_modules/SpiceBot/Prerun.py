@@ -19,6 +19,7 @@ from .Channels import channels as botchannels
 from .MessageLog import messagelog as botmessagelog
 from .Config import config as botconfig
 from .Users import users as botusers
+from .Events import events as botevents
 
 
 def prerun(t_command_type='module', t_command_subtype=None):
@@ -27,6 +28,14 @@ def prerun(t_command_type='module', t_command_subtype=None):
 
         @functools.wraps(function)
         def internal_prerun(bot, trigger, *args, **kwargs):
+
+            # verify the bot is at a loaded state
+            while not botevents.check(botevents.BOT_LOADED):
+                pass
+
+            # Verify channel and user exist
+            verify_channel(trigger)
+            verify_user(trigger)
 
             botcom = class_create('botcom')
 
@@ -165,6 +174,29 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
 
         return internal_prerun
     return actual_decorator
+
+
+def verify_user(trigger):
+    # Identify
+    nick_id = botusers.whois_ident(trigger.nick)
+    # Verify nick is in the all list
+    botusers.add_to_all(trigger.nick, nick_id)
+    # Verify nick is in the all list
+    botusers.add_to_current(trigger.nick, nick_id)
+    # set current nick
+    botusers.mark_current_nick(trigger.nick, nick_id)
+    # add joined channel to nick list
+    botusers.add_channel(trigger.sender, nick_id)
+    # mark user as online
+    botusers.mark_user_online(nick_id)
+
+
+def verify_channel(trigger):
+    botchannels.add_channel(trigger.sender)
+    # Identify
+    nick_id = botchannels.whois_ident(trigger.nick)
+    # Verify nick is in the channel list
+    botchannels.add_to_channel(trigger.sender, trigger.nick, nick_id)
 
 
 def make_trigger_args(triggerargs_one, trigger_command_type='module'):

@@ -11,14 +11,12 @@ from sopel.db import SopelDB, _deserialize
 
 from .Config import config as botconfig
 
-from sqlalchemy.engine.url import URL
-from sqlalchemy import create_engine, Column, String, ForeignKey, Integer, Text
+from sqlalchemy import Column, String, ForeignKey, Integer, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import SQLAlchemyError
 
 import json
 import threading
-import os
 
 
 BASE = declarative_base()
@@ -37,6 +35,7 @@ class Nicknames(BASE):
     Nicknames SQLAlchemy Class
     """
     __tablename__ = 'spice_nicknames'
+    __table_args__ = {'mysql_engine': 'InnoDB', 'mysql_charset': 'utf8mb4', 'mysql_collate': 'utf8mb4_unicode_ci'}
     nick_id = Column(Integer, ForeignKey('spice_nick_ids.nick_id'), primary_key=True)
     slug = Column(String(255), primary_key=True)
     canonical = Column(String(255))
@@ -47,6 +46,7 @@ class NickValues(BASE):
     NickValues SQLAlchemy Class
     """
     __tablename__ = 'spice_nick_values'
+    __table_args__ = {'mysql_engine': 'InnoDB', 'mysql_charset': 'utf8mb4', 'mysql_collate': 'utf8mb4_unicode_ci'}
     nick_id = Column(Integer, ForeignKey('spice_nick_ids.nick_id'), primary_key=True)
     namespace = Column(String(255), primary_key=True)
     key = Column(String(255), primary_key=True)
@@ -58,6 +58,7 @@ class ChannelValues(BASE):
     ChannelValues SQLAlchemy Class
     """
     __tablename__ = 'spice_channel_values'
+    __table_args__ = {'mysql_engine': 'InnoDB', 'mysql_charset': 'utf8mb4', 'mysql_collate': 'utf8mb4_unicode_ci'}
     channel = Column(String(255), primary_key=True)
     namespace = Column(String(255), primary_key=True)
     key = Column(String(255), primary_key=True)
@@ -69,6 +70,7 @@ class PluginValues(BASE):
     PluginValues SQLAlchemy Class
     """
     __tablename__ = 'spice_plugin_values'
+    __table_args__ = {'mysql_engine': 'InnoDB', 'mysql_charset': 'utf8mb4', 'mysql_collate': 'utf8mb4_unicode_ci'}
     plugin = Column(String(255), primary_key=True)
     namespace = Column(String(255), primary_key=True)
     key = Column(String(255), primary_key=True)
@@ -532,48 +534,6 @@ class SpiceDB(object):
 class BotDatabase():
 
     def __init__(self):
-
-        db_type = botconfig.core.db_type
-
-        if db_type == 'sqlite':
-            path = botconfig.core.db_filename
-            config_dir, config_file = os.path.split(botconfig.filename)
-            config_name, _ = os.path.splitext(config_file)
-            if path is None:
-                path = os.path.join(config_dir, config_name + '.db')
-            path = os.path.expanduser(path)
-            if not os.path.isabs(path):
-                path = os.path.normpath(os.path.join(config_dir, path))
-            SopelDB.filename = path
-            SopelDB.url = 'sqlite:///%s' % path
-        # Otherwise, handle all other database engines
-        else:
-
-            if db_type == 'mysql':
-                drivername = botconfig.core.db_driver or 'mysql'
-            elif db_type == 'postgres':
-                drivername = botconfig.core.db_driver or 'postgresql'
-            elif db_type == 'oracle':
-                drivername = botconfig.core.db_driver or 'oracle'
-            elif db_type == 'mssql':
-                drivername = botconfig.core.db_driver or 'mssql+pymssql'
-            elif db_type == 'firebird':
-                drivername = botconfig.core.db_driver or 'firebird+fdb'
-            elif db_type == 'sybase':
-                drivername = botconfig.core.db_driver or 'sybase+pysybase'
-            else:
-                raise Exception('Unknown db_type')
-
-            db_user = botconfig.core.db_user
-            db_pass = botconfig.core.db_pass
-            db_host = botconfig.core.db_host
-            db_port = botconfig.core.db_port  # Optional
-            db_name = botconfig.core.db_name  # Optional, depending on DB
-
-            SopelDB.url = URL(drivername=drivername, username=db_user, password=db_pass,
-                           host=db_host, port=db_port, database=db_name, query={'charset': 'utf8'})
-
-        SopelDB.engine = create_engine(SopelDB.url, encoding='utf-8')
 
         SopelDB.nick_id_lock = threading.Lock()
 

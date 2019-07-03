@@ -9,7 +9,7 @@ import os
 
 from .Config import config as botconfig
 from .Logs import logs
-from .Events import events
+from .Events import events as botevents
 
 from .Channels import SpiceBot_Channels_MainSection
 from .Commands import SpiceBot_Commands_MainSection
@@ -73,19 +73,19 @@ def setup_config(bot):
 
 def setup_logs(bot):
     logs.log('SpiceBot_Logs', "Starting Setup Procedure")
-    events.startup_add([events.BOT_LOGS])
+    botevents.startup_add([botevents.BOT_LOGS])
     bot.config.core.logs_stdio = os.path.join(bot.config.core.logdir, 'stdio.log')
     # bot.config.core.logs_stdio = os.path.os.path.join(bot.config.core.logdir, bot.config.core.basename + '.stdio.log')
     bot.config.core.logs_exceptions = os.path.join(bot.config.core.logdir, 'exceptions.log')
     # bot.config.core.logs_exceptions = os.path.os.path.join(bot.config.core.logdir, bot.config.core.basename + '.exceptions.log')
     bot.config.core.logs_raw = os.path.join(bot.config.core.logdir, 'raw.log')
     # bot.config.core.logs_raw = os.path.os.path.join(bot.config.core.logdir, bot.config.core.basename + '.raw.log')
-    events.trigger(bot, events.BOT_LOGS, "SpiceBot_Logs")
+    botevents.trigger(bot, botevents.BOT_LOGS, "SpiceBot_Logs")
 
 
 def setup_commands(bot):
     logs.log('SpiceBot_Commands', "Setting Up Configuration")
-    events.startup_add([events.BOT_COMMANDS])
+    botevents.startup_add([botevents.BOT_COMMANDS])
     bot.config.define_section("SpiceBot_Commands", SpiceBot_Commands_MainSection, validate=False)
     bot.config.core.query_list = str(bot.config.SpiceBot_Commands.query_prefix).replace("\\", '').split("|")
     bot.config.core.prefix_list.extend(bot.config.SpiceBot_Commands.query_prefix)
@@ -98,17 +98,17 @@ def setup_google(bot):
 
 def setup_startupmonologue(bot):
     logs.log('SpiceBot_StartupMonologue', "Initial Setup processing")
-    events.startup_add([
-                        events.BOT_STARTUPMONOLOGUE_CONNECTED,
-                        events.BOT_STARTUPMONOLOGUE_CHANNELS,
-                        events.BOT_STARTUPMONOLOGUE_COMMANDS,
-                        events.BOT_STARTUPMONOLOGUE_AI,
+    botevents.startup_add([
+                        botevents.BOT_STARTUPMONOLOGUE_CONNECTED,
+                        botevents.BOT_STARTUPMONOLOGUE_CHANNELS,
+                        botevents.BOT_STARTUPMONOLOGUE_COMMANDS,
+                        botevents.BOT_STARTUPMONOLOGUE_AI,
                         ])
 
 
 def setup_channels(bot):
     logs.log('SpiceBot_Channels', "Setting Up Configuration")
-    events.startup_add([events.BOT_CHANNELS])
+    botevents.startup_add([botevents.BOT_CHANNELS])
     bot.config.define_section("SpiceBot_Channels", SpiceBot_Channels_MainSection, validate=False)
 
 
@@ -122,7 +122,7 @@ def setup_ai(bot):
     logs.log('SpiceBot_AI', "Setting Up Configuration")
     bot.config.define_section("SpiceBot_AI", SpiceBot_AI_MainSection, validate=False)
     bot.config.aibrain = os.path.join(bot.config.homedir, bot.config.core.basename + '.aibrain.brn')
-    events.startup_add([events.BOT_AI])
+    botevents.startup_add([botevents.BOT_AI])
 
 
 def setup_osd(bot):

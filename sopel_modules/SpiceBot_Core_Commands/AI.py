@@ -18,6 +18,7 @@ def ai_trigger(bot, trigger, botcom):
     bot.osd(displayval)
 
 
+@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
 @sopel.module.rule('(.*)')
 def bot_command_rule_ai(bot, trigger):
 

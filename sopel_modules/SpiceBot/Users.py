@@ -19,6 +19,7 @@ import re
 class BotUsers():
 
     def __init__(self):
+        self.who_reqs = {}
         self.lock = threading.Lock()
         # TODO AWAY
         self.dict = {
