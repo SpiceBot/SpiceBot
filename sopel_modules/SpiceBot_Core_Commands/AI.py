@@ -9,7 +9,6 @@ import sopel_modules.SpiceBot as SpiceBot
 import spicemanip
 
 
-@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
 @SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('ai')
 def ai_trigger(bot, trigger, botcom):

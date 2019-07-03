@@ -8,7 +8,6 @@ import sopel
 import sopel_modules.SpiceBot as SpiceBot
 
 
-@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
 @SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('users', 'user')
 def nickname_comand_users(bot, trigger, botcom):

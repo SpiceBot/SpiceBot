@@ -12,15 +12,12 @@ import spicemanip
 import sopel_modules.SpiceBot as SpiceBot
 
 
-@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
 @SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('query')
 def query_trigger(bot, trigger, botcom):
     bot.osd("I have been programmed to help find new commands by using `?`.")
 
 
-@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
-@SpiceBot.events.check_ready([SpiceBot.events.BOT_COMMANDS])
 @SpiceBot.prerun_query('nickname', 'nickname')
 @sopel.module.nickname_commands('(.*)')
 def query_detection_nick(bot, trigger, botcom):
@@ -86,7 +83,6 @@ def query_detection_nick(bot, trigger, botcom):
         bot.osd("The following " + bot.nick + " commands start with " + str(trigger.sb['com']) + ": " + spicemanip.main(commandlist, 'andlist') + ".", trigger.nick, 'notice')
 
 
-@SpiceBot.events.check_ready([SpiceBot.events.BOT_COMMANDS])
 @SpiceBot.prerun_query('module', 'module')
 @sopel.module.rule('^\?(.*)')
 def query_detection(bot, trigger, botcom):

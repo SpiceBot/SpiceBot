@@ -9,7 +9,6 @@ import spicemanip
 import sopel_modules.SpiceBot as SpiceBot
 
 
-@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
 @SpiceBot.prerun('module')
 @sopel.module.commands('sherlock', 'username')
 def bot_command_sherlock(bot, trigger, botcom):

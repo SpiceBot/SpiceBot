@@ -7,7 +7,7 @@ import sopel.module
 import sopel_modules.SpiceBot as SpiceBot
 
 
-@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
+@SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('help', 'docs', 'wiki')
 def bot_command_docs(bot, trigger):
     sb_git_url = str(

@@ -9,7 +9,6 @@ import time
 import sopel_modules.SpiceBot as SpiceBot
 
 
-@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
 @SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('uptime')
 def bot_command_uptime(bot, trigger, botcom):

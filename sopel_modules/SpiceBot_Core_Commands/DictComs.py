@@ -15,7 +15,6 @@ from word2number import w2n
 from random import randint
 
 
-@SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
 @SpiceBot.prerun('module', 'dictcom')
 @sopel.module.commands('(.*)')
 def command_dictcom(bot, trigger, botcom):

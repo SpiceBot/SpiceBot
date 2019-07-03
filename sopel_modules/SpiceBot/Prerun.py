@@ -19,6 +19,7 @@ from .Channels import channels as botchannels
 from .MessageLog import messagelog as botmessagelog
 from .Config import config as botconfig
 from .Users import users as botusers
+from .Events import events as botevents
 
 
 def prerun(t_command_type='module', t_command_subtype=None):
@@ -27,6 +28,10 @@ def prerun(t_command_type='module', t_command_subtype=None):
 
         @functools.wraps(function)
         def internal_prerun(bot, trigger, *args, **kwargs):
+
+            # verify the bot is at a loaded state
+            while not botevents.check(botevents.BOT_LOADED):
+                pass
 
             # Verify channel and user exist
             verify_channel(trigger)
