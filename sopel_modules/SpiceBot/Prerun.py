@@ -418,6 +418,7 @@ def trigger_hyphen_args(trigger_args_part):
 def trigger_hyphen_arg_handler(bot, trigger):
 
     # Commands that cannot run via privmsg
+    # TODO --check should work for commands that don't exist
     if trigger.sb["hyphen_arg"] in ['check']:
         if trigger.sb["com"].lower() != trigger.sb["realcom"]:
             botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["comtext"] + " is a valid alias command for " + trigger.sb["realcomtext"])
