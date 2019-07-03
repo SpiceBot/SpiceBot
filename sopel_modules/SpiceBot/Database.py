@@ -35,6 +35,7 @@ class Nicknames(BASE):
     Nicknames SQLAlchemy Class
     """
     __tablename__ = 'spice_nicknames'
+    __table_args__ = {'mysql_engine': 'InnoDB', 'mysql_charset': 'utf8mb4', 'mysql_collate': 'utf8mb4_unicode_ci'}
     nick_id = Column(Integer, ForeignKey('spice_nick_ids.nick_id'), primary_key=True)
     slug = Column(String(255), primary_key=True)
     canonical = Column(String(255))
@@ -45,10 +46,11 @@ class NickValues(BASE):
     NickValues SQLAlchemy Class
     """
     __tablename__ = 'spice_nick_values'
+    __table_args__ = {'mysql_engine': 'InnoDB', 'mysql_charset': 'utf8mb4', 'mysql_collate': 'utf8mb4_unicode_ci'}
     nick_id = Column(Integer, ForeignKey('spice_nick_ids.nick_id'), primary_key=True)
     namespace = Column(String(255), primary_key=True)
     key = Column(String(255), primary_key=True)
-    value = Column(Text(collation='utf8mb4_bin'))
+    value = Column(Text())
 
 
 class ChannelValues(BASE):
@@ -56,10 +58,11 @@ class ChannelValues(BASE):
     ChannelValues SQLAlchemy Class
     """
     __tablename__ = 'spice_channel_values'
+    __table_args__ = {'mysql_engine': 'InnoDB', 'mysql_charset': 'utf8mb4', 'mysql_collate': 'utf8mb4_unicode_ci'}
     channel = Column(String(255), primary_key=True)
     namespace = Column(String(255), primary_key=True)
     key = Column(String(255), primary_key=True)
-    value = Column(Text(collation='utf8mb4_bin'))
+    value = Column(Text())
 
 
 class PluginValues(BASE):
@@ -67,10 +70,11 @@ class PluginValues(BASE):
     PluginValues SQLAlchemy Class
     """
     __tablename__ = 'spice_plugin_values'
+    __table_args__ = {'mysql_engine': 'InnoDB', 'mysql_charset': 'utf8mb4', 'mysql_collate': 'utf8mb4_unicode_ci'}
     plugin = Column(String(255), primary_key=True)
     namespace = Column(String(255), primary_key=True)
     key = Column(String(255), primary_key=True)
-    value = Column(Text(collation='utf8mb4_bin'))
+    value = Column(Text())
 
 
 class SpiceDB(object):
