@@ -35,6 +35,7 @@ class BotEvents(object):
     def __init__(self):
         self.lock = threading.Lock()
         self.RPL_WELCOME = '001'  # This is a defined IRC event
+        self.RPL_MYINFO = '004'  # This is a defined IRC event
         self.RPL_ISUPPORT = '005'  # This is a defined IRC event
         self.RPL_WHOREPLY = '352'  # This is a defined IRC event
         self.RPL_NAMREPLY = '353'  # This is a defined IRC event

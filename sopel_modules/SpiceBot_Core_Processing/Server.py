@@ -18,3 +18,9 @@ def server_name(bot, trigger):
 @sopel.module.rule('.*')
 def parse_event_005(bot, trigger):
     SpiceBot.server.parse_reply_isupport(trigger)
+
+
+@sopel.module.event(SpiceBot.events.RPL_MYINFO)
+@sopel.module.rule('.*')
+def parse_event_004(bot, trigger):
+    bot.osd(str(trigger), "#deathbybandaid")
