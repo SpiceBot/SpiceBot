@@ -18,4 +18,5 @@ def server_name(bot, trigger):
 @sopel.module.rule('.*')
 def parse_event_005(bot, trigger):
     SpiceBot.server.parse_reply_isupport(trigger)
-    bot.osd(str(SpiceBot.server.isupport), "#deathbybandaid")
+    for key in list(SpiceBot.server.isupport):
+        bot.osd([key, str(SpiceBot.server.isupport['key'])], "#deathbybandaid")
