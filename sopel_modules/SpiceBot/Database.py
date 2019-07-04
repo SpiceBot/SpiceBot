@@ -80,18 +80,6 @@ class PluginValues(BASE):
     value = Column(Text())
 
 
-class ChannelNickValues(BASE):
-    """
-    PluginValues SQLAlchemy Class
-    """
-    __tablename__ = 'spice_plugin_values'
-    __table_args__ = MYSQL_TABLE_ARGS
-    plugin = Column(String(255), primary_key=True)
-    namespace = Column(String(255), primary_key=True)
-    key = Column(String(255), primary_key=True)
-    value = Column(Text())
-
-
 class SpiceDB(object):
 
     # NICK FUNCTIONS
@@ -660,8 +648,8 @@ class BotDatabase():
     def adjust_plugin_value(self, plugin, key, value, namespace='default'):
         return self.db.adjust_plugin_value(plugin, key, value, namespace)
 
-    def adjust_plugin_list(self, nick, key, entries, adjustmentdirection, namespace='default'):
-        return self.db.adjust_plugin_list(nick, key, entries, adjustmentdirection, namespace)
+    def adjust_plugin_list(self, plugin, key, entries, adjustmentdirection, namespace='default'):
+        return self.db.adjust_plugin_list(plugin, key, entries, adjustmentdirection, namespace)
 
 
 db = BotDatabase()
