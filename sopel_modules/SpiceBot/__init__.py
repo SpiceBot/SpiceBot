@@ -21,6 +21,7 @@ from .Prerun import *
 from .Commands import *
 from .Events import *
 from .StartupMonologue import *
+from .Server import *
 from .Channels import *
 from .Users import *
 from .AI import *
