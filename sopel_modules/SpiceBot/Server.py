@@ -22,9 +22,16 @@ class BotServer():
                                     'PRIVMSG': 1,
                                     },
                         }
+        self.myinfo = {}
 
     def rpl_welcome(self, trigger):
         self.dict["host"] = str(trigger.sender).lower()
+
+    def parse_reply_myinfo(self, trigger):
+        self.myinfo["servername"] = trigger.args[1]
+        self.myinfo["version"] = trigger.args[2]
+        self.myinfo["usermodes"] = list(trigger.args[3])
+        self.myinfo["channelmodes"] = list(trigger.args[4])
 
     def parse_reply_isupport(self, trigger):
 
