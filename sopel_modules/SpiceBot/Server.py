@@ -38,29 +38,33 @@ class BotServer():
 
         parameters = trigger.args[1:-1]
         for param in parameters:
+
+            # check for value associated with the parameter
             if '=' in param:
-                if param.startswith("TARGMAX"):
-                    param = str(param).split('=')[1]
-                    settings = str(param).split(',')
-                    for setting in settings:
-                        settingname = str(setting).split(':')[0]
-                        if settingname.upper() in ['NOTICE', 'PRIVMSG']:
-                            try:
-                                value = str(setting).split(':')[1] or None
-                            except IndexError:
-                                value = None
-                            if value:
-                                if settingname.upper() == 'NOTICE':
-                                    botconfig.SpiceBot_OSD.notice = int(value)
-                                elif settingname.upper() == 'PRIVMSG':
-                                    botconfig.SpiceBot_OSD.privmsg = int(value)
-                        if settingname.upper() in ['KICK']:
-                            try:
-                                value = str(setting).split(':')[1] or None
-                            except IndexError:
-                                value = None
-                            if value:
-                                botconfig.SpiceBot_Kick.kick = int(value)
+                paramname = str(param).split('=')[0]
+                if param in list(self.isupport.keys()):
+                    if param.startswith("TARGMAX"):
+                        param = str(param).split('=')[1]
+                        settings = str(param).split(',')
+                        for setting in settings:
+                            settingname = str(setting).split(':')[0]
+                            if settingname.upper() in ['NOTICE', 'PRIVMSG']:
+                                try:
+                                    value = str(setting).split(':')[1] or None
+                                except IndexError:
+                                    value = None
+                                if value:
+                                    if settingname.upper() == 'NOTICE':
+                                        botconfig.SpiceBot_OSD.notice = int(value)
+                                    elif settingname.upper() == 'PRIVMSG':
+                                        botconfig.SpiceBot_OSD.privmsg = int(value)
+                            if settingname.upper() in ['KICK']:
+                                try:
+                                    value = str(setting).split(':')[1] or None
+                                except IndexError:
+                                    value = None
+                                if value:
+                                    botconfig.SpiceBot_Kick.kick = int(value)
 
 
 server = BotServer()

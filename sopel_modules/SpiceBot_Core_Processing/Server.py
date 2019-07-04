@@ -23,4 +23,7 @@ def parse_event_005(bot, trigger):
     SpiceBot.server.linenumber += 1
     parameters = trigger.args[1:-1]
     for param in parameters:
-        bot.osd(str(param), "#deathbybandaid")
+        if '=' in param:
+            paramname = str(param).split('=')[0]
+            paramvalue = str(param).split('=')[1]
+            bot.osd([str(paramname), "=", str(paramvalue)], "#deathbybandaid")
