@@ -37,7 +37,7 @@ class BotServer():
 
             # check for value associated with the parameter
             if '=' not in param:
-                self.isupport[param] = None
+                self.isupport[str(param)] = None
             else:
 
                 key, raw_value = param.split('=')
