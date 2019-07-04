@@ -6,9 +6,12 @@ This is the SpiceBot OSD system.
 import sopel
 
 
-@sopel.module.event('005')
+import sopel_modules.SpiceBot as SpiceBot
+
+
+@sopel.module.event(SpiceBot.events.RPL_ISUPPORT)
 @sopel.module.rule('.*')
-def parse_event_005(bot, trigger):
+def parse_event_005_osd(bot, trigger):
     if trigger.args[-1] != 'are supported by this server':
         return
     parameters = trigger.args[1:-1]
