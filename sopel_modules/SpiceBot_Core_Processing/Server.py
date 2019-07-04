@@ -17,6 +17,9 @@ def server_name(bot, trigger):
 @sopel.module.event(SpiceBot.events.RPL_ISUPPORT)
 @sopel.module.rule('.*')
 def parse_event_005(bot, trigger):
+    if trigger.args[-1] != 'are supported by this server':
+        return
+    parameters = trigger.args[1:-1]
     SpiceBot.server.linenumber += 1
-    bot.osd([str(SpiceBot.server.linenumber), str(trigger)], "deathbybandaid")
+    bot.osd([str(SpiceBot.server.linenumber), str(parameters)], "deathbybandaid")
     # SpiceBot.server.parse_reply_isupport(trigger)
