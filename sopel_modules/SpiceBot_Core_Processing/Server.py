@@ -23,4 +23,4 @@ def parse_event_005(bot, trigger):
 @sopel.module.event(SpiceBot.events.RPL_MYINFO)
 @sopel.module.rule('.*')
 def parse_event_004(bot, trigger):
-    bot.osd(str(trigger), "#deathbybandaid")
+    bot.osd(str(trigger.args), "#deathbybandaid")
