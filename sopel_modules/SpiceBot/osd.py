@@ -12,7 +12,7 @@ import time
 from collections import abc
 import sys
 
-from .Server import config as botserver
+from .Server import server as botserver
 
 
 class SpiceBot_OSD(StaticSection):
