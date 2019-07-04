@@ -5,11 +5,14 @@ This is the SpiceBot Server system.
 """
 
 from .Config import config as botconfig
+from .osd import SpiceBot_OSD
+from .Kick import SpiceBot_Kick
 
 
 class BotServer():
     """This Logs all server values of relevance'"""
     def __init__(self):
+        self.setup_isupport()
         self.linenumber = 0
         self.dict = {
                     "host_connect": botconfig.core.host,
@@ -22,6 +25,10 @@ class BotServer():
                                     'PRIVMSG': botconfig.SpiceBot_OSD.privmsg,
                                     },
                         }
+
+    def setup_isupport(self):
+        botconfig.define_section("SpiceBot_OSD", SpiceBot_OSD, validate=False)
+        botconfig.define_section("SpiceBot_Kick", SpiceBot_Kick, validate=False)
 
     def rpl_welcome(self, trigger):
         self.dict["host"] = str(trigger.sender).lower()
@@ -42,6 +49,8 @@ class BotServer():
 
                 key, raw_value = param.split('=')
                 if ',' not in raw_value:
+                    if str(raw_value).isdigit():
+                        setting_value = int(raw_value)
                     self.isupport[key] = raw_value
                 else:
 

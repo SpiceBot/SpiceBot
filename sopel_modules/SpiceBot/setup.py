@@ -137,7 +137,6 @@ def setup_osd(bot):
     # verify config settings for server
     logs.log('SpiceBot_OSD', "Checking for config settings")
     bot.config.define_section("SpiceBot_OSD", SpiceBot_OSD, validate=False)
-    botconfig.define_section("SpiceBot_OSD", SpiceBot_OSD, validate=False)
 
 
 def setup_kick(bot):
@@ -149,7 +148,6 @@ def setup_kick(bot):
     # verify config settings for server
     logs.log('SpiceBot_Kick', "Checking for config settings")
     bot.config.define_section("SpiceBot_Kick", SpiceBot_Kick, validate=False)
-    botconfig.define_section("SpiceBot_Kick", SpiceBot_Kick, validate=False)
 
 
 def setup_gif(bot):
