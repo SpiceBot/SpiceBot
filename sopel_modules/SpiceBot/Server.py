@@ -23,5 +23,8 @@ class BotServer():
         else:
             raise Exception('Server dict does not contain a function or key ' + str(name.lower()))
 
+    def rpl_welcome(self, trigger):
+        self.dict["host"] = str(trigger.sender).lower()
+
 
 server = BotServer()
