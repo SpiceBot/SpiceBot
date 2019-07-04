@@ -16,13 +16,17 @@ class BotServer():
                     "host": botconfig.core.host,
                     }
         self.isupport = {
-                        "TARGMAX": {},
+                        "TARGMAX": {
+                                    "KICK": 1,
+                                    },
                         }
 
     def __getattr__(self, name):
         ''' will only get called for undefined attributes '''
         """We will try to find a dict value, or return None"""
         if name.lower() in list(self.dict.keys()):
+            return self.dict[str(name).lower()]
+        elif name.lower() in list(self.isupport.keys()):
             return self.dict[str(name).lower()]
         else:
             raise Exception('Server dict does not contain a function or key ' + str(name.lower()))
@@ -40,11 +44,18 @@ class BotServer():
         for param in parameters:
 
             # check for value associated with the parameter
-            if '=' in param:
+            if '=' not in param:
+                self.isupport[param] = None
+            else:
                 key, raw_value = param.split('=')
 
-                # Only gather parameters that we want
-                if key in list(self.isupport.keys()):
+                if ',' not in raw_value:
+                    self.isupport[key] = raw_value
+                else:
+
+                    settings = str(raw_value).split(',')
+                    for setting in settings:
+                        settingname, setting_value = param.split('=')
 
                     if key.upper() == "TARGMAX":
 

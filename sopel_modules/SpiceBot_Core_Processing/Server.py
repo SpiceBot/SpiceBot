@@ -30,4 +30,6 @@ def parse_event_005(bot, trigger):
                 for setting in settings:
                     bot.osd([str(key), "includes", str(setting)], "#deathbybandaid")
             else:
+                if not raw_value:
+                    raw_value = None
                 bot.osd([str(key), "=", str(raw_value)], "#deathbybandaid")
