@@ -24,6 +24,10 @@ def parse_event_005(bot, trigger):
     parameters = trigger.args[1:-1]
     for param in parameters:
         if '=' in param:
-            paramname = str(param).split('=')[0]
-            paramvalue = str(param).split('=')[1]
-            bot.osd([str(paramname), "=", str(paramvalue)], "#deathbybandaid")
+            key, raw_value = param.split('=')
+            if ',' not in raw_value:
+                settings = str(raw_value).split(',')
+                for setting in settings:
+                    bot.osd([str(key), "includes", str(setting)], "#deathbybandaid")
+            else:
+                bot.osd([str(key), "=", str(raw_value)], "#deathbybandaid")

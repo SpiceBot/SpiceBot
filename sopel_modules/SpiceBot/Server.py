@@ -41,11 +41,15 @@ class BotServer():
 
             # check for value associated with the parameter
             if '=' in param:
-                paramname = str(param).split('=')[0]
-                if param in list(self.isupport.keys()):
-                    if param.startswith("TARGMAX"):
-                        param = str(param).split('=')[1]
-                        settings = str(param).split(',')
+                key, raw_value = param.split('=')
+
+                # Only gather parameters that we want
+                if key in list(self.isupport.keys()):
+
+                    if key.upper() == "TARGMAX":
+
+                        # split the settings by comma seperation
+                        settings = str(raw_value).split(',')
                         for setting in settings:
                             settingname = str(setting).split(':')[0]
                             if settingname.upper() in ['NOTICE', 'PRIVMSG']:
