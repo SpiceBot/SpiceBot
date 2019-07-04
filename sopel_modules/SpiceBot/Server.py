@@ -61,6 +61,10 @@ class BotServer():
                         else:
 
                             setting_name, setting_value = setting.split(":")
+                            try:
+                                setting_value = str(setting).split(':')[1] or None
+                            except IndexError:
+                                setting_value = None
                             if str(setting_value).isdigit():
                                 setting_value = int(setting_value)
 
