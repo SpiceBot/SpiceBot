@@ -19,4 +19,4 @@ def server_name(bot, trigger):
 def parse_event_005(bot, trigger):
     SpiceBot.server.parse_reply_isupport(trigger)
     for key in list(SpiceBot.server.isupport.keys()):
-        bot.osd([key, str(SpiceBot.server.isupport['key'])], "#deathbybandaid")
+        bot.osd([key, str(SpiceBot.server.isupport[key])], "#deathbybandaid")
