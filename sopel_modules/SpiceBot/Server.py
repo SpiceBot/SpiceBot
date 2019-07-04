@@ -5,8 +5,6 @@ This is the SpiceBot Server system.
 """
 
 from .Config import config as botconfig
-from .osd import SpiceBot_OSD
-from .Kick import SpiceBot_Kick
 
 
 class BotServer():
@@ -20,15 +18,11 @@ class BotServer():
                     }
         self.isupport = {
                         "TARGMAX": {
-                                    "KICK": botconfig.SpiceBot_Kick.kick,
-                                    'NOTICE': botconfig.SpiceBot_OSD.notice,
-                                    'PRIVMSG': botconfig.SpiceBot_OSD.privmsg,
+                                    "KICK": 1,
+                                    'NOTICE': 1,
+                                    'PRIVMSG': 1,
                                     },
                         }
-
-    def setup_isupport(self):
-        botconfig.define_section("SpiceBot_OSD", SpiceBot_OSD, validate=False)
-        botconfig.define_section("SpiceBot_Kick", SpiceBot_Kick, validate=False)
 
     def rpl_welcome(self, trigger):
         self.dict["host"] = str(trigger.sender).lower()
