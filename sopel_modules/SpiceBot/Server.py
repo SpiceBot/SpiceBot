@@ -55,7 +55,7 @@ class BotServer():
 
                     settings = str(raw_value).split(',')
                     for setting in settings:
-                        settingname, setting_value = param.split('=')
+                        settingname, setting_value = setting.split(',')
 
                     if key.upper() == "TARGMAX":
 
