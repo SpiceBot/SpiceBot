@@ -54,27 +54,27 @@ class BotServer():
                 if ',' not in raw_value:
                     if str(raw_value).isdigit():
                         setting_value = int(raw_value)
-                    self.isupport[key] = raw_value
+                    self.isupport[str(key)] = raw_value
                 else:
 
-                    if key not in list(self.isupport.keys()):
-                        self.isupport[key] = {}
+                    if str(key) not in list(self.isupport.keys()):
+                        self.isupport[str(key)] = {}
 
-                    if not isinstance(self.isupport[key], dict):
-                        self.isupport[key] = {}
+                    if not isinstance(self.isupport[str(key)], dict):
+                        self.isupport[str(key)] = {}
 
                     settings = str(raw_value).split(',')
                     for setting in settings:
 
                         if ":" not in setting:
-                            self.isupport[key][setting] = None
+                            self.isupport[str(key)][str(setting)] = None
                         else:
 
                             setting_name, setting_value = setting.split(":")
                             if str(setting_value).isdigit():
                                 setting_value = int(setting_value)
 
-                            self.isupport[key][setting_name] = setting_value
+                            self.isupport[str(key)][str(setting_name)] = setting_value
 
 
 server = BotServer()
