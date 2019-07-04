@@ -10,7 +10,6 @@ from .Config import config as botconfig
 class BotServer():
     """This Logs all server values of relevance'"""
     def __init__(self):
-        self.setup_isupport()
         self.linenumber = 0
         self.dict = {
                     "host_connect": botconfig.core.host,
@@ -23,6 +22,16 @@ class BotServer():
                                     'PRIVMSG': 1,
                                     },
                         }
+
+    def __getattr__(self, name):
+        ''' will only get called for undefined attributes '''
+        """We will try to find a dict value, or return None"""
+        if name.lower() in list(self.dict.keys()):
+            return self.dict[str(name).lower()]
+        elif name.lower() in list(self.isupport.keys()):
+            return self.dict[str(name).lower()]
+        else:
+            raise Exception('Server dict does not contain a function or key ' + str(name.lower()))
 
     def rpl_welcome(self, trigger):
         self.dict["host"] = str(trigger.sender).lower()
