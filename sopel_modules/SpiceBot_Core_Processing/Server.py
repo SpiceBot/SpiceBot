@@ -11,4 +11,5 @@ import sopel_modules.SpiceBot as SpiceBot
 @sopel.module.event(SpiceBot.events.RPL_WELCOME)
 @sopel.module.rule('.*')
 def server_name(bot, trigger):
-    bot.say(str(trigger.sender), "deathbybandaid")
+    SpiceBot.server.dict["host"] = str(trigger.sender).lower()
+    bot.say(str(SpiceBot.server.host), "deathbybandaid")
