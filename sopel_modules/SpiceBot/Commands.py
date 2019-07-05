@@ -311,13 +311,25 @@ class BotCommands():
                     # Commands
                     if str(detected_line).startswith("commands"):
                         comtype = "module"
-                        validcoms = eval(str(detected_line).split("commands")[-1])
+                        try:
+                            validcoms = eval(str(detected_line).split("commands")[-1])
+                        except Exception as e:
+                            validcoms = e
+                            validcoms = []
                     elif str(detected_line).startswith("nickname_commands"):
                         comtype = "nickname"
-                        validcoms = eval(str(detected_line).split("nickname_commands")[-1])
+                        try:
+                            validcoms = eval(str(detected_line).split("nickname_commands")[-1])
+                        except Exception as e:
+                            validcoms = e
+                            validcoms = []
                     elif str(detected_line).startswith("rule"):
                         comtype = "rule"
-                        validcoms = eval(str(detected_line).split("rule")[-1])
+                        try:
+                            validcoms = eval(str(detected_line).split("rule")[-1])
+                        except Exception as e:
+                            validcoms = e
+                            validcoms = []
 
                     if isinstance(validcoms, tuple):
                         validcoms = list(validcoms)
