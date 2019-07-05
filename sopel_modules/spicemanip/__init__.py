@@ -17,6 +17,9 @@ class Spicemanip():
         pass
 
     def __call__(self, inputs, task=None, output_type=None):
+        self.inputs = inputs
+        self.inputs_list = self.input_handler(self.inputs)
+        self.output_type = output_type
         return self.core(inputs, task, output_type)
 
     def input_handler(self, inputs):
@@ -39,9 +42,6 @@ class Spicemanip():
         return outputs
 
     def core(self, inputs, task, output_type=None):
-        self.inputs = inputs
-        self.inputs_list = self.input_handler(self.inputs)
-        self.output_type = output_type
         return self.inputs_list
 
 
