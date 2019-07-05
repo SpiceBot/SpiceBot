@@ -404,27 +404,44 @@ def trigger_hyphen_args(trigger_args_part):
                         'contribs', 'contrib', "contributors",
                         'alias', 'aliases'
                         ]
+    numdict = {
+                "last": -1
+                }
     hyphen_args = []
     trigger_args_unhyphend = []
     for worditem in trigger_args_part:
         if str(worditem).startswith("--"):
-            clipped_word = worditem[2:]
+            clipped_word = str(worditem[2:]).lower()
+
+            # valid arg above
             if clipped_word in valid_hyphen_args:
                 hyphen_args.append(clipped_word)
+
+            # numbered args
             elif str(clipped_word).isdigit():
                 hyphen_args.append(int(clipped_word))
+            elif clipped_word in list(numdict.keys()):
+                hyphen_args.append(int(numdict[clipped_word]))
+
             else:
+
+                # check if arg word is a number
                 try:
                     clipped_word = w2n.word_to_num(str(clipped_word))
                     hyphen_args.append(int(clipped_word))
+
+        # word is not a valid arg or number
                 except ValueError:
                     trigger_args_unhyphend.append(worditem)
         else:
             trigger_args_unhyphend.append(worditem)
+
+    # only one arg allowed per && split
     if len(hyphen_args):
         hyphenarg = hyphen_args[0]
     else:
         hyphenarg = None
+
     return trigger_args_unhyphend, hyphenarg
 
 
