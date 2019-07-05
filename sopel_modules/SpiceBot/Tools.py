@@ -14,7 +14,7 @@ from operator import itemgetter
 from collections import abc
 from pygit2 import clone_repository
 
-import spicemanip
+import sopel_modules.spicemanip as spicemanip
 
 from .Logs import logs
 from .Config import config as botconfig

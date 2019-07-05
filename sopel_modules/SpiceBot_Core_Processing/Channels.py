@@ -7,7 +7,7 @@ import sopel
 
 import time
 
-import spicemanip
+import sopel_modules.spicemanip as spicemanip
 
 import sopel_modules.SpiceBot as SpiceBot
 

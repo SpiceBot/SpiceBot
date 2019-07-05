@@ -8,7 +8,7 @@ from .Config import config as botconfig
 from .Read import read as botread
 from .Commands import commands as botcommands
 
-import spicemanip
+import sopel_modules.spicemanip as spicemanip
 
 from fake_useragent import UserAgent
 import urllib

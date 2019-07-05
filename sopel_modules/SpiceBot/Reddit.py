@@ -7,7 +7,7 @@ This is the SpiceBot Reddit system.
 from sopel.config.types import StaticSection, ValidatedAttribute
 from sopel.formatting import bold, color, colors
 
-import spicemanip
+import sopel_modules.spicemanip as spicemanip
 
 import datetime as dt
 import praw

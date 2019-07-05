@@ -1,7 +1,7 @@
 # coding=utf8
 from __future__ import unicode_literals, absolute_import, division, print_function
 
-import spicemanip
+import sopel_modules.spicemanip as spicemanip
 
 import re
 from num2words import num2words

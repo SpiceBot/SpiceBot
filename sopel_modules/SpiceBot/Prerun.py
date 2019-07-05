@@ -11,7 +11,7 @@ import copy
 import datetime
 from word2number import w2n
 
-import spicemanip
+import sopel_modules.spicemanip as spicemanip
 
 from .Tools import command_permissions_check, class_create
 from .Commands import commands as botcommands

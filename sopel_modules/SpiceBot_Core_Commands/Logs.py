@@ -7,7 +7,7 @@ This is the SpiceBot Logs System
 # sopel imports
 import sopel.module
 
-import spicemanip
+import sopel_modules.spicemanip as spicemanip
 
 import sopel_modules.SpiceBot as SpiceBot
 

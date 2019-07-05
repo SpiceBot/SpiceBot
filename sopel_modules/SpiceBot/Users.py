@@ -8,7 +8,7 @@ from sopel.tools import Identifier
 from .Database import db as botdb
 from .Tools import is_number, inlist, similar, array_arrangesort
 
-import spicemanip
+import sopel_modules.spicemanip as spicemanip
 
 import threading
 import re

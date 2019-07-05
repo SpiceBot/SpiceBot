@@ -9,7 +9,7 @@ This Class stores logs in an easy to access manner
 import threading
 import os
 import sys
-import spicemanip
+import sopel_modules.spicemanip as spicemanip
 
 from .Config import config as botconfig
 

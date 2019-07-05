@@ -15,7 +15,7 @@ from .Database import db as botdb
 from .Config import config as botconfig
 from .Read import read as botread
 
-import spicemanip
+import sopel_modules.spicemanip as spicemanip
 
 
 class SpiceBot_AI_MainSection(StaticSection):

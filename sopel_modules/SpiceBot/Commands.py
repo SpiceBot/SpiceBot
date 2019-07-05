@@ -13,7 +13,7 @@ import os
 import threading
 import copy
 
-import spicemanip
+import sopel_modules.spicemanip as spicemanip
 import sopel_modules
 
 from .Logs import logs

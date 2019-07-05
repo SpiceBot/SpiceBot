@@ -7,7 +7,7 @@ This Class stores commands in an easy to access manner
 """
 import sopel
 
-import spicemanip
+import sopel_modules.spicemanip as spicemanip
 
 import sopel_modules.SpiceBot as SpiceBot
 

@@ -9,7 +9,7 @@ import sopel.module
 
 import sopel_modules.SpiceBot as SpiceBot
 
-import spicemanip
+import sopel_modules.spicemanip as spicemanip
 
 from word2number import w2n
 from random import randint

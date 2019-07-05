@@ -6,7 +6,7 @@ import sopel.module
 
 import sopel_modules.SpiceBot as SpiceBot
 
-import spicemanip
+import sopel_modules.spicemanip as spicemanip
 
 
 @SpiceBot.prerun('nickname')
