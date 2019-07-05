@@ -16,13 +16,19 @@ class BotServer():
                     "host": botconfig.core.host,
                     }
         self.isupport = {
+                        "NETWORK": botconfig.core.host,
                         "TARGMAX": {
                                     "KICK": 1,
                                     'NOTICE': 1,
                                     'PRIVMSG': 1,
                                     },
                         }
-        self.myinfo = {}
+        self.myinfo = {
+                        "servername": botconfig.core.host,
+                        "version": None,
+                        "usermodes": [],
+                        "channelmodes": []
+                        }
 
     def rpl_welcome(self, trigger):
         self.dict["host"] = str(trigger.sender).lower()
