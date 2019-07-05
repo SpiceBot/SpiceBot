@@ -11,7 +11,7 @@ import random
 import collections
 
 
-class spicemanipnew():
+class Spicemanip():
 
     def __init__(self):
         self.test = "test"
@@ -42,7 +42,7 @@ class spicemanipnew():
         return self.inputs_list
 
 
-core = spicemanipnew()
+core = Spicemanip()
 
 
 # Hub
