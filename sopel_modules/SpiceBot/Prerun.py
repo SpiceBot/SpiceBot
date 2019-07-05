@@ -324,8 +324,8 @@ def trigger_runstatus(bot, trigger, botcom):
             botmessagelog.messagelog_error(botcom.dict["log_id"], "The admin switch (-a) is for use by authorized nicks ONLY.")
             return False
 
-    if botcom.dict["hyphen_arg"]:
-        return False
+    # if botcom.dict["hyphen_arg"]:
+    #    return False
 
     if not trigger.is_privmsg:
         if str(trigger.sender).lower() in [x.lower() for x in botcom.dict["dict"]["hardcoded_channel_block"]]:
