@@ -17,7 +17,8 @@ class spicemanipnew():
 
         self.inputs = inputs
         self.inputs_list = self.input_handler(self.inputs)
-        return self.inputs_list
+        self.output_type = output_type
+        self.main = self.core()
 
     def input_handler(self, inputs):
         # Input needs to be a list, but don't split a word into letters
@@ -39,8 +40,7 @@ class spicemanipnew():
         return outputs
 
     def core(self, inputs=None, task='create', output_type=None):
-        if not inputs:
-            return self.output_handler([""], output_type=None)
+        return self.inputs_list
 
     """
     # Hub
