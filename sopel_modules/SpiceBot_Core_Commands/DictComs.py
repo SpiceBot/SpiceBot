@@ -146,7 +146,7 @@ def bot_dictcom_process(bot, trigger, botcom):
 
     botcom.dict["success"] = True
     if botcom.dict["dict"][botcom.dict["responsekey"]]["type"] in ['simple', 'fillintheblank', "target", 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "translate", "responses"]:
-        return bot_dictcom_responses(bot, trigger)
+        return bot_dictcom_responses(bot, trigger, botcom)
     else:
         command_function_run = str('bot_dictcom_' + botcom.dict["dict"][botcom.dict["responsekey"]]["type"] + '(bot, trigger, botcom)')
         eval(command_function_run)
