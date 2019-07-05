@@ -271,13 +271,13 @@ class BotCommands():
             foldername = str(folderpath).split("/")[-1]
 
             # check for json reference file
-            validcomdict = botread.module_json_to_dict(str(modulefile))
+            comdict = botread.module_json_to_dict(str(modulefile))
 
             # replace json defaults
-            validcomdict["filepath"] = str(modulefile)
-            validcomdict["filename"] = str(filename_base)
-            validcomdict["folderpath"] = str(folderpath)
-            validcomdict["foldername"] = str(foldername)
+            comdict["filepath"] = str(modulefile)
+            comdict["filename"] = str(filename_base)
+            comdict["folderpath"] = str(folderpath)
+            comdict["foldername"] = str(foldername)
 
             detected_lines = []
             for line in module_file_lines:
@@ -305,43 +305,35 @@ class BotCommands():
             if len(detected_lines):
 
                 filelinelist = []
-                currentsuccesslines = 0
                 for detected_line in detected_lines:
-                    try:
+                    validcomdict = copy.deepcopy(comdict)
 
-                        # Commands
-                        if str(detected_line).startswith("commands"):
-                            comtype = "module"
-                            validcoms = eval(str(detected_line).split("commands")[-1])
-                        elif str(detected_line).startswith("nickname_commands"):
-                            comtype = "nickname"
-                            validcoms = eval(str(detected_line).split("nickname_commands")[-1])
-                        elif str(detected_line).startswith("rule"):
-                            comtype = "rule"
-                            validcoms = eval(str(detected_line).split("rule")[-1])
+                    # Commands
+                    if str(detected_line).startswith("commands"):
+                        comtype = "module"
+                        validcoms = eval(str(detected_line).split("commands")[-1])
+                    elif str(detected_line).startswith("nickname_commands"):
+                        comtype = "nickname"
+                        validcoms = eval(str(detected_line).split("nickname_commands")[-1])
+                    elif str(detected_line).startswith("rule"):
+                        comtype = "rule"
+                        validcoms = eval(str(detected_line).split("rule")[-1])
 
-                        if isinstance(validcoms, tuple):
-                            validcoms = list(validcoms)
-                        else:
-                            validcoms = [validcoms]
-                        for regexcom in ["(.*)", '^\?(.*)']:
-                            if regexcom in validcoms:
-                                while regexcom in validcoms:
-                                    validcoms.remove(regexcom)
+                    if isinstance(validcoms, tuple):
+                        validcoms = list(validcoms)
+                    else:
+                        validcoms = [validcoms]
+                    for regexcom in ["(.*)", '^\?(.*)']:
+                        if regexcom in validcoms:
+                            while regexcom in validcoms:
+                                validcoms.remove(regexcom)
 
-                        if len(validcoms):
-                            validcomdict["comtype"] = comtype
-                            validcomdict["validcoms"] = validcoms
-                            filelinelist.append(validcomdict)
-                            currentsuccesslines += 1
-                    except Exception as e:
-                        addnothing = e
-                        if addnothing:
-                            currentsuccesslines += 0
+                    if len(validcoms):
+                        validcomdict["comtype"] = comtype
+                        validcomdict["validcoms"] = validcoms
+                        filelinelist.append(validcomdict)
 
-                if len(filelinelist):
-                    for vcomdict in filelinelist:
-                        self.register(vcomdict)
+                        self.register(validcomdict)
 
 
 commands = BotCommands()
