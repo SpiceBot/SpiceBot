@@ -102,10 +102,10 @@ def prerun(t_command_type='module', t_command_subtype=None):
                 botcom.dict["args"], botcom.dict["hyphen_arg"] = trigger_hyphen_args(botcom.dict["args"])
                 if not botcom.dict["hyphen_arg"]:
                     # check if anything prohibits the nick from running the command
-                    if trigger_runstatus(bot, trigger):
+                    if trigger_runstatus(bot, trigger, botcom):
                         function(bot, trigger, botcom, *args, **kwargs)
                 else:
-                    trigger_hyphen_arg_handler(bot, trigger)
+                    trigger_hyphen_arg_handler(bot, trigger, botcom)
             botmessagelog.messagelog_exit(bot, argsdict_default["log_id"])
 
         return internal_prerun
@@ -176,7 +176,7 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
             botcom.dict["runcount"] = 1
 
             # check if anything prohibits the nick from running the command
-            if trigger_runstatus_query(bot, trigger):
+            if trigger_runstatus_query(bot, trigger, botcom):
                 function(bot, trigger, botcom, *args, **kwargs)
             botmessagelog.messagelog_exit(bot, argsdict_default["log_id"])
 
@@ -260,7 +260,7 @@ def trigger_argsdict_single(argsdict_default, trigger_args_part):
     return argsdict_part
 
 
-def trigger_runstatus_query(bot, trigger):
+def trigger_runstatus_query(bot, trigger, botcom):
 
     # Bots can't run commands
     if Identifier(trigger.nick) == bot.nick:
@@ -293,7 +293,7 @@ def trigger_runstatus_query(bot, trigger):
             timestamp = channel_disabled_list[botcom.dict["realcomref"]]["timestamp"]
             bywhom = channel_disabled_list[botcom.dict["realcomref"]]["disabledby"]
             message = "The " + str(botcom.dict["comtext"]) + " command was disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
-            return trigger_cant_run(bot, trigger, message)
+            return trigger_cant_run(bot, trigger, botcom, message)
 
     # don't run commands that are disabled for specific users
     nick_disabled_list = botcommands.get_commands_disabled(str(trigger.nick))
@@ -303,7 +303,7 @@ def trigger_runstatus_query(bot, trigger):
             reason = nick_disabled_list[botcom.dict["realcomref"]]["reason"]
             timestamp = nick_disabled_list[botcom.dict["realcomref"]]["timestamp"]
             message = "The " + str(botcom.dict["comtext"]) + " command was disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
-            return trigger_cant_run(bot, trigger, message)
+            return trigger_cant_run(bot, trigger, botcom, message)
         else:
             botcommands.unset_command_disabled(botcom.dict["realcomref"], trigger.nick)
             botmessagelog.messagelog_error(botcom.dict["log_id"], botcom.dict["comtext"] + " is now enabled for " + str(trigger.nick))
@@ -311,7 +311,7 @@ def trigger_runstatus_query(bot, trigger):
     return True
 
 
-def trigger_runstatus(bot, trigger):
+def trigger_runstatus(bot, trigger, botcom):
 
     # Bots can't run commands
     if Identifier(trigger.nick) == bot.nick:
@@ -341,7 +341,7 @@ def trigger_runstatus(bot, trigger):
                 timestamp = channel_disabled_list[botcom.dict["realcomref"]]["timestamp"]
                 bywhom = channel_disabled_list[botcom.dict["realcomref"]]["disabledby"]
                 message = "The " + str(botcom.dict["comtext"]) + " command multirun usage was disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
-                return trigger_cant_run(bot, trigger, message)
+                return trigger_cant_run(bot, trigger, botcom, message)
 
         # don't run commands that are disabled for specific users
         nick_disabled_list = botcommands.get_commands_disabled(str(trigger.nick), "multirun")
@@ -351,7 +351,7 @@ def trigger_runstatus(bot, trigger):
                 reason = nick_disabled_list[botcom.dict["realcomref"]]["reason"]
                 timestamp = nick_disabled_list[botcom.dict["realcomref"]]["timestamp"]
                 message = "The " + str(botcom.dict["comtext"]) + " command was multirun unsage disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
-                return trigger_cant_run(bot, trigger, message)
+                return trigger_cant_run(bot, trigger, botcom, message)
             else:
                 botcommands.unset_command_disabled(botcom.dict["realcomref"], trigger.nick, "multirun")
                 botmessagelog.messagelog_error(botcom.dict["log_id"], botcom.dict["comtext"] + " multirun is now enabled for " + str(trigger.nick))
@@ -364,7 +364,7 @@ def trigger_runstatus(bot, trigger):
             timestamp = channel_disabled_list[botcom.dict["realcomref"]]["timestamp"]
             bywhom = channel_disabled_list[botcom.dict["realcomref"]]["disabledby"]
             message = "The " + str(botcom.dict["comtext"]) + " command was disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
-            return trigger_cant_run(bot, trigger, message)
+            return trigger_cant_run(bot, trigger, botcom, message)
 
     # don't run commands that are disabled for specific users
     nick_disabled_list = botcommands.get_commands_disabled(str(trigger.nick))
@@ -374,7 +374,7 @@ def trigger_runstatus(bot, trigger):
             reason = nick_disabled_list[botcom.dict["realcomref"]]["reason"]
             timestamp = nick_disabled_list[botcom.dict["realcomref"]]["timestamp"]
             message = "The " + str(botcom.dict["comtext"]) + " command was disabled by " + bywhom + " for " + str(trigger.sender) + " at " + str(timestamp) + " for the following reason: " + str(reason)
-            return trigger_cant_run(bot, trigger, message)
+            return trigger_cant_run(bot, trigger, botcom, message)
         else:
             botcommands.unset_command_disabled(botcom.dict["realcomref"], trigger.nick)
             botmessagelog.messagelog_error(botcom.dict["log_id"], botcom.dict["comtext"] + " is now enabled for " + str(trigger.nick))
@@ -382,7 +382,7 @@ def trigger_runstatus(bot, trigger):
     return True
 
 
-def trigger_cant_run(bot, trigger, message=None):
+def trigger_cant_run(bot, trigger, botcom, message=None):
     if message:
         botmessagelog.messagelog_error(botcom.dict["log_id"], message)
     if command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
@@ -419,7 +419,7 @@ def trigger_hyphen_args(trigger_args_part):
     return trigger_args_unhyphend, hyphenarg
 
 
-def trigger_hyphen_arg_handler(bot, trigger):
+def trigger_hyphen_arg_handler(bot, trigger, botcom):
 
     # Commands that cannot run via privmsg
     # TODO --check should work for commands that don't exist
