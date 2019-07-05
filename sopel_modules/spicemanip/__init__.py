@@ -13,7 +13,7 @@ import collections
 
 class Spicemanip():
 
-    def __init__(self):
+    def __init__(self, inputs, task=None, output_type=None):
         pass
 
     def __call__(self, inputs, task=None, output_type=None):
