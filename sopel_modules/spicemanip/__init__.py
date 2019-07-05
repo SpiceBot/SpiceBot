@@ -42,7 +42,7 @@ class Spicemanip():
         return outputs
 
     def core(self, inputs, task, output_type=None):
-        return self.inputs_list
+        return self.output_handler(inputs, output_type)
 
 
 core = Spicemanip()
