@@ -13,8 +13,8 @@ import collections
 
 class spicemanipnew():
 
-    def __init__(self, inputs, task, output_type=None):
-        self.test = "test"
+    def __init__(self):
+        pass
 
     def input_handler(self, inputs):
         # Input needs to be a list, but don't split a word into letters
@@ -40,6 +40,9 @@ class spicemanipnew():
         self.inputs_list = self.input_handler(self.inputs)
         self.output_type = output_type
         return self.inputs_list
+
+
+core = spicemanipnew()
 
 
 # Hub
