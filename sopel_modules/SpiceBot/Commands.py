@@ -333,7 +333,7 @@ class BotCommands():
 
                     if isinstance(validcoms, tuple):
                         validcoms = list(validcoms)
-                    else:
+                    if not isinstance(validcoms, list):
                         validcoms = [validcoms]
                     for regexcom in ["(.*)", '^\?(.*)']:
                         if regexcom in validcoms:
