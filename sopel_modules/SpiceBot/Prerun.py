@@ -60,10 +60,12 @@ def prerun(t_command_type='module', t_command_subtype=None):
             trigger_command_type = botcommands.find_command_type(trigger_command)
             if not trigger_command_type:
                 return
+            bot.say("c")
 
             if t_command_subtype:
                 if trigger_command_type != t_command_subtype:
                     return
+            bot.say("d")
 
             # Argsdict Defaults
             argsdict_default = {}
