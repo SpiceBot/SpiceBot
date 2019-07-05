@@ -18,34 +18,35 @@ class Spicemanip():
 
     def __call__(self, inputs, task=None, output_type=None):
         self.inputs = inputs
-        self.inputs_list = self.input_handler()
+        self.inputs_list = self.input_handler(self.inputs)
         self.output_type = output_type
         return self.core()
 
-    def input_handler(self):
+    def input_handler(self, inputs):
         # Input needs to be a list, but don't split a word into letters
-        if not self.inputs:
+        if not inputs:
             input_list = []
-        if isinstance(self.inputs, list):
-            input_list = self.inputs
-        if isinstance(self.inputs, collections.abc.KeysView):
-            input_list = list(self.inputs)
-        if isinstance(self.inputs, dict):
-            input_list = list(self.inputs.keys())
-        if not isinstance(self.inputs, list):
-            input_list = list(self.inputs.split(" "))
+        if isinstance(inputs, list):
+            input_list = inputs
+        if isinstance(inputs, collections.abc.KeysView):
+            input_list = list(inputs)
+        if isinstance(inputs, dict):
+            input_list = list(inputs.keys())
+        if not isinstance(inputs, list):
+            input_list = list(inputs.split(" "))
             input_list = [x for x in input_list if x and x not in ['', ' ']]
             input_list = [inputspart.strip() for inputspart in input_list]
-        self.inputs_list = input_list
+        return input_list
 
-    def output_handler(self):
-        if not self.output_type:
-            self.output_type = "list"
-        self.outputs = self.inputs_list
-        return self.outputs
+    def output_handler(self, inputs_list, output_type):
+        if not output_type:
+            output_type = "list"
+        outputs = inputs_list
+        return outputs
 
     def core(self):
-        return self.output_handler()
+        outputs = self.output_handler(self.inputs_list, self.output_type)
+        return outputs
 
 
 core = Spicemanip()
