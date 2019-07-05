@@ -27,13 +27,14 @@ class Spicemanip():
         if not self.inputs:
             return []
         if isinstance(self.inputs, list):
-            return self.inputs
+            input_list = self.inputs
         if isinstance(self.inputs, collections.abc.KeysView):
-            return list(self.inputs)
+            input_list = list(self.inputs)
         if isinstance(self.inputs, dict):
-            return list(self.inputs.keys())
+            input_list = list(self.inputs.keys())
         if not isinstance(self.inputs, list):
-            return list(self.inputs.split(" "))
+            input_list = list(self.inputs.split(" "))
+        self.inputs_list = input_list
 
     def output_handler(self):
         if not self.output_type:
