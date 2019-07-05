@@ -25,15 +25,13 @@ class Spicemanip():
     def input_handler(self, inputs):
         # Input needs to be a list, but don't split a word into letters
         if not inputs:
-            inputs = []
+            return []
         if isinstance(inputs, collections.abc.KeysView):
-            inputs = list(inputs)
-        elif isinstance(inputs, dict):
-            inputs = list(inputs.keys())
+            return list(inputs)
+        if isinstance(inputs, dict):
+            return list(inputs.keys())
         if not isinstance(inputs, list):
-            inputs = list(inputs.split(" "))
-            inputs = [x for x in inputs if x and x not in ['', ' ']]
-            inputs = [inputspart.strip() for inputspart in inputs]
+            return list(inputs.split(" "))
         return inputs
 
     def output_handler(self, outputs, output_type=None):
