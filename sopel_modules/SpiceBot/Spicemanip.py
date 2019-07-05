@@ -14,7 +14,7 @@ import collections
 class spicemanipnew():
 
     def __init__(self, inputs, task, output_type=None):
-        pass
+        self.test = "test"
 
     def input_handler(self, inputs):
         # Input needs to be a list, but don't split a word into letters
