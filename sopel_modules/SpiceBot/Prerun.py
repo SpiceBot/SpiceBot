@@ -454,7 +454,7 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
         return True
 
     # handle numbered args
-    if str(botcom.dict["hyphen_arg"]).isdigit():
+    if str(botcom.dict["hyphen_arg"]).isdigit() or botcom.dict["hyphen_arg"] in [-1, 'random']:
         return True
 
     elif botcom.dict["hyphen_arg"] in ['check']:
