@@ -328,6 +328,10 @@ def trigger_runstatus(bot, trigger):
     if trigger.sb["hyphen_arg"]:
         return False
 
+    if not trigger.is_privmsg:
+        if str(trigger.sender).lower() in [x.lower() for x in trigger.sb["dict"]["hardcoded_channel_block"]]:
+            botmessagelog.messagelog_error(trigger.sb["log_id"], "The " + str(trigger.sb["comtext"]) + " command cannot be used in " + str(trigger.sender) + " because it is hardcoded not to.")
+
     if trigger.sb["runcount"] > 1:
         # check channel multirun blocks
         if not trigger.is_privmsg:
