@@ -26,6 +26,8 @@ class Spicemanip():
         # Input needs to be a list, but don't split a word into letters
         if not self.inputs:
             return []
+        if isinstance(self.inputs, list):
+            return self.inputs
         if isinstance(self.inputs, collections.abc.KeysView):
             return list(self.inputs)
         if isinstance(self.inputs, dict):
