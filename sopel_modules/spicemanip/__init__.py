@@ -14,7 +14,10 @@ import collections
 class Spicemanip():
 
     def __init__(self):
-        self.test = "test"
+        pass
+
+    def __call__(self):
+        return self
 
     def input_handler(self, inputs):
         # Input needs to be a list, but don't split a word into letters
