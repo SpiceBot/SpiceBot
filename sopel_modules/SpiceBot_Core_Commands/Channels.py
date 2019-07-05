@@ -14,12 +14,12 @@ import sopel_modules.SpiceBot as SpiceBot
 @sopel.module.nickname_commands('channels', 'channel')
 def nickname_comand_channels(bot, trigger, botcom):
 
-    if not len(trigger.sb['args']):
+    if not len(botcom.dict['args']):
         commandused = 'list'
     else:
-        commandused = spicemanip.main(trigger.sb['args'], 1).lower()
+        commandused = spicemanip.main(botcom.dict['args'], 1).lower()
 
-    trigger.sb['args'] = spicemanip.main(trigger.sb['args'], '2+', 'list')
+    botcom.dict['args'] = spicemanip.main(botcom.dict['args'], '2+', 'list')
 
     if commandused == 'list':
         botcount = len(list(bot.channels.keys()))
@@ -48,7 +48,7 @@ def nickname_comand_channels(bot, trigger, botcom):
 
     elif commandused == 'update':
         if not trigger.admin:
-            SpiceBot.messagelog.messagelog_error(trigger.sb["log_id"], "You do not have permission to update the channel listing.")
+            SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "You do not have permission to update the channel listing.")
             return
         SpiceBot.channels.bot_part_empty(bot)
         SpiceBot.channels.channel_list_request(bot)
@@ -62,12 +62,12 @@ def nickname_comand_channels(bot, trigger, botcom):
         return
 
     elif commandused == 'topic':
-        if not len(trigger.sb['args']):
-            SpiceBot.messagelog.messagelog_error(trigger.sb["log_id"], "Channel name input missing.")
+        if not len(botcom.dict['args']):
+            SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Channel name input missing.")
             return
-        channel = spicemanip.main(trigger.sb['args'], 1)
+        channel = spicemanip.main(botcom.dict['args'], 1)
         if not SpiceBot.inlist(channel.lower(), list(SpiceBot.channels.dict['list'].keys())):
-            SpiceBot.messagelog.messagelog_error(trigger.sb["log_id"], "Channel name {} not valid.".format(channel))
+            SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Channel name {} not valid.".format(channel))
             return
         topic = SpiceBot.channels.dict['list'][channel.lower()]['topic']
         channel = SpiceBot.channels.dict['list'][channel.lower()]['name']
@@ -75,19 +75,19 @@ def nickname_comand_channels(bot, trigger, botcom):
         return
 
     if commandused.upper() in ['OP', 'HOP', 'VOICE', 'OWNER', 'ADMIN']:
-        if not len(trigger.sb['args']):
+        if not len(botcom.dict['args']):
             if trigger.is_privmsg:
-                SpiceBot.messagelog.messagelog_error(trigger.sb["log_id"], "Channel name required.")
+                SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Channel name required.")
                 return
             else:
                 channel = trigger.sender
         else:
-            channel = spicemanip.main(trigger.sb['args'], 1)
+            channel = spicemanip.main(botcom.dict['args'], 1)
             if not SpiceBot.inlist(channel.lower(), list(SpiceBot.channels.dict['list'].keys())):
-                SpiceBot.messagelog.messagelog_error(trigger.sb["log_id"], "Channel name {} not valid.".format(channel))
+                SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Channel name {} not valid.".format(channel))
                 return
             if not SpiceBot.inlist(channel.lower(), list(bot.channels.keys())):
-                SpiceBot.messagelog.messagelog_error(trigger.sb["log_id"], "I need to be in {} to see nick privileges.".format(channel))
+                SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "I need to be in {} to see nick privileges.".format(channel))
                 return
 
         privlist = SpiceBot.channel_privs(bot, channel, commandused.upper())
@@ -102,12 +102,12 @@ def nickname_comand_channels(bot, trigger, botcom):
 
     # Users List
     if commandused == 'users':
-        channel = spicemanip.main(trigger.sb['args'], 1)
+        channel = spicemanip.main(botcom.dict['args'], 1)
         if not SpiceBot.inlist(channel.lower(), list(SpiceBot.channels.dict['list'].keys())):
-            SpiceBot.messagelog.messagelog_error(trigger.sb["log_id"], "Channel name {} not valid.".format(channel))
+            SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Channel name {} not valid.".format(channel))
             return
         if not SpiceBot.inlist(channel.lower(), list(bot.channels.keys())):
-            SpiceBot.messagelog.messagelog_error(trigger.sb["log_id"], "I need to be in {} to see user list.".format(channel))
+            SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "I need to be in {} to see user list.".format(channel))
             return
         dispmsg = []
         if not len(list(bot.channels[channel].privileges.keys())):

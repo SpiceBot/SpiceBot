@@ -18,10 +18,10 @@ import sopel_modules.SpiceBot as SpiceBot
 @sopel.module.nickname_commands('commands', 'command')
 def nickname_comand_commands(bot, trigger, botcom):
 
-    if not len(trigger.sb['args']):
+    if not len(botcom.dict['args']):
         commandused = 'list'
     else:
-        commandused = spicemanip.main(trigger.sb['args'], 1).lower()
+        commandused = spicemanip.main(botcom.dict['args'], 1).lower()
 
     if commandused == 'list':
         availablecomsnum, availablecomsfiles = 0, []

@@ -15,15 +15,15 @@ def bot_command_sherlock(bot, trigger, botcom):
 
     netlist = list(SpiceBot.sherlock.dict.keys())
 
-    username = spicemanip.main(trigger.sb["args"], 1) or trigger.nick
-    trigger.sb["args"] = spicemanip.main(trigger.sb["args"], "2+", 'list')
+    username = spicemanip.main(botcom.dict["args"], 1) or trigger.nick
+    botcom.dict["args"] = spicemanip.main(botcom.dict["args"], "2+", 'list')
 
     checklist = netlist
     checklistname = 'all'
     if SpiceBot.inlist(username, netlist):
         checklistname = SpiceBot.inlist_match(username, netlist)
         checklist = [checklistname]
-        username = spicemanip.main(trigger.sb["args"], 1) or trigger.nick
+        username = spicemanip.main(botcom.dict["args"], 1) or trigger.nick
 
     bot.osd("Checking username " + username + " in " + checklistname + " network.")
 

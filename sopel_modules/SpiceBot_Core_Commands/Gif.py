@@ -15,17 +15,17 @@ import spicemanip
 @sopel.module.commands('gif')
 def gif_trigger(bot, trigger, botcom):
 
-    if not len(trigger.sb['args']):
-        return SpiceBot.messagelog.messagelog_error(trigger.sb["log_id"], "Please present a query to search.")
+    if not len(botcom.dict['args']):
+        return SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Please present a query to search.")
 
-    query = spicemanip.main(trigger.sb['args'], 0)
+    query = spicemanip.main(botcom.dict['args'], 0)
     searchapis = list(SpiceBot.gif.valid_api.keys())
     searchdict = {"query": query, "gifsearch": searchapis}
 
     gifdict = SpiceBot.gif.get_gif(searchdict)
 
     if gifdict["error"]:
-        SpiceBot.messagelog.messagelog_error(trigger.sb["log_id"], gifdict["error"])
+        SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], gifdict["error"])
     else:
         bot.osd(str(gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"])))
 
@@ -34,18 +34,18 @@ def gif_trigger(bot, trigger, botcom):
 @sopel.module.commands('(.*)')
 def gifapi_triggers(bot, trigger, botcom):
 
-    if trigger.sb['com'] not in list(SpiceBot.gif.valid_api.keys()):
+    if botcom.dict['com'] not in list(SpiceBot.gif.valid_api.keys()):
         return
 
-    if not len(trigger.sb['args']):
-        return SpiceBot.messagelog.messagelog_error(trigger.sb["log_id"], "Please present a query to search.")
+    if not len(botcom.dict['args']):
+        return SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Please present a query to search.")
 
-    query = spicemanip.main(trigger.sb['args'], 0)
-    searchdict = {"query": query, "gifsearch": trigger.sb['com']}
+    query = spicemanip.main(botcom.dict['args'], 0)
+    searchdict = {"query": query, "gifsearch": botcom.dict['com']}
 
     gifdict = SpiceBot.gif.get_gif(searchdict)
 
     if gifdict["error"]:
-        SpiceBot.messagelog.messagelog_error(trigger.sb["log_id"], gifdict["error"])
+        SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], gifdict["error"])
     else:
         bot.osd(str(gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"])))
