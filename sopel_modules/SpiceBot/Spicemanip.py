@@ -13,7 +13,7 @@ import collections
 
 class spicemanipnew():
 
-    def __init__(self, inputs):
+    def __init__(self, inputs=None, task='create', output_type=None):
         self.inputs = inputs
         self.inputs_list = self.input_handler(self.inputs)
 
