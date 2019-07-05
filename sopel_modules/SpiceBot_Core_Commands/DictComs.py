@@ -13,6 +13,7 @@ import spicemanip
 
 from word2number import w2n
 from random import randint
+import time
 
 
 @SpiceBot.prerun('module', 'dictcom')
@@ -23,6 +24,8 @@ def command_dictcom(bot, trigger, botcom):
         return
 
     bot_dictcom_process(bot, trigger)
+    return
+    time.time()
 
 
 def bot_dictcom_process(bot, trigger):
