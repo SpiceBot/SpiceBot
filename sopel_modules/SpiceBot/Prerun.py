@@ -101,6 +101,7 @@ def prerun(t_command_type='module', t_command_subtype=None):
 
                 botcom.dict["args"], botcom.dict["hyphen_arg"] = trigger_hyphen_args(botcom.dict["args"])
                 args_pass = trigger_hyphen_arg_handler(bot, trigger, botcom)
+                bot.say(str(args_pass))
                 if args_pass:
                     if trigger_runstatus(bot, trigger, botcom):
                         function(bot, trigger, botcom, *args, **kwargs)
