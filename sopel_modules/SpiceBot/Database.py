@@ -68,6 +68,18 @@ class ChannelValues(BASE):
     value = Column(Text())
 
 
+class ServerValues(BASE):
+    """
+    ServerValues SQLAlchemy Class
+    """
+    __tablename__ = 'spice_server_values'
+    __table_args__ = MYSQL_TABLE_ARGS
+    server = Column(String(255), primary_key=True)
+    namespace = Column(String(255), primary_key=True)
+    key = Column(String(255), primary_key=True)
+    value = Column(Text())
+
+
 class PluginValues(BASE):
     """
     PluginValues SQLAlchemy Class
@@ -396,6 +408,138 @@ class SpiceDB(object):
         finally:
             session.close()
 
+    # SERVER FUNCTIONS
+
+    def set_server_value(self, server, key, value, namespace='default'):
+        """Sets the value for a given key to be associated with the server."""
+        value = json.dumps(value, ensure_ascii=False)
+        session = self.ssession()
+        try:
+            result = session.query(ServerValues) \
+                .filter(ServerValues.server == server)\
+                .filter(ServerValues.namespace == namespace)\
+                .filter(ServerValues.key == key) \
+                .one_or_none()
+            # ServerValue exists, update
+            if result:
+                result.value = value
+                session.commit()
+            # DNE - Insert
+            else:
+                new_servervalue = ServerValues(server=server, namespace=namespace, key=key, value=value)
+                session.add(new_servervalue)
+                session.commit()
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
+    def get_server_value(self, server, key, namespace='default'):
+        """Retrieves the value for a given key associated with a server."""
+        session = self.ssession()
+        try:
+            result = session.query(ServerValues) \
+                .filter(ServerValues.server == server)\
+                .filter(ServerValues.namespace == namespace)\
+                .filter(ServerValues.key == key) \
+                .one_or_none()
+            if result is not None:
+                result = result.value
+            return _deserialize(result)
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
+    def delete_server_value(self, server, key, namespace='default'):
+        """Sets the value for a given key to be associated with the server."""
+        session = self.ssession()
+        try:
+            result = session.query(ServerValues) \
+                .filter(ServerValues.server == server)\
+                .filter(ServerValues.namespace == namespace)\
+                .filter(ServerValues.key == key) \
+                .one_or_none()
+            # ServerValue exists, delete
+            if result:
+                session.delete(result)
+                session.commit()
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
+    def adjust_server_value(self, server, key, value, namespace='default'):
+        """Sets the value for a given key to be associated with the server."""
+        value = json.dumps(value, ensure_ascii=False)
+        session = self.ssession()
+        try:
+            result = session.query(ServerValues) \
+                .filter(ServerValues.server == server)\
+                .filter(ServerValues.namespace == namespace)\
+                .filter(ServerValues.key == key) \
+                .one_or_none()
+            # ServerValue exists, update
+            if result:
+                result.value = float(result.value) + float(value)
+                session.commit()
+            # DNE - Insert
+            else:
+                new_servervalue = ServerValues(server=server, namespace=namespace, key=key, value=float(value))
+                session.add(new_servervalue)
+                session.commit()
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
+    def adjust_server_list(self, server, key, entries, adjustmentdirection, namespace='default'):
+        """Sets the value for a given key to be associated with the server."""
+        if not isinstance(entries, list):
+            entries = [entries]
+        entries = json.dumps(entries, ensure_ascii=False)
+        session = self.ssession()
+        try:
+            result = session.query(ServerValues) \
+                .filter(ServerValues.server == server)\
+                .filter(ServerValues.namespace == namespace)\
+                .filter(ServerValues.key == key) \
+                .one_or_none()
+            # ServerValue exists, update
+            if result:
+                if adjustmentdirection == 'add':
+                    for entry in entries:
+                        if entry not in result.value:
+                            result.value.append(entry)
+                elif adjustmentdirection == 'del':
+                    for entry in entries:
+                        while entry in result.value:
+                            result.value.remove(entry)
+                session.commit()
+            # DNE - Insert
+            else:
+                values = []
+                if adjustmentdirection == 'add':
+                    for entry in entries:
+                        if entry not in values:
+                            values.append(entry)
+                elif adjustmentdirection == 'del':
+                    for entry in entries:
+                        while entry in values:
+                            values.remove(entry)
+                new_servervalue = ServerValues(server=server, namespace=namespace, key=key, value=values)
+                session.add(new_servervalue)
+                session.commit()
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
     # PLUGIN FUNCTIONS
 
     def set_plugin_value(self, plugin, key, value, namespace='default'):
@@ -474,7 +618,7 @@ class SpiceDB(object):
                 .filter(PluginValues.namespace == namespace)\
                 .filter(PluginValues.key == key) \
                 .one_or_none()
-            # ChannelValue exists, update
+            # PluginValue exists, update
             if result:
                 result.value = float(result.value) + float(value)
                 session.commit()
@@ -502,7 +646,7 @@ class SpiceDB(object):
                 .filter(PluginValues.namespace == namespace)\
                 .filter(PluginValues.key == key) \
                 .one_or_none()
-            # ChannelValue exists, update
+            # PluginValue exists, update
             if result:
                 if adjustmentdirection == 'add':
                     for entry in entries:
@@ -556,6 +700,13 @@ class BotDatabase():
         SopelDB.delete_channel_value = SpiceDB.delete_channel_value
         SopelDB.adjust_channel_value = SpiceDB.adjust_channel_value
         SopelDB.adjust_channel_list = SpiceDB.adjust_channel_list
+
+        sopel.db.ServerValues = ServerValues
+        SopelDB.get_server_value = SpiceDB.get_server_value
+        SopelDB.set_server_value = SpiceDB.set_server_value
+        SopelDB.delete_server_value = SpiceDB.delete_server_value
+        SopelDB.adjust_server_value = SpiceDB.adjust_server_value
+        SopelDB.adjust_server_list = SpiceDB.adjust_server_list
 
         sopel.db.PluginValues = PluginValues
         SopelDB.get_plugin_value = SpiceDB.get_plugin_value
@@ -633,6 +784,23 @@ class BotDatabase():
 
     def adjust_channel_list(self, nick, key, entries, adjustmentdirection, namespace='default'):
         return self.db.adjust_channel_list(nick, key, entries, adjustmentdirection, namespace)
+
+    """Servers"""
+
+    def get_server_value(self, _server, key, namespace='default'):
+        return self.db.get__server_value(_server, key, namespace)
+
+    def set__server_value(self, _server, key, value, namespace='default'):
+        return self.db.set__server_value(_server, key, value, namespace)
+
+    def delete__server_value(self, _server, key, namespace='default'):
+        return self.db.delete__server_value(_server, key, namespace)
+
+    def adjust__server_value(self, _server, key, value, namespace='default'):
+        return self.db.adjust__server_value(_server, key, value, namespace)
+
+    def adjust__server_list(self, nick, key, entries, adjustmentdirection, namespace='default'):
+        return self.db.adjust__server_list(nick, key, entries, adjustmentdirection, namespace)
 
     """Plugins"""
 
