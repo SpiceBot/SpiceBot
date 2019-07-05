@@ -9,6 +9,7 @@ from sopel.tools import Identifier
 import functools
 import copy
 import datetime
+from word2number import w2n
 
 import spicemanip
 
@@ -413,7 +414,11 @@ def trigger_hyphen_args(trigger_args_part):
             elif str(clipped_word).isdigit():
                 hyphen_args.append(int(clipped_word))
             else:
-                trigger_args_unhyphend.append(worditem)
+                try:
+                    clipped_word = w2n.word_to_num(str(clipped_word))
+                    hyphen_args.append(int(clipped_word))
+                except ValueError:
+                    trigger_args_unhyphend.append(worditem)
         else:
             trigger_args_unhyphend.append(worditem)
     if len(hyphen_args):
