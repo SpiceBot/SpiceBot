@@ -45,7 +45,7 @@ class Spicemanip():
         return self.inputs_list
 
 
-# core = Spicemanip()
+core = Spicemanip()
 
 
 # Hub
