@@ -22,25 +22,25 @@ class Spicemanip():
         self.output_type = output_type
         return self.core(inputs, task, output_type)
 
-    def input_handler(self, inputs):
+    def input_handler(self):
         # Input needs to be a list, but don't split a word into letters
-        if not inputs:
+        if not self.inputs:
             return []
-        if isinstance(inputs, collections.abc.KeysView):
-            return list(inputs)
-        if isinstance(inputs, dict):
-            return list(inputs.keys())
-        if not isinstance(inputs, list):
-            return list(inputs.split(" "))
-        return inputs
+        if isinstance(self.inputs, collections.abc.KeysView):
+            return list(self.inputs)
+        if isinstance(self.inputs, dict):
+            return list(self.inputs.keys())
+        if not isinstance(self.inputs, list):
+            return list(self.inputs.split(" "))
 
-    def output_handler(self, outputs, output_type=None):
-        if not output_type:
-            output_type = "list"
-        return outputs
+    def output_handler(self):
+        if not self.output_type:
+            self.output_type = "list"
+        self.outputs = self.inputs_list
+        return self.outputs
 
-    def core(self, inputs, task, output_type=None):
-        return self.output_handler(inputs, output_type)
+    def core(self):
+        return self.output_handler()
 
 
 core = Spicemanip()
