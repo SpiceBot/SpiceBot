@@ -14,5 +14,4 @@ def nickname_comand_server(bot, trigger, botcom):
     network = SpiceBot.server.isupport["NETWORK"]
     server = SpiceBot.server.myinfo["servername"]
     version = SpiceBot.server.myinfo["version"]
-    bot.say("I am connected to " + str(server) + " on the " + str(network) + " network. This server runs " + str(version))
-    return
+    bot.osd("I am connected to " + str(server) + " on the " + str(network) + " network. This server runs " + str(version))
