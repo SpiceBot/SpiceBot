@@ -13,4 +13,4 @@ import sopel_modules.SpiceBot as SpiceBot
 def nickname_comand_users(bot, trigger, botcom):
     totalusers = len(list(SpiceBot.users.dict["all"]))
     onlineusers = len(list(SpiceBot.users.dict["online"]))
-    bot.osd("Of the " + str(totalusers) + " that I've seen, " + str(onlineusers) + " are online currently.")
+    bot.osd("Of the " + str(totalusers) + " users that I've seen, " + str(onlineusers) + " are online currently.")
