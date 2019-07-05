@@ -11,7 +11,7 @@ __version__ = '0.1.7'
 import collections
 
 
-class spicemanip():
+class spicemanipnew():
 
     def __init__(self, inputs):
         self.inputs = inputs

@@ -11,6 +11,7 @@ from .Config import *
 from .Logs import *
 from .Database import *
 from .MessageLog import *
+from .Spicemanip import *
 
 from .Update import *
 from .osd import *
