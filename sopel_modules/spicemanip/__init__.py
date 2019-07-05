@@ -18,7 +18,7 @@ class Spicemanip():
 
     def __call__(self, inputs, task=None, output_type=None):
         self.inputs = inputs
-        self.inputs_list = self.input_handler(self.inputs)
+        self.inputs_list = self.input_handler()
         self.output_type = output_type
         return self.core()
 
