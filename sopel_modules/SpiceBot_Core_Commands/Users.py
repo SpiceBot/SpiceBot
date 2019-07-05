@@ -11,5 +11,6 @@ import sopel_modules.SpiceBot as SpiceBot
 @SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('users', 'user')
 def nickname_comand_users(bot, trigger, botcom):
-    bot.say("WIP")
-    return
+    totalusers = len(list(SpiceBot.users.dict["all"]))
+    onlineusers = len(list(SpiceBot.users.dict["online"]))
+    bot.osd("Of the " + str(totalusers) + " that I've seen, " + str(onlineusers) + " are online currently.")
