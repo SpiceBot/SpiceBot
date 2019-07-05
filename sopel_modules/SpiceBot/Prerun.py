@@ -119,6 +119,14 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
         @functools.wraps(function)
         def internal_prerun(bot, trigger, *args, **kwargs):
 
+            # verify the bot is at a loaded state
+            while not botevents.check(botevents.BOT_LOADED):
+                pass
+
+            # Verify channel and user exist
+            verify_channel(trigger)
+            verify_user(trigger)
+
             botcom = class_create('botcom')
 
             if t_command_type == "nickname":
@@ -410,6 +418,7 @@ def trigger_hyphen_args(trigger_args_part):
 def trigger_hyphen_arg_handler(bot, trigger):
 
     # Commands that cannot run via privmsg
+    # TODO --check should work for commands that don't exist
     if trigger.sb["hyphen_arg"] in ['check']:
         if trigger.sb["com"].lower() != trigger.sb["realcom"]:
             botmessagelog.messagelog(trigger.sb["log_id"], trigger.sb["comtext"] + " is a valid alias command for " + trigger.sb["realcomtext"])

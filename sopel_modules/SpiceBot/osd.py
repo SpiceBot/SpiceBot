@@ -12,6 +12,8 @@ import time
 from collections import abc
 import sys
 
+from .Server import server as botserver
+
 
 class SpiceBot_OSD(StaticSection):
 
@@ -62,9 +64,9 @@ class ToolsOSD:
             raise ValueError("Recipients list empty.")
 
         if text_method == 'NOTICE':
-            maxtargets = bot.config.SpiceBot_OSD.notice
+            maxtargets = botserver.isupport["TARGMAX"]["NOTICE"]
         elif text_method in ['PRIVMSG', 'ACTION']:
-            maxtargets = bot.config.SpiceBot_OSD.privmsg
+            maxtargets = botserver.isupport["TARGMAX"]["PRIVMSG"]
         maxtargets = int(maxtargets)
 
         recipientgroups = []
