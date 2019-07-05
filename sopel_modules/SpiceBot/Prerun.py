@@ -46,19 +46,19 @@ def prerun(t_command_type='module', t_command_subtype=None):
             else:
                 if not str(trigger.args[1]).startswith(tuple(botconfig.core.prefix_list)):
                     return
-            bot.say("a")
 
             trigger_command_type = str(t_command_type)
 
             # Primary command used for trigger, and a list of all words
             trigger_args, trigger_command, trigger_prefix = make_trigger_args(trigger.args[1], trigger_command_type)
 
-            if trigger_prefix == botconfig.SpiceBot_Commands.query_prefix:
+            if trigger_prefix in [botconfig.SpiceBot_Commands.query_prefix]:
                 return
 
             trigger_command_type = botcommands.find_command_type(trigger_command)
             if not trigger_command_type:
                 return
+            bot.say("a")
 
             if t_command_subtype:
                 if trigger_command_type != t_command_subtype:
