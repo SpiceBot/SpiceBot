@@ -25,7 +25,7 @@ class Spicemanip():
     def input_handler(self):
         # Input needs to be a list, but don't split a word into letters
         if not self.inputs:
-            return []
+            input_list = []
         if isinstance(self.inputs, list):
             input_list = self.inputs
         if isinstance(self.inputs, collections.abc.KeysView):
@@ -34,6 +34,8 @@ class Spicemanip():
             input_list = list(self.inputs.keys())
         if not isinstance(self.inputs, list):
             input_list = list(self.inputs.split(" "))
+            input_list = [x for x in input_list if x and x not in ['', ' ']]
+            input_list = [inputspart.strip() for inputspart in input_list]
         self.inputs_list = input_list
 
     def output_handler(self):
