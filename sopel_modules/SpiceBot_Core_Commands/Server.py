@@ -10,7 +10,7 @@ import sopel_modules.SpiceBot as SpiceBot
 
 @SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('server')
-def nickname_comand_users(bot, trigger, botcom):
+def nickname_comand_server(bot, trigger, botcom):
     network = SpiceBot.server.isupport["NETWORK"]
     server = SpiceBot.server.myinfo["servername"]
     version = SpiceBot.server.myinfo["version"]
