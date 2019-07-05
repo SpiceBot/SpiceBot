@@ -13,6 +13,11 @@ import collections
 
 class Spicemanip():
 
+    def __init__(self, inputs, task=None, output_type=None):
+        self.inputs = inputs
+        self.inputs_list = self.input_handler(self.inputs)
+        self.output_type = output_type
+
     def __call__(self, inputs, task=None, output_type=None):
         return self.core(inputs, task, output_type)
 
@@ -35,10 +40,7 @@ class Spicemanip():
             output_type = "list"
         return outputs
 
-    def core(self, inputs, task, output_type=None):
-        self.inputs = inputs
-        self.inputs_list = self.input_handler(self.inputs)
-        self.output_type = output_type
+    def core(self):
         return self.inputs_list
 
 
