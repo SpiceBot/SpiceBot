@@ -20,7 +20,7 @@ class Spicemanip():
         self.inputs = inputs
         self.inputs_list = self.input_handler(self.inputs)
         self.output_type = output_type
-        return self.core(inputs, task, output_type)
+        return self.core()
 
     def input_handler(self):
         # Input needs to be a list, but don't split a word into letters
