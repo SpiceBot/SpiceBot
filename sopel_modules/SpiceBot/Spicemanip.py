@@ -13,11 +13,9 @@ import collections
 
 class spicemanipnew():
 
-    def __init__(self, inputs, output_type=None):
+    def __init__(self):
 
-        self.inputs = inputs
-        self.inputs_list = self.input_handler(self.inputs)
-        self.output_type = output_type
+        self.dict = {}
 
     def input_handler(self, inputs):
         # Input needs to be a list, but don't split a word into letters
@@ -38,7 +36,10 @@ class spicemanipnew():
             output_type = "list"
         return outputs
 
-    def core(self):
+    def core(self, inputs, output_type=None):
+        self.inputs = inputs
+        self.inputs_list = self.input_handler(self.inputs)
+        self.output_type = output_type
         return self.inputs_list
 
     """
