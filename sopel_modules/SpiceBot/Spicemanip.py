@@ -13,7 +13,7 @@ import collections
 
 class spicemanipnew():
 
-    def __init__(self):
+    def __init__(self, inputs, task, output_type=None):
         pass
 
     def input_handler(self, inputs):
@@ -35,7 +35,7 @@ class spicemanipnew():
             output_type = "list"
         return outputs
 
-    def core(self, inputs, output_type=None):
+    def core(self, inputs, task, output_type=None):
         self.inputs = inputs
         self.inputs_list = self.input_handler(self.inputs)
         self.output_type = output_type
