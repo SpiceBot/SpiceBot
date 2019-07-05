@@ -412,6 +412,7 @@ class SpiceDB(object):
 
     def set_server_value(self, server, key, value, namespace='default'):
         """Sets the value for a given key to be associated with the server."""
+        server = server.lower()
         value = json.dumps(value, ensure_ascii=False)
         session = self.ssession()
         try:
@@ -437,6 +438,7 @@ class SpiceDB(object):
 
     def get_server_value(self, server, key, namespace='default'):
         """Retrieves the value for a given key associated with a server."""
+        server = server.lower()
         session = self.ssession()
         try:
             result = session.query(ServerValues) \
@@ -455,6 +457,7 @@ class SpiceDB(object):
 
     def delete_server_value(self, server, key, namespace='default'):
         """Sets the value for a given key to be associated with the server."""
+        server = server.lower()
         session = self.ssession()
         try:
             result = session.query(ServerValues) \
@@ -474,6 +477,7 @@ class SpiceDB(object):
 
     def adjust_server_value(self, server, key, value, namespace='default'):
         """Sets the value for a given key to be associated with the server."""
+        server = server.lower()
         value = json.dumps(value, ensure_ascii=False)
         session = self.ssession()
         try:
@@ -499,6 +503,7 @@ class SpiceDB(object):
 
     def adjust_server_list(self, server, key, entries, adjustmentdirection, namespace='default'):
         """Sets the value for a given key to be associated with the server."""
+        server = server.lower()
         if not isinstance(entries, list):
             entries = [entries]
         entries = json.dumps(entries, ensure_ascii=False)
@@ -544,7 +549,7 @@ class SpiceDB(object):
 
     def set_plugin_value(self, plugin, key, value, namespace='default'):
         """Sets the value for a given key to be associated with the plugin."""
-        plugin = Identifier(plugin).lower()
+        plugin = plugin.lower()
         value = json.dumps(value, ensure_ascii=False)
         session = self.ssession()
         try:
@@ -570,7 +575,7 @@ class SpiceDB(object):
 
     def get_plugin_value(self, plugin, key, namespace='default'):
         """Retrieves the value for a given key associated with a plugin."""
-        plugin = Identifier(plugin).lower()
+        plugin = plugin.lower()
         session = self.ssession()
         try:
             result = session.query(PluginValues) \
@@ -589,7 +594,7 @@ class SpiceDB(object):
 
     def delete_plugin_value(self, plugin, key, namespace='default'):
         """Deletes the value for a given key to be associated with the plugin."""
-        plugin = Identifier(plugin).lower()
+        plugin = plugin.lower()
         session = self.ssession()
         try:
             result = session.query(PluginValues) \
@@ -609,7 +614,7 @@ class SpiceDB(object):
 
     def adjust_plugin_value(self, plugin, key, value, namespace='default'):
         """Sets the value for a given key to be associated with the plugin."""
-        plugin = Identifier(plugin).lower()
+        plugin = plugin.lower()
         value = json.dumps(value, ensure_ascii=False)
         session = self.ssession()
         try:
@@ -635,7 +640,7 @@ class SpiceDB(object):
 
     def adjust_plugin_list(self, plugin, key, entries, adjustmentdirection, namespace='default'):
         """Sets the value for a given key to be associated with the plugin."""
-        plugin = Identifier(plugin).lower()
+        plugin = plugin.lower()
         if not isinstance(entries, list):
             entries = [entries]
         entries = json.dumps(entries, ensure_ascii=False)
