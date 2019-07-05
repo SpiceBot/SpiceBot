@@ -17,7 +17,7 @@ class Spicemanip():
         pass
 
     def __call__(self, inputs, task=None, output_type=None):
-        return self
+        return self.core(inputs, task, output_type)
 
     def input_handler(self, inputs):
         # Input needs to be a list, but don't split a word into letters
