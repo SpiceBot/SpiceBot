@@ -38,16 +38,21 @@ class Spicemanip():
 
     def core_input_handler(self):
         # Input needs to be a list, but don't split a word into letters
-        if not self.inputs:
+        if not self.inputs or not len(self.inputs):
             self.input_list = []
+            return
         if isinstance(self.inputs, list):
             self.input_list = list(self.inputs)
+            return
         if isinstance(self.inputs, collections.abc.KeysView):
             self.input_list = list(self.inputs)
+            return
         if isinstance(self.inputs, dict):
             self.input_list = list(self.inputs.keys())
+            return
         if not isinstance(self.inputs, list):
             self.input_list = list(self.inputs.split(" "))
+            return
 
     def core_task_handler(self):
 
@@ -127,7 +132,8 @@ class Spicemanip():
                         'incrange_minus': "string",
                         'excrange_plus': "string",
                         'excrange_minus': "string",
-                        'count': "dict"
+                        'count': "dict",
+                        "create": "list"
                         }
 
         # default return if not specified
