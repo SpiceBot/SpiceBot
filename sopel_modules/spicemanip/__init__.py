@@ -354,11 +354,11 @@ class Spicemanip():
             return False
 
 
-spicemanip = Spicemanip()
+spicemanip_new = Spicemanip()
 
 
 # Hub
-def spicemanip_old(inputs, outputtask, output_type='default'):
+def spicemanip(inputs, outputtask, output_type='default'):
 
     mainoutputtask, suboutputtask = None, None
 
