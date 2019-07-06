@@ -62,7 +62,7 @@ class Spicemanip():
 
         if len(self.input_list):
 
-            if self.task in [0, 'complete']:
+            if self.task in ["0", 0, 'complete']:
                 self.outputs = self.string(self.input_list)
                 return
 
@@ -70,10 +70,10 @@ class Spicemanip():
                 self.outputs = self.index(
                     self.input_list[0], self.input_list[1], self.input_list[2])
 
-            elif self.is_digit(self.task):
+            elif self.task.isdigit():
                 self.outputs = self.number(self.input_list, int(self.task))
 
-            elif self.task in ['last']:
+            elif self.task in ['last', '-1', -1]:
                 self.outputs = self.number(self.input_list, -1)
 
             elif "^" in str(self.task):
@@ -319,13 +319,6 @@ class Spicemanip():
         if len(inputs) == 2:
             return ' '.join(inputs)
         return ', '.join(str(x) for x in inputs)
-
-    def is_digit(self, n):
-        try:
-            int(n)
-            return True
-        except ValueError:
-            return False
 
 
 spicemanip = Spicemanip()
