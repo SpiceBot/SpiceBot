@@ -70,7 +70,7 @@ class Spicemanip():
                 self.outputs = self.index(
                     self.input_list[0], self.input_list[1], self.input_list[2])
 
-            elif self.task.isdigit():
+            elif str(self.task).isdigit():
                 self.outputs = self.number(self.input_list, int(self.task))
 
             elif self.task in ['last', '-1', -1]:
