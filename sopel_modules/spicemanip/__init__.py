@@ -78,43 +78,44 @@ class Spicemanip():
 
         elif "^" in str(self.task):
             self.task = "rangebetween"
-            range_start, range_end = str(self.task).split("^", 1).sort()
-            self.outputs = self.rangebetween(self.input_list, range_start,
-                                             range_end)
+            range_nums = str(self.task).split("^", 1).sort()
+            range_start, range_end = range_nums[0], range_nums[1]
+            self.outputs = self.rangebetween(self.input_list, int(range_start),
+                                             int(range_end))
 
         elif str(self.task).startswith("split_"):
             self.task = "split"
-            self.outputs = self.split(self.input_list,
-                                      str(self.task).replace("split_", ""))
+            split_mark = str(self.task).replace("split_", "")
+            self.outputs = self.split(self.input_list, split_mark)
 
         elif str(self.task).endswith("!"):
             self.task = "exclude"
-            self.outputs = self.exclude(self.input_list,
-                                        str(self.task).replace("!", ""))
+            exclude_num = str(self.task).replace("!", "")
+            self.outputs = self.exclude(self.input_list, int(exclude_num))
 
         elif str(self.task).endswith("+"):
             self.task = "incrange_plus"
+            range_start = str(self.task).replace("+", "")
             self.outputs = self.incrange_plus(
-                self.input_list,
-                str(self.task).replace("+", ""))
+                self.input_list, int(range_start))
 
         elif str(self.task).endswith("-"):
             self.task = "incrange_minus"
+            range_end = str(self.task).replace("-", "")
             self.outputs = self.incrange_minus(
-                self.input_list,
-                str(self.task).replace("-", ""))
+                self.input_list, int(range_end))
 
         elif str(self.task).endswith(">"):
             self.task = "excrange_plus"
+            range_start = str(self.task).replace(">", "")
             self.outputs = self.excrange_plus(
-                self.input_list,
-                str(self.task).replace(">", ""))
+                self.input_list, int(range_start))
 
         elif str(self.task).endswith("<"):
             self.task = "excrange_minus"
+            range_end = str(self.task).replace("<", "")
             self.outputs = self.excrange_minus(
-                self.input_list,
-                str(self.task).replace("<", ""))
+                self.input_list, int(range_end))
 
         elif hasattr(self,
                      str(self.task)) and not str(self.task).startswith("core_"):
