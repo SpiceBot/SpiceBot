@@ -33,8 +33,10 @@ def bot_dictcom_process(bot, trigger, botcom):
     # use the default key, unless otherwise specified
     botcom.dict["responsekey"] = "?default"
 
+    for command in list(botcom.dict["dict"].keys()):
+        bot.osd(str(command))
+
     # handling for special cases
-    bot.osd(str(botcom.dict["dict"]))
     posscom = spicemanip(botcom.dict['args'], 1)
     if posscom.lower() in [command.lower() for command in list(botcom.dict["dict"].keys())]:
         for command in botcom.dict["dict"].keys():
