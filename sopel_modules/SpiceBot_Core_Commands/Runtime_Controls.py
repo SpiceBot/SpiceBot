@@ -4,7 +4,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.module
 
-import sopel_modules.spicemanip as spicemanip
+from sopel_modules.spicemanip import spicemanip
 
 import sopel_modules.SpiceBot as SpiceBot
 
@@ -20,13 +20,13 @@ def nickname_comand_update(bot, trigger, botcom):
     if not len(botcom.dict['args']):
         commandused = 'nodeps'
     else:
-        commandused = spicemanip.main(botcom.dict['args'], 1).lower()
+        commandused = spicemanip(botcom.dict['args'], 1).lower()
 
     if commandused not in ['deps', 'nodeps']:
         SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Please specify deps or nodeps")
         return
 
-    botcom.dict['args'] = spicemanip.main(botcom.dict['args'], '2+', 'list')
+    botcom.dict['args'] = spicemanip(botcom.dict['args'], '2+', 'list')
 
     quitmessage = "Received command from " + trigger.nick + " to update from Github and restart"
     SpiceBot.logs.log('SpiceBot_Update', quitmessage)

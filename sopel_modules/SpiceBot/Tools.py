@@ -14,7 +14,7 @@ from operator import itemgetter
 from collections import abc
 from pygit2 import clone_repository
 
-import sopel_modules.spicemanip as spicemanip
+from sopel_modules.spicemanip import spicemanip
 
 from .Logs import logs
 from .Config import config as botconfig
@@ -231,7 +231,7 @@ def similar_list(searchitem, searchlist, matchcount=1, searchorder='reverse'):
         sim_num, sim_listitems = (list(x) for x in zip(*sorted(zip(sim_num, sim_listitems), key=itemgetter(0))))
 
     if searchorder == 'reverse':
-        sim_listitems = spicemanip.main(sim_listitems, 'reverse', "list")
+        sim_listitems = spicemanip(sim_listitems, 'reverse', "list")
 
     sim_listitems[-matchcount:]
 

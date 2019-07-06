@@ -11,7 +11,7 @@ import copy
 import datetime
 from word2number import w2n
 
-import sopel_modules.spicemanip as spicemanip
+from sopel_modules.spicemanip import spicemanip
 
 from .Tools import command_permissions_check, class_create
 from .Commands import commands as botcommands
@@ -41,7 +41,7 @@ def prerun(t_command_type='module', t_command_subtype=None):
             botcom = class_create('botcom')
 
             if t_command_type == "nickname":
-                check_nick = spicemanip.main(trigger.args[1], 1).lower()
+                check_nick = spicemanip(trigger.args[1], 1).lower()
                 if check_nick != str(bot.nick).lower():
                     return
             else:
@@ -129,7 +129,7 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
             botcom = class_create('botcom')
 
             if t_command_type == "nickname":
-                check_nick = spicemanip.main(trigger.args[1], 1).lower()
+                check_nick = spicemanip(trigger.args[1], 1).lower()
                 if check_nick != str(bot.nick).lower():
                     return
             else:
@@ -207,22 +207,22 @@ def verify_channel(trigger):
 
 
 def make_trigger_args(triggerargs_one, trigger_command_type='module'):
-    trigger_args = spicemanip.main(triggerargs_one, 'create')
+    trigger_args = spicemanip(triggerargs_one, 'create')
     if trigger_command_type in ['nickname']:
-        trigger_prefix = spicemanip.main(trigger_args, 2).lower()[0]
+        trigger_prefix = spicemanip(trigger_args, 2).lower()[0]
         if trigger_prefix.isupper() or trigger_prefix.islower():
             trigger_prefix = None
-        trigger_command = spicemanip.main(trigger_args, 2).lower()
-        trigger_args = spicemanip.main(trigger_args, '3+', 'list')
+        trigger_command = spicemanip(trigger_args, 2).lower()
+        trigger_args = spicemanip(trigger_args, '3+', 'list')
     else:
-        trigger_prefix = spicemanip.main(trigger_args, 1).lower()[0]
-        trigger_command = spicemanip.main(trigger_args, 1).lower()[1:]
-        trigger_args = spicemanip.main(trigger_args, '2+', 'list')
+        trigger_prefix = spicemanip(trigger_args, 1).lower()[0]
+        trigger_command = spicemanip(trigger_args, 1).lower()[1:]
+        trigger_args = spicemanip(trigger_args, '2+', 'list')
     return trigger_args, trigger_command, trigger_prefix
 
 
 def trigger_and_split(trigger_args):
-    trigger_args_list_split = spicemanip.main(trigger_args, "split_&&")
+    trigger_args_list_split = spicemanip(trigger_args, "split_&&")
     if not len(trigger_args_list_split):
         trigger_args_list_split.append([])
     return trigger_args_list_split
@@ -232,11 +232,11 @@ def trigger_argsdict_list(argsdict_default, and_split):
     prerun_split = []
     for trigger_args_part in and_split:
         argsdict_part = copy.deepcopy(argsdict_default)
-        argsdict_part["args"] = spicemanip.main(trigger_args_part, 'create')
+        argsdict_part["args"] = spicemanip(trigger_args_part, 'create')
         if len(argsdict_part["args"]) and (argsdict_part["args"][0] == "-a" or argsdict_part["args"][-1] == "-a"):
             argsdict_part["adminswitch"] = True
             if argsdict_part["args"][0] == "-a":
-                argsdict_part["args"] = spicemanip.main(argsdict_part["args"], '2+', 'list')
+                argsdict_part["args"] = spicemanip(argsdict_part["args"], '2+', 'list')
             elif argsdict_part["args"][-1] == "-a":
                 del argsdict_part["args"][-1]
         else:
@@ -247,11 +247,11 @@ def trigger_argsdict_list(argsdict_default, and_split):
 
 def trigger_argsdict_single(argsdict_default, trigger_args_part):
     argsdict_part = copy.deepcopy(argsdict_default)
-    argsdict_part["args"] = spicemanip.main(trigger_args_part, 'create')
+    argsdict_part["args"] = spicemanip(trigger_args_part, 'create')
     if len(argsdict_part["args"]) and (argsdict_part["args"][0] == "-a" or argsdict_part["args"][-1] == "-a"):
         argsdict_part["adminswitch"] = True
         if argsdict_part["args"][0] == "-a":
-            argsdict_part["args"] = spicemanip.main(argsdict_part["args"], '2+', 'list')
+            argsdict_part["args"] = spicemanip(argsdict_part["args"], '2+', 'list')
         elif argsdict_part["args"][-1] == "-a":
             del argsdict_part["args"][-1]
     else:
@@ -471,14 +471,14 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
                                         "on", "off"
                                         ]:
 
-        target = spicemanip.main(botcom.dict["args"], 1) or trigger.nick
+        target = spicemanip(botcom.dict["args"], 1) or trigger.nick
         if not target:
             if botcom.dict["hyphen_arg"] in ['enable', 'unblock', "activate", "on"]:
                 botmessagelog.messagelog_error(botcom.dict["log_id"], "Who/Where am I enabling " + str(botcom.dict["comtext"]) + " usage for?")
             else:
                 botmessagelog.messagelog_error(botcom.dict["log_id"], "Who/Where am I disabling " + str(botcom.dict["comtext"]) + " usage for?")
             return False
-        botcom.dict["args"] = spicemanip.main(botcom.dict["args"], "2+", "list")
+        botcom.dict["args"] = spicemanip(botcom.dict["args"], "2+", "list")
 
         if not botdb.check_nick_id(target) and not botchannels.check_channel_bot(target, True):
             botmessagelog.messagelog_error(botcom.dict["log_id"], "I don't know who/what " + str(target) + " is.")
@@ -508,7 +508,7 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
                 botmessagelog.messagelog_error(botcom.dict["log_id"], botcom.dict["comtext"] + " is already disabled for " + str(target))
                 return False
 
-            trailingmessage = spicemanip.main(botcom.dict["args"], 0) or "No reason given."
+            trailingmessage = spicemanip(botcom.dict["args"], 0) or "No reason given."
             timestamp = str(datetime.datetime.utcnow())
 
             botcommands.set_command_disabled(botcom.dict["realcomref"], target, timestamp, trailingmessage, trigger.nick)
@@ -517,19 +517,19 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
 
     if botcom.dict["hyphen_arg"] in ['multirun', 'multiruns']:
 
-        onoff = spicemanip.main(botcom.dict["args"], 1) or None
+        onoff = spicemanip(botcom.dict["args"], 1) or None
         if not onoff or onoff not in ['enable', 'unblock', "activate", "on"]:
             botmessagelog.messagelog_error(botcom.dict["log_id"], "Do you want to enable or disable " + str(botcom.dict["comtext"]) + " multirun usage?")
             return False
 
-        target = spicemanip.main(botcom.dict["args"], 1) or trigger.nick
+        target = spicemanip(botcom.dict["args"], 1) or trigger.nick
         if not target:
             if onoff in ['enable', 'unblock', "activate", "on"]:
                 botmessagelog.messagelog_error(botcom.dict["log_id"], "Who/Where am I enabling " + str(botcom.dict["comtext"]) + " multirun usage for?")
             else:
                 botmessagelog.messagelog_error(botcom.dict["log_id"], "Who/Where am I disabling " + str(botcom.dict["comtext"]) + " multirun usage for?")
             return False
-        botcom.dict["args"] = spicemanip.main(botcom.dict["args"], "2+", "list")
+        botcom.dict["args"] = spicemanip(botcom.dict["args"], "2+", "list")
 
         if not botdb.check_nick_id(target) and not botchannels.check_channel_bot(target, True):
             botmessagelog.messagelog_error(botcom.dict["log_id"], "I don't know who/what " + str(target) + " is.")
@@ -559,7 +559,7 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
                 botmessagelog.messagelog_error(botcom.dict["log_id"], botcom.dict["comtext"] + " multirun is already disabled for " + str(target))
                 return False
 
-            trailingmessage = spicemanip.main(botcom.dict["args"], 0) or "No reason given."
+            trailingmessage = spicemanip(botcom.dict["args"], 0) or "No reason given."
             timestamp = str(datetime.datetime.utcnow())
 
             botcommands.set_command_disabled(botcom.dict["realcomref"], target, timestamp, trailingmessage, trigger.nick, "multirun")
@@ -583,11 +583,11 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
         return False
 
     elif botcom.dict["hyphen_arg"] in ['contribs', 'contrib', "contributors"]:
-        botmessagelog.messagelog(botcom.dict["log_id"], "The contributors of the " + str(botcom.dict["comtext"]) + " command are " + spicemanip.main(botcom.dict["dict"]["contributors"], "andlist") + ".")
+        botmessagelog.messagelog(botcom.dict["log_id"], "The contributors of the " + str(botcom.dict["comtext"]) + " command are " + spicemanip(botcom.dict["dict"]["contributors"], "andlist") + ".")
         return False
 
     elif botcom.dict["hyphen_arg"] in ['alias', 'aliases']:
-        botmessagelog.messagelog(botcom.dict["log_id"], "The alaises of the " + str(botcom.dict["comtext"]) + " command are " + spicemanip.main(botcom.dict["dict"]["validcoms"], "andlist") + ".")
+        botmessagelog.messagelog(botcom.dict["log_id"], "The alaises of the " + str(botcom.dict["comtext"]) + " command are " + spicemanip(botcom.dict["dict"]["validcoms"], "andlist") + ".")
         return False
 
     return False

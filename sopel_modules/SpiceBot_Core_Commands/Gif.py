@@ -6,7 +6,7 @@ import sopel.module
 
 import sopel_modules.SpiceBot as SpiceBot
 
-import sopel_modules.spicemanip as spicemanip
+from sopel_modules.spicemanip import spicemanip
 
 # TODO custom gif shortcut commands
 
@@ -18,7 +18,7 @@ def gif_trigger(bot, trigger, botcom):
     if not len(botcom.dict['args']):
         return SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Please present a query to search.")
 
-    query = spicemanip.main(botcom.dict['args'], 0)
+    query = spicemanip(botcom.dict['args'], 0)
     searchapis = list(SpiceBot.gif.valid_api.keys())
     searchdict = {"query": query, "gifsearch": searchapis}
 
@@ -40,7 +40,7 @@ def gifapi_triggers(bot, trigger, botcom):
     if not len(botcom.dict['args']):
         return SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Please present a query to search.")
 
-    query = spicemanip.main(botcom.dict['args'], 0)
+    query = spicemanip(botcom.dict['args'], 0)
     searchdict = {"query": query, "gifsearch": botcom.dict['com']}
 
     gifdict = SpiceBot.gif.get_gif(searchdict)

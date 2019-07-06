@@ -9,7 +9,7 @@ import sopel.module
 
 import sopel_modules.SpiceBot as SpiceBot
 
-import sopel_modules.spicemanip as spicemanip
+from sopel_modules.spicemanip import spicemanip
 
 from word2number import w2n
 from random import randint
@@ -34,13 +34,13 @@ def bot_dictcom_process(bot, trigger, botcom):
     botcom.dict["responsekey"] = "?default"
 
     # handling for special cases
-    posscom = spicemanip.main(botcom.dict['args'], 1)
+    posscom = spicemanip(botcom.dict['args'], 1)
     if posscom.lower() in [command.lower() for command in botcom.dict["dict"].keys()]:
         for command in botcom.dict["dict"].keys():
             if command.lower() == posscom.lower():
                 posscom = command
         botcom.dict["responsekey"] = posscom
-        botcom.dict['args'] = spicemanip.main(botcom.dict['args'], '2+', 'list')
+        botcom.dict['args'] = spicemanip(botcom.dict['args'], '2+', 'list')
     botcom.dict["dict"][botcom.dict["responsekey"]]["type"] = botcom.dict["dict"][botcom.dict["responsekey"]]["type"]
 
     botcom.dict["nonstockoptions"] = []
@@ -51,7 +51,7 @@ def bot_dictcom_process(bot, trigger, botcom):
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
     validspecifides = ['last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special']
     botcom.dict["specified"] = None
-    argone = spicemanip.main(botcom.dict['args'], 1)
+    argone = spicemanip(botcom.dict['args'], 1)
     if str(argone).startswith("--") and len(str(argone)) > 2:
         if str(argone[2:]).isdigit():
             botcom.dict["specified"] = int(argone[2:])
@@ -67,7 +67,7 @@ def bot_dictcom_process(bot, trigger, botcom):
             except ValueError:
                 botcom.dict["specified"] = None
         if botcom.dict["specified"]:
-            botcom.dict['args'] = spicemanip.main(botcom.dict['args'], '2+', 'list')
+            botcom.dict['args'] = spicemanip(botcom.dict['args'], '2+', 'list')
 
     # commands that can be updated
     if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"]:
@@ -79,7 +79,7 @@ def bot_dictcom_process(bot, trigger, botcom):
             botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = SpiceBot.db.get_nick_value(str(trigger.nick), botcom.dict["dict"]["validcoms"][0] + "_" + str(botcom.dict["responsekey"]), 'sayings') or []
 
     if botcom.dict["specified"] == 'special':
-        nonstockoptions = spicemanip.main(botcom.dict["nonstockoptions"], "andlist")
+        nonstockoptions = spicemanip(botcom.dict["nonstockoptions"], "andlist")
         return bot.osd("The special options for " + str(botcom.dict["realcom"]) + " command include: " + str(nonstockoptions) + ".")
 
     elif botcom.dict["specified"] == 'count':
@@ -106,7 +106,7 @@ def bot_dictcom_process(bot, trigger, botcom):
         if not botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"]:
             return bot.osd("The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list cannot be updated.")
 
-        fulltext = spicemanip.main(botcom.dict['args'], 0)
+        fulltext = spicemanip(botcom.dict['args'], 0)
         if not fulltext:
             return bot.osd("What would you like to add to the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list?")
 
@@ -125,7 +125,7 @@ def bot_dictcom_process(bot, trigger, botcom):
         if not botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"]:
             return bot.osd("The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list cannot be updated.")
 
-        fulltext = spicemanip.main(botcom.dict['args'], 0)
+        fulltext = spicemanip(botcom.dict['args'], 0)
         if not fulltext:
             return bot.osd("What would you like to remove from the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list?")
 
@@ -161,7 +161,7 @@ def bot_dictcom_responses(bot, trigger, botcom):
     if botcom.dict["dict"][botcom.dict["responsekey"]]["target_required"]:
 
         # try first term as a target
-        posstarget = spicemanip.main(botcom.dict['args'], 1) or 0
+        posstarget = spicemanip(botcom.dict['args'], 1) or 0
         targetbypass = botcom.dict["dict"][botcom.dict["responsekey"]]["target_bypass"]
         targetchecking = SpiceBot.users.target_check(bot, trigger, posstarget, targetbypass)
         if not targetchecking["targetgood"]:
@@ -180,11 +180,11 @@ def bot_dictcom_responses(bot, trigger, botcom):
                 if not reaction:
                     commandrunconsensus.append([targetchecking["error"]])
         else:
-            botcom.dict["target"] = spicemanip.main(botcom.dict['args'], 1)
-            botcom.dict['args'] = spicemanip.main(botcom.dict['args'], '2+', 'list')
+            botcom.dict["target"] = spicemanip(botcom.dict['args'], 1)
+            botcom.dict['args'] = spicemanip(botcom.dict['args'], '2+', 'list')
 
     # $blank input
-    botcom.dict["completestring"] = spicemanip.main(botcom.dict['args'], 0) or ''
+    botcom.dict["completestring"] = spicemanip(botcom.dict['args'], 0) or ''
     if botcom.dict["dict"][botcom.dict["responsekey"]]["blank_required"]:
 
         if botcom.dict["completestring"] == '' or not botcom.dict["completestring"]:
@@ -196,13 +196,13 @@ def bot_dictcom_responses(bot, trigger, botcom):
 
         if botcom.dict["dict"][botcom.dict["responsekey"]]["blank_phrasehandle"]:
             if botcom.dict["dict"][botcom.dict["responsekey"]]["blank_phrasehandle"] != []:
-                if spicemanip.main(botcom.dict["completestring"], 1).lower() not in botcom.dict["dict"][botcom.dict["responsekey"]]["blank_phrasehandle"]:
+                if spicemanip(botcom.dict["completestring"], 1).lower() not in botcom.dict["dict"][botcom.dict["responsekey"]]["blank_phrasehandle"]:
                     botcom.dict["completestring"] = botcom.dict["dict"][botcom.dict["responsekey"]]["blank_phrasehandle"][0] + " " + botcom.dict["completestring"]
-                elif spicemanip.main(botcom.dict["completestring"], 1).lower() in botcom.dict["dict"][botcom.dict["responsekey"]]["blank_phrasehandle"]:
-                    if spicemanip.main(botcom.dict["completestring"], 1).lower() != botcom.dict["dict"][botcom.dict["responsekey"]]["blank_phrasehandle"][0]:
-                        botcom.dict['args'] = spicemanip.main(botcom.dict['args'], '2+', 'list')
+                elif spicemanip(botcom.dict["completestring"], 1).lower() in botcom.dict["dict"][botcom.dict["responsekey"]]["blank_phrasehandle"]:
+                    if spicemanip(botcom.dict["completestring"], 1).lower() != botcom.dict["dict"][botcom.dict["responsekey"]]["blank_phrasehandle"][0]:
+                        botcom.dict['args'] = spicemanip(botcom.dict['args'], '2+', 'list')
                         if botcom.dict['args'] != []:
-                            botcom.dict["completestring"] = botcom.dict["dict"][botcom.dict["responsekey"]]["blank_phrasehandle"][0] + " " + spicemanip.main(botcom.dict['args'], 0)
+                            botcom.dict["completestring"] = botcom.dict["dict"][botcom.dict["responsekey"]]["blank_phrasehandle"][0] + " " + spicemanip(botcom.dict['args'], 0)
 
     if commandrunconsensus != []:
         botcom.dict["success"] = False
@@ -221,10 +221,10 @@ def bot_dictcom_reply_shared(bot, trigger, botcom):
             currentspecified = len(botcom.dict["dict"][botcom.dict["responsekey"]]["responses"])
         else:
             currentspecified = botcom.dict["specified"]
-        botcom.dict["replies"] = spicemanip.main(botcom.dict["dict"][botcom.dict["responsekey"]]["responses"], currentspecified, 'return')
+        botcom.dict["replies"] = spicemanip(botcom.dict["dict"][botcom.dict["responsekey"]]["responses"], currentspecified, 'return')
         botcom.dict["replynum"] = currentspecified
     else:
-        botcom.dict["replies"] = spicemanip.main(botcom.dict["dict"][botcom.dict["responsekey"]]["responses"], 'random', 'return')
+        botcom.dict["replies"] = spicemanip(botcom.dict["dict"][botcom.dict["responsekey"]]["responses"], 'random', 'return')
         try:
             botcom.dict["replynum"] = botcom.dict["dict"][botcom.dict["responsekey"]]["responses"].index(botcom.dict["replies"])
         except Exception as e:
@@ -258,7 +258,7 @@ def bot_dictcom_reply_shared(bot, trigger, botcom):
 
             # the remaining input
             if "$input" in rply:
-                rply = rply.replace("$input", spicemanip.main(botcom.dict['args'], 0) or botcom.dict["realcom"])
+                rply = rply.replace("$input", spicemanip(botcom.dict['args'], 0) or botcom.dict["realcom"])
 
             # translation
             if botcom.dict["dict"][botcom.dict["responsekey"]]["translations"]:
@@ -266,11 +266,11 @@ def bot_dictcom_reply_shared(bot, trigger, botcom):
 
             # text to precede the output
             if botcom.dict["dict"][botcom.dict["responsekey"]]["prefixtext"] and botcom.dict["success"]:
-                rply = spicemanip.main(botcom.dict["dict"][botcom.dict["responsekey"]]["prefixtext"], 'random') + rply
+                rply = spicemanip(botcom.dict["dict"][botcom.dict["responsekey"]]["prefixtext"], 'random') + rply
 
             # text to follow the output
             if botcom.dict["dict"][botcom.dict["responsekey"]]["suffixtext"] and botcom.dict["success"]:
-                rply = rply + spicemanip.main(botcom.dict["dict"][botcom.dict["responsekey"]]["suffixtext"], 'random')
+                rply = rply + spicemanip(botcom.dict["dict"][botcom.dict["responsekey"]]["suffixtext"], 'random')
 
             # trigger.nick
             if "$instigator" in rply:
@@ -279,7 +279,7 @@ def bot_dictcom_reply_shared(bot, trigger, botcom):
             # random user
             if "$randuser" in rply:
                 if not trigger.is_privmsg:
-                    randuser = spicemanip.main(SpiceBot.users.random_valid_target(trigger, 'random'))
+                    randuser = spicemanip(SpiceBot.users.random_valid_target(trigger, 'random'))
                 else:
                     randuser = trigger.nick
                 rply = rply.replace("$randuser", randuser)
@@ -310,7 +310,7 @@ def bot_dictcom_reply_shared(bot, trigger, botcom):
             # smaller variations for the text
             if "$replyvariation" in rply:
                 if botcom.dict["dict"][botcom.dict["responsekey"]]["replyvariation"] != []:
-                    variation = spicemanip.main(botcom.dict["dict"][botcom.dict["responsekey"]]["replyvariation"], 'random')
+                    variation = spicemanip(botcom.dict["dict"][botcom.dict["responsekey"]]["replyvariation"], 'random')
                     rply = rply.replace("$replyvariation", variation)
                 else:
                     rply = rply.replace("$replyvariation", '')
@@ -328,7 +328,7 @@ def bot_dictcom_reply_shared(bot, trigger, botcom):
                 for command in botcom.dict["dict"].keys():
                     if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath", "filename", "hardcoded_channel_block", "description", "exampleresponse", "example", "usage", "privs"]:
                         nonstockoptions.append(command)
-                nonstockoptions = spicemanip.main(nonstockoptions, "andlist")
+                nonstockoptions = spicemanip(nonstockoptions, "andlist")
                 rply = rply.replace("$specialoptions", nonstockoptions)
 
             # saying, or action?
@@ -360,9 +360,9 @@ def bot_dictcom_gif(bot, trigger, botcom):
     if botcom.dict["specified"]:
         if botcom.dict["specified"] > len(queries):
             botcom.dict["specified"] = len(queries)
-        query = spicemanip.main(queries, botcom.dict["specified"], 'return')
+        query = spicemanip(queries, botcom.dict["specified"], 'return')
     else:
-        query = spicemanip.main(queries, 'random', 'return')
+        query = spicemanip(queries, 'random', 'return')
 
     searchdict = {"query": query, "gifsearch": searchapis}
 

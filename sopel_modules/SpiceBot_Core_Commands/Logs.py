@@ -7,7 +7,7 @@ This is the SpiceBot Logs System
 # sopel imports
 import sopel.module
 
-import sopel_modules.spicemanip as spicemanip
+from sopel_modules.spicemanip import spicemanip
 
 import sopel_modules.SpiceBot as SpiceBot
 
@@ -20,9 +20,9 @@ def bot_command_logs(bot, trigger, botcom):
         SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "I was unable to process this Bot Nick command due to privilege issues.")
         return
 
-    logtype = spicemanip.main(botcom.dict['args'], 1) or None
+    logtype = spicemanip(botcom.dict['args'], 1) or None
     if not logtype:
-        bot.osd("Current valid log(s) include: " + spicemanip.main(list(SpiceBot.logs.dict["list"].keys()), 'andlist'), trigger.sender, 'action')
+        bot.osd("Current valid log(s) include: " + spicemanip(list(SpiceBot.logs.dict["list"].keys()), 'andlist'), trigger.sender, 'action')
         return
 
     if not SpiceBot.inlist(logtype, list(SpiceBot.logs.dict["list"].keys())):
@@ -30,7 +30,7 @@ def bot_command_logs(bot, trigger, botcom):
         if not len(closestmatches):
             SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "No valid logs match " + str(logtype) + ".", trigger.nick, 'notice')
         else:
-            SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "The following commands may match " + str(logtype) + ": " + spicemanip.main(closestmatches, 'andlist') + ".", trigger.nick, 'notice')
+            SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "The following commands may match " + str(logtype) + ": " + spicemanip(closestmatches, 'andlist') + ".", trigger.nick, 'notice')
 
         return
 

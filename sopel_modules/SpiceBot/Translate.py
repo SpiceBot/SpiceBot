@@ -1,7 +1,7 @@
 # coding=utf8
 from __future__ import unicode_literals, absolute_import, division, print_function
 
-import sopel_modules.spicemanip as spicemanip
+from sopel_modules.spicemanip import spicemanip
 
 import re
 from num2words import num2words
@@ -21,10 +21,10 @@ class Translate():
         for translationtype in translationtypes:
 
             if translationtype == "hyphen":
-                totranslate = spicemanip.main(totranslate, 0).replace(' ', '-')
+                totranslate = spicemanip(totranslate, 0).replace(' ', '-')
 
             elif translationtype == "underscore":
-                totranslate = spicemanip.main(totranslate, 0).replace(' ', '_')
+                totranslate = spicemanip(totranslate, 0).replace(' ', '_')
 
             elif translationtype == "ermahgerd":
                 totranslate = self.trernslert(totranslate)
@@ -42,10 +42,10 @@ class Translate():
                 totranslate = self.text_one_to_zero_swap(totranslate)
 
             elif translationtype == "upper":
-                totranslate = spicemanip.main(totranslate, 0).upper()
+                totranslate = spicemanip(totranslate, 0).upper()
 
             elif translationtype == "lower":
-                totranslate = spicemanip.main(totranslate, 0).lower()
+                totranslate = spicemanip(totranslate, 0).lower()
 
         return totranslate
 
@@ -66,7 +66,7 @@ class Translate():
             else:
                 new_word = word[1:] + first + 'ay'
             rebuildarray.append(new_word)
-        words = spicemanip.main(rebuildarray, 0)
+        words = spicemanip(rebuildarray, 0)
         return words
 
     def trernslert(self, werds):
@@ -143,7 +143,7 @@ class Translate():
             return "No input provided"
         if not isinstance(words, list):
             words = [words]
-        words = spicemanip.main(words, 0).split(" ")
+        words = spicemanip(words, 0).split(" ")
         outputarray = []
         for word in words:
             if not self.isitbinary(word):
@@ -152,7 +152,7 @@ class Translate():
             word = str(word).replace('0', '1')
             word = str(word).replace('2', '0')
             outputarray.append(str(word))
-        outputarray = spicemanip.main(outputarray, 0)
+        outputarray = spicemanip(outputarray, 0)
         return outputarray
 
     def text_binary_swap(self, words):
@@ -160,16 +160,16 @@ class Translate():
             return "No input provided"
         if not isinstance(words, list):
             words = [words]
-        words = spicemanip.main(words, 0).split(" ")
+        words = spicemanip(words, 0).split(" ")
         outputarray = []
         for word in words:
             if self.isitbinary(word):
                 word = self.bits2string(word) or 'error'
             else:
                 word = self.string2bits(word) or 1
-                word = spicemanip.main(word, 0)
+                word = spicemanip(word, 0)
             outputarray.append(str(word))
-        outputarray = spicemanip.main(outputarray, 0)
+        outputarray = spicemanip(outputarray, 0)
         return outputarray
 
     def unicode_string_cleanup(string):

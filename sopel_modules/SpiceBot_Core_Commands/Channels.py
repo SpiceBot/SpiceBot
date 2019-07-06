@@ -5,7 +5,7 @@ This is the SpiceBot Channels system.
 """
 import sopel
 
-import sopel_modules.spicemanip as spicemanip
+from sopel_modules.spicemanip import spicemanip
 
 import sopel_modules.SpiceBot as SpiceBot
 
@@ -17,15 +17,15 @@ def nickname_comand_channels(bot, trigger, botcom):
     if not len(botcom.dict['args']):
         commandused = 'list'
     else:
-        commandused = spicemanip.main(botcom.dict['args'], 1).lower()
+        commandused = spicemanip(botcom.dict['args'], 1).lower()
 
-    botcom.dict['args'] = spicemanip.main(botcom.dict['args'], '2+', 'list')
+    botcom.dict['args'] = spicemanip(botcom.dict['args'], '2+', 'list')
 
     if commandused == 'list':
         botcount = len(list(bot.channels.keys()))
         servercount = len(list(SpiceBot.channels.dict['list'].keys()))
         displayval = "I am in " + str(botcount) + " of " + str(servercount) + " channel(s) available on this server."
-        chanlist = spicemanip.main(list(bot.channels.keys()), 'andlist')
+        chanlist = spicemanip(list(bot.channels.keys()), 'andlist')
         bot.osd([displayval, "You can find me in " + chanlist])
         return
 
@@ -36,7 +36,7 @@ def nickname_comand_channels(bot, trigger, botcom):
         return
 
     elif commandused == 'random':
-        channel = spicemanip.main(SpiceBot.channels.dict['list'], 'random')
+        channel = spicemanip(SpiceBot.channels.dict['list'], 'random')
         topic = SpiceBot.channels.dict['list'][channel]['topic']
         msg = ["Random channel for you: {}.".format(SpiceBot.channels.dict['list'][channel]['name'])]
         if topic and not topic.isspace():
@@ -65,7 +65,7 @@ def nickname_comand_channels(bot, trigger, botcom):
         if not len(botcom.dict['args']):
             SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Channel name input missing.")
             return
-        channel = spicemanip.main(botcom.dict['args'], 1)
+        channel = spicemanip(botcom.dict['args'], 1)
         if not SpiceBot.inlist(channel.lower(), list(SpiceBot.channels.dict['list'].keys())):
             SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Channel name {} not valid.".format(channel))
             return
@@ -82,7 +82,7 @@ def nickname_comand_channels(bot, trigger, botcom):
             else:
                 channel = trigger.sender
         else:
-            channel = spicemanip.main(botcom.dict['args'], 1)
+            channel = spicemanip(botcom.dict['args'], 1)
             if not SpiceBot.inlist(channel.lower(), list(SpiceBot.channels.dict['list'].keys())):
                 SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Channel name {} not valid.".format(channel))
                 return
@@ -95,14 +95,14 @@ def nickname_comand_channels(bot, trigger, botcom):
         if not len(privlist):
             dispmsg.append("There are no Channel " + commandused.upper() + "s for " + str(channel))
         else:
-            oplist = spicemanip.main(privlist, 'andlist')
+            oplist = spicemanip(privlist, 'andlist')
             dispmsg.append("Channel " + commandused.upper() + "s for " + str(channel) + "  are: " + oplist)
         bot.osd(dispmsg, trigger.nick, 'notice')
         return
 
     # Users List
     if commandused == 'users':
-        channel = spicemanip.main(botcom.dict['args'], 1)
+        channel = spicemanip(botcom.dict['args'], 1)
         if not SpiceBot.inlist(channel.lower(), list(SpiceBot.channels.dict['list'].keys())):
             SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Channel name {} not valid.".format(channel))
             return
@@ -113,7 +113,7 @@ def nickname_comand_channels(bot, trigger, botcom):
         if not len(list(bot.channels[channel].privileges.keys())):
             dispmsg.append("There are no Channel users for " + str(channel))
         else:
-            userslist = spicemanip.main(list(bot.channels[channel].privileges.keys()), 'andlist')
+            userslist = spicemanip(list(bot.channels[channel].privileges.keys()), 'andlist')
             dispmsg.append("Channel users for " + str(channel) + " are: " + userslist)
         bot.osd(dispmsg, trigger.nick, 'notice')
         return

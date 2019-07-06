@@ -4,7 +4,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.module
 
-import sopel_modules.spicemanip as spicemanip
+from sopel_modules.spicemanip import spicemanip
 
 import sopel_modules.SpiceBot as SpiceBot
 
@@ -40,14 +40,14 @@ def bot_command_process(bot, trigger, botcom):
         SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "You must specify a channel or nick.")
         return
 
-    target = spicemanip.main(botcom.dict['args'], 1)
+    target = spicemanip(botcom.dict['args'], 1)
     if (target not in ['allchans', 'allnicks']
             and not SpiceBot.inlist(target.lower(), list(SpiceBot.channels.dict['list'].keys()))
             and not SpiceBot.inlist(target.lower(), bot.users)):
         SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Channel/nick name {} not valid.".format(target))
         return
 
-    botcom.dict['args'] = spicemanip.main(botcom.dict['args'], '2+', 'list')
+    botcom.dict['args'] = spicemanip(botcom.dict['args'], '2+', 'list')
 
     if target == 'allchans':
         targetsendlist = list(bot.channels.keys())
@@ -56,7 +56,7 @@ def bot_command_process(bot, trigger, botcom):
     else:
         targetsendlist = [target]
 
-    botmessage = spicemanip.main(botcom.dict['args'], 0)
+    botmessage = spicemanip(botcom.dict['args'], 0)
     if not botmessage:
         SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "You must specify a message to send.")
         return

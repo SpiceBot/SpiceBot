@@ -6,7 +6,7 @@ import sopel.module
 
 import sopel_modules.SpiceBot as SpiceBot
 
-import sopel_modules.spicemanip as spicemanip
+from sopel_modules.spicemanip import spicemanip
 
 
 @SpiceBot.prerun('nickname')
@@ -59,7 +59,7 @@ def bot_command_rule_ai(bot, trigger):
         command_type = 'nickname'
         trigger_args, trigger_command, trigger_prefix = SpiceBot.make_trigger_args(message, 'nickname')
         trigger_args.insert(0, trigger_command)
-        fulltrigger = bot.nick + " " + spicemanip.main(trigger_args, 0)
+        fulltrigger = bot.nick + " " + spicemanip(trigger_args, 0)
         if str(trigger_command).startswith(bot.config.SpiceBot_Commands.query_prefix):
             return
         if fulltrigger in SpiceBot.commands.dict['nickrules']:
@@ -73,7 +73,7 @@ def bot_command_rule_ai(bot, trigger):
         command_type = 'module'
         trigger_args, trigger_command, trigger_prefix = SpiceBot.make_trigger_args(message, 'module')
         trigger_args.insert(0, trigger_command)
-        fulltrigger = spicemanip.main(trigger_args, 0)
+        fulltrigger = spicemanip(trigger_args, 0)
         # patch for people typing "...", maybe other stuff, but this verifies that there is still a command here
         if trigger_command.startswith(tuple(bot.config.core.prefix_list)):
             return
@@ -82,11 +82,11 @@ def bot_command_rule_ai(bot, trigger):
             return
     else:
         command_type = 'other'
-        trigger_args = spicemanip.main(message, 'create')
+        trigger_args = spicemanip(message, 'create')
         if not len(trigger_args):
             return
         trigger_command = trigger_args[0]
-        fulltrigger = spicemanip.main(trigger_args, 0)
+        fulltrigger = spicemanip(trigger_args, 0)
 
     returnmessage = SpiceBot.botai.on_message(bot, trigger, fulltrigger)
     if returnmessage:
@@ -94,7 +94,7 @@ def bot_command_rule_ai(bot, trigger):
         return
 
     if command_type == 'nickname':
-        try_trigger = spicemanip.main(fulltrigger, "2+")
+        try_trigger = spicemanip(fulltrigger, "2+")
         returnmessage = SpiceBot.botai.on_message(bot, trigger, try_trigger)
         if returnmessage:
             bot.osd(str(returnmessage))
@@ -116,7 +116,7 @@ def bot_command_rule_ai(bot, trigger):
 
         if trigger_args[0].lower() in ["what", "where"] and trigger_args[1].lower() in ["is", "are"]:
             # TODO saved definitions
-            searchterm = spicemanip.main(trigger_args, "3+") or None
+            searchterm = spicemanip(trigger_args, "3+") or None
             if searchterm:
                 if trigger_args[0].lower() == "where":
                     searchreturn = SpiceBot.google.search(searchterm, 'maps')
@@ -132,7 +132,7 @@ def bot_command_rule_ai(bot, trigger):
             return
 
         elif trigger_args[0].lower() in ["can", "have"] and trigger_args[1].lower() in ["you"] and trigger_args[2].lower() in ["see", "seen"]:
-            target = spicemanip.main(trigger_args, "4+") or None
+            target = spicemanip(trigger_args, "4+") or None
             if target:
                 if SpiceBot.inlist(trigger.nick, bot.users):
                     realtarget = SpiceBot.inlist_match(target, bot.users)
@@ -141,7 +141,7 @@ def bot_command_rule_ai(bot, trigger):
                     for channel in list(bot.channels.keys()):
                         if SpiceBot.inlist(trigger.nick, list(bot.channels[channel].privileges.keys())):
                             targetchannels.append(channel)
-                    dispmsg.append(realtarget + " is in " + spicemanip.main(targetchannels, 'andlist'))
+                    dispmsg.append(realtarget + " is in " + spicemanip(targetchannels, 'andlist'))
                     bot.osd(dispmsg)
                 else:
                     bot.osd(trigger.nick + ", no. I cannot see " + target + " right now!")
@@ -164,7 +164,7 @@ def bot_command_rule_ai(bot, trigger):
                         for nonjedi in [bot.nick, trigger.nick]:
                             if nonjedi in jedilist:
                                 jedilist.remove(nonjedi)
-                        jedi = spicemanip.main(jedilist, 'random')
+                        jedi = spicemanip(jedilist, 'random')
 
                     if jedi:
                         bot.osd("turns to " + jedi + " and shoots him.", trigger.sender, 'action')
@@ -183,7 +183,7 @@ def bot_command_rule_ai(bot, trigger):
             return
 
         elif fulltrigger.lower().startswith(tuple(["make me a", "beam me a"])):
-            makemea = spicemanip.main(trigger_args, "4+") or None
+            makemea = spicemanip(trigger_args, "4+") or None
             if makemea:
                 bot.osd("beams " + trigger.nick + " a " + makemea, trigger.sender, 'action')
             else:
@@ -191,7 +191,7 @@ def bot_command_rule_ai(bot, trigger):
             return
 
         elif fulltrigger.lower().startswith("beam me to"):
-            location = spicemanip.main(trigger_args, "4+") or None
+            location = spicemanip(trigger_args, "4+") or None
             if location:
                 bot.osd("locks onto " + trigger.nick + "s coordinates and transports them to " + location, 'action')
             else:
@@ -209,7 +209,7 @@ def bot_command_rule_ai(bot, trigger):
         # TODO
 
         # elif fulltrigger.lower().startswith(tuple(["have you seen"])):
-        #    posstarget = spicemanip.main(trigger_args, 4) or 0
+        #    posstarget = spicemanip(trigger_args, 4) or 0
         #    message = seen_search(bot, trigger, posstarget)
         #    bot.osd(message)
         #    return
@@ -217,7 +217,7 @@ def bot_command_rule_ai(bot, trigger):
 
         closestmatches = SpiceBot.similar_list(trigger_command, list(SpiceBot.commands.dict['commands']["nickname"].keys()), 3, 'reverse')
         if len(closestmatches):
-            closestmatches = spicemanip.main(closestmatches, "andlist")
+            closestmatches = spicemanip(closestmatches, "andlist")
             bot.osd("I don't know what you are asking me to do! Did you mean: " + str(closestmatches) + "?")
             return
         else:

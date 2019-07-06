@@ -13,7 +13,7 @@ import os
 import threading
 import copy
 
-import sopel_modules.spicemanip as spicemanip
+from sopel_modules.spicemanip import spicemanip
 import sopel_modules
 
 from .Logs import logs
@@ -196,7 +196,7 @@ class BotCommands():
 
         maincom = command_dict["validcoms"][0]
         if len(command_dict["validcoms"]) > 1:
-            comaliases = spicemanip.main(command_dict["validcoms"], '2+', 'list')
+            comaliases = spicemanip(command_dict["validcoms"], '2+', 'list')
         else:
             comaliases = []
 

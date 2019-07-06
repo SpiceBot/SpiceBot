@@ -5,7 +5,7 @@ This is the SpiceBot search system.
 """
 import sopel
 
-import sopel_modules.spicemanip as spicemanip
+from sopel_modules.spicemanip import spicemanip
 
 import sopel_modules.SpiceBot as SpiceBot
 
@@ -14,7 +14,7 @@ import sopel_modules.SpiceBot as SpiceBot
 @sopel.module.commands('search', 'find', 'google', 'lookup')
 def search_main(bot, trigger, botcom):
 
-    searchterm = spicemanip.main(botcom.dict['args'], 0) or None
+    searchterm = spicemanip(botcom.dict['args'], 0) or None
     if not searchterm:
         SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Not sure what you want me to look for.")
         return
@@ -30,7 +30,7 @@ def search_main(bot, trigger, botcom):
 @sopel.module.commands("where", "whereis")
 def search_where(bot, trigger, botcom):
 
-    searchterm = spicemanip.main(botcom.dict['args'], 0) or None
+    searchterm = spicemanip(botcom.dict['args'], 0) or None
     if not searchterm:
         SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Not sure what you want me to look for.")
         return
@@ -46,7 +46,7 @@ def search_where(bot, trigger, botcom):
 @sopel.module.commands("what", "whatis")
 def search_what(bot, trigger, botcom):
 
-    searchterm = spicemanip.main(botcom.dict['args'], 0) or None
+    searchterm = spicemanip(botcom.dict['args'], 0) or None
     if not searchterm:
         SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Not sure what you want me to look for.")
         return
@@ -62,7 +62,7 @@ def search_what(bot, trigger, botcom):
 @sopel.module.commands("youtube", "video")
 def search_video(bot, trigger, botcom):
 
-    searchterm = spicemanip.main(botcom.dict['args'], 0) or None
+    searchterm = spicemanip(botcom.dict['args'], 0) or None
     if not searchterm:
         SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Not sure what you want me to look for.")
         return

@@ -7,7 +7,7 @@ This Class stores commands in an easy to access manner
 """
 import sopel
 
-import sopel_modules.spicemanip as spicemanip
+from sopel_modules.spicemanip import spicemanip
 
 import sopel_modules.SpiceBot as SpiceBot
 
@@ -21,7 +21,7 @@ def nickname_comand_commands(bot, trigger, botcom):
     if not len(botcom.dict['args']):
         commandused = 'list'
     else:
-        commandused = spicemanip.main(botcom.dict['args'], 1).lower()
+        commandused = spicemanip(botcom.dict['args'], 1).lower()
 
     if commandused == 'list':
         availablecomsnum, availablecomsfiles = 0, []
@@ -52,5 +52,5 @@ def nickname_comand_commands(bot, trigger, botcom):
         return
 
     if commandused == 'random':
-        bot.osd(["Here's a random command for you:", spicemanip.main(commands_list, 'random')])
+        bot.osd(["Here's a random command for you:", spicemanip(commands_list, 'random')])
         return

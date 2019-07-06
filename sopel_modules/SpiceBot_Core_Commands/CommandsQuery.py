@@ -7,7 +7,7 @@ This Class stores commands in an easy to access manner
 """
 import sopel
 
-import sopel_modules.spicemanip as spicemanip
+from sopel_modules.spicemanip import spicemanip
 
 import sopel_modules.SpiceBot as SpiceBot
 
@@ -48,7 +48,7 @@ def query_detection_nick(bot, trigger, botcom):
             dispmsg = ["Cannot find any alias " + bot.nick + " commands: No valid commands match " + str(botcom.dict['com']) + "."]
             closestmatches = SpiceBot.similar_list(botcom.dict['com'], list(commands_list.keys()), 10, 'reverse')
             if len(closestmatches):
-                dispmsg.append("The following " + bot.nick + " commands match " + str(botcom.dict['com']) + ": " + spicemanip.main(closestmatches, 'andlist') + ".")
+                dispmsg.append("The following " + bot.nick + " commands match " + str(botcom.dict['com']) + ": " + spicemanip(closestmatches, 'andlist') + ".")
             bot.osd(dispmsg, trigger.nick, 'notice')
             return
 
@@ -56,7 +56,7 @@ def query_detection_nick(bot, trigger, botcom):
         if "aliasfor" in list(commands_list[botcom.dict['com']].keys()):
             realcom = commands_list[botcom.dict['com']]["aliasfor"]
         validcomlist = commands_list[realcom]["validcoms"]
-        bot.osd("The following " + bot.nick + " commands match " + str(botcom.dict['com']) + ": " + spicemanip.main(validcomlist, 'andlist') + ".", trigger.nick, 'notice')
+        bot.osd("The following " + bot.nick + " commands match " + str(botcom.dict['com']) + ": " + spicemanip(validcomlist, 'andlist') + ".", trigger.nick, 'notice')
         return
 
     if botcom.dict['com'].endswith(bot.config.SpiceBot_Commands.query_prefix):
@@ -69,7 +69,7 @@ def query_detection_nick(bot, trigger, botcom):
         if not len(closestmatches):
             bot.osd("Cannot find any similar " + bot.nick + " commands for " + str(botcom.dict['com']) + ".", trigger.nick, 'notice')
         else:
-            bot.osd("The following " + bot.nick + " commands may match " + str(botcom.dict['com']) + ": " + spicemanip.main(closestmatches, 'andlist') + ".", trigger.nick, 'notice')
+            bot.osd("The following " + bot.nick + " commands may match " + str(botcom.dict['com']) + ": " + spicemanip(closestmatches, 'andlist') + ".", trigger.nick, 'notice')
         return
 
     commandlist = []
@@ -80,7 +80,7 @@ def query_detection_nick(bot, trigger, botcom):
     if not len(commandlist):
         bot.osd("No " + bot.nick + " commands start with " + str(botcom.dict['com']) + ".", trigger.nick, 'notice')
     else:
-        bot.osd("The following " + bot.nick + " commands start with " + str(botcom.dict['com']) + ": " + spicemanip.main(commandlist, 'andlist') + ".", trigger.nick, 'notice')
+        bot.osd("The following " + bot.nick + " commands start with " + str(botcom.dict['com']) + ": " + spicemanip(commandlist, 'andlist') + ".", trigger.nick, 'notice')
 
 
 @SpiceBot.prerun_query('module', 'module')
@@ -111,7 +111,7 @@ def query_detection(bot, trigger, botcom):
             dispmsg = ["Cannot find any alias commands: No valid commands match " + str(botcom.dict['com']) + "."]
             closestmatches = SpiceBot.similar_list(botcom.dict['com'], list(commands_list.keys()), 10, 'reverse')
             if len(closestmatches):
-                dispmsg.append("The following commands match " + str(botcom.dict['com']) + ": " + spicemanip.main(closestmatches, 'andlist') + ".")
+                dispmsg.append("The following commands match " + str(botcom.dict['com']) + ": " + spicemanip(closestmatches, 'andlist') + ".")
             bot.osd(dispmsg, trigger.nick, 'notice')
             return
 
@@ -119,7 +119,7 @@ def query_detection(bot, trigger, botcom):
         if "aliasfor" in list(commands_list[botcom.dict['com']].keys()):
             realcom = commands_list[botcom.dict['com']]["aliasfor"]
         validcomlist = commands_list[realcom]["validcoms"]
-        bot.osd("The following commands match " + str(botcom.dict['com']) + ": " + spicemanip.main(validcomlist, 'andlist') + ".", trigger.nick, 'notice')
+        bot.osd("The following commands match " + str(botcom.dict['com']) + ": " + spicemanip(validcomlist, 'andlist') + ".", trigger.nick, 'notice')
         return
 
     if botcom.dict['com'][:-1] == "?":
@@ -132,7 +132,7 @@ def query_detection(bot, trigger, botcom):
         if not len(closestmatches):
             bot.osd("Cannot find any similar commands for " + str(botcom.dict['com']) + ".", trigger.nick, 'notice')
         else:
-            bot.osd("The following commands may match " + str(botcom.dict['com']) + ": " + spicemanip.main(closestmatches, 'andlist') + ".", trigger.nick, 'notice')
+            bot.osd("The following commands may match " + str(botcom.dict['com']) + ": " + spicemanip(closestmatches, 'andlist') + ".", trigger.nick, 'notice')
         return
 
     commandlist = []
@@ -143,4 +143,4 @@ def query_detection(bot, trigger, botcom):
     if not len(commandlist):
         bot.osd("No commands start with " + str(botcom.dict['com']) + ".", trigger.nick, 'notice')
     else:
-        bot.osd("The following commands start with " + str(botcom.dict['com']) + ": " + spicemanip.main(commandlist, 'andlist') + ".", trigger.nick, 'notice')
+        bot.osd("The following commands start with " + str(botcom.dict['com']) + ": " + spicemanip(commandlist, 'andlist') + ".", trigger.nick, 'notice')

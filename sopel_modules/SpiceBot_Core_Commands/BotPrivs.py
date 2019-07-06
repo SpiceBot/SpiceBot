@@ -4,7 +4,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.module
 
-import sopel_modules.spicemanip as spicemanip
+from sopel_modules.spicemanip import spicemanip
 
 import sopel_modules.SpiceBot as SpiceBot
 
@@ -26,5 +26,5 @@ def bot_command_process(bot, trigger, botcom):
     if not botcom.dict['com'].endswith("s"):
         botcom.dict['com'] = str(botcom.dict['com'] + "s")
 
-    privlist = spicemanip.main(SpiceBot.bot_privs(botcom.dict['com']), 'andlist')
+    privlist = spicemanip(SpiceBot.bot_privs(botcom.dict['com']), 'andlist')
     bot.osd(str(bot.nick) + " " + botcom.dict['com'] + ": " + privlist)

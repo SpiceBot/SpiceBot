@@ -9,7 +9,7 @@ This Class stores logs in an easy to access manner
 import threading
 import os
 import sys
-import sopel_modules.spicemanip as spicemanip
+from sopel_modules.spicemanip import spicemanip
 
 from .Config import config as botconfig
 
@@ -98,7 +98,7 @@ class BotLogs():
             else:
                 if not line.startswith(tuple(stdio_ignore)) and not line.isspace():
                     debuglines.append(str(line))
-        loadedmodules = "Loaded: " + spicemanip.main(loadedmodules, 'andlist')
+        loadedmodules = "Loaded: " + spicemanip(loadedmodules, 'andlist')
         debuglines.insert(1, loadedmodules)
 
         return debuglines
@@ -110,7 +110,7 @@ class BotLogs():
             line = str(line).split(str(os.uname()[1] + " "))[-1]
             lineparts = str(line).split(": ")
             del lineparts[0]
-            line = spicemanip.main(lineparts, 0)
+            line = spicemanip(lineparts, 0)
             if not line.isspace():
                 debuglines.append(str(line))
         return debuglines

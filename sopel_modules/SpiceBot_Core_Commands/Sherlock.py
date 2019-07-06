@@ -4,7 +4,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 # sopel imports
 import sopel.module
 
-import sopel_modules.spicemanip as spicemanip
+from sopel_modules.spicemanip import spicemanip
 
 import sopel_modules.SpiceBot as SpiceBot
 
@@ -15,15 +15,15 @@ def bot_command_sherlock(bot, trigger, botcom):
 
     netlist = list(SpiceBot.sherlock.dict.keys())
 
-    username = spicemanip.main(botcom.dict["args"], 1) or trigger.nick
-    botcom.dict["args"] = spicemanip.main(botcom.dict["args"], "2+", 'list')
+    username = spicemanip(botcom.dict["args"], 1) or trigger.nick
+    botcom.dict["args"] = spicemanip(botcom.dict["args"], "2+", 'list')
 
     checklist = netlist
     checklistname = 'all'
     if SpiceBot.inlist(username, netlist):
         checklistname = SpiceBot.inlist_match(username, netlist)
         checklist = [checklistname]
-        username = spicemanip.main(botcom.dict["args"], 1) or trigger.nick
+        username = spicemanip(botcom.dict["args"], 1) or trigger.nick
 
     bot.osd("Checking username " + username + " in " + checklistname + " network.")
 
@@ -41,9 +41,9 @@ def bot_command_sherlock(bot, trigger, botcom):
         if checklistname != 'all':
             bot.osd(["The username " + username + " is in " + checklist[0], SpiceBot.sherlock.dict.get(social_network).get("url").format(username)])
         else:
-            bot.osd(["The username " + username + " is in the following:", spicemanip.main(inlist, "andlist")], trigger.nick, 'NOTICE')
+            bot.osd(["The username " + username + " is in the following:", spicemanip(inlist, "andlist")], trigger.nick, 'NOTICE')
     if len(notinlist):
         if checklistname != 'all':
-            bot.osd(["The username " + username + " is NOT in the following:", spicemanip.main(notinlist, "andlist")])
+            bot.osd(["The username " + username + " is NOT in the following:", spicemanip(notinlist, "andlist")])
         else:
-            bot.osd(["The username " + username + " is NOT in the following:", spicemanip.main(notinlist, "andlist")], trigger.nick, 'NOTICE')
+            bot.osd(["The username " + username + " is NOT in the following:", spicemanip(notinlist, "andlist")], trigger.nick, 'NOTICE')
