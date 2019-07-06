@@ -358,6 +358,9 @@ class Spicemanip():
         pass
 
     def __call__(self, inputs, outputtask, output_type='default'):
+        self.main(inputs, outputtask, output_type)
+
+    def main(self, inputs, outputtask, output_type='default'):
         mainoutputtask, suboutputtask = None, None
 
         # Input needs to be a list, but don't split a word into letters
