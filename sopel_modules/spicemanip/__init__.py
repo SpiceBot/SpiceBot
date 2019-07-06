@@ -42,7 +42,7 @@ class Spicemanip():
             self.input_list = []
             return
         if isinstance(self.inputs, list):
-            self.input_list = list(self.inputs)
+            self.input_list = self.inputs.copy()
             return
         if isinstance(self.inputs, collections.abc.KeysView):
             self.input_list = list(self.inputs)
@@ -51,7 +51,7 @@ class Spicemanip():
             self.input_list = list(self.inputs.keys())
             return
         if not isinstance(self.inputs, list):
-            self.input_list = list(self.inputs.split(" "))
+            self.input_list = self.inputs.copy().split(" ")
             return
 
     def core_task_handler(self):
