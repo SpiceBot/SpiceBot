@@ -358,9 +358,120 @@ class Spicemanip():
         pass
 
     def __call__(self, inputs, outputtask, output_type='default'):
-        return self.main(inputs, outputtask, output_type)
+        # return self.main(inputs, outputtask, output_type)
+
+        # convert any input to list
+        inputs = self.core_input_handler(inputs)
+
+        # get desired output
+        manipulated, outputtask = self.core_task_handler(inputs, outputtask)
+
+        # get desired output
+        outputs = self.core_output_handler(manipulated, outputtask, output_type)
+        return outputs
+
+    def core_input_handler(self, inputs):
+        # Input needs to be a list, but don't split a word into letters
+        if not inputs:
+            inputs = []
+        if isinstance(inputs, collections.abc.KeysView):
+            inputs = list(inputs)
+        elif isinstance(inputs, dict):
+            inputs = list(inputs.keys())
+        if not isinstance(inputs, list):
+            inputs = list(inputs.split(" "))
+            inputs = [x for x in inputs if x and x not in ['', ' ']]
+            inputs = [inputspart.strip() for inputspart in inputs]
+        return inputs
+
+    def core_task_handler(self, inputs, outputtask):
+
+        mainoutputtask, suboutputtask = None, None
+
+        # Create return
+        if outputtask == 'create':
+            return inputs
+
+        # Make temparray to preserve original order
+        temparray = []
+        for inputpart in inputs:
+            temparray.append(inputpart)
+        inputs = temparray
+
+        # Convert outputtask to standard
+        if outputtask in [0, 'complete']:
+            outputtask = 'string'
+        elif outputtask == 'index':
+            mainoutputtask = inputs[1]
+            suboutputtask = inputs[2]
+            inputs = inputs[0]
+        elif str(outputtask).isdigit():
+            mainoutputtask, outputtask = int(outputtask), 'number'
+        elif "^" in str(outputtask):
+            mainoutputtask = str(outputtask).split("^", 1)[0]
+            suboutputtask = str(outputtask).split("^", 1)[1]
+            outputtask = 'rangebetween'
+            if int(suboutputtask) < int(mainoutputtask):
+                mainoutputtask, suboutputtask = suboutputtask, mainoutputtask
+        elif str(outputtask).startswith("split_"):
+            mainoutputtask = str(outputtask).replace("split_", "")
+            outputtask = 'split'
+        elif str(outputtask).endswith(tuple(["!", "+", "-", "<", ">"])):
+            mainoutputtask = str(outputtask)
+            if str(outputtask).endswith("!"):
+                outputtask = 'exclude'
+            if str(outputtask).endswith("+"):
+                outputtask = 'incrange_plus'
+            if str(outputtask).endswith("-"):
+                outputtask = 'incrange_minus'
+            if str(outputtask).endswith(">"):
+                outputtask = 'excrange_plus'
+            if str(outputtask).endswith("<"):
+                outputtask = 'excrange_minus'
+            for r in (("!", ""), ("+", ""), ("-", ""), ("<", ""), (">", "")):
+                mainoutputtask = mainoutputtask.replace(*r)
+        if mainoutputtask == 'last':
+            mainoutputtask = len(inputs)
+
+        if outputtask == 'string':
+            manipulated = inputs
+        else:
+            manipulated = eval(
+                'self.spicemanip_' + outputtask +
+                '(inputs, outputtask, mainoutputtask, suboutputtask)')
+        return manipulated, outputtask
+
+    def core_output_handler(self, manipulated, outputtask, output_type):
+        # default return if not specified
+        if output_type == 'default':
+            if outputtask in [
+                    'string', 'number', 'rangebetween', 'exclude', 'random',
+                    'incrange_plus', 'incrange_minus', 'excrange_plus',
+                    'excrange_minus'
+            ]:
+                output_type = 'string'
+            elif outputtask in ['count']:
+                output_type = 'dict'
+
+        # verify output is correct
+        if output_type == 'return':
+            return manipulated
+        if output_type == 'string':
+            if isinstance(manipulated, list):
+                manipulated = ' '.join(manipulated)
+        elif output_type in ['list', 'array']:
+            if not isinstance(manipulated, list):
+                manipulated = list(manipulated.split(" "))
+                manipulated = [
+                    x for x in manipulated if x and x not in ['', ' ']
+                ]
+                manipulated = [
+                    inputspart.strip() for inputspart in manipulated
+                ]
+        return manipulated
 
     def main(self, inputs, outputtask, output_type='default'):
+
         mainoutputtask, suboutputtask = None, None
 
         # Input needs to be a list, but don't split a word into letters
