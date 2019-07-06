@@ -320,6 +320,13 @@ class Spicemanip():
             return ' '.join(inputs)
         return ', '.join(str(x) for x in inputs)
 
+    def is_digit(n):
+        try:
+            int(n)
+            return True
+        except ValueError:
+            return False
+
 
 main = Spicemanip()
 
