@@ -61,7 +61,6 @@ class Spicemanip():
             return
 
         if self.task in ["0", 0, 'complete']:
-            self.task = "string"
             self.outputs = self.string(self.input_list)
 
         elif self.task in ['index']:
@@ -69,50 +68,41 @@ class Spicemanip():
                 self.input_list[0], self.input_list[1], self.input_list[2])
 
         elif self.task in ['last', '-1', -1]:
-            self.task = "last"
             self.outputs = self.last(self.input_list)
 
         elif self.is_digit(self.task):
-            self.task = "number"
             self.outputs = self.number(self.input_list, int(self.task))
 
         elif "^" in str(self.task):
-            self.task = "rangebetween"
             range_nums = str(self.task).split("^", 1).sort()
             range_start, range_end = range_nums[0], range_nums[1]
             self.outputs = self.rangebetween(self.input_list, int(range_start),
                                              int(range_end))
 
         elif str(self.task).startswith("split_"):
-            self.task = "split"
             split_mark = str(self.task).replace("split_", "")
             self.outputs = self.split(self.input_list, split_mark)
 
         elif str(self.task).endswith("!"):
-            self.task = "exclude"
             exclude_num = str(self.task).replace("!", "")
             self.outputs = self.exclude(self.input_list, int(exclude_num))
 
         elif str(self.task).endswith("+"):
-            self.task = "incrange_plus"
             range_start = str(self.task).replace("+", "")
             self.outputs = self.incrange_plus(
                 self.input_list, int(range_start))
 
         elif str(self.task).endswith("-"):
-            self.task = "incrange_minus"
             range_end = str(self.task).replace("-", "")
             self.outputs = self.incrange_minus(
                 self.input_list, int(range_end))
 
         elif str(self.task).endswith(">"):
-            self.task = "excrange_plus"
             range_start = str(self.task).replace(">", "")
             self.outputs = self.excrange_plus(
                 self.input_list, int(range_start))
 
         elif str(self.task).endswith("<"):
-            self.task = "excrange_minus"
             range_end = str(self.task).replace("<", "")
             self.outputs = self.excrange_minus(
                 self.input_list, int(range_end))
