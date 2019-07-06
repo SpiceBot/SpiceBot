@@ -44,7 +44,7 @@ def bot_dictcom_process(bot, trigger, botcom):
     botcom.dict["dict"][botcom.dict["responsekey"]]["type"] = botcom.dict["dict"][botcom.dict["responsekey"]]["type"]
 
     botcom.dict["nonstockoptions"] = []
-    for command in botcom.dict["dict"].keys():
+    for command in list(botcom.dict["dict"].keys()):
         if command not in ["?default", "validcoms", "type", "hardcoded_channel_block"]:
             botcom.dict["nonstockoptions"].append(command)
 
@@ -325,7 +325,7 @@ def bot_dictcom_reply_shared(bot, trigger, botcom):
             # display special options for this command
             if "$specialoptions" in rply:
                 nonstockoptions = []
-                for command in botcom.dict["dict"].keys():
+                for command in list(botcom.dict["dict"].keys()):
                     if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath", "filename", "hardcoded_channel_block", "description", "exampleresponse", "example", "usage", "privs"]:
                         nonstockoptions.append(command)
                 nonstockoptions = spicemanip(nonstockoptions, "andlist")
@@ -352,7 +352,7 @@ def bot_dictcom_gif(bot, trigger, botcom):
         queries = botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]
 
     # which api's are we using to search
-    if "queryapi" in botcom.dict["dict"].keys():
+    if "queryapi" in list(botcom.dict["dict"].keys()):
         searchapis = botcom.dict["dict"][botcom.dict["responsekey"]]["queryapi"]
     else:
         searchapis = list(SpiceBot.gif.valid_api.keys())
