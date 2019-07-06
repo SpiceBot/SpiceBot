@@ -322,11 +322,11 @@ class Spicemanip():
         return ', '.join(str(x) for x in inputs)
 
 
-spicemanip = Spicemanip()
+spicemanip_new = Spicemanip()
 
 
 # Hub
-def main(inputs, outputtask, output_type='default'):
+def spicemanip(inputs, outputtask, output_type='default'):
 
     mainoutputtask, suboutputtask = None, None
 
