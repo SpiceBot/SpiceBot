@@ -421,7 +421,7 @@ class Spicemanip():
             returnvalue = inputs
         else:
             returnvalue = eval(
-                'spicemanip_' + outputtask +
+                'self.spicemanip_' + outputtask +
                 '(inputs, outputtask, mainoutputtask, suboutputtask)')
 
         # default return if not specified
