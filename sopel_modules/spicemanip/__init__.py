@@ -390,7 +390,7 @@ class Spicemanip():
 
         # Create return
         if outputtask == 'create':
-            return inputs
+            return inputs, outputtask
 
         # Make temparray to preserve original order
         temparray = []
