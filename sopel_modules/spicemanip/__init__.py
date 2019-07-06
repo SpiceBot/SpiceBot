@@ -62,7 +62,7 @@ class Spicemanip():
 
         if len(self.input_list):
 
-            if self.task in ["0", 0, 'complete']:
+            if str(self.task) in ["0", 0, 'complete']:
                 self.outputs = self.string(self.input_list)
                 return
 
