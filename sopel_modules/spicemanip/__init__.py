@@ -358,7 +358,7 @@ class Spicemanip():
         pass
 
     def __call__(self, inputs, outputtask, output_type='default'):
-        self.main(inputs, outputtask, output_type)
+        return self.main(inputs, outputtask, output_type)
 
     def main(self, inputs, outputtask, output_type='default'):
         mainoutputtask, suboutputtask = None, None
