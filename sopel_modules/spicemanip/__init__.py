@@ -37,16 +37,8 @@ class Spicemanip():
         self.output_type = output_type
         self.core_output_handler()
 
-        # cleanup
-        self.core_class_cleanup()
-
         # return value/s
         return self.outputs
-
-    def core_class_cleanup(self):
-        for classitem in ["inputs", "task", "output_type"]:
-            if hasattr(self, str(classitem)):
-                del classitem
 
     def core_input_handler(self):
         # Input needs to be a list, but don't split a word into letters
@@ -119,7 +111,7 @@ class Spicemanip():
 
             elif hasattr(self,
                          str(self.task)) and not str(self.task).startswith("core_"):
-                self.outputs = eval('self.' + str(self.task) + '(inputs)')
+                self.outputs = eval('self.' + str(self.task) + '(self.input_list)')
 
             else:
                 raise Exception(
