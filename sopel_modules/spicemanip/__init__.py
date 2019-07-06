@@ -21,7 +21,7 @@ class Spicemanip():
 
     def __call__(self, inputs, task, output_type='default'):
 
-        if hasattr(self, task):
+        if hasattr(self, str(task)):
             raise Exception(
                 str(self.task) + " is not a valid spicemanip function.")
 
@@ -45,7 +45,7 @@ class Spicemanip():
 
     def core_class_cleanup(self):
         for classitem in ["inputs", "task", "output_type"]:
-            if hasattr(self, classitem):
+            if hasattr(self, str(classitem)):
                 del classitem
 
     def core_input_handler(self):
@@ -118,7 +118,7 @@ class Spicemanip():
                     str(self.task).replace("<", ""))
 
             elif hasattr(self,
-                         self.task) and not str(self.task).startswith("core_"):
+                         str(self.task)) and not str(self.task).startswith("core_"):
                 self.outputs = eval('self.' + str(self.task) + '(inputs)')
 
             else:
