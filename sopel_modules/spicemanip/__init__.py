@@ -73,7 +73,7 @@ class Spicemanip():
             elif str(self.task).isdigit():
                 self.outputs = self.number(self.input_list, int(self.task))
 
-            elif self.task in ['last', '-1', -1]:
+            elif str(self.task) in ['last', '-1', -1]:
                 self.outputs = self.number(self.input_list, -1)
 
             elif "^" in str(self.task):
