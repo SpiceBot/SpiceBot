@@ -21,10 +21,6 @@ class Spicemanip():
 
     def __call__(self, inputs, task, output_type='default'):
 
-        if hasattr(self, str(task)):
-            raise Exception(
-                str(self.task) + " is not a valid spicemanip function.")
-
         # convert input into list
         self.inputs = inputs
         self.core_input_handler()
@@ -65,6 +61,7 @@ class Spicemanip():
             return
 
         if self.task in ["0", 0, 'complete']:
+            self.task = "string"
             self.outputs = self.string(self.input_list)
 
         elif self.task in ['index']:
@@ -72,40 +69,49 @@ class Spicemanip():
                 self.input_list[0], self.input_list[1], self.input_list[2])
 
         elif self.task in ['last', '-1', -1]:
-            self.outputs = self.number(self.input_list, -1)
+            self.task = "last"
+            self.outputs = self.last(self.input_list)
 
-        elif str(self.task).isdigit():
+        elif self.is_digit(self.task):
+            self.task = "number"
             self.outputs = self.number(self.input_list, int(self.task))
 
         elif "^" in str(self.task):
+            self.task = "rangebetween"
             range_start, range_end = str(self.task).split("^", 1).sort()
             self.outputs = self.rangebetween(self.input_list, range_start,
                                              range_end)
 
         elif str(self.task).startswith("split_"):
+            self.task = "split"
             self.outputs = self.split(self.input_list,
                                       str(self.task).replace("split_", ""))
 
         elif str(self.task).endswith("!"):
+            self.task = "exclude"
             self.outputs = self.exclude(self.input_list,
                                         str(self.task).replace("!", ""))
 
         elif str(self.task).endswith("+"):
+            self.task = "incrange_plus"
             self.outputs = self.incrange_plus(
                 self.input_list,
                 str(self.task).replace("+", ""))
 
         elif str(self.task).endswith("-"):
+            self.task = "incrange_minus"
             self.outputs = self.incrange_minus(
                 self.input_list,
                 str(self.task).replace("-", ""))
 
         elif str(self.task).endswith(">"):
+            self.task = "excrange_plus"
             self.outputs = self.excrange_plus(
                 self.input_list,
                 str(self.task).replace(">", ""))
 
         elif str(self.task).endswith("<"):
+            self.task = "excrange_minus"
             self.outputs = self.excrange_minus(
                 self.input_list,
                 str(self.task).replace("<", ""))
@@ -151,12 +157,22 @@ class Spicemanip():
             return
 
     # Convert list to string
+    def complete(self, inputs):
+        return self.string(inputs)
+
+    def last(self, inputs):
+        return self.number(inputs, -1)
+
+    # Convert list to string
     def string(self, inputs):
         if not isinstance(inputs, list):
             return inputs
         if not inputs or not len(inputs):
             return ''
         return ' '.join(inputs)
+
+    def create(self, inputs):
+        return self.list(inputs)
 
     # Convert inputs to list
     def list(self, inputs):
@@ -321,12 +337,19 @@ class Spicemanip():
             return ' '.join(inputs)
         return ', '.join(str(x) for x in inputs)
 
+    def is_digit(self, n):
+        try:
+            int(n)
+            return True
+        except ValueError:
+            return False
 
-spicemanip_new = Spicemanip()
+
+spicemanip = Spicemanip()
 
 
 # Hub
-def spicemanip(inputs, outputtask, output_type='default'):
+def spicemanip_old(inputs, outputtask, output_type='default'):
 
     mainoutputtask, suboutputtask = None, None
 
