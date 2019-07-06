@@ -67,50 +67,61 @@ class Spicemanip():
 
         if self.task in ["0", 0, 'complete']:
             self.outputs = self.string(self.input_list)
+            self.task = "complete"
 
         elif self.task in ['index']:
             self.outputs = self.index(
                 self.input_list[0], self.input_list[1], self.input_list[2])
+            self.task = "index"
 
         elif self.task in ['last', '-1', -1]:
             self.outputs = self.last(self.input_list)
+            self.task = "last"
 
         elif self.is_digit(self.task):
             self.outputs = self.number(self.input_list, int(self.task))
+            self.task = "number"
 
         elif "^" in str(self.task):
             range_nums = str(self.task).split("^", 1).sort()
             range_start, range_end = range_nums[0], range_nums[1]
             self.outputs = self.rangebetween(self.input_list, int(range_start),
                                              int(range_end))
+            self.task = "rangebetween"
 
         elif str(self.task).startswith("split_"):
             split_mark = str(self.task).replace("split_", "")
             self.outputs = self.split(self.input_list, split_mark)
+            self.task = "split"
 
         elif str(self.task).endswith("!"):
             exclude_num = str(self.task).replace("!", "")
             self.outputs = self.exclude(self.input_list, int(exclude_num))
+            self.task = "exclude"
 
         elif str(self.task).endswith("+"):
             range_start = str(self.task).replace("+", "")
             self.outputs = self.incrange_plus(
                 self.input_list, int(range_start))
+            self.task = "incrange_plus"
 
         elif str(self.task).endswith("-"):
             range_end = str(self.task).replace("-", "")
             self.outputs = self.incrange_minus(
                 self.input_list, int(range_end))
+            self.task = "incrange_minus"
 
         elif str(self.task).endswith(">"):
             range_start = str(self.task).replace(">", "")
             self.outputs = self.excrange_plus(
                 self.input_list, int(range_start))
+            self.task = "excrange_plus"
 
         elif str(self.task).endswith("<"):
             range_end = str(self.task).replace("<", "")
             self.outputs = self.excrange_minus(
                 self.input_list, int(range_end))
+            self.task = "excrange_minus"
 
         elif hasattr(self,
                      str(self.task)) and not str(self.task).startswith("core_"):
@@ -133,7 +144,8 @@ class Spicemanip():
                         'excrange_plus': "string",
                         'excrange_minus': "string",
                         'count': "dict",
-                        "create": "list"
+                        "create": "list",
+                        'complete': "string",
                         }
 
         # default return if not specified
