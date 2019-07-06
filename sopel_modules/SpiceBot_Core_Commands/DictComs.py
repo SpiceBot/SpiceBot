@@ -35,7 +35,7 @@ def bot_dictcom_process(bot, trigger, botcom):
 
     # handling for special cases
     posscom = spicemanip(botcom.dict['args'], 1)
-    if posscom.lower() in [command.lower() for command in botcom.dict["dict"].keys()]:
+    if posscom.lower() in [command.lower() for command in list(botcom.dict["dict"].keys())]:
         for command in botcom.dict["dict"].keys():
             if command.lower() == posscom.lower():
                 posscom = command
