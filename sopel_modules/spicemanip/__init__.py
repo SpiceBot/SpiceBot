@@ -126,28 +126,36 @@ class Spicemanip():
                     str(self.task) + " is not a valid spicemanip function.")
 
     def core_output_handler(self):
-        if not self.output_type:
-            self.output_type = "list"
-        self.outputs = self.inputs_list
+
+        core_defaults = {
+                        'string': "string",
+                        'number': "string",
+                        'rangebetween': "string",
+                        'exclude': "string",
+                        'random': "string",
+                        'incrange_plus': "string",
+                        'incrange_minus': "string",
+                        'excrange_plus': "string",
+                        'excrange_minus': "string",
+                        'count': "dict"
+                        }
 
         # default return if not specified
         if self.output_type == 'default':
-            if self.task in [
-                    'string', 'number', 'rangebetween', 'exclude', 'random',
-                    'incrange_plus', 'incrange_minus', 'excrange_plus',
-                    'excrange_minus'
-            ]:
-                self.output_type = 'string'
-            elif self.task in ['count']:
-                self.output_type = 'dict'
+            if self.task in list(core_defaults.keys()):
+                self.output_type = core_defaults[self.task]
 
         # verify output is correct
-        if self.output_type == 'return':
-            return self.outputs
+        if self.output_type in ['return', 'dict']:
+            return
+
         if self.output_type == 'string':
             self.outputs = self.string(self.outputs)
-        elif self.output_type in ['list', 'array']:
+            return
+
+        if self.output_type in ['list', 'array']:
             self.outputs = self.list(self.outputs)
+            return
 
     # Convert list to string
     def string(self, inputs):
