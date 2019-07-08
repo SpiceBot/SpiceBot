@@ -13,344 +13,6 @@ import collections
 # TODO reverse sort z.sort(reverse = True)
 # list.extend adds lists to eachother
 
-"""
-class Spicemanip_new():
-    def __init__(self):
-        pass
-
-    def __call__(self, inputs, task, output_type='default'):
-
-        # convert input into list
-        self.inputs = inputs
-        self.core_input_handler()
-
-        # determine task
-        self.task = task
-        self.core_task_handler()
-
-        # determine output of list
-        self.output_type = output_type
-        self.core_output_handler()
-
-        # return value/s
-        return self.outputs
-
-    def core_input_handler(self):
-        # Input needs to be a list, but don't split a word into letters
-        if not self.inputs or not len(self.inputs):
-            self.input_list = []
-            return
-        if isinstance(self.inputs, list):
-            self.input_list = self.inputs.copy()
-            return
-        if isinstance(self.inputs, collections.abc.KeysView):
-            self.input_list = list(self.inputs)
-            return
-        if isinstance(self.inputs, dict):
-            self.input_list = list(self.inputs.keys())
-            return
-        if not isinstance(self.inputs, list):
-            self.input_list = self.inputs.split(" ")
-            return
-
-    def core_task_handler(self):
-
-        # Create return
-        if self.task in ['create']:
-            self.outputs = self.input_list
-            return
-
-        if not len(self.input_list):
-            self.outputs = []
-            return
-
-        if self.task in ["0", 0, 'complete']:
-            self.outputs = self.string(self.input_list)
-            self.task = "complete"
-
-        elif self.task in ['index']:
-            self.outputs = self.index(self.input_list[0], self.input_list[1],
-                                      self.input_list[2])
-            self.task = "index"
-
-        elif self.task in ['last', '-1', -1]:
-            self.outputs = self.last(self.input_list)
-            self.task = "last"
-
-        elif self.is_digit(self.task):
-            self.outputs = self.number(self.input_list, int(self.task))
-            self.task = "number"
-
-        elif "^" in str(self.task):
-            range_nums = str(self.task).split("^", 1).sort()
-            range_start, range_end = range_nums[0], range_nums[1]
-            self.outputs = self.rangebetween(self.input_list, int(range_start),
-                                             int(range_end))
-            self.task = "rangebetween"
-
-        elif str(self.task).startswith("split_"):
-            split_mark = str(self.task).replace("split_", "")
-            self.outputs = self.split(self.input_list, split_mark)
-            self.task = "split"
-
-        elif str(self.task).endswith("!"):
-            exclude_num = str(self.task).replace("!", "")
-            self.outputs = self.exclude(self.input_list, int(exclude_num))
-            self.task = "exclude"
-
-        elif str(self.task).endswith("+"):
-            range_start = str(self.task).replace("+", "")
-            self.outputs = self.incrange_plus(self.input_list,
-                                              int(range_start))
-            self.task = "incrange_plus"
-
-        elif str(self.task).endswith("-"):
-            range_end = str(self.task).replace("-", "")
-            self.outputs = self.incrange_minus(self.input_list, int(range_end))
-            self.task = "incrange_minus"
-
-        elif str(self.task).endswith(">"):
-            range_start = str(self.task).replace(">", "")
-            self.outputs = self.excrange_plus(self.input_list,
-                                              int(range_start))
-            self.task = "excrange_plus"
-
-        elif str(self.task).endswith("<"):
-            range_end = str(self.task).replace("<", "")
-            self.outputs = self.excrange_minus(self.input_list, int(range_end))
-            self.task = "excrange_minus"
-
-        elif hasattr(self, str(
-                self.task)) and not str(self.task).startswith("core_"):
-            self.outputs = eval('self.' + str(self.task) + '(self.input_list)')
-
-        else:
-            raise Exception(
-                str(self.task) + " is not a valid spicemanip function.")
-
-    def core_output_handler(self):
-
-        core_defaults = {
-            'string': "string",
-            'number': "string",
-            'rangebetween': "string",
-            'exclude': "string",
-            'random': "string",
-            'incrange_plus': "string",
-            'incrange_minus': "string",
-            'excrange_plus': "string",
-            'excrange_minus': "string",
-            'count': "dict",
-            "create": "list",
-            'complete': "string",
-        }
-
-        # default return if not specified
-        if self.output_type == 'default':
-            if self.task in list(core_defaults.keys()):
-                self.output_type = core_defaults[self.task]
-
-        # verify output is correct
-        if self.output_type in ['return', 'dict']:
-            return
-
-        if self.output_type == 'string':
-            self.outputs = self.string(self.outputs)
-            return
-
-        if self.output_type in ['list', 'array']:
-            self.outputs = self.list(self.outputs)
-            return
-
-    # Convert list to string
-    def complete(self, inputs):
-        return self.string(inputs)
-
-    def last(self, inputs):
-        return self.number(inputs, -1)
-
-    # Convert list to string
-    def string(self, inputs):
-        if not isinstance(inputs, list):
-            return inputs
-        if not inputs or not len(inputs):
-            return ''
-        return ' '.join(inputs)
-
-    def create(self, inputs):
-        return self.list(inputs)
-
-    # Convert inputs to list
-    def list(self, inputs):
-        if isinstance(inputs, list):
-            return inputs
-        if not inputs or not len(inputs):
-            return []
-        return list(inputs.split(" "))
-
-    def index(self, indexitem, listtoindex, listtocompare):
-        for x, y in zip(listtoindex, listtocompare):
-            if x == indexitem:
-                return y
-        return ''
-
-    # Get number item from list
-    def number(self, inputs, index_number):
-        if int(index_number) > 0:
-            index_number -= 1
-        try:
-            return inputs[int(index_number)]
-        except IndexError:
-            return ''
-
-    # range between items in list
-    def rangebetween(self, inputs, range_start, range_end):
-        range_start, range_end = int(range_start), int(range_end)
-        if range_end == range_start:
-            return self.number(inputs, range_start)
-        if range_start < 0:
-            range_start = 1
-        if range_end > len(inputs):
-            range_end = len(inputs)
-        newlist = []
-        for i in range(range_start, range_end + 1):
-            newlist.append(str(self.number(inputs, i)))
-        return ' '.join(newlist)
-
-    # split list by string
-    def split(self, inputs, splitby):
-        split_list = []
-        restring = ' '.join(inputs)
-        if splitby not in inputs:
-            split_list = [restring]
-        else:
-            split_list = restring.split(splitby)
-        return ' '.join(split_list)
-
-    # exclude number
-    def exclude(self, inputs, excludenum):
-        try:
-            del inputs[int(excludenum) - 1]
-            return ' '.join(inputs)
-        except IndexError:
-            return ' '.join(inputs)
-
-    # Forward Range includes index number
-    def incrange_plus(self, inputs, range_start):
-        return self.rangebetween(inputs, int(range_start), len(inputs))
-
-    # Reverse Range includes index number
-    def incrange_minus(self, inputs, range_end):
-        return self.rangebetween(inputs, 1, int(range_end))
-
-    # Forward Range excludes index number
-    def excrange_plus(self, inputs, range_start):
-        return self.rangebetween(inputs, int(range_start) + 1, len(inputs))
-
-    # Reverse Range excludes index number
-    def excrange_minus(self, inputs, range_end):
-        return self.rangebetween(inputs, 1, int(range_end) - 1)
-
-    # dedupe list
-    def dedupe(self, inputs):
-        newlist = []
-        for inputspart in inputs:
-            if inputspart not in newlist:
-                newlist.append(inputspart)
-        return newlist
-
-    # Sort list
-    def sort(self, inputs):
-        return sorted(inputs)
-
-    # reverse sort list
-    def rsort(self, inputs):
-        return sorted(inputs)[::-1]
-
-    # count items in list, return dictionary
-    def count(self, inputs):
-        returndict = dict()
-        uniqueinputitems, uniquecount = [], []
-        for inputspart in inputs:
-            if inputspart not in uniqueinputitems:
-                uniqueinputitems.append(inputspart)
-        for uniqueinputspart in uniqueinputitems:
-            count = 0
-            for ele in inputs:
-                if (ele == uniqueinputspart):
-                    count += 1
-            uniquecount.append(count)
-        for inputsitem, unumber in zip(uniqueinputitems, uniquecount):
-            returndict[inputsitem] = unumber
-        return returndict
-
-    # random item from list
-    def random(self, inputs):
-        randomselectlist = list(inputs)
-        while len(randomselectlist) > 1:
-            random.shuffle(randomselectlist)
-            randomselect = randomselectlist[random.randint(
-                0,
-                len(randomselectlist) - 1)]
-            randomselectlist.remove(randomselect)
-        randomselect = randomselectlist[0]
-        return randomselect
-
-    # remove random item from list
-    def exrandom(self, inputs):
-        randremove = self.random(inputs)
-        inputs.remove(randremove)
-        return inputs
-
-    # Convert list into lowercase
-    def lower(self, inputs):
-        return [inputspart.lower() for inputspart in inputs]
-
-    # Convert list to uppercase
-    def upper(self, inputs):
-        return [inputspart.upper() for inputspart in inputs]
-
-    # Convert list to uppercase
-    def title(self, inputs):
-        return [inputspart.title() for inputspart in inputs]
-
-    # Reverse List Order
-    def reverse(self, inputs):
-        return inputs[::-1]
-
-    def list_nospace(self, inputs):
-        return ','.join(str(x) for x in inputs)
-
-    # comma seperated list with and
-    def andlist(self, inputs):
-        if len(inputs) < 2:
-            return ' '.join(inputs)
-        lastentry = str("and " + str(inputs[len(inputs) - 1]))
-        del inputs[-1]
-        inputs.append(lastentry)
-        if len(inputs) == 2:
-            return ' '.join(inputs)
-        return ', '.join(str(x) for x in inputs)
-
-    # comma seperated list with or
-    def orlist(self, inputs):
-        if len(inputs) < 2:
-            return ' '.join(inputs)
-        lastentry = str("or " + str(inputs[len(inputs) - 1]))
-        del inputs[-1]
-        inputs.append(lastentry)
-        if len(inputs) == 2:
-            return ' '.join(inputs)
-        return ', '.join(str(x) for x in inputs)
-
-    def is_digit(self, n):
-        try:
-            int(n)
-            return True
-        except ValueError:
-            return False
-"""
-
 
 class Spicemanip():
 
@@ -358,19 +20,9 @@ class Spicemanip():
         pass
 
     def __call__(self, inputs, outputtask, output_type='default'):
-        # return self.main(inputs, outputtask, output_type)
 
-        # convert any input to list
-        inputs = self.core_input_handler(inputs)
+        mainoutputtask, suboutputtask = None, None
 
-        # get desired output
-        manipulated, outputtask = self.core_task_handler(inputs, outputtask)
-
-        # get desired output
-        outputs = self.core_output_handler(manipulated, outputtask, output_type)
-        return outputs
-
-    def core_input_handler(self, inputs):
         # Input needs to be a list, but don't split a word into letters
         if not inputs:
             inputs = []
@@ -382,15 +34,10 @@ class Spicemanip():
             inputs = list(inputs.split(" "))
             inputs = [x for x in inputs if x and x not in ['', ' ']]
             inputs = [inputspart.strip() for inputspart in inputs]
-        return inputs
-
-    def core_task_handler(self, inputs, outputtask):
-
-        mainoutputtask, suboutputtask = None, None
 
         # Create return
         if outputtask == 'create':
-            return inputs, outputtask
+            return inputs
 
         # Make temparray to preserve original order
         temparray = []
@@ -434,14 +81,12 @@ class Spicemanip():
             mainoutputtask = len(inputs)
 
         if outputtask == 'string':
-            manipulated = inputs
+            returnvalue = inputs
         else:
-            manipulated = eval(
+            returnvalue = eval(
                 'self.' + outputtask +
                 '(inputs, outputtask, mainoutputtask, suboutputtask)')
-        return manipulated, outputtask
 
-    def core_output_handler(self, manipulated, outputtask, output_type):
         # default return if not specified
         if output_type == 'default':
             if outputtask in [
@@ -455,20 +100,16 @@ class Spicemanip():
 
         # verify output is correct
         if output_type == 'return':
-            return manipulated
+            return returnvalue
         if output_type == 'string':
-            if isinstance(manipulated, list):
-                manipulated = ' '.join(manipulated)
+            if isinstance(returnvalue, list):
+                returnvalue = ' '.join(returnvalue)
         elif output_type in ['list', 'array']:
-            if not isinstance(manipulated, list):
-                manipulated = list(manipulated.split(" "))
-                manipulated = [
-                    x for x in manipulated if x and x not in ['', ' ']
-                ]
-                manipulated = [
-                    inputspart.strip() for inputspart in manipulated
-                ]
-        return manipulated
+            if not isinstance(returnvalue, list):
+                returnvalue = list(returnvalue.split(" "))
+                returnvalue = [x for x in returnvalue if x and x not in ['', ' ']]
+                returnvalue = [inputspart.strip() for inputspart in returnvalue]
+        return returnvalue
 
     # compare 2 lists, based on the location of an index item, passthrough needs to be [indexitem, arraytoindex, arraytocompare]
     def index(self, indexitem, outputtask, arraytoindex, arraytocompare):
