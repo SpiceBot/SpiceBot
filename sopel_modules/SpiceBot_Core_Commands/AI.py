@@ -8,6 +8,8 @@ import sopel_modules.SpiceBot as SpiceBot
 
 from sopel_modules.spicemanip import spicemanip
 
+# TODO split functionality for "no command"
+
 
 @SpiceBot.prerun('nickname')
 @sopel.module.nickname_commands('ai')
@@ -101,7 +103,6 @@ def bot_command_rule_ai(bot, trigger):
             return
 
     if command_type == 'module':
-        return  # TODO
         if trigger_command not in commands_list:
             if not SpiceBot.letters_in_string(trigger_command):
                 return
