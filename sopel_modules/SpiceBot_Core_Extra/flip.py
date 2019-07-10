@@ -4,9 +4,9 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 import sopel.module
 
-import sopel_modules.SpiceBot as SpiceBot
+# import sopel_modules.SpiceBot as SpiceBot
 
-from sopel_modules.spicemanip import spicemanip
+# from sopel_modules.spicemanip import spicemanip
 
 from upsidedown import transform
 # TODO add upsidedown to spicemanip
