@@ -43,6 +43,7 @@ class BotCommands():
                                 },
                     'disabled': {},
                     }
+        self.todo_list = []
         self.module_files_parse()
         self.nickrules()
         for comtype in ['module', 'nickname', 'rule']:
@@ -280,6 +281,7 @@ class BotCommands():
             comdict["foldername"] = str(foldername)
 
             detected_lines = []
+            todo_list = []
             for line in module_file_lines:
 
                 if str(line).startswith("@"):
@@ -296,17 +298,24 @@ class BotCommands():
                     elif str(line).startswith(tuple(["rule", "module.rule", "sopel.module.rule"])):
                         line = str(line).split("rule")[-1]
                         line = "rule" + line
+                    elif "TODO" in str(line):
+                        todo_list.append(str(line))
                     else:
                         line = None
 
                     if line:
                         detected_lines.append(line)
 
+            if len(todo_list):
+                self.todo_list.append(todo_list)
+
             if len(detected_lines):
 
                 filelinelist = []
                 for detected_line in detected_lines:
                     validcomdict = copy.deepcopy(comdict)
+
+                    validcomdict["TODO"] = todo_list
 
                     # Commands
                     if str(detected_line).startswith("commands"):
