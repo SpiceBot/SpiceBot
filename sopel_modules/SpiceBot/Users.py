@@ -8,7 +8,7 @@ from sopel.tools import Identifier
 from .Database import db as botdb
 from .Tools import is_number, inlist, similar, array_arrangesort
 
-import spicemanip
+from sopel_modules.spicemanip import spicemanip
 
 import threading
 import re
@@ -393,13 +393,13 @@ class BotUsers():
                             sim_num.append(similarlevel)
                 if sim_user != [] and sim_num != []:
                     sim_num, sim_user = array_arrangesort(bot, sim_num, sim_user)
-                    closestmatch = spicemanip.main(sim_user, 'reverse', "list")
+                    closestmatch = spicemanip(sim_user, 'reverse', "list")
                     listnumb, relist = 1, []
                     for item in closestmatch:
                         if listnumb <= 3:
                             relist.append(str(item))
                         listnumb += 1
-                    closestmatches = spicemanip.main(relist, "andlist")
+                    closestmatches = spicemanip(relist, "andlist")
                     targetgooderror = "It looks like you're trying to target someone! Did you mean: " + str(closestmatches) + "?"
                 else:
                     targetgooderror = "I am not sure who that is."
@@ -437,7 +437,7 @@ class BotUsers():
         if outputtype == 'list':
             return validtargs
         elif outputtype == 'random':
-            return spicemanip.main(validtargs, 'random')
+            return spicemanip(validtargs, 'random')
 
 
 users = BotUsers()

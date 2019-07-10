@@ -8,7 +8,7 @@ from .Config import config as botconfig
 from .Read import read as botread
 from .Commands import commands as botcommands
 
-import spicemanip
+from sopel_modules.spicemanip import spicemanip
 
 from fake_useragent import UserAgent
 import urllib
@@ -134,13 +134,13 @@ class BotGif():
                 gifapiresults.extend(self.valid_api[currentapi]["cache"][searchdict["searchquery"].lower()])
 
         if not len(gifapiresults):
-            return {"error": "No Results were found for '" + searchdict["query"] + "' in the " + str(spicemanip.main(searchdict['gifsearch'], 'orlist')) + " api(s)"}
+            return {"error": "No Results were found for '" + searchdict["query"] + "' in the " + str(spicemanip(searchdict['gifsearch'], 'orlist')) + " api(s)"}
 
         random.shuffle(gifapiresults)
         random.shuffle(gifapiresults)
         randombad = True
         while randombad:
-            gifdict = spicemanip.main(gifapiresults, "random")
+            gifdict = spicemanip(gifapiresults, "random")
 
             try:
                 gifpage = requests.get(gifdict["returnurl"], headers=None)
@@ -159,7 +159,7 @@ class BotGif():
                 gifapiresults = newlist
 
         if not len(gifapiresults):
-            return {"error": "No Results were found for '" + searchdict["query"] + "' in the " + str(spicemanip.main(searchdict['gifsearch'], 'orlist')) + " api(s)"}
+            return {"error": "No Results were found for '" + searchdict["query"] + "' in the " + str(spicemanip(searchdict['gifsearch'], 'orlist')) + " api(s)"}
 
         # return dict
         gifdict['error'] = None

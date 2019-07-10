@@ -204,7 +204,7 @@ class BotRead():
         if "example" not in list(dict_from_file.keys()):
             dict_from_file["example"] = "$maincom"
             # TODO
-            #if dict_from_file["comtype"] == "nickname":
+            # if dict_from_file["comtype"] == "nickname":
             #    dict_from_file["example"] = str(botconfig.nick + " $maincom")
             # else:
             #    dict_from_file["example"] = str(botconfig.core.prefix_list[0] + "$maincom")
@@ -219,6 +219,9 @@ class BotRead():
 
         if "privs" not in list(dict_from_file.keys()):
             dict_from_file["privs"] = []
+
+        if "hardcoded_channel_block" not in list(dict_from_file.keys()):
+            dict_from_file["hardcoded_channel_block"] = []
 
         return dict_from_file
 
