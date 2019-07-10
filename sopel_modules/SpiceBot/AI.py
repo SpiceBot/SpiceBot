@@ -15,7 +15,7 @@ from .Database import db as botdb
 from .Config import config as botconfig
 from .Read import read as botread
 
-import spicemanip
+from sopel_modules.spicemanip import spicemanip
 
 
 class SpiceBot_AI_MainSection(StaticSection):
@@ -138,18 +138,18 @@ class SpiceBot_AI():
 
         # bot items
         for botitem in ["nick"]:
-            messagelist = spicemanip.main(message, "create")
+            messagelist = spicemanip(message, "create")
             for i in range(len(messagelist)):
                 if messagelist[i].upper() == str(eval("bot." + botitem)).upper():
                     messagelist[i] = str("bot" + botitem).upper()
-            message = spicemanip.main(messagelist, 0)
+            message = spicemanip(messagelist, 0)
 
         for triggeritem in ["nick", "sender"]:
-            messagelist = spicemanip.main(message, "create")
+            messagelist = spicemanip(message, "create")
             for i in range(len(messagelist)):
                 if messagelist[i].upper() == str(eval("trigger." + botitem)).upper():
                     messagelist[i] = str("trigger" + botitem).upper()
-            message = spicemanip.main(messagelist, 0)
+            message = spicemanip(messagelist, 0)
 
         return message
 

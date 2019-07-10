@@ -7,7 +7,7 @@ This is the SpiceBot Reddit system.
 from sopel.config.types import StaticSection, ValidatedAttribute
 from sopel.formatting import bold, color, colors
 
-import spicemanip
+from sopel_modules.spicemanip import spicemanip
 
 import datetime as dt
 import praw
@@ -56,7 +56,7 @@ class BotReddit():
 
     def user_handler(self, trigger_argsdict):
         subcommand_valid = ['check']
-        subcommand = spicemanip.main([x for x in trigger_argsdict["args"] if x in subcommand_valid], 1) or 'check'
+        subcommand = spicemanip([x for x in trigger_argsdict["args"] if x in subcommand_valid], 1) or 'check'
 
         userreal = self.reddit_user_exists(trigger_argsdict["command"])
         if not userreal["exists"]:
@@ -97,7 +97,7 @@ class BotReddit():
 
     def subreddit_handler(self, trigger_argsdict):
         subcommand_valid = ['check', 'hot', 'new', 'top', 'random', 'controversial', 'gilded', 'rising', 'best']
-        subcommand = spicemanip.main([x for x in trigger_argsdict["args"] if x in subcommand_valid], 1) or 'check'
+        subcommand = spicemanip([x for x in trigger_argsdict["args"] if x in subcommand_valid], 1) or 'check'
 
         fullrurul = str("https://www.reddit.com/" + trigger_argsdict["slashcomm"] + "/" + trigger_argsdict["command"])
 
@@ -116,9 +116,9 @@ class BotReddit():
             return dispmsg
 
         if subcommand == 'random':
-            targnum = spicemanip.main([x for x in trigger_argsdict["args"] if str(x).isdigit()], 1) or 500
+            targnum = spicemanip([x for x in trigger_argsdict["args"] if str(x).isdigit()], 1) or 500
         else:
-            targnum = spicemanip.main([x for x in trigger_argsdict["args"] if str(x).isdigit()], 1) or 1
+            targnum = spicemanip([x for x in trigger_argsdict["args"] if str(x).isdigit()], 1) or 1
         targnum = int(targnum)
 
         if subcommand == 'new':
@@ -162,11 +162,11 @@ class BotReddit():
         return dispmsg
 
     def trigger_handler(self, trigger):
-        trigger_args = spicemanip.main(trigger.args[1], 'create')
+        trigger_args = spicemanip(trigger.args[1], 'create')
         trigger_argsdict = {
-                        "slashcomm": spicemanip.main(trigger_args, 1).lower()[:1],
-                        "command": spicemanip.main(trigger_args, 1).lower()[2:],
-                        "args": spicemanip.main(trigger_args, "2+", 'list')
+                        "slashcomm": spicemanip(trigger_args, 1).lower()[:1],
+                        "command": spicemanip(trigger_args, 1).lower()[2:],
+                        "args": spicemanip(trigger_args, "2+", 'list')
                         }
         if trigger_argsdict["slashcomm"] == "u":
             trigger_argsdict["urltypetxt"] = "user"

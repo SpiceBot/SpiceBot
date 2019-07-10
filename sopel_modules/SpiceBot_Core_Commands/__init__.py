@@ -19,12 +19,9 @@ from .Runtime_Controls import *
 from .Messaging import *
 from .Docs import *
 from .BotPrivs import *
-from .Search import *
 from .AI import *
-from .Gif import *
-from .Sherlock import *
-from .Reddit import *
 from .DictComs import *
+from .TODO import *
 
 __author__ = 'Sam Zick'
 __email__ = 'sam@deathbybandaid.net'

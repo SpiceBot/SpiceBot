@@ -7,7 +7,7 @@ import sopel
 
 import time
 
-import spicemanip
+from sopel_modules.spicemanip import spicemanip
 
 import sopel_modules.SpiceBot as SpiceBot
 
@@ -86,7 +86,7 @@ def trigger_channel_list_recurring(bot, trigger):
         if "*" in newlist:
             newlist.remove("*")
         if len(newlist) and SpiceBot.config.SpiceBot_Channels.announcenew:
-            bot.osd(["The Following channel(s) are new:", spicemanip.main(newlist, 'andlist')], list(bot.channels.keys()))
+            bot.osd(["The Following channel(s) are new:", spicemanip(newlist, 'andlist')], list(bot.channels.keys()))
 
         SpiceBot.channels.join_all_channels(bot)
 

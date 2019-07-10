@@ -13,7 +13,7 @@ import os
 import threading
 import copy
 
-import spicemanip
+from sopel_modules.spicemanip import spicemanip
 import sopel_modules
 
 from .Logs import logs
@@ -43,6 +43,7 @@ class BotCommands():
                                 },
                     'disabled': {},
                     }
+        self.todo_list = []
         self.module_files_parse()
         self.nickrules()
         for comtype in ['module', 'nickname', 'rule']:
@@ -196,7 +197,7 @@ class BotCommands():
 
         maincom = command_dict["validcoms"][0]
         if len(command_dict["validcoms"]) > 1:
-            comaliases = spicemanip.main(command_dict["validcoms"], '2+', 'list')
+            comaliases = spicemanip(command_dict["validcoms"], '2+', 'list')
         else:
             comaliases = []
 
@@ -271,15 +272,16 @@ class BotCommands():
             foldername = str(folderpath).split("/")[-1]
 
             # check for json reference file
-            validcomdict = botread.module_json_to_dict(str(modulefile))
+            comdict = botread.module_json_to_dict(str(modulefile))
 
             # replace json defaults
-            validcomdict["filepath"] = str(modulefile)
-            validcomdict["filename"] = str(filename_base)
-            validcomdict["folderpath"] = str(folderpath)
-            validcomdict["foldername"] = str(foldername)
+            comdict["filepath"] = str(modulefile)
+            comdict["filename"] = str(filename_base)
+            comdict["folderpath"] = str(folderpath)
+            comdict["foldername"] = str(foldername)
 
             detected_lines = []
+            todo_list = []
             for line in module_file_lines:
 
                 if str(line).startswith("@"):
@@ -302,46 +304,58 @@ class BotCommands():
                     if line:
                         detected_lines.append(line)
 
+                elif "TODO" in str(line):
+                    todo_list.append(str(line))
+
+            if len(todo_list):
+                self.todo_list.extend(todo_list)
+
             if len(detected_lines):
 
                 filelinelist = []
-                currentsuccesslines = 0
                 for detected_line in detected_lines:
-                    try:
+                    validcomdict = copy.deepcopy(comdict)
 
-                        # Commands
-                        if str(detected_line).startswith("commands"):
-                            comtype = "module"
+                    validcomdict["TODO"] = todo_list
+
+                    # Commands
+                    if str(detected_line).startswith("commands"):
+                        comtype = "module"
+                        try:
                             validcoms = eval(str(detected_line).split("commands")[-1])
-                        elif str(detected_line).startswith("nickname_commands"):
-                            comtype = "nickname"
+                        except Exception as e:
+                            validcoms = e
+                            validcoms = []
+                    elif str(detected_line).startswith("nickname_commands"):
+                        comtype = "nickname"
+                        try:
                             validcoms = eval(str(detected_line).split("nickname_commands")[-1])
-                        elif str(detected_line).startswith("rule"):
-                            comtype = "rule"
+                        except Exception as e:
+                            validcoms = e
+                            validcoms = []
+                    elif str(detected_line).startswith("rule"):
+                        comtype = "rule"
+                        try:
                             validcoms = eval(str(detected_line).split("rule")[-1])
+                        except Exception as e:
+                            validcoms = e
+                            validcoms = []
 
-                        if isinstance(validcoms, tuple):
-                            validcoms = list(validcoms)
-                        else:
-                            validcoms = [validcoms]
-                        for regexcom in ["(.*)", '^\?(.*)']:
-                            if regexcom in validcoms:
-                                while regexcom in validcoms:
-                                    validcoms.remove(regexcom)
+                    if isinstance(validcoms, tuple):
+                        validcoms = list(validcoms)
+                    if not isinstance(validcoms, list):
+                        validcoms = [validcoms]
+                    for regexcom in ["(.*)", '^\?(.*)']:
+                        if regexcom in validcoms:
+                            while regexcom in validcoms:
+                                validcoms.remove(regexcom)
 
-                        if len(validcoms):
-                            validcomdict["comtype"] = comtype
-                            validcomdict["validcoms"] = validcoms
-                            filelinelist.append(validcomdict)
-                            currentsuccesslines += 1
-                    except Exception as e:
-                        addnothing = e
-                        if addnothing:
-                            currentsuccesslines += 0
+                    if len(validcoms):
+                        validcomdict["comtype"] = comtype
+                        validcomdict["validcoms"] = validcoms
+                        filelinelist.append(validcomdict)
 
-                if len(filelinelist):
-                    for vcomdict in filelinelist:
-                        self.register(vcomdict)
+                        self.register(validcomdict)
 
 
 commands = BotCommands()
