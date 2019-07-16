@@ -7,6 +7,7 @@ This is the SpiceBot Update system.
 import sopel
 
 import requests
+import pkg_resources
 
 from .Config import config as botconfig
 
@@ -21,7 +22,10 @@ class BotVersion():
                     "version_online": None,
                     "version_online_num": None,
                     }
-        self.spicebot = False
+        self.spicebot = {
+                        "version_local": None,
+                        "version_local_num": None,
+                        }
 
         self.check_sopel()
 
@@ -39,8 +43,7 @@ class BotVersion():
         self.sopel["version_online"] = sopel._version_info(self.sopel["version_online_num"])
 
     def check_spicebot(self):
-        return
-        self.sopel = True
+        self.spicebot["version_local_num"] = pkg_resources.get_distribution("SpiceBot").version
         # get actual version number, and commit count, and assemble a version
 
 
