@@ -7,6 +7,7 @@ This is the SpiceBot Update system.
 import sopel
 
 import requests
+import json
 import pkg_resources
 
 from .Config import config as botconfig
@@ -25,7 +26,7 @@ class BotVersion():
         self.spicebot = {
                         "version_local": None,
                         "version_local_num": None,
-                        "version_url": 'https://api.github.com/users/SpiceBot/repos',
+                        "version_url": "https://api.github.com/repos/SpiceBot/SpiceBot/commits/master",
                         "version_online": None,
                         "version_online_num": None,
                         }
@@ -51,15 +52,16 @@ class BotVersion():
         self.sopel["version_online_num"] = self.count_repo_commits()
         # get actual version number, and commit count, and assemble a version
 
-    def count_repo_commits(self, _acc=0):
-        info = requests.get(self.spicebot["version_url"], verify=botconfig.core.verify_ssl).json()
-        return len(info)
-
-    def find_next(self, link):
-        for l in link.split(','):
-            a, b = l.split(';')
-            if b.strip() == 'rel="next"':
-                return a.strip()[1:-1]
+    def count_repo_commits(self):
+        commitcount = 0
+        try:
+            page = requests.get(self.spicebot["version_url"])
+            result = page.content
+            jsoncommits = json.loads(result.decode('utf-8'))
+            commitcount = len(jsoncommits)
+        except Exception as e:
+            commitcount = str(e)
+        return commitcount
 
 
 version = BotVersion()
