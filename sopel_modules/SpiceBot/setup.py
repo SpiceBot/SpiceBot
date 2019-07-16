@@ -103,7 +103,7 @@ def setup_startupmonologue(bot):
                         botevents.BOT_STARTUPMONOLOGUE_CHANNELS,
                         botevents.BOT_STARTUPMONOLOGUE_COMMANDS,
                         botevents.BOT_STARTUPMONOLOGUE_AI,
-                        botevents.BOT_STARTUPMONOLOGUE_SOPEL_VERSION,
+                        botevents.BOT_STARTUPMONOLOGUE_VERSION,
                         ])
 
 

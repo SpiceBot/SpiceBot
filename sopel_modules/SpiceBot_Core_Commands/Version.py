@@ -20,5 +20,6 @@ def nickname_comand_version(bot, trigger, botcom):
     fulldisp.append(displayval)
 
     # SpiceBot
+    fulldisp.append("I am running Sopel " + str(SpiceBot.version.spicebot["version_local_num"]))
 
     bot.osd(fulldisp)
