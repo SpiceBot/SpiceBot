@@ -60,6 +60,7 @@ class BotVersion():
                 line = line.replace(",\"", '')
                 line = line.replace("version=", '')
                 line = line.replace("'", '')
+                line = line.replace("b", '')
                 self.spicebot["version_online_num"] = line
                 continue
 
