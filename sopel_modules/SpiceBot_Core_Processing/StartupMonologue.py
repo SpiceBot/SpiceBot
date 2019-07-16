@@ -24,7 +24,7 @@ def bot_startup_monologue_start(bot, trigger):
 def bot_startup_monologue_sopel_version(bot, trigger):
     SpiceBot.events.trigger(bot, SpiceBot.events.BOT_STARTUPMONOLOGUE_VERSION, "SpiceBot_StartupMonologue")
     SpiceBot.startupmonologue.dict["sopel_version"] = "Sopel " + str(SpiceBot.version.sopel["version_local_num"])
-    SpiceBot.startupmonologue.dict["sopel_version"] = "SpiceBot " + str(SpiceBot.version.spicebot["version_local_num"])
+    SpiceBot.startupmonologue.dict["spicebot_version"] = "SpiceBot " + str(SpiceBot.version.spicebot["version_local_num"])
 
 
 @sopel.module.event(SpiceBot.events.BOT_CHANNELS)
