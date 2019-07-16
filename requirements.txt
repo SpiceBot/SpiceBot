@@ -6,4 +6,3 @@ google-api-python-client
 num2words
 word2number
 upsidedown
-restkit
