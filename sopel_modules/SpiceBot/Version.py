@@ -27,10 +27,8 @@ class BotVersion():
                     "version_online_num": None,
                     }
         self.spicebot = {
-                        "version_local": None,
                         "version_local_num": pkg_resources.get_distribution("sopel-modules.SpiceBot").version,
                         "version_url": "https://api.github.com/repos/SpiceBot/SpiceBot/commits/master",
-                        "version_online": None,
                         "version_online_num": None,
                         }
 
@@ -58,6 +56,8 @@ class BotVersion():
         for line in lines:
             line = str(line)
             if "version=" in line:
+                line = line.replace("'b\"    ", '')
+                line = line.replace(",\"", '')
                 line = line.replace("version=", '')
                 line = line.replace("'", '')
                 self.spicebot["version_online_num"] = line
@@ -65,9 +65,6 @@ class BotVersion():
 
         feedjson = feedparser.parse("https://github.com/SpiceBot/SpiceBot/commits/master.atom")
         self.spicebot["version_online_num"] = str(self.spicebot["version_online_num"]) + "." + str(len(feedjson.entries))
-
-        self.spicebot["version_local"] = sopel._version_info(self.spicebot["version_local_num"])
-        self.spicebot["version_online"] = sopel._version_info(self.spicebot["version_online_num"])
 
 
 version = BotVersion()
