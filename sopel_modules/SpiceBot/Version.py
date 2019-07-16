@@ -44,7 +44,7 @@ class BotVersion():
         self.sopel["version_online"] = sopel._version_info(self.sopel["version_online_num"])
 
     def check_spicebot(self):
-        self.spicebot["version_local_num"] = pkg_resources.get_distribution("SpiceBot").version
+        self.spicebot["version_local_num"] = pkg_resources.get_distribution("sopel-modules.SpiceBot").version
         # get actual version number, and commit count, and assemble a version
 
 
