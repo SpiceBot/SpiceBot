@@ -28,6 +28,7 @@ class BotVersion():
                         }
 
         self.check_sopel()
+        self.check_spicebot()
 
     def check_sopel(self):
         info = requests.get(self.sopel["version_url"], verify=botconfig.core.verify_ssl).json()
