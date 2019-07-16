@@ -19,6 +19,16 @@ def bot_startup_monologue_start(bot, trigger):
     SpiceBot.events.trigger(bot, SpiceBot.events.BOT_STARTUPMONOLOGUE_CONNECTED, "SpiceBot_StartupMonologue")
 
 
+@sopel.module.event(SpiceBot.events.BOT_CONNECTED)
+@sopel.module.rule('.*')
+def bot_startup_monologue_sopel_version(bot, trigger):
+    SpiceBot.events.trigger(bot, SpiceBot.events.BOT_STARTUPMONOLOGUE_SOPEL_VERSION, "SpiceBot_StartupMonologue")
+    displayval = "I am running Sopel " + str(SpiceBot.version.sopel["version_local_num"])
+    if SpiceBot.version.sopel["version_local"] < SpiceBot.version.sopel["version_online"]:
+        displayval += " Update Available to " + SpiceBot.version.sopel["version_online_num"]
+    SpiceBot.startupmonologue.dict["sopel_version"] = displayval
+
+
 @sopel.module.event(SpiceBot.events.BOT_CHANNELS)
 @sopel.module.rule('.*')
 def bot_startup_monologue_channels(bot, trigger):

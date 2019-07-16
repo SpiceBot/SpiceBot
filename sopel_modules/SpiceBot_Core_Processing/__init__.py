@@ -17,6 +17,7 @@ from .osd import *
 from .StartupMonologue import *
 from .Logs import *
 from .Kick import *
+from .Updates_Available import *
 # from .Watch_URL import *
 
 
