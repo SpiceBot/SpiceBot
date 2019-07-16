@@ -7,6 +7,11 @@ This module contains references only for other modules to utilize.
 """
 # pylama:ignore=W0401,W0611
 
+
+from .configure import *
+from .setup import *
+from .shutdown import *
+
 from .Config import *
 from .Logs import *
 from .Database import *
@@ -32,11 +37,8 @@ from .Reddit import *
 from .DictComs import *
 from .Read import *
 from .Translate import *
+from .Version import *
 
-
-from .configure import *
-from .setup import *
-from .shutdown import *
 
 __author__ = 'Sam Zick'
 __email__ = 'sam@deathbybandaid.net'
