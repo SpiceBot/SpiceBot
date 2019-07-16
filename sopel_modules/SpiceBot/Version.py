@@ -54,9 +54,9 @@ class BotVersion():
         lines = htmlfile.read().splitlines()
         self.spicebot["version_online_num"] = self.spicebot["version_local_num"]
         for line in lines:
-            line = str(line).encode("utf-8").decode("utf-8")
+            line = str(line)
             if "version=" in line:
-                line = line.replace("'b\"", '')
+                line = line.replace("\"    ", '')
                 line = line.replace(",\"", '')
                 line = line.replace("version=", '')
                 line = line.replace("'", '')
