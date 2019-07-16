@@ -56,6 +56,7 @@ class BotVersion():
         lines = htmlfile.read().splitlines()
         self.spicebot["version_online_num"] = self.spicebot["version_local_num"]
         for line in lines:
+            line = str(line)
             if "version=" in line:
                 line = line.replace("version=", '')
                 line = line.replace("'", '')
@@ -64,6 +65,9 @@ class BotVersion():
 
         feedjson = feedparser.parse("https://github.com/SpiceBot/SpiceBot/commits/master.atom")
         self.spicebot["version_online_num"] = str(self.spicebot["version_online_num"]) + "." + str(len(feedjson.entries))
+
+        self.spicebot["version_local"] = sopel._version_info(self.spicebot["version_local_num"])
+        self.spicebot["version_online"] = sopel._version_info(self.spicebot["version_online_num"])
 
 
 version = BotVersion()
