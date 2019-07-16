@@ -7,8 +7,6 @@ This is the SpiceBot Update system.
 import sopel
 
 import requests
-import json
-from restkit import request
 import pkg_resources
 
 from .Config import config as botconfig
@@ -54,19 +52,8 @@ class BotVersion():
         # get actual version number, and commit count, and assemble a version
 
     def count_repo_commits(self, _acc=0):
-        r = request("https://api.github.com/repos/SpiceBot/SpiceBot/commits/master")
-        commits = json.loads(r.body_string())
-        n = len(commits)
-        if n == 0:
-            return _acc
-        link = r.headers.get('link')
-        if link is None:
-            return _acc + n
-        next_url = self.find_next(r.headers['link'])
-        if next_url is None:
-            return _acc + n
-        # try to be tail recursive, even when it doesn't matter in CPython
-        return self.count_repo_commits(next_url, _acc + n)
+        info = requests.get(self.spicebot["version_url"], verify=botconfig.core.verify_ssl).json()
+        return len(info)
 
     def find_next(self, link):
         for l in link.split(','):
