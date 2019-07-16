@@ -48,8 +48,7 @@ class BotVersion():
         self.sopel["version_online"] = sopel._version_info(self.sopel["version_online_num"])
 
     def check_spicebot(self):
-        feedjson = feedparser.parse("https://github.com/SpiceBot/SpiceBot/commits/master.atom")
-        self.sopel["version_online_num"] = len(feedjson.entries)
+        self.sopel["version_online_num"] = pkg_resources.get_distribution("sopel-modules.SpiceBot").version
 
 
 version = BotVersion()
