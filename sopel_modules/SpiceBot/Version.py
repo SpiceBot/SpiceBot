@@ -49,7 +49,7 @@ class BotVersion():
 
     def check_spicebot(self):
         feedjson = feedparser.parse("https://github.com/SpiceBot/SpiceBot/commits/master.atom")
-        self.sopel["version_online_num"] = feedjson
+        self.sopel["version_online_num"] = len(feedjson.entries)
 
 
 version = BotVersion()
