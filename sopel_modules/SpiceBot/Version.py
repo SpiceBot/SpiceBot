@@ -9,6 +9,8 @@ import sopel
 import requests
 import feedparser
 import pkg_resources
+from fake_useragent import UserAgent
+import urllib
 
 from .Config import config as botconfig
 
@@ -16,6 +18,7 @@ from .Config import config as botconfig
 class BotVersion():
 
     def __init__(self):
+        self.header = {'User-Agent': str(UserAgent().chrome)}
         self.sopel = {
                     "version_local": sopel.version_info,
                     "version_local_num": sopel.__version__,
@@ -48,8 +51,19 @@ class BotVersion():
         self.sopel["version_online"] = sopel._version_info(self.sopel["version_online_num"])
 
     def check_spicebot(self):
+
+        htmlfile = urllib.request.urlopen("https://raw.githubusercontent.com/SpiceBot/SpiceBot/master/setup.py")
+        lines = htmlfile.read().splitlines()
+        self.spicebot["version_online_num"] = self.spicebot["version_local_num"]
+        for line in lines:
+            if "version=" in line:
+                line = line.replace("version=", '')
+                line = line.replace("'", '')
+                self.spicebot["version_online_num"] = line
+                continue
+
         feedjson = feedparser.parse("https://github.com/SpiceBot/SpiceBot/commits/master.atom")
-        self.spicebot["version_online_num"] = len(feedjson.entries)
+        self.spicebot["version_online_num"] = str(self.spicebot["version_online_num"]) + "." + str(len(feedjson.entries))
 
 
 version = BotVersion()
