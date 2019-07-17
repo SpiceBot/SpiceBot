@@ -10,6 +10,7 @@ import sopel.module
 
 from upsidedown import transform
 # TODO add upsidedown to spicemanip
+# TODO add prerun functionality as well as command handling
 
 
 @sopel.module.rule('^flips (.+)')

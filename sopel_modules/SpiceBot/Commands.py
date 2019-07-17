@@ -291,6 +291,10 @@ class BotCommands():
                         line = str(line).split("commands")[-1]
                         line = "commands" + line
                         detected_lines.append(line)
+                    elif str(line).startswith(tuple(["action_commands", "module.action_commands", "sopel.module.action_commands"])):
+                        line = str(line).split("action_commands")[-1]
+                        line = "action_commands" + line
+                        detected_lines.append(line)
                     elif str(line).startswith(tuple(["nickname_commands", "module.nickname_commands", "sopel.module.nickname_commands"])):
                         line = str(line).split("nickname_commands")[-1]
                         line = "nickname_commands" + line
@@ -323,6 +327,13 @@ class BotCommands():
                         comtype = "module"
                         try:
                             validcoms = eval(str(detected_line).split("commands")[-1])
+                        except Exception as e:
+                            validcoms = e
+                            validcoms = []
+                    elif str(detected_line).startswith("action_commands"):
+                        comtype = "action"
+                        try:
+                            validcoms = eval(str(detected_line).split("action_commands")[-1])
                         except Exception as e:
                             validcoms = e
                             validcoms = []

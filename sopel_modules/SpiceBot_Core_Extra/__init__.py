@@ -6,4 +6,4 @@ from .flip import *
 
 __author__ = 'Sam Zick'
 __email__ = 'sam@deathbybandaid.net'
-__version__ = '0.1.1'
+__version__ = '0.3.0'
