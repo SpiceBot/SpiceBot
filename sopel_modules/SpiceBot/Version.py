@@ -7,7 +7,7 @@ This is the SpiceBot Update system.
 import sopel
 
 import requests
-import feedparser
+# import feedparser
 import pkg_resources
 from fake_useragent import UserAgent
 import urllib
@@ -64,8 +64,9 @@ class BotVersion():
                 self.spicebot["version_online_num"] = line
                 continue
 
-        feedjson = feedparser.parse("https://github.com/SpiceBot/SpiceBot/commits/master.atom")
-        self.spicebot["version_online_num"] = str(self.spicebot["version_online_num"]) + "." + str(len(feedjson.entries))
+        # TODO
+        # feedjson = feedparser.parse("https://github.com/SpiceBot/SpiceBot/commits/master.atom")
+        # self.spicebot["version_online_num"] = str(self.spicebot["version_online_num"]) + "." + str(len(feedjson.entries))
 
 
 version = BotVersion()
