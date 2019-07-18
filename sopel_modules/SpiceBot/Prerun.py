@@ -53,7 +53,7 @@ def prerun(t_command_type='module', t_command_subtype=None):
             # Primary command used for trigger, and a list of all words
             trigger_args, trigger_command, trigger_prefix = make_trigger_args(trigger.args[1], trigger_command_type)
 
-            if trigger_prefix in [botconfig.SpiceBot_Commands.query_prefix]:
+            if trigger_prefix and trigger_prefix in [botconfig.SpiceBot_Commands.query_prefix]:
                 return
 
             trigger_command_type = botcommands.find_command_type(trigger_command)
@@ -68,6 +68,7 @@ def prerun(t_command_type='module', t_command_subtype=None):
             argsdict_default = {}
             argsdict_default["type"] = trigger_command_type
             argsdict_default["com"] = trigger_command
+            argsdict_default["trigger_prefix"] = trigger_prefix
 
             # messagelog ID
             argsdict_default["log_id"] = botmessagelog.messagelog_assign()
@@ -144,7 +145,7 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
             # Primary command used for trigger, and a list of all words
             trigger_args, trigger_command, trigger_prefix = make_trigger_args(trigger.args[1], trigger_command_type)
 
-            if trigger_prefix != botconfig.SpiceBot_Commands.query_prefix:
+            if trigger_prefix and trigger_prefix not in [botconfig.SpiceBot_Commands.query_prefix]:
                 return
 
             # Argsdict Defaults
@@ -209,11 +210,15 @@ def verify_channel(trigger):
 def make_trigger_args(triggerargs_one, trigger_command_type='module'):
     trigger_args = spicemanip(triggerargs_one, 'create')
     if trigger_command_type in ['nickname']:
-        trigger_prefix = spicemanip(trigger_args, 2).lower()[0]
+        trigger_prefix = None
         if trigger_prefix.isupper() or trigger_prefix.islower():
             trigger_prefix = None
         trigger_command = spicemanip(trigger_args, 2).lower()
         trigger_args = spicemanip(trigger_args, '3+', 'list')
+    elif trigger_command_type in ['action']:
+        trigger_prefix = None
+        trigger_command = spicemanip(trigger_args, 1).lower()
+        trigger_args = spicemanip(trigger_args, '2+', 'list')
     else:
         trigger_prefix = spicemanip(trigger_args, 1).lower()[0]
         trigger_command = spicemanip(trigger_args, 1).lower()[1:]
