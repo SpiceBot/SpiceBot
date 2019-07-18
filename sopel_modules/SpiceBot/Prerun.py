@@ -44,7 +44,7 @@ def prerun(t_command_type='module', t_command_subtype=None):
                 check_nick = spicemanip(trigger.args[1], 1).lower()
                 if check_nick != str(bot.nick).lower():
                     return
-            else:
+            elif t_command_type == "module":
                 if not str(trigger.args[1]).startswith(tuple(botconfig.core.prefix_list)):
                     return
 
@@ -133,7 +133,7 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
                 check_nick = spicemanip(trigger.args[1], 1).lower()
                 if check_nick != str(bot.nick).lower():
                     return
-            else:
+            elif t_command_type == "module":
                 if not str(trigger.args[1]).startswith(tuple(botconfig.core.prefix_list)):
                     return
 
