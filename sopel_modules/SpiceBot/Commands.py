@@ -12,6 +12,7 @@ from sopel.config.types import StaticSection, ValidatedAttribute
 import os
 import threading
 import copy
+import imp
 
 from sopel_modules.spicemanip import spicemanip
 import sopel_modules
@@ -367,6 +368,66 @@ class BotCommands():
                         filelinelist.append(validcomdict)
 
                         self.register(validcomdict)
+
+    def list_plugin_filenames(self, directory):
+        return_list = []
+        base = os.path.abspath(directory)
+        for filename in os.listdir(base):
+            abspath = os.path.join(base, filename)
+
+            if os.path.isdir(abspath):
+                returndict = {"type": "folder"}
+                if os.path.isfile(os.path.join(abspath, '__init__.py')):
+                    returndict["name"] = filename
+                    returndict["abspath"] = abspath
+                    module_files = []
+                    for subfilename in os.listdir(abspath):
+                        name, ext = os.path.splitext(subfilename)
+                        if ext == '.py' and name != '__init__':
+                            subabspath = os.path.join(abspath, subfilename)
+                            if os.path.isfile(os.path.join(subabspath, name + '.json')):
+                                dictfile = os.path.join(subabspath, name + '.json')
+                            else:
+                                dictfile = False
+                            module_files.append({"name": name, "abspath": subabspath, "dictfile": dictfile})
+                    returndict["module_files"] = module_files
+                    return_list.append(returndict)
+        else:
+            returndict = {"type": "file"}
+            name, ext = os.path.splitext(filename)
+            if ext == '.py' and name != '__init__':
+                returndict["name"] = name
+                returndict["abspath"] = abspath
+                if os.path.isfile(os.path.join(abspath, name + '.json')):
+                    dictfile = os.path.join(abspath, name + '.json')
+                else:
+                    dictfile = False
+                returndict["dictfile"] = dictfile
+                return_list.append(returndict)
+        return return_list
+
+    def list_plugin_dir(self):
+        plugin_dir = imp.find_module('modules', [imp.find_module('sopel')[1]])[1]
+        return self.list_plugin_filenames(plugin_dir)
+
+    def list_sopel_modules_dir(self):
+        try:
+            import sopel_modules
+        except ImportError:
+            return []
+        sopel_modules_list = []
+        for plugin_dir in set(sopel_modules.__path__):
+            small_list = self.list_plugin_filenames(plugin_dir)
+            sopel_modules_list.extend(small_list)
+        return sopel_modules_list
+
+    def get_plugin_list(self):
+        full_list = []
+        for x in ["plugin", "sopel_modules"]:
+            return_list = eval("self.list_" + str(x) + "_dir()")
+            full_list.extend(return_list)
+        return full_list
+
 
 
 commands = BotCommands()
