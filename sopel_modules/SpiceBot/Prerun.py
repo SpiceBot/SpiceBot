@@ -102,7 +102,12 @@ def prerun(t_command_type='module', t_command_subtype=None):
                 botcom.dict["runcount"] = runcount
 
                 botcom.dict["args"], botcom.dict["hyphen_arg"] = trigger_hyphen_args(botcom.dict["args"])
+
+                # special handling
+                botcom.dict["responsekey"] = "?default"
+
                 args_pass = trigger_hyphen_arg_handler(bot, trigger, botcom)
+
                 if args_pass:
                     if trigger_runstatus(bot, trigger, botcom):
                         function(bot, trigger, botcom, *args, **kwargs)
@@ -267,7 +272,7 @@ def trigger_argsdict_single(argsdict_default, trigger_args_part):
 def trigger_runstatus_query(bot, trigger, botcom):
 
     # Bots can't run commands
-    if Identifier(trigger.nick) == bot.nick:
+    if trigger.nick == bot.nick:
         return False
 
     # Allow permissions for enabling and disabling commands via hyphenargs
@@ -334,7 +339,8 @@ def trigger_runstatus(bot, trigger, botcom):
 
     if not trigger.is_privmsg:
         if str(trigger.sender).lower() in [x.lower() for x in botcom.dict["dict"]["hardcoded_channel_block"]]:
-            botmessagelog.messagelog_error(botcom.dict["log_id"], "The " + str(botcom.dict["comtext"]) + " command cannot be used in " + str(trigger.sender) + " because it is hardcoded not to.")
+            message = "The " + str(botcom.dict["comtext"]) + " command cannot be used in " + str(trigger.sender) + " because it is hardcoded not to."
+            return trigger_cant_run(bot, trigger, botcom, message)
 
     if botcom.dict["runcount"] > 1:
         # check channel multirun blocks
@@ -407,11 +413,13 @@ def trigger_hyphen_args(trigger_args_part):
                         'foldername', 'folderpath',
                         "author",
                         'contribs', 'contrib', "contributors",
-                        'alias', 'aliases'
+                        'alias', 'aliases',
+                        'random'
                         ]
     numdict = {
                 "last": -1
                 }
+
     hyphen_args = []
     trigger_args_unhyphend = []
     for worditem in trigger_args_part:
