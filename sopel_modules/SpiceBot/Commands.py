@@ -369,7 +369,7 @@ class BotCommands():
 
                         self.register(validcomdict)
 
-    def list_plugin_filenames(self, directory):
+    def list_plugin_filenames(self, directory, plugin_type='file'):
         return_list = []
         base = os.path.abspath(directory)
         for filename in os.listdir(base):
@@ -378,8 +378,12 @@ class BotCommands():
             if os.path.isdir(abspath):
                 returndict = {"type": "folder"}
                 if os.path.isfile(os.path.join(abspath, '__init__.py')):
-                    returndict["name"] = filename
+                    returndict["name"] = os.path.basename(filename)
                     returndict["abspath"] = abspath
+                    if plugin_type == 'file':
+                        returndict["handler"] = sopel.plugins.handlers.PyFilePlugin(abspath)
+                    else:
+                        returndict["handler"] = sopel.plugins.handlers.PyModulePlugin(os.path.basename(filename), plugin_type)
                     module_files = []
                     for subfilename in os.listdir(abspath):
                         name, ext = os.path.splitext(subfilename)
@@ -398,6 +402,10 @@ class BotCommands():
             if ext == '.py' and name != '__init__':
                 returndict["name"] = name
                 returndict["abspath"] = abspath
+                if plugin_type == 'file':
+                    returndict["handler"] = sopel.plugins.handlers.PyFilePlugin(abspath)
+                else:
+                    returndict["handler"] = sopel.plugins.handlers.PyModulePlugin(name, plugin_type)
                 if os.path.isfile(os.path.join(abspath, name + '.json')):
                     dictfile = os.path.join(abspath, name + '.json')
                 else:
@@ -408,7 +416,7 @@ class BotCommands():
 
     def list_plugin_dir(self):
         plugin_dir = imp.find_module('modules', [imp.find_module('sopel')[1]])[1]
-        return self.list_plugin_filenames(plugin_dir)
+        return self.list_plugin_filenames(plugin_dir, 'sopel.modules')
 
     def list_sopel_modules_dir(self):
         try:
@@ -417,17 +425,30 @@ class BotCommands():
             return []
         sopel_modules_list = []
         for plugin_dir in set(sopel_modules.__path__):
-            small_list = self.list_plugin_filenames(plugin_dir)
+            small_list = self.list_plugin_filenames(plugin_dir, 'sopel_modules')
             sopel_modules_list.extend(small_list)
+        return sopel_modules_list
+
+    def list_homedir_dir(self):
+        plugin_dir = os.path.join(botconfig.config.homedir, 'modules')
+        return self.list_plugin_filenames(plugin_dir)
+
+    def list_extra_dir(self):
+        sopel_modules_list = []
+        if botconfig.config.core.extra:
+            plugin_dirs = list(botconfig.config.core.extra)
+            for plugin_dir in plugin_dirs:
+                if os.path.isdir(plugin_dir):
+                    small_list = self.list_plugin_filenames(plugin_dir)
+                    sopel_modules_list.extend(small_list)
         return sopel_modules_list
 
     def get_plugin_list(self):
         full_list = []
-        for x in ["plugin", "sopel_modules"]:
+        for x in ["plugin", "sopel_modules", "homedir", "extra"]:
             return_list = eval("self.list_" + str(x) + "_dir()")
             full_list.extend(return_list)
         return full_list
-
 
 
 commands = BotCommands()
