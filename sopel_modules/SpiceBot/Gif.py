@@ -38,6 +38,12 @@ class BotGif():
 
         valid_gif_api_dict = botread.json_to_dict(self.dir_to_scan, "Gif API", "SpiceBot_Gif")
 
+        """
+        15:02 <+Exirel> `channel_section = getattr(bot.config, 'channel', None)`
+        15:02 <deathbybandaid> I'm listening though
+        15:02 <+Exirel> `value_of_the_option_specchan = channel_section.specchan`
+        """
+
         for gif_api in list(valid_gif_api_dict.keys()):
             botconfig.define_section(gif_api, GifAPISection, validate=False)
 
