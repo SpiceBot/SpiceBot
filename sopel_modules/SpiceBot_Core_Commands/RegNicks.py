@@ -13,10 +13,10 @@ from sopel_modules.spicemanip import spicemanip
 @sopel.module.nickname_commands('regnicks', 'regnick')
 def nickname_comand_regnicks(bot, trigger, botcom):
     reggedusers = SpiceBot.users.dict["registered"]
-    bot.osd("These users are registered " + spicemanip(reggedusers, 'andlist') + ".")
+    bot.osd("These users are registered " + spicemanip(reggedusers, 'andlist') + ".", trigger.sender, 'notice')
     notregged = []
     for user in SpiceBot.users.dict["online"]:
         usernick = SpiceBot.users.ID(user)
-        if str(usernick).lower() in [x.lower() for x in SpiceBot.userself.dict["registered"]]:
+        if str(usernick).lower() in [x.lower() for x in SpiceBot.users.dict["registered"]]:
             notregged.append(usernick)
-    bot.osd("These online users are not registered " + spicemanip(notregged, 'andlist') + ".")
+    bot.osd("These online users are not registered " + spicemanip(notregged, 'andlist') + ".", trigger.sender, 'notice')
