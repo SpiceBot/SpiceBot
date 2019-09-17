@@ -18,5 +18,6 @@ def nickname_comand_regnicks(bot, trigger, botcom):
     for user in SpiceBot.users.dict["online"]:
         usernick = SpiceBot.users.ID(user)
         if str(usernick).lower() not in [x.lower() for x in SpiceBot.users.dict["registered"]]:
-            notregged.append(usernick)
+            if usernick != bot.nick:
+                notregged.append(usernick)
     bot.osd("These online users are not registered " + spicemanip(notregged, 'andlist') + ".", trigger.sender, 'notice')
