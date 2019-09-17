@@ -65,4 +65,4 @@ def configure(config):
     config.SpiceBot_Sherlock.configure_setting('extra', 'SpiceBot_Sherlock API Extra directory')
 
     config.define_section("SpiceBot_regnick", SpiceBot_RegNicks_MainSection, validate=False)
-    config.SpiceBot_Channels.configure_setting('regnick', 'SpiceBot_Channels Announce New Channels')
+    config.SpiceBot_Channels.configure_setting('regnick', 'SpiceBot_regnick Only allow regged nicks')

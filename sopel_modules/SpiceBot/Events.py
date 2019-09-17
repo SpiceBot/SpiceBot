@@ -39,6 +39,7 @@ class BotEvents(object):
         self.RPL_ISUPPORT = '005'  # This is a defined IRC event
         self.RPL_WHOREPLY = '352'  # This is a defined IRC event
         self.RPL_NAMREPLY = '353'  # This is a defined IRC event
+        self.RPL_WHOISREGNICK = '307'  # this is an unrealircd event
         self.BOT_UPTIME = time.time()
         self.BOT_WELCOME = '1001'
         self.BOT_READY = '1002'

@@ -28,6 +28,7 @@ class BotUsers():
                     "offline": [],
                     "away": [],
                     "current": {},
+                    "registered": [],
                     }
         """during setup, all users from database are offline until marked online"""
         for user_id in list(self.dict["all"].keys()):
@@ -163,6 +164,8 @@ class BotUsers():
             return
         # Identify
         nick_id = self.whois_ident(trigger.nick)
+        # check if nick is registered
+        self.whois_send(bot, trigger.nick)
         # Verify nick is in the all list
         self.add_to_all(trigger.nick, nick_id)
         # Verify nick is in the all list
@@ -179,6 +182,8 @@ class BotUsers():
             return
         # Identify
         nick_id = self.whois_ident(trigger.nick)
+        # check if nick is registered
+        self.whois_send(bot, trigger.nick)
         # Verify nick is in the all list
         self.add_to_all(trigger.nick, nick_id)
         # Verify nick is in the all list
@@ -195,6 +200,8 @@ class BotUsers():
             return
         # Identify
         nick_id = self.whois_ident(trigger.nick)
+        # check if nick is registered
+        self.whois_send(bot, trigger.nick)
         # Verify nick is in the all list
         self.add_to_all(trigger.nick, nick_id)
         # Verify nick is in the all list
@@ -213,6 +220,8 @@ class BotUsers():
             return
         # Identify
         nick_id = self.whois_ident(trigger.nick)
+        # check if nick is registered
+        self.whois_send(bot, trigger.nick)
         # Verify nick is in the all list
         self.add_to_all(trigger.nick, nick_id)
         # Verify nick is in the all list
@@ -232,6 +241,8 @@ class BotUsers():
             return
         # Identify
         nick_id = self.whois_ident(targetnick)
+        # check if nick is registered
+        self.whois_send(bot, targetnick)
         # Verify nick is in the all list
         self.add_to_all(targetnick, nick_id)
         # Verify nick is in the all list
@@ -247,6 +258,8 @@ class BotUsers():
         newnick = Identifier(trigger)
         if oldnick == bot.nick or newnick == bot.nick:
             return
+        # check if nick is registered
+        self.whois_send(bot, newnick)
         # Verify nick is in the all list
         self.add_to_all(oldnick, old_nick_id)
         # Verify nick is in the all list
@@ -297,6 +310,8 @@ class BotUsers():
             self.add_channel(channel, nick_id)
             # mark user as online
             self.mark_user_online(nick_id)
+            # check if nick is registered
+            self.whois_send(bot, nick)
 
     def rpl_who(self, bot, trigger):
         if len(trigger.args) < 2 or trigger.args[1] not in self.who_reqs:
@@ -319,6 +334,28 @@ class BotUsers():
         self.add_channel(channel, nick_id)
         # mark user as online
         self.mark_user_online(nick_id)
+        # check if nick is registered
+        self.whois_send(bot, nick)
+
+    def rpl_whois(self, bot, trigger):
+        if not bot.config.SpiceBot_regnick.regnick:
+            return
+        nick = trigger.args[1]
+        if str(nick).lower() in [x.lower() for x in self.dict["registered"]]:
+            return
+        self.whois_handle(nick)
+
+    def whois_handle(self, nick):
+        self.lock.acquire()
+        if str(nick).lower() in [x.lower() for x in self.dict["registered"]]:
+            self.dict["registered"].append(str(nick))
+        self.lock.release()
+
+    def whois_send(self, bot, nick):
+        if not bot.config.SpiceBot_regnick.regnick:
+            return
+        if str(nick).lower() not in [x.lower() for x in self.dict["registered"]]:
+            bot.write(['WHOIS', str(nick)])
 
     def account(self, bot, trigger):
         # Identify
@@ -422,6 +459,12 @@ class BotUsers():
             if not trigger.is_privmsg and self.target_online(target, nick_id):
                 if str(trigger.sender).lower() not in self.dict["current"][nick_id]["channels"]:
                     return {"targetgood": False, "error": "It looks like " + self.nick_actual(target) + " is online right now, but in a different channel.", "reason": "diffchannel"}
+
+        # not a registered nick
+        if "unregged" not in targetbypass:
+            if bot.config.SpiceBot_regnick.regnick:
+                if str(nick).lower() not in [x.lower() for x in self.dict["registered"]]:
+                    return {"targetgood": False, "error": "It looks like " + self.nick_actual(target) + " is not a registered nick.", "reason": "unregged"}
 
         return targetgood
 
