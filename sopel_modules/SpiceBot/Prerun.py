@@ -36,7 +36,7 @@ def prerun(t_command_type='module', t_command_subtype=None):
 
             # Verify channel and user exist
             verify_channel(trigger)
-            verify_user(trigger)
+            verify_user(bot, trigger)
 
             botcom = class_create('botcom')
 
@@ -130,7 +130,7 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
 
             # Verify channel and user exist
             verify_channel(trigger)
-            verify_user(trigger)
+            verify_user(bot, trigger)
 
             botcom = class_create('botcom')
 
@@ -189,9 +189,11 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
     return actual_decorator
 
 
-def verify_user(trigger):
+def verify_user(bot, trigger):
     # Identify
     nick_id = botusers.whois_ident(trigger.nick)
+    # check if nick is registered
+    botusers.whois_send(bot, trigger.nick)
     # Verify nick is in the all list
     botusers.add_to_all(trigger.nick, nick_id)
     # Verify nick is in the all list

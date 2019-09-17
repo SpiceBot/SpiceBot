@@ -28,7 +28,7 @@ class BotUsers():
                     "offline": [],
                     "away": [],
                     "current": {},
-                    "registered": [],
+                    "registered": botdb.get_bot_value('regged_users') or [],
                     }
         """during setup, all users from database are offline until marked online"""
         for user_id in list(self.dict["all"].keys()):
@@ -73,6 +73,7 @@ class BotUsers():
 
     def save_user_db(self):
         botdb.set_bot_value('users', self.dict["all"])
+        botdb.set_bot_value('regged_users', self.dict["registered"])
 
     def add_to_all(self, nick, nick_id=None):
         self.lock.acquire()
@@ -102,6 +103,8 @@ class BotUsers():
             for user in list(bot.channels[channel].privileges.keys()):
                 # Identify
                 nick_id = self.whois_ident(user)
+                # check if nick is registered
+                self.whois_send(bot, user)
                 # Verify nick is in the all list
                 self.add_to_all(user, nick_id)
                 # Verify nick is in the all list
@@ -151,6 +154,8 @@ class BotUsers():
             for user in list(bot.channels[trigger.sender].privileges.keys()):
                 # Identify
                 nick_id = self.whois_ident(user)
+                # check if nick is registered
+                self.whois_send(bot, user)
                 # Verify nick is in the all list
                 self.add_to_all(user, nick_id)
                 # Verify nick is in the all list
@@ -338,6 +343,7 @@ class BotUsers():
         self.whois_send(bot, nick)
 
     def rpl_whois(self, bot, trigger):
+        bot.say(str(trigger.args[1]), "#deathbybandaid")
         if not bot.config.SpiceBot_regnick.regnick:
             return
         nick = trigger.args[1]
