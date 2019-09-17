@@ -38,11 +38,6 @@ def prerun(t_command_type='module', t_command_subtype=None):
             verify_channel(trigger)
             verify_user(bot, trigger)
 
-            # Stop here if not registered
-            if bot.config.SpiceBot_regnick.regnick:
-                if str(trigger.nick).lower() not in [x.lower() for x in botusers.dict["registered"]]:
-                    return
-
             botcom = class_create('botcom')
 
             if t_command_type == "nickname":
@@ -136,11 +131,6 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
             # Verify channel and user exist
             verify_channel(trigger)
             verify_user(bot, trigger)
-
-            # Stop here if not registered
-            if bot.config.SpiceBot_regnick.regnick:
-                if str(trigger.nick).lower() not in [x.lower() for x in botusers.dict["registered"]]:
-                    return
 
             botcom = class_create('botcom')
 
@@ -295,6 +285,12 @@ def trigger_runstatus_query(bot, trigger, botcom):
             botmessagelog.messagelog_error(botcom.dict["log_id"], "The admin switch (-a) is for use by authorized nicks ONLY.")
             return False
 
+    # Stop here if not registered
+    if bot.config.SpiceBot_regnick.regnick:
+        if str(trigger.nick).lower() not in [x.lower() for x in botusers.dict["registered"]]:
+            message = "The query command requires you to be registerd with IRC services."
+            return trigger_cant_run(bot, trigger, botcom, message)
+
     # don't run commands that are disabled in channels
     if not trigger.is_privmsg:
         channel_disabled_list = botcommands.get_commands_disabled(str(trigger.sender))
@@ -345,6 +341,12 @@ def trigger_runstatus(bot, trigger, botcom):
         else:
             botmessagelog.messagelog_error(botcom.dict["log_id"], "The admin switch (-a) is for use by authorized nicks ONLY.")
             return False
+
+    # Stop here if not registered
+    if bot.config.SpiceBot_regnick.regnick:
+        if str(trigger.nick).lower() not in [x.lower() for x in botusers.dict["registered"]]:
+            message = "The " + str(botcom.dict["comtext"]) + " command requires you to be registerd with IRC services."
+            return trigger_cant_run(bot, trigger, botcom, message)
 
     # if botcom.dict["hyphen_arg"]:
     #    return False
