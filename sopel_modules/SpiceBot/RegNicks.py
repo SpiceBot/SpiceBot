@@ -8,4 +8,4 @@ from sopel.config.types import StaticSection, ValidatedAttribute
 
 
 class SpiceBot_RegNicks_MainSection(StaticSection):
-    announcenew = ValidatedAttribute('regnick', default=False)
+    regnick = ValidatedAttribute('regnick', default=False)
