@@ -348,12 +348,11 @@ class BotUsers():
         nick = trigger.args[1]
         if str(nick).lower() in [x.lower() for x in self.dict["registered"]]:
             return
-        bot.say(nick, "#deathbybandaid")
         self.whois_handle(nick)
 
     def whois_handle(self, nick):
         self.lock.acquire()
-        if str(nick).lower() in [x.lower() for x in self.dict["registered"]]:
+        if str(nick).lower() not in [x.lower() for x in self.dict["registered"]]:
             self.dict["registered"].append(str(nick))
         self.lock.release()
 
