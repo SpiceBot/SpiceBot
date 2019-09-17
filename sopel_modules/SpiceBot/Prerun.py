@@ -38,6 +38,11 @@ def prerun(t_command_type='module', t_command_subtype=None):
             verify_channel(trigger)
             verify_user(bot, trigger)
 
+            # Stop here if not registered
+            if bot.config.SpiceBot_regnick.regnick:
+                if str(trigger.nick).lower() not in [x.lower() for x in botusers.dict["registered"]]:
+                    return
+
             botcom = class_create('botcom')
 
             if t_command_type == "nickname":
@@ -131,6 +136,11 @@ def prerun_query(t_command_type='module', t_command_subtype=None):
             # Verify channel and user exist
             verify_channel(trigger)
             verify_user(bot, trigger)
+
+            # Stop here if not registered
+            if bot.config.SpiceBot_regnick.regnick:
+                if str(trigger.nick).lower() not in [x.lower() for x in botusers.dict["registered"]]:
+                    return
 
             botcom = class_create('botcom')
 
