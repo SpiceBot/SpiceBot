@@ -38,6 +38,7 @@ from .DictComs import *
 from .Read import *
 from .Translate import *
 from .Version import *
+from .RegNick import *
 
 
 __author__ = 'Sam Zick'
