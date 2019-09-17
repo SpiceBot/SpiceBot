@@ -216,8 +216,8 @@ def make_trigger_args(triggerargs_one, trigger_command_type='module'):
     trigger_args = spicemanip(triggerargs_one, 'create')
     if trigger_command_type in ['nickname']:
         trigger_prefix = None
-        if trigger_prefix.isupper() or trigger_prefix.islower():
-            trigger_prefix = None
+        # if trigger_prefix.isupper() or trigger_prefix.islower():
+        #    trigger_prefix = None
         trigger_command = spicemanip(trigger_args, 2).lower()
         trigger_args = spicemanip(trigger_args, '3+', 'list')
     elif trigger_command_type in ['action']:
