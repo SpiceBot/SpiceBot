@@ -295,5 +295,10 @@ class BotDictCommands():
     def setup_dictcoms(self):
         botconfig.define_section("SpiceBot_DictComs", SpiceBot_DictComs_MainSection, validate=False)
 
+    def process(bot, trigger, botcom):
+
+        # use the default key, unless otherwise specified
+        botcom.dict["responsekey"] = "?default"
+
 
 dictcoms = BotDictCommands()
