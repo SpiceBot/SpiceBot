@@ -343,10 +343,10 @@ class BotUsers():
         self.whois_send(bot, nick)
 
     def rpl_whois(self, bot, trigger):
-        bot.say(str(trigger.args[1]), "#deathbybandaid")
         if not bot.config.SpiceBot_regnick.regnick:
             return
         nick = trigger.args[1]
+        bot.say(nick, "#deathbybandaid")
         if str(nick).lower() in [x.lower() for x in self.dict["registered"]]:
             return
         self.whois_handle(nick)
