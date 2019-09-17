@@ -115,7 +115,12 @@ def bot_command_rule_ai(bot, trigger):
 
     elif command_type == 'nickname':
 
-        if trigger_args[0].lower() in ["what", "where"] and trigger_args[1].lower() in ["is", "are"]:
+        # ignore spelling correction
+        if trigger_args[0].lower().startswith("s/"):
+            bot.osd("I meant what I said!")
+            return
+
+        elif trigger_args[0].lower() in ["what", "where"] and trigger_args[1].lower() in ["is", "are"]:
             # TODO saved definitions
             searchterm = spicemanip(trigger_args, "3+") or None
             if searchterm:
