@@ -346,9 +346,9 @@ class BotUsers():
         if not bot.config.SpiceBot_regnick.regnick:
             return
         nick = trigger.args[1]
-        bot.say(nick, "#deathbybandaid")
         if str(nick).lower() in [x.lower() for x in self.dict["registered"]]:
             return
+        bot.say(nick, "#deathbybandaid")
         self.whois_handle(nick)
 
     def whois_handle(self, nick):
