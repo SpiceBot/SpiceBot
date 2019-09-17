@@ -1,7 +1,7 @@
 # coding=utf8
 from __future__ import unicode_literals, absolute_import, division, print_function
 """
-This is the SpiceBot Users system.
+This is the SpiceBot regnicks system.
 """
 import sopel
 
