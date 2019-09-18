@@ -476,7 +476,7 @@ class BotUsers():
         # not a registered nick
         if "unregged" not in targetbypass:
             if bot.config.SpiceBot_regnick.regnick:
-                if str(nick).lower() not in [x.lower() for x in self.dict["registered"]]:
+                if str(target).lower() not in [x.lower() for x in self.dict["registered"]]:
                     return {"targetgood": False, "error": "It looks like " + self.nick_actual(target) + " is not a registered nick.", "reason": "unregged"}
 
         return targetgood
