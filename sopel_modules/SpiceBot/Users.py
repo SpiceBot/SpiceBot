@@ -30,7 +30,8 @@ class BotUsers():
                     "away": [],
                     "current": {},
                     "registered": botdb.get_bot_value('regged_users') or [],
-                    "notregistered": {},
+                    "register_check": {},
+                    "identified": [],
                     }
         """during setup, all users from database are offline until marked online"""
         for user_id in list(self.dict["all"].keys()):
@@ -357,14 +358,14 @@ class BotUsers():
         if str(nick).lower() not in [x.lower() for x in self.dict["registered"]]:
             self.dict["registered"].append(str(nick))
         else:
-            self.dict["notregistered"][str(nick).lower()] = time.time()
+            self.dict["register_check"][str(nick).lower()] = time.time()
         self.lock.release()
 
     def whois_send(self, bot, nick):
         if not bot.config.SpiceBot_regnick.regnick:
             return
-        if str(nick).lower() in [x.lower() for x in list(self.dict["notregistered"].keys())]:
-            timestamp = self.dict["notregistered"][str(nick).lower()]
+        if str(nick).lower() in [x.lower() for x in list(self.dict["register_check"].keys())]:
+            timestamp = self.dict["register_check"][str(nick).lower()]
             if time.time() - timestamp < 240:
                 return
         if str(nick).lower() not in [x.lower() for x in self.dict["registered"]]:
