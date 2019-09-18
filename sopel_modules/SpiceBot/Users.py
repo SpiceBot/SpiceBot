@@ -373,26 +373,28 @@ class BotUsers():
         nick_id = self.whois_ident(nick)
 
         # No registered check
-        if str(nick).lower() not in [x.lower() for x in list(self.dict["register_check"].keys())]:
+        if int(nick_id) not in list(self.dict["register_check"].keys()):
             check_whois = True
-        elif nick_id in self.dict["identified"]:
-            timestamp = self.dict["register_check"][str(nick).lower()]
+        elif int(nick_id) in self.dict["identified"]:
+            timestamp = self.dict["register_check"][int(nick_id)]
             if time.time() - timestamp >= 1800:
                 check_whois = True
         else:
-            timestamp = self.dict["register_check"][str(nick).lower()]
+            timestamp = self.dict["register_check"][int(nick_id)]
             if time.time() - timestamp >= 240:
                 check_whois = True
         if check_whois:
             bot.write(['WHOIS', str(nick)])
             self.lock.acquire()
-            self.dict["register_check"][str(nick).lower()] = time.time()
+            self.dict["register_check"][int(nick_id)] = time.time()
             self.lock.release()
 
     def whois_identify_forget(self, nick_id):
         self.lock.acquire()
         if int(nick_id) in self.dict["identified"]:
             self.dict["identified"].remove(int(nick_id))
+        if int(nick_id) in list(self.dict["register_check"].keys()):
+            del self.dict["register_check"][int(nick_id)]
         self.lock.release()
 
     def account(self, bot, trigger):
