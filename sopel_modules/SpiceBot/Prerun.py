@@ -288,7 +288,7 @@ def trigger_runstatus_query(bot, trigger, botcom):
     # Stop here if not registered
     if bot.config.SpiceBot_regnick.regnick:
         if str(trigger.nick).lower() not in [x.lower() for x in botusers.dict["registered"]]:
-            message = "The query command requires you to be registerd with IRC services."
+            message = "The query command requires you to be registerd with IRC services. Registering may take a few minutes to process with the bot."
             return trigger_cant_run(bot, trigger, botcom, message)
 
     # don't run commands that are disabled in channels
@@ -345,7 +345,7 @@ def trigger_runstatus(bot, trigger, botcom):
     # Stop here if not registered
     if bot.config.SpiceBot_regnick.regnick:
         if str(trigger.nick).lower() not in [x.lower() for x in botusers.dict["registered"]]:
-            message = "The " + str(botcom.dict["comtext"]) + " command requires you to be registerd with IRC services."
+            message = "The " + str(botcom.dict["comtext"]) + " command requires you to be registerd with IRC services. Registering may take a few minutes to process with the bot."
             return trigger_cant_run(bot, trigger, botcom, message)
 
     # if botcom.dict["hyphen_arg"]:
