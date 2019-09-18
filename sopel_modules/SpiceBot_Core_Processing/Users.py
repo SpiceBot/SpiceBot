@@ -80,3 +80,9 @@ def account_notify_users(bot, trigger):
 @sopel.module.rule('.*')
 def track_notify_users(bot, trigger):
     SpiceBot.users.track_notify(bot, trigger)
+
+
+@sopel.module.event(SpiceBot.events.RPL_WHOISREGNICK)
+@sopel.module.rule('.*')
+def bot_whois_user(bot, trigger):
+    SpiceBot.users.rpl_whois(bot, trigger)

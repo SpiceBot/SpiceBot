@@ -13,6 +13,7 @@ from .Reddit import SpiceBot_Reddit_MainSection
 from .Sherlock import SpiceBot_Sherlock_MainSection
 from .Kick import SpiceBot_Kick
 from .osd import SpiceBot_OSD
+from .RegNicks import SpiceBot_RegNicks_MainSection
 
 
 def configure(config):
@@ -62,3 +63,6 @@ def configure(config):
 
     config.define_section("SpiceBot_Sherlock", SpiceBot_Sherlock_MainSection, validate=False)
     config.SpiceBot_Sherlock.configure_setting('extra', 'SpiceBot_Sherlock API Extra directory')
+
+    config.define_section("SpiceBot_regnick", SpiceBot_RegNicks_MainSection, validate=False)
+    config.SpiceBot_Channels.configure_setting('regnick', 'SpiceBot_regnick Only allow regged nicks')

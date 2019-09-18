@@ -22,6 +22,7 @@ from .Gif import SpiceBot_Gif_MainSection
 from .DictComs import SpiceBot_DictComs_MainSection
 from .Sherlock import SpiceBot_Sherlock_MainSection
 from .AI import SpiceBot_AI_MainSection
+from .RegNicks import SpiceBot_RegNicks_MainSection
 
 
 def setup(bot):
@@ -63,6 +64,8 @@ def setup(bot):
     setup_dictcoms(bot)
 
     setup_sherlock(bot)
+
+    setup_regnicks(bot)
 
 
 def setup_config(bot):
@@ -167,3 +170,8 @@ def setup_dictcoms(bot):
 
 def setup_sherlock(bot):
     bot.config.define_section("SpiceBot_Sherlock", SpiceBot_Sherlock_MainSection, validate=False)
+
+
+def setup_regnicks(bot):
+    bot.config.define_section("SpiceBot_regnick", SpiceBot_RegNicks_MainSection, validate=False)
+    botconfig.define_section("SpiceBot_regnick", SpiceBot_RegNicks_MainSection, validate=False)
