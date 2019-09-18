@@ -295,11 +295,9 @@ def trigger_runstatus_query(bot, trigger, botcom):
 
         # registered nick, but not identified
         else:
-            message = "None"
-            # if str(trigger.nick).lower() not in [x.lower() for x in botusers.dict["identified"]]:
-            #    message = "Your nickname appears to be registered with IRC services. However, you have not identified. Identifying may take a few minutes to process with the bot."
-            #    return trigger_cant_run(bot, trigger, botcom, message)
-            # TODO
+            if str(trigger.nick).lower() not in [x.lower() for x in botusers.dict["identified"]]:
+                message = "Your nickname appears to be registered with IRC services. However, you have not identified. Identifying may take a few minutes to process with the bot."
+                return trigger_cant_run(bot, trigger, botcom, message)
 
     # don't run commands that are disabled in channels
     if not trigger.is_privmsg:
@@ -362,11 +360,9 @@ def trigger_runstatus(bot, trigger, botcom):
 
         # registered nick, but not identified
         else:
-            message = "None"
-            # if str(trigger.nick).lower() not in [x.lower() for x in botusers.dict["identified"]]:
-            #    message = "Your nickname appears to be registered with IRC services. However, you have not identified. Identifying may take a few minutes to process with the bot."
-            #    return trigger_cant_run(bot, trigger, botcom, message)
-            # TODO
+            if str(trigger.nick).lower() not in [x.lower() for x in botusers.dict["identified"]]:
+                message = "Your nickname appears to be registered with IRC services. However, you have not identified. Identifying may take a few minutes to process with the bot."
+                return trigger_cant_run(bot, trigger, botcom, message)
 
     # if botcom.dict["hyphen_arg"]:
     #    return False
