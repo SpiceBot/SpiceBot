@@ -295,7 +295,8 @@ def trigger_runstatus_query(bot, trigger, botcom):
 
         # registered nick, but not identified
         else:
-            if str(trigger.nick).lower() not in [x.lower() for x in botusers.dict["identified"]]:
+            nick_id = botusers.whois_ident(trigger.nick)
+            if nick_id not in botusers.dict["identified"]:
                 message = "Your nickname appears to be registered with IRC services. However, you have not identified. Identifying may take a few minutes to process with the bot."
                 return trigger_cant_run(bot, trigger, botcom, message)
 
@@ -360,7 +361,8 @@ def trigger_runstatus(bot, trigger, botcom):
 
         # registered nick, but not identified
         else:
-            if str(trigger.nick).lower() not in [x.lower() for x in botusers.dict["identified"]]:
+            nick_id = botusers.whois_ident(trigger.nick)
+            if nick_id not in botusers.dict["identified"]:
                 message = "Your nickname appears to be registered with IRC services. However, you have not identified. Identifying may take a few minutes to process with the bot."
                 return trigger_cant_run(bot, trigger, botcom, message)
 
