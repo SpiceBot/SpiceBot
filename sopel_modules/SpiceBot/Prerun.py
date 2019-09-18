@@ -23,6 +23,9 @@ from .Users import users as botusers
 from .Events import events as botevents
 
 
+# TODO check identify for OPs and bot admins
+
+
 def prerun(t_command_type='module', t_command_subtype=None):
 
     def actual_decorator(function):
