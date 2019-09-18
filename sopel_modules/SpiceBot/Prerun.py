@@ -285,11 +285,20 @@ def trigger_runstatus_query(bot, trigger, botcom):
             botmessagelog.messagelog_error(botcom.dict["log_id"], "The admin switch (-a) is for use by authorized nicks ONLY.")
             return False
 
-    # Stop here if not registered
+    # Stop here if not registered or not identified
     if bot.config.SpiceBot_regnick.regnick:
+
+        # not registered
         if str(trigger.nick).lower() not in [x.lower() for x in botusers.dict["registered"]]:
-            message = "The query command requires you to be registerd with IRC services. Registering may take a few minutes to process with the bot."
+            message = "The " + str(botcom.dict["comtext"]) + " command requires you to be registered with IRC services. Registering may take a few minutes to process with the bot."
             return trigger_cant_run(bot, trigger, botcom, message)
+
+        # registered nick, but not identified
+        else:
+            nick_id = botusers.whois_ident(trigger.nick)
+            if nick_id not in botusers.dict["identified"]:
+                message = "Your nickname appears to be registered with IRC services. However, you have not identified. Identifying may take a few minutes to process with the bot."
+                return trigger_cant_run(bot, trigger, botcom, message)
 
     # don't run commands that are disabled in channels
     if not trigger.is_privmsg:
@@ -342,11 +351,20 @@ def trigger_runstatus(bot, trigger, botcom):
             botmessagelog.messagelog_error(botcom.dict["log_id"], "The admin switch (-a) is for use by authorized nicks ONLY.")
             return False
 
-    # Stop here if not registered
+    # Stop here if not registered or not identified
     if bot.config.SpiceBot_regnick.regnick:
+
+        # not registered
         if str(trigger.nick).lower() not in [x.lower() for x in botusers.dict["registered"]]:
-            message = "The " + str(botcom.dict["comtext"]) + " command requires you to be registerd with IRC services. Registering may take a few minutes to process with the bot."
+            message = "The " + str(botcom.dict["comtext"]) + " command requires you to be registered with IRC services. Registering may take a few minutes to process with the bot."
             return trigger_cant_run(bot, trigger, botcom, message)
+
+        # registered nick, but not identified
+        else:
+            nick_id = botusers.whois_ident(trigger.nick)
+            if nick_id not in botusers.dict["identified"]:
+                message = "Your nickname appears to be registered with IRC services. However, you have not identified. Identifying may take a few minutes to process with the bot."
+                return trigger_cant_run(bot, trigger, botcom, message)
 
     # if botcom.dict["hyphen_arg"]:
     #    return False
