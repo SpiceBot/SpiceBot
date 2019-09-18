@@ -34,8 +34,11 @@ class BotUsers():
                     "identified": [],
                     }
         """during setup, all users from database are offline until marked online"""
-        for user_id in list(self.dict["all"].keys()):
-            self.mark_user_offline(user_id)
+        # for user_id in list(self.dict["all"].keys()):
+        #    self.mark_user_offline(user_id)
+        self.lock.acquire()
+        self.dict["offline"] = list(self.dict["all"].keys())
+        self.lock.release()
 
     def __getattr__(self, name):
         ''' will only get called for undefined attributes '''
@@ -151,6 +154,7 @@ class BotUsers():
         if int(nick_id) not in self.dict["offline"]:
             self.dict["offline"].append(int(nick_id))
         self.lock.release()
+        self.whois_identify_forget(nick_id)
 
     def join(self, bot, trigger):
         if trigger.nick == bot.nick:
@@ -349,27 +353,47 @@ class BotUsers():
         if not bot.config.SpiceBot_regnick.regnick:
             return
         nick = trigger.args[1]
-        if str(nick).lower() in [x.lower() for x in self.dict["registered"]]:
-            return
         self.whois_handle(nick)
 
     def whois_handle(self, nick):
+        nick_id = self.whois_ident(nick)
         self.lock.acquire()
+        # identified
+        if int(nick_id) not in self.dict["identified"]:
+            self.dict["identified"].append(int(nick_id))
+        # registered
         if str(nick).lower() not in [x.lower() for x in self.dict["registered"]]:
             self.dict["registered"].append(str(nick))
-        else:
-            self.dict["register_check"][str(nick).lower()] = time.time()
         self.lock.release()
 
     def whois_send(self, bot, nick):
         if not bot.config.SpiceBot_regnick.regnick:
             return
-        if str(nick).lower() in [x.lower() for x in list(self.dict["register_check"].keys())]:
+        check_whois = False
+        nick_id = self.whois_ident(nick)
+
+        # No registered check
+        if str(nick).lower() not in [x.lower() for x in list(self.dict["register_check"].keys())]:
+            check_whois = True
+        elif nick_id in self.dict["identified"]:
             timestamp = self.dict["register_check"][str(nick).lower()]
-            if time.time() - timestamp < 240:
-                return
-        if str(nick).lower() not in [x.lower() for x in self.dict["registered"]]:
+            if time.time() - timestamp >= 1800:
+                check_whois = True
+        else:
+            timestamp = self.dict["register_check"][str(nick).lower()]
+            if time.time() - timestamp >= 240:
+                check_whois = True
+        if check_whois:
             bot.write(['WHOIS', str(nick)])
+            self.lock.acquire()
+            self.dict["register_check"][str(nick).lower()] = time.time()
+            self.lock.release()
+
+    def whois_identify_forget(self, nick_id):
+        self.lock.acquire()
+        if int(nick_id) in self.dict["identified"]:
+            self.dict["identified"].remove(int(nick_id))
+        self.lock.release()
 
     def account(self, bot, trigger):
         # Identify
@@ -480,6 +504,7 @@ class BotUsers():
         #    if bot.config.SpiceBot_regnick.regnick:
         #        if str(target).lower() not in [x.lower() for x in self.dict["registered"]]:
         #            return {"targetgood": False, "error": "It looks like " + self.nick_actual(target) + " is not a registered nick.", "reason": "unregged"}
+        # TODO identified
 
         return targetgood
 
