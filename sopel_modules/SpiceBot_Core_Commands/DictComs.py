@@ -34,11 +34,12 @@ def bot_dictcom_process(bot, trigger, botcom):
         botcom.dict['args'] = spicemanip(botcom.dict['args'], '2+', 'list')
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
+    botcom.dict["specified"] = None
     if botcom.dict["hyphen_arg"]:
-        botcom.dict["specified"] = botcom.dict["hyphen_arg"]
+        if str(botcom.dict["hyphen_arg"]).isdigit() or botcom.dict["hyphen_arg"] in [-1, 'random']:
+            botcom.dict["specified"] = botcom.dict["hyphen_arg"]
     else:
-        validspecifides = ['last', 'random', 'add', 'del', 'remove']
-        botcom.dict["specified"] = None
+        validspecifides = ['random', 'add', 'del', 'remove']
         argone = spicemanip(botcom.dict['args'], 1)
         if str(argone).startswith("--") and len(str(argone)) > 2:
             if SpiceBot.inlist(str(argone[2:]), validspecifides):
