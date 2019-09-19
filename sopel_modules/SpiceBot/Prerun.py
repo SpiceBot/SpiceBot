@@ -437,7 +437,7 @@ def trigger_cant_run(bot, trigger, botcom, message=None):
 
 def trigger_hyphen_args(trigger_args_part):
     valid_hyphen_args = [
-                        'check',
+                        'check', 'view',
                         'enable', 'disable',
                         'block', 'unblock',
                         "activate", "deactivate",
@@ -511,6 +511,23 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
         else:
             botmessagelog.messagelog(botcom.dict["log_id"], botcom.dict["comtext"] + " is a valid command")
         return False
+
+    elif botcom.dict["hyphen_arg"] in ['view']:
+        if not len(botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]):
+            botmessagelog.messagelog(botcom.dict["log_id"], "The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " command appears to have no entries!")
+        else:
+            bot.osd("The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " command contains:", trigger.nick, 'notice')
+            listnumb, relist = 0, []
+            for item in botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]:
+                listnumb += 1
+                if isinstance(item, dict):
+                    relist.append(str("[#" + str(listnumb) + "] COMPLEX dict Entry"))
+                elif isinstance(item, list):
+                    relist.append(str("[#" + str(listnumb) + "] COMPLEX list Entry"))
+                else:
+                    relist.append(str("[#" + str(listnumb) + "] " + str(item)))
+            bot.osd(relist, trigger.nick, 'notice')
+            return False
 
     elif botcom.dict["hyphen_arg"] in [
                                         'enable', 'disable',
