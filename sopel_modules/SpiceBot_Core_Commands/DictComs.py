@@ -31,17 +31,8 @@ def command_dictcom(bot, trigger, botcom):
 def bot_dictcom_process(bot, trigger, botcom):
 
     # use the default key, unless otherwise specified
-    botcom.dict["responsekey"] = "?default"
-
-    # handling for special cases
-    posscom = spicemanip(botcom.dict['args'], 1)
-    if posscom.lower() in [command.lower() for command in list(botcom.dict["dict"].keys())]:
-        for command in botcom.dict["dict"].keys():
-            if command.lower() == posscom.lower():
-                posscom = command
-        botcom.dict["responsekey"] = posscom
+    if botcom.dict["responsekey"] != "?default":
         botcom.dict['args'] = spicemanip(botcom.dict['args'], '2+', 'list')
-    botcom.dict["dict"][botcom.dict["responsekey"]]["type"] = botcom.dict["dict"][botcom.dict["responsekey"]]["type"]
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
     validspecifides = ['last', 'random', 'count', 'add', 'del', 'remove']
@@ -52,7 +43,7 @@ def bot_dictcom_process(bot, trigger, botcom):
             botcom.dict["specified"] = int(argone[2:])
         elif SpiceBot.inlist(str(argone[2:]), validspecifides):
             botcom.dict["specified"] = str(argone[2:]).lower()
-        elif SpiceBot.inlist(str(argone[2:]), botcom.dict["nonstockoptions"]):
+        elif SpiceBot.inlist(str(argone[2:]), botcom.dict["dict"]["nonstockoptions"]):
             botcom.dict["specified"] = str(argone[2:]).lower()
             botcom.dict["responsekey"] = botcom.dict["specified"]
         else:
@@ -296,7 +287,7 @@ def bot_dictcom_reply_shared(bot, trigger, botcom):
 
             # display special options for this command
             if "$specialoptions" in rply:
-                nonstockoptions = spicemanip(botcom.dict["nonstockoptions"], "andlist")
+                nonstockoptions = spicemanip(botcom.dict["dict"]["nonstockoptions"], "andlist")
                 rply = rply.replace("$specialoptions", nonstockoptions)
 
             # saying, or action?

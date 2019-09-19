@@ -105,7 +105,7 @@ def prerun(t_command_type='module', t_command_subtype=None):
                 botcom.dict["args"], botcom.dict["hyphen_arg"] = trigger_hyphen_args(botcom.dict["args"])
 
                 # special handling
-                botcom.dict["responsekey"] = "?default"
+                botcom = special_handling(botcom)
 
                 args_pass = trigger_hyphen_arg_handler(bot, trigger, botcom)
 
@@ -116,6 +116,20 @@ def prerun(t_command_type='module', t_command_subtype=None):
 
         return internal_prerun
     return actual_decorator
+
+
+def special_handling(botcom):
+    botcom.dict["responsekey"] = "?default"
+
+    # handling for special cases
+    posscom = spicemanip(botcom.dict['args'], 1)
+    if posscom.lower() in [command.lower() for command in botcom.dict["dict"]["nonstockoptions"]]:
+        for command in botcom.dict["dict"]["nonstockoptions"]:
+            if command.lower() == posscom.lower():
+                posscom = command
+        botcom.dict["responsekey"] = posscom
+
+    return botcom
 
 
 def prerun_query(t_command_type='module', t_command_subtype=None):

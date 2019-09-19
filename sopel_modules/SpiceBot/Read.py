@@ -228,6 +228,10 @@ class BotRead():
         if "?default" not in list(dict_from_file.keys()):
             dict_from_file["?default"] = {}
 
+        # check that type is set, use cases will inherit this if not set
+        if "type" not in list(dict_from_file.keys()):
+            dict_from_file["type"] = 'module'
+
         if "responses" not in list(dict_from_file["?default"].keys()):
             dict_from_file["?default"]["responses"] = []
 
@@ -235,6 +239,19 @@ class BotRead():
         for command in list(dict_from_file.keys()):
             if command not in prerun_shared.stockoptions:
                 dict_from_file["nonstockoptions"].append(command)
+
+        for specialcase in dict_from_file["nonstockoptions"]:
+
+            # All of the above need to be in the dict if not
+            if specialcase not in list(dict_from_file.keys()):
+                dict_from_file[specialcase] = dict()
+
+            # verify if already there, that the key is a dict
+            if not isinstance(dict_from_file[specialcase], dict):
+                dict_from_file[specialcase] = dict()
+
+            if "type" not in list(dict_from_file[specialcase].keys()):
+                dict_from_file[specialcase]["type"] = "module"
 
         return dict_from_file
 
