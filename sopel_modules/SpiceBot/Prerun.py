@@ -445,6 +445,9 @@ def special_handling(botcom):
                 posscom = command
         botcom.dict["responsekey"] = posscom
 
+    if botcom.dict["responsekey"] != "?default":
+        botcom.dict['args'] = spicemanip(botcom.dict['args'], '2+', 'list')
+
     return botcom
 
 
@@ -511,7 +514,7 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
         if not len(botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]):
             botmessagelog.messagelog(botcom.dict["log_id"], "The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " command appears to have no entries!")
         else:
-            bot.osd("The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " command contains:", trigger.nick, 'notice')
+            botmessagelog.messagelog_private(botcom.dict["log_id"], "The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " command contains:")
             listnumb, relist = 0, []
             for item in botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]:
                 listnumb += 1
@@ -521,19 +524,32 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
                     relist.append(str("[#" + str(listnumb) + "] COMPLEX list Entry"))
                 else:
                     relist.append(str("[#" + str(listnumb) + "] " + str(item)))
-            bot.osd(relist, trigger.nick, 'notice')
+            botmessagelog.messagelog_private(botcom.dict["log_id"], relist)
             return False
 
     elif botcom.dict["hyphen_arg"] in ['count']:
-        bot.osd("The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " command has " + str(len(botcom.dict["dict"][botcom.dict["responsekey"]]["responses"])) + " entries.")
+        botmessagelog.messagelog(botcom.dict["log_id"], "The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " command has " + str(len(botcom.dict["dict"][botcom.dict["responsekey"]]["responses"])) + " entries.")
         return False
 
-    elif botcom.dict["hyphen_arg"] in ['special', 'options']:
+    elif botcom.dict["hyphen_arg"] in ['special', 'options', 'list']:
         if not len(botcom.dict["dict"]["nonstockoptions"]):
-            bot.osd("There appear to be no special options for " + str(botcom.dict["realcom"]) + ".")
+            botmessagelog.messagelog(botcom.dict["log_id"], "There appear to be no special options for " + str(botcom.dict["realcom"]) + ".")
         else:
-            bot.osd("The special options for " + str(botcom.dict["realcom"]) + " command include: " + spicemanip(botcom.dict["dict"]["nonstockoptions"], "andlist") + ".")
+            botmessagelog.messagelog(botcom.dict["log_id"], "The special options for " + str(botcom.dict["realcom"]) + " command include: " + spicemanip(botcom.dict["dict"]["nonstockoptions"], "andlist") + ".")
         return False
+
+    elif botcom.dict["hyphen_arg"] in ['add', 'del', 'remove']:
+        if botcom.dict["hyphen_arg"] in ['add', 'remove']:
+            directionword = botcom.dict["hyphen_arg"]
+        elif botcom.dict["hyphen_arg"] in ['del']:
+            directionword = "remove"
+        if not botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"]:
+            botmessagelog.messagelog_error(botcom.dict["log_id"], "The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list cannot be updated.")
+
+        fulltext = spicemanip(botcom.dict['args'], 0)
+        if not fulltext:
+            botmessagelog.messagelog(botcom.dict["log_id"], "What would you like to " + directionword + " from the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list?")
+        return True
 
     elif botcom.dict["hyphen_arg"] in [
                                         'enable', 'disable',

@@ -100,6 +100,14 @@ class MessageLog():
 
         self.message_display[log_id]["messages"].append(messagedict)
 
+    def messagelog_private(self, log_id, message):
+
+        recipients = [self.message_display[log_id]["trigger"]["nick"]]
+
+        messagedict = {"type": "private", "message": message, "recipients": recipients}
+
+        self.message_display[log_id]["messages"].append(messagedict)
+
     def messagelog_exit(self, bot, log_id):
 
         current_messages = []
@@ -131,6 +139,9 @@ class MessageLog():
 
             if messagedict["type"] == 'error':
                 bot.osd(messagedict['message'], self.message_display[log_id]["trigger"]["nick"], 'notice')
+
+            elif messagedict["type"] == 'private':
+                bot.osd(messagedict['message'], messagedict["recipients"], 'notice')
 
             elif len(messagedict["recipients"]) > 1:
                 bot.osd(messagedict['message'], messagedict["recipients"], 'notice')

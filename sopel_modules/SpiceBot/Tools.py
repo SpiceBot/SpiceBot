@@ -25,7 +25,9 @@ class Botprerun_shared():
 
         self.valid_hyphen_args = [
                             'check', 'view',
-                            'count', 'special', 'options',
+                            'count',
+                            'special', 'options', 'list',
+                            'add', 'del', 'remove',
                             'enable', 'disable',
                             'block', 'unblock',
                             "activate", "deactivate",

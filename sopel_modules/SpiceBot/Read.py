@@ -224,18 +224,11 @@ class BotRead():
         if "hardcoded_channel_block" not in list(dict_from_file.keys()):
             dict_from_file["hardcoded_channel_block"] = []
 
-        # ensure creation of '?default'
-        if "?default" not in list(dict_from_file.keys()):
-            dict_from_file["?default"] = {}
-
         # check that type is set, use cases will inherit this if not set
         if "type" not in list(dict_from_file.keys()):
             dict_from_file["type"] = 'module'
 
-        if "responses" not in list(dict_from_file["?default"].keys()):
-            dict_from_file["?default"]["responses"] = []
-
-        dict_from_file["nonstockoptions"] = []
+        dict_from_file["nonstockoptions"] = ["?default"]
         for command in list(dict_from_file.keys()):
             if command not in prerun_shared.stockoptions:
                 dict_from_file["nonstockoptions"].append(command)
@@ -250,8 +243,21 @@ class BotRead():
             if not isinstance(dict_from_file[specialcase], dict):
                 dict_from_file[specialcase] = dict()
 
+            if "responses" not in list(dict_from_file[specialcase].keys()):
+                dict_from_file[specialcase]["responses"] = []
+
             if "type" not in list(dict_from_file[specialcase].keys()):
                 dict_from_file[specialcase]["type"] = "module"
+
+            # each usecase needs to know if it can be updated. Default is false
+            if "updates_enabled" not in list(dict_from_file[specialcase].keys()):
+                dict_from_file[specialcase]["updates_enabled"] = False
+            if dict_from_file[specialcase]["updates_enabled"]:
+                if dict_from_file[specialcase]["updates_enabled"] not in ["shared", "user"]:
+                    dict_from_file[specialcase]["updates_enabled"] = "shared"
+
+        if "?default" in dict_from_file["nonstockoptions"]:
+            dict_from_file["nonstockoptions"].remove("?default")
 
         return dict_from_file
 

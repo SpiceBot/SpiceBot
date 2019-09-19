@@ -29,23 +29,13 @@ def command_dictcom(bot, trigger, botcom):
 
 def bot_dictcom_process(bot, trigger, botcom):
 
-    # use the default key, unless otherwise specified
-    if botcom.dict["responsekey"] != "?default":
-        botcom.dict['args'] = spicemanip(botcom.dict['args'], '2+', 'list')
-
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
     botcom.dict["specified"] = None
     if botcom.dict["hyphen_arg"]:
         if str(botcom.dict["hyphen_arg"]).isdigit() or botcom.dict["hyphen_arg"] in [-1, 'random']:
             botcom.dict["specified"] = botcom.dict["hyphen_arg"]
-    else:
-        validspecifides = ['random', 'add', 'del', 'remove']
-        argone = spicemanip(botcom.dict['args'], 1)
-        if str(argone).startswith("--") and len(str(argone)) > 2:
-            if SpiceBot.inlist(str(argone[2:]), validspecifides):
-                botcom.dict["specified"] = str(argone[2:]).lower()
-            if botcom.dict["specified"]:
-                botcom.dict['args'] = spicemanip(botcom.dict['args'], '2+', 'list')
+        elif str(botcom.dict["hyphen_arg"]).lower() in ['add', 'del', 'remove']:
+            botcom.dict["specified"] = botcom.dict["hyphen_arg"]
 
     # commands that can be updated
     if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"]:
@@ -57,9 +47,6 @@ def bot_dictcom_process(bot, trigger, botcom):
             botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = SpiceBot.db.get_nick_value(str(trigger.nick), botcom.dict["dict"]["validcoms"][0] + "_" + str(botcom.dict["responsekey"]), 'sayings') or []
 
     elif botcom.dict["specified"] == 'add':
-
-        if not botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"]:
-            return bot.osd("The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list cannot be updated.")
 
         fulltext = spicemanip(botcom.dict['args'], 0)
         if not fulltext:
@@ -76,9 +63,6 @@ def bot_dictcom_process(bot, trigger, botcom):
         return bot.osd("The following was added to the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
 
     elif botcom.dict["specified"] in ['del', 'remove']:
-
-        if not botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"]:
-            return bot.osd("The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list cannot be updated.")
 
         fulltext = spicemanip(botcom.dict['args'], 0)
         if not fulltext:
