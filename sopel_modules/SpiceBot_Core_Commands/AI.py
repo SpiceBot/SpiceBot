@@ -8,6 +8,8 @@ import sopel_modules.SpiceBot as SpiceBot
 
 from sopel_modules.spicemanip import spicemanip
 
+from word2number import w2n
+
 # TODO split functionality for "no command"
 
 
@@ -107,15 +109,27 @@ def bot_command_rule_ai(bot, trigger):
             if not SpiceBot.letters_in_string(trigger_command):
                 return
             # hyphen args handling
-            valid_args = ["check"]
             hyphen_args = []
             argssplit = spicemanip(fulltrigger, "2+", 'list')
             for worditem in argssplit:
                 if str(worditem).startswith("--"):
                     clipped_word = str(worditem[2:]).lower()
                     # valid arg above
-                    if clipped_word in valid_args:
+                    if clipped_word in SpiceBot.prerun_shared.valid_hyphen_args:
                         hyphen_args.append(clipped_word)
+                    # numbered args
+                    elif str(clipped_word).isdigit():
+                        hyphen_args.append(int(clipped_word))
+                    elif clipped_word in list(SpiceBot.prerun_shared.numdict.keys()):
+                        hyphen_args.append(int(SpiceBot.prerun_shared.numdict[clipped_word]))
+                    else:
+                        # check if arg word is a number
+                        try:
+                            clipped_word = w2n.word_to_num(str(clipped_word))
+                            hyphen_args.append(int(clipped_word))
+                        # word is not a valid arg or number
+                        except ValueError:
+                            clipped_word = None
             # only one arg allowed
             invalid_display = []
             if len(hyphen_args):
@@ -128,7 +142,6 @@ def bot_command_rule_ai(bot, trigger):
                 # TODO
                 # invalid_display.append("If you have a suggestion for this command, you can run .feature ." + str(trigger_command))
                 # invalid_display.append("ADD DESCRIPTION HERE!")
-                # bot.osd(invalid_display, trigger.nick, 'notice')
             if len(invalid_display):
                 bot.osd(invalid_display, trigger.nick, 'notice')
         return
