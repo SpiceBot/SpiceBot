@@ -440,18 +440,18 @@ def updatable_content(bot, botcom, trigger):
     if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"]:
         customresponses = []
         if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "shared":
-            customresponses = botdb.get_nick_value(str(bot.nick), botcom.dict["dict"]["realcom"] + "_" + str(botcom.dict["responsekey"]), 'sayings') or []
+            customresponses = botdb.get_nick_value(str(bot.nick), botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), 'sayings') or []
         elif botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "user":
-            customresponses = botdb.get_nick_value(str(trigger.nick), botcom.dict["dict"]["realcom"] + "_" + str(botcom.dict["responsekey"]), 'sayings') or []
+            customresponses = botdb.get_nick_value(str(trigger.nick), botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), 'sayings') or []
         if not len(customresponses):
             if len(botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]):
                 savevalues = botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]
             else:
                 savevalues = ["Please use --add to add custom content!"]
             if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "shared":
-                botdb.set_nick_value(str(bot.nick), botcom.dict["dict"]["realcom"] + "_" + str(botcom.dict["responsekey"]), savevalues, 'sayings')
+                botdb.set_nick_value(str(bot.nick), botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), savevalues, 'sayings')
             elif botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "user":
-                botdb.set_nick_value(str(trigger.nick), botcom.dict["dict"]["realcom"] + "_" + str(botcom.dict["responsekey"]), savevalues, 'sayings')
+                botdb.set_nick_value(str(trigger.nick), botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), savevalues, 'sayings')
         else:
             botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = customresponses
     return botcom
@@ -583,9 +583,9 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
             return False, botcom
 
         if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "shared":
-            customresponses = botdb.get_nick_value(str(bot.nick), botcom.dict["dict"]["realcom"] + "_" + str(botcom.dict["responsekey"]), 'sayings') or []
+            customresponses = botdb.get_nick_value(str(bot.nick), botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), 'sayings') or []
         elif botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "user":
-            customresponses = botdb.get_nick_value(str(trigger.nick), botcom.dict["dict"]["realcom"] + "_" + str(botcom.dict["responsekey"]), 'sayings') or []
+            customresponses = botdb.get_nick_value(str(trigger.nick), botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), 'sayings') or []
 
         if botcom.dict["hyphen_arg"] in ['add']:
             if fulltext in customresponses:
@@ -595,9 +595,9 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
             customresponses.append(fulltext)
 
             if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "shared":
-                botdb.set_nick_value(str(bot.nick), botcom.dict["dict"]["realcom"] + "_" + str(botcom.dict["responsekey"]), customresponses, 'sayings')
+                botdb.set_nick_value(str(bot.nick), botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), customresponses, 'sayings')
             elif botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "user":
-                botdb.set_nick_value(str(trigger.nick), botcom.dict["dict"]["realcom"] + "_" + str(botcom.dict["responsekey"]), customresponses, 'sayings')
+                botdb.set_nick_value(str(trigger.nick), botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), customresponses, 'sayings')
 
             botmessagelog.messagelog(botcom.dict["log_id"], "The following was added to the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
             return False, botcom
@@ -609,9 +609,9 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
             customresponses.remove(fulltext)
 
             if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "shared":
-                botdb.set_nick_value(str(bot.nick), botcom.dict["dict"]["realcom"] + "_" + str(botcom.dict["responsekey"]), customresponses, 'sayings')
+                botdb.set_nick_value(str(bot.nick), botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), customresponses, 'sayings')
             elif botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "user":
-                botdb.set_nick_value(str(trigger.nick), botcom.dict["dict"]["realcom"] + "_" + str(botcom.dict["responsekey"]), customresponses, 'sayings')
+                botdb.set_nick_value(str(trigger.nick), botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), customresponses, 'sayings')
 
             botmessagelog.messagelog(botcom.dict["log_id"], "The following was removed from the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
             return False, botcom
