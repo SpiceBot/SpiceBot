@@ -48,10 +48,6 @@ def bot_dictcom_process(bot, trigger, botcom):
 
     elif botcom.dict["specified"] == 'add':
 
-        fulltext = spicemanip(botcom.dict['args'], 0)
-        if not fulltext:
-            return bot.osd("What would you like to add to the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list?")
-
         if fulltext in botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]:
             return bot.osd("The following was already in the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
 
@@ -63,10 +59,6 @@ def bot_dictcom_process(bot, trigger, botcom):
         return bot.osd("The following was added to the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
 
     elif botcom.dict["specified"] in ['del', 'remove']:
-
-        fulltext = spicemanip(botcom.dict['args'], 0)
-        if not fulltext:
-            return bot.osd("What would you like to remove from the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list?")
 
         if fulltext not in botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]:
             return bot.osd("The following was already not in the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
