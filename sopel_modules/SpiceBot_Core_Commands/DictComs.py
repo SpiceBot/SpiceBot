@@ -49,7 +49,7 @@ def bot_dictcom_process(bot, trigger, botcom):
             botcom.dict["nonstockoptions"].append(command)
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
-    validspecifides = ['last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special']
+    validspecifides = ['last', 'random', 'count', 'add', 'del', 'remove', 'special']
     botcom.dict["specified"] = None
     argone = spicemanip(botcom.dict['args'], 1)
     if str(argone).startswith("--") and len(str(argone)) > 2:
@@ -84,22 +84,6 @@ def bot_dictcom_process(bot, trigger, botcom):
 
     elif botcom.dict["specified"] == 'count':
         return bot.osd("The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " command has " + str(len(botcom.dict["dict"][botcom.dict["responsekey"]]["responses"])) + " entries.")
-
-    elif botcom.dict["specified"] == 'view':
-        if botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] == []:
-            return bot.osd("The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " command appears to have no entries!")
-        else:
-            bot.osd("The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " command contains:", trigger.nick, 'notice')
-            listnumb, relist = 1, []
-            for item in botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]:
-                if isinstance(item, dict):
-                    relist.append(str("[#" + str(listnumb) + "] COMPLEX dict Entry"))
-                elif isinstance(item, list):
-                    relist.append(str("[#" + str(listnumb) + "] COMPLEX list Entry"))
-                else:
-                    relist.append(str("[#" + str(listnumb) + "] " + str(item)))
-            bot.osd(relist, trigger.nick)
-            return
 
     elif botcom.dict["specified"] == 'add':
 

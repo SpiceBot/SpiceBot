@@ -438,6 +438,7 @@ def trigger_cant_run(bot, trigger, botcom, message=None):
 def trigger_hyphen_args(trigger_args_part):
     valid_hyphen_args = [
                         'check', 'view',
+                        'count',
                         'enable', 'disable',
                         'block', 'unblock',
                         "activate", "deactivate",
@@ -528,6 +529,10 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
                     relist.append(str("[#" + str(listnumb) + "] " + str(item)))
             bot.osd(relist, trigger.nick, 'notice')
             return False
+
+    elif botcom.dict["hyphen_arg"] in ['count']:
+        bot.osd("The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " command has " + str(len(botcom.dict["dict"][botcom.dict["responsekey"]]["responses"])) + " entries.")
+        return False
 
     elif botcom.dict["hyphen_arg"] in [
                                         'enable', 'disable',
