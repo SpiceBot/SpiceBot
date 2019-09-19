@@ -43,13 +43,8 @@ def bot_dictcom_process(bot, trigger, botcom):
         botcom.dict['args'] = spicemanip(botcom.dict['args'], '2+', 'list')
     botcom.dict["dict"][botcom.dict["responsekey"]]["type"] = botcom.dict["dict"][botcom.dict["responsekey"]]["type"]
 
-    botcom.dict["nonstockoptions"] = []
-    for command in list(botcom.dict["dict"].keys()):
-        if command not in ["?default", "validcoms", "type", "hardcoded_channel_block"]:
-            botcom.dict["nonstockoptions"].append(command)
-
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
-    validspecifides = ['last', 'random', 'count', 'add', 'del', 'remove', 'special']
+    validspecifides = ['last', 'random', 'count', 'add', 'del', 'remove']
     botcom.dict["specified"] = None
     argone = spicemanip(botcom.dict['args'], 1)
     if str(argone).startswith("--") and len(str(argone)) > 2:
@@ -77,10 +72,6 @@ def bot_dictcom_process(bot, trigger, botcom):
         elif botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "user":
             SpiceBot.dictcoms.adjust_nick_array(str(trigger.nick), 'sayings', botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), botcom.dict["dict"][botcom.dict["responsekey"]]["responses"], 'startup')
             botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = SpiceBot.db.get_nick_value(str(trigger.nick), botcom.dict["dict"]["validcoms"][0] + "_" + str(botcom.dict["responsekey"]), 'sayings') or []
-
-    if botcom.dict["specified"] == 'special':
-        nonstockoptions = spicemanip(botcom.dict["nonstockoptions"], "andlist")
-        return bot.osd("The special options for " + str(botcom.dict["realcom"]) + " command include: " + str(nonstockoptions) + ".")
 
     elif botcom.dict["specified"] == 'add':
 
@@ -305,11 +296,7 @@ def bot_dictcom_reply_shared(bot, trigger, botcom):
 
             # display special options for this command
             if "$specialoptions" in rply:
-                nonstockoptions = []
-                for command in list(botcom.dict["dict"].keys()):
-                    if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath", "filename", "hardcoded_channel_block", "description", "exampleresponse", "example", "usage", "privs"]:
-                        nonstockoptions.append(command)
-                nonstockoptions = spicemanip(nonstockoptions, "andlist")
+                nonstockoptions = spicemanip(botcom.dict["nonstockoptions"], "andlist")
                 rply = rply.replace("$specialoptions", nonstockoptions)
 
             # saying, or action?

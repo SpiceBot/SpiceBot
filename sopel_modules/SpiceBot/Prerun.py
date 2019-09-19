@@ -28,7 +28,7 @@ class Botprerun_shared():
 
         self.valid_hyphen_args = [
                             'check', 'view',
-                            'count',
+                            'count', 'special',
                             'enable', 'disable',
                             'block', 'unblock',
                             "activate", "deactivate",
@@ -46,6 +46,12 @@ class Botprerun_shared():
         self.numdict = {
                     "last": -1
                     }
+
+        self.stockoptions = [
+                            "?default", "validcoms", "contributors", "author", "type",
+                            "filepath", "filename", "hardcoded_channel_block", "description",
+                            "exampleresponse", "example", "usage", "privs"
+                            ]
 
 
 prerun_shared = Botprerun_shared()
@@ -538,6 +544,10 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
 
     elif botcom.dict["hyphen_arg"] in ['count']:
         bot.osd("The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " command has " + str(len(botcom.dict["dict"][botcom.dict["responsekey"]]["responses"])) + " entries.")
+        return False
+
+    elif botcom.dict["hyphen_arg"] in ['special']:
+        bot.osd("The special options for " + str(botcom.dict["realcom"]) + " command include: " + str(botcom.dict["nonstockoptions"]) + ".")
         return False
 
     elif botcom.dict["hyphen_arg"] in [

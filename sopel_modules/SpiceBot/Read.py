@@ -12,6 +12,7 @@ from fake_useragent import UserAgent
 
 from .Logs import logs
 from .Config import config as botconfig
+from .Prerun import prerun_shared
 
 
 class BotRead():
@@ -229,6 +230,11 @@ class BotRead():
 
         if "responses" not in list(dict_from_file["?default"].keys()):
             dict_from_file["?default"]["responses"] = []
+
+        dict_from_file["nonstockoptions"] = []
+        for command in list(dict_from_file["dict"].keys()):
+            if command not in prerun_shared.stockoptions:
+                dict_from_file["nonstockoptions"].append(command)
 
         return dict_from_file
 
