@@ -106,6 +106,7 @@ def prerun(t_command_type='module', t_command_subtype=None):
 
                 # special handling
                 botcom = special_handling(botcom)
+                botcom = updatable_content(bot, botcom, trigger)
 
                 args_pass, botcom = trigger_hyphen_arg_handler(bot, trigger, botcom)
 
@@ -434,6 +435,28 @@ def trigger_cant_run(bot, trigger, botcom, message=None):
     return False
 
 
+def updatable_content(bot, botcom, trigger):
+    # commands that can be updated
+    if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"]:
+        customresponses = []
+        if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "shared":
+            customresponses = botdb.get_nick_value(str(bot.nick), botcom.dict["dict"]["validcoms"][0] + "_" + str(botcom.dict["responsekey"]), 'sayings') or []
+        elif botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "user":
+            customresponses = botdb.get_nick_value(str(trigger.nick), botcom.dict["dict"]["validcoms"][0] + "_" + str(botcom.dict["responsekey"]), 'sayings') or []
+        if not len(customresponses):
+            if len(botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]):
+                savevalues = botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]
+            else:
+                savevalues = ["Please use --add to add custom content!"]
+            if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "shared":
+                botdb.set_nick_value(str(bot.nick), botcom.dict["dict"]["validcoms"][0] + "_" + str(botcom.dict["responsekey"]), savevalues)
+            elif botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "user":
+                botdb.set_nick_value(str(trigger.nick), botcom.dict["dict"]["validcoms"][0] + "_" + str(botcom.dict["responsekey"]), savevalues)
+        else:
+            botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = customresponses
+    return botcom
+
+
 def special_handling(botcom):
     botcom.dict["responsekey"] = "?default"
 
@@ -504,7 +527,11 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
     # handle numbered args
     elif str(botcom.dict["hyphen_arg"]).isdigit() or botcom.dict["hyphen_arg"] in [-1, 'random']:
         botcom.dict["specified"] = botcom.dict["hyphen_arg"]
-        return True, botcom
+        if not botcom.dict["dict"][botcom.dict["responsekey"]]["selection_allowed"]:
+            botmessagelog.messagelog_error(botcom.dict["log_id"], "The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " response list cannot be specified.")
+            return False, botcom
+        else:
+            return True, botcom
 
     elif botcom.dict["hyphen_arg"] in ['check', "test"]:
         if botcom.dict["com"].lower() != botcom.dict["realcom"]:

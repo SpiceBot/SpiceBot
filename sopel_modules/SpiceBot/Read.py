@@ -256,6 +256,9 @@ class BotRead():
                 if dict_from_file[specialcase]["updates_enabled"] not in ["shared", "user"]:
                     dict_from_file[specialcase]["updates_enabled"] = "shared"
 
+            if "selection_allowed" not in list(dict_from_file[specialcase].keys()):
+                dict_from_file[specialcase]["selection_allowed"] = True
+
         if "?default" in dict_from_file["nonstockoptions"]:
             dict_from_file["nonstockoptions"].remove("?default")
 

@@ -38,16 +38,7 @@ def bot_dictcom_process(bot, trigger, botcom):
 
     fulltext = spicemanip(botcom.dict['args'], 0)
 
-    # commands that can be updated
-    if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"]:
-        if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "shared":
-            SpiceBot.dictcoms.adjust_nick_array(str(SpiceBot.config.nick), 'sayings', botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), botcom.dict["dict"][botcom.dict["responsekey"]]["responses"], 'startup')
-            botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = SpiceBot.db.get_nick_value(str(bot.nick), botcom.dict["dict"]["validcoms"][0] + "_" + str(botcom.dict["responsekey"]), 'sayings') or []
-        elif botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "user":
-            SpiceBot.dictcoms.adjust_nick_array(str(trigger.nick), 'sayings', botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), botcom.dict["dict"][botcom.dict["responsekey"]]["responses"], 'startup')
-            botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = SpiceBot.db.get_nick_value(str(trigger.nick), botcom.dict["dict"]["validcoms"][0] + "_" + str(botcom.dict["responsekey"]), 'sayings') or []
-
-    elif botcom.dict["specified"] == 'add':
+    if botcom.dict["specified"] == 'add':
 
         if fulltext in botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]:
             return bot.osd("The following was already in the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
@@ -70,9 +61,6 @@ def bot_dictcom_process(bot, trigger, botcom):
             SpiceBot.dictcoms.adjust_nick_array(str(trigger.nick), 'sayings', botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), fulltext, botcom.dict["specified"])
 
         return bot.osd("The following was removed from the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
-
-    elif botcom.dict["specified"] and not botcom.dict["dict"][botcom.dict["responsekey"]]["selection_allowed"]:
-        return bot.osd("The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " response list cannot be specified.")
 
     botcom.dict["target"] = False
 
