@@ -223,6 +223,13 @@ class BotRead():
         if "hardcoded_channel_block" not in list(dict_from_file.keys()):
             dict_from_file["hardcoded_channel_block"] = []
 
+        # ensure creation of '?default'
+        if "?default" not in list(dict_from_file.keys()):
+            dict_from_file["?default"] = {}
+
+        if "responses" not in list(dict_from_file["?default"].keys()):
+            dict_from_file["?default"]["responses"] = []
+
         return dict_from_file
 
 
