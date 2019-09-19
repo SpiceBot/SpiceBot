@@ -20,6 +20,40 @@ from .Logs import logs
 from .Config import config as botconfig
 
 
+class Botprerun_shared():
+    def __init__(self):
+
+        self.valid_hyphen_args = [
+                            'check', 'view',
+                            'count', 'special',
+                            'enable', 'disable',
+                            'block', 'unblock',
+                            "activate", "deactivate",
+                            "on", "off",
+                            'multirun', 'multiruns',
+                            'example', 'usage',
+                            'filename', 'filepath',
+                            'foldername', 'folderpath',
+                            "author",
+                            'contribs', 'contrib', "contributors",
+                            'alias', 'aliases',
+                            'random'
+                            ]
+
+        self.numdict = {
+                    "last": -1
+                    }
+
+        self.stockoptions = [
+                            "?default", "validcoms", "contributors", "author", "type",
+                            "filepath", "filename", "hardcoded_channel_block", "description",
+                            "exampleresponse", "example", "usage", "privs"
+                            ]
+
+
+prerun_shared = Botprerun_shared()
+
+
 """Variable References"""
 
 github_dict = {

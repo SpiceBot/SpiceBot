@@ -12,7 +12,7 @@ from .Config import config as botconfig
 from .Read import read as botread
 from .Commands import commands as botcommands
 from .Database import db as botdb
-from .Prerun import prerun_shared
+from .Tools import prerun_shared
 
 import os
 import copy

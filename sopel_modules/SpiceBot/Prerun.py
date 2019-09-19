@@ -21,40 +21,7 @@ from .MessageLog import messagelog as botmessagelog
 from .Config import config as botconfig
 from .Users import users as botusers
 from .Events import events as botevents
-
-
-class Botprerun_shared():
-    def __init__(self):
-
-        self.valid_hyphen_args = [
-                            'check', 'view',
-                            'count', 'special',
-                            'enable', 'disable',
-                            'block', 'unblock',
-                            "activate", "deactivate",
-                            "on", "off",
-                            'multirun', 'multiruns',
-                            'example', 'usage',
-                            'filename', 'filepath',
-                            'foldername', 'folderpath',
-                            "author",
-                            'contribs', 'contrib', "contributors",
-                            'alias', 'aliases',
-                            'random'
-                            ]
-
-        self.numdict = {
-                    "last": -1
-                    }
-
-        self.stockoptions = [
-                            "?default", "validcoms", "contributors", "author", "type",
-                            "filepath", "filename", "hardcoded_channel_block", "description",
-                            "exampleresponse", "example", "usage", "privs"
-                            ]
-
-
-prerun_shared = Botprerun_shared()
+from .Tools import prerun_shared
 
 
 def prerun(t_command_type='module', t_command_subtype=None):

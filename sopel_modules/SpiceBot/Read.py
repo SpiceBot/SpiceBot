@@ -12,7 +12,7 @@ from fake_useragent import UserAgent
 
 from .Logs import logs
 from .Config import config as botconfig
-from .Prerun import prerun_shared
+from .Tools import prerun_shared
 
 
 class BotRead():
