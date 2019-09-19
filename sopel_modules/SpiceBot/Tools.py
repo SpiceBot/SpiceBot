@@ -20,6 +20,44 @@ from .Logs import logs
 from .Config import config as botconfig
 
 
+class Botprerun_shared():
+    def __init__(self):
+
+        self.valid_hyphen_args = [
+                            'check', 'test',
+                            'view',
+                            'count',
+                            'special', 'options', 'list',
+                            'add', 'del', 'remove',
+                            'enable', 'disable',
+                            'block', 'unblock',
+                            "activate", "deactivate",
+                            "on", "off",
+                            'multirun', 'multiruns',
+                            'example', 'usage',
+                            'filename', 'filepath',
+                            'foldername', 'folderpath',
+                            "author",
+                            'contribs', 'contrib', "contributors",
+                            'alias', 'aliases',
+                            'random'
+                            ]
+
+        self.numdict = {
+                    "last": -1
+                    }
+
+        self.stockoptions = [
+                            "?default", "validcoms", "contributors", "author", "type",
+                            "filepath", "filename", "hardcoded_channel_block", "description",
+                            "exampleresponse", "example", "usage", "privs", "nonstockoptions",
+                            'folderpath', 'foldername', 'comtype',
+                            ]
+
+
+prerun_shared = Botprerun_shared()
+
+
 """Variable References"""
 
 github_dict = {
@@ -54,36 +92,6 @@ def bot_privs(privtype):
     if not isinstance(botpriveval, list):
         botpriveval = [botpriveval]
     return botpriveval
-
-
-def command_permissions_check(bot, trigger, privslist):
-
-    commandrunconsensus = []
-
-    for botpriv in ["admins", "owner"]:
-        if botpriv in privslist:
-            botpriveval = bot_privs(botpriv)
-            if not inlist(trigger.nick, botpriveval):
-                commandrunconsensus.append('False')
-            else:
-                commandrunconsensus.append('True')
-
-    if not trigger.is_privmsg:
-        for chanpriv in ['OP', 'HOP', 'VOICE', 'OWNER', 'ADMIN']:
-            if chanpriv in privslist:
-                chanpriveval = channel_privs(bot, trigger.sender, chanpriv)
-                if not inlist(trigger.nick, chanpriveval):
-                    commandrunconsensus.append('False')
-                else:
-                    commandrunconsensus.append('True')
-
-    if not len(privslist):
-        commandrunconsensus.append('True')
-
-    if 'True' not in commandrunconsensus:
-        return False
-
-    return True
 
 
 """
@@ -302,7 +310,7 @@ def stock_modules_begone():
     for pathname in os.listdir(modules_dir):
         path = os.path.join(modules_dir, pathname)
         if (os.path.isfile(path) and pathname.endswith('.py') and not pathname.startswith('_')):
-            if not pathname in ["__init__.py", "SpiceBot_dummycommand.py"]:
+            if pathname not in ["__init__.py", "SpiceBot_dummycommand.py"]:
                 os.system("sudo mv " + path + " " + stockdir)
 
 
@@ -320,7 +328,7 @@ def spicebot_update(deps=False):
 
     pipcommand = "sudo pip3 install --upgrade"
     if not deps:
-         pipcommand += " --no-deps"
+        pipcommand += " --no-deps"
     pipcommand += " --force-reinstall"
     # pipcommand += " git+" + str(botconfig.SpiceBot_Update.gitrepo) + "@" + str(botconfig.SpiceBot_Update.gitbranch)
     pipcommand += " /tmp/SpiceBot/"

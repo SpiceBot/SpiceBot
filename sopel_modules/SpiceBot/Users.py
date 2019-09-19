@@ -6,7 +6,7 @@ import sopel
 from sopel.tools import Identifier
 
 from .Database import db as botdb
-from .Tools import is_number, inlist, similar, array_arrangesort
+from .Tools import is_number, inlist, similar, array_arrangesort, bot_privs, channel_privs
 
 from sopel_modules.spicemanip import spicemanip
 
@@ -523,6 +523,40 @@ class BotUsers():
             return validtargs
         elif outputtype == 'random':
             return spicemanip(validtargs, 'random')
+
+    def command_permissions_check(self, bot, trigger, privslist):
+
+        nick_id = self.whois_ident(trigger.nick)
+        if bot.config.SpiceBot_regnick.regnick:
+            if int(nick_id) not in self.dict["identified"]:
+                return False
+
+        commandrunconsensus = []
+
+        for botpriv in ["admins", "owner"]:
+            if botpriv in privslist:
+                botpriveval = bot_privs(botpriv)
+                if not inlist(trigger.nick, botpriveval):
+                    commandrunconsensus.append('False')
+                else:
+                    commandrunconsensus.append('True')
+
+        if not trigger.is_privmsg:
+            for chanpriv in ['OP', 'HOP', 'VOICE', 'OWNER', 'ADMIN']:
+                if chanpriv in privslist:
+                    chanpriveval = channel_privs(bot, trigger.sender, chanpriv)
+                    if not inlist(trigger.nick, chanpriveval):
+                        commandrunconsensus.append('False')
+                    else:
+                        commandrunconsensus.append('True')
+
+        if not len(privslist):
+            commandrunconsensus.append('True')
+
+        if 'True' not in commandrunconsensus:
+            return False
+
+        return True
 
 
 users = BotUsers()

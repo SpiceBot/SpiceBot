@@ -11,7 +11,6 @@ import sopel_modules.SpiceBot as SpiceBot
 
 from sopel_modules.spicemanip import spicemanip
 
-from word2number import w2n
 from random import randint
 import time
 
@@ -24,123 +23,13 @@ def command_dictcom(bot, trigger, botcom):
         return
 
     bot_dictcom_process(bot, trigger, botcom)
+
+    #  import hack TODO
     return
     time.time()
 
 
 def bot_dictcom_process(bot, trigger, botcom):
-
-    # use the default key, unless otherwise specified
-    botcom.dict["responsekey"] = "?default"
-
-    # handling for special cases
-    posscom = spicemanip(botcom.dict['args'], 1)
-    if posscom.lower() in [command.lower() for command in list(botcom.dict["dict"].keys())]:
-        for command in botcom.dict["dict"].keys():
-            if command.lower() == posscom.lower():
-                posscom = command
-        botcom.dict["responsekey"] = posscom
-        botcom.dict['args'] = spicemanip(botcom.dict['args'], '2+', 'list')
-    botcom.dict["dict"][botcom.dict["responsekey"]]["type"] = botcom.dict["dict"][botcom.dict["responsekey"]]["type"]
-
-    botcom.dict["nonstockoptions"] = []
-    for command in list(botcom.dict["dict"].keys()):
-        if command not in ["?default", "validcoms", "type", "hardcoded_channel_block"]:
-            botcom.dict["nonstockoptions"].append(command)
-
-    # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
-    validspecifides = ['last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special']
-    botcom.dict["specified"] = None
-    argone = spicemanip(botcom.dict['args'], 1)
-    if str(argone).startswith("--") and len(str(argone)) > 2:
-        if str(argone[2:]).isdigit():
-            botcom.dict["specified"] = int(argone[2:])
-        elif SpiceBot.inlist(str(argone[2:]), validspecifides):
-            botcom.dict["specified"] = str(argone[2:]).lower()
-        elif SpiceBot.inlist(str(argone[2:]), botcom.dict["nonstockoptions"]):
-            botcom.dict["specified"] = str(argone[2:]).lower()
-            botcom.dict["responsekey"] = botcom.dict["specified"]
-        else:
-            try:
-                botcom.dict["specified"] = w2n.word_to_num(str(argone[1:]))
-                botcom.dict["specified"] = int(botcom.dict["specified"])
-            except ValueError:
-                botcom.dict["specified"] = None
-        if botcom.dict["specified"]:
-            botcom.dict['args'] = spicemanip(botcom.dict['args'], '2+', 'list')
-
-    # commands that can be updated
-    if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"]:
-        if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "shared":
-            SpiceBot.dictcoms.adjust_nick_array(str(SpiceBot.config.nick), 'sayings', botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), botcom.dict["dict"][botcom.dict["responsekey"]]["responses"], 'startup')
-            botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = SpiceBot.db.get_nick_value(str(bot.nick), botcom.dict["dict"]["validcoms"][0] + "_" + str(botcom.dict["responsekey"]), 'sayings') or []
-        elif botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "user":
-            SpiceBot.dictcoms.adjust_nick_array(str(trigger.nick), 'sayings', botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), botcom.dict["dict"][botcom.dict["responsekey"]]["responses"], 'startup')
-            botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = SpiceBot.db.get_nick_value(str(trigger.nick), botcom.dict["dict"]["validcoms"][0] + "_" + str(botcom.dict["responsekey"]), 'sayings') or []
-
-    if botcom.dict["specified"] == 'special':
-        nonstockoptions = spicemanip(botcom.dict["nonstockoptions"], "andlist")
-        return bot.osd("The special options for " + str(botcom.dict["realcom"]) + " command include: " + str(nonstockoptions) + ".")
-
-    elif botcom.dict["specified"] == 'count':
-        return bot.osd("The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " command has " + str(len(botcom.dict["dict"][botcom.dict["responsekey"]]["responses"])) + " entries.")
-
-    elif botcom.dict["specified"] == 'view':
-        if botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] == []:
-            return bot.osd("The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " command appears to have no entries!")
-        else:
-            bot.osd("The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " command contains:", trigger.nick, 'notice')
-            listnumb, relist = 1, []
-            for item in botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]:
-                if isinstance(item, dict):
-                    relist.append(str("[#" + str(listnumb) + "] COMPLEX dict Entry"))
-                elif isinstance(item, list):
-                    relist.append(str("[#" + str(listnumb) + "] COMPLEX list Entry"))
-                else:
-                    relist.append(str("[#" + str(listnumb) + "] " + str(item)))
-            bot.osd(relist, trigger.nick)
-            return
-
-    elif botcom.dict["specified"] == 'add':
-
-        if not botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"]:
-            return bot.osd("The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list cannot be updated.")
-
-        fulltext = spicemanip(botcom.dict['args'], 0)
-        if not fulltext:
-            return bot.osd("What would you like to add to the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list?")
-
-        if fulltext in botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]:
-            return bot.osd("The following was already in the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
-
-        if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "shared":
-            SpiceBot.dictcoms.adjust_nick_array(str(bot.nick), 'sayings', botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), fulltext, botcom.dict["specified"])
-        elif botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "user":
-            SpiceBot.dictcoms.adjust_nick_array(str(trigger.nick), 'sayings', botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), fulltext, botcom.dict["specified"])
-
-        return bot.osd("The following was added to the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
-
-    elif botcom.dict["specified"] in ['del', 'remove']:
-
-        if not botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"]:
-            return bot.osd("The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list cannot be updated.")
-
-        fulltext = spicemanip(botcom.dict['args'], 0)
-        if not fulltext:
-            return bot.osd("What would you like to remove from the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list?")
-
-        if fulltext not in botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]:
-            return bot.osd("The following was already not in the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
-
-        if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "shared":
-            SpiceBot.dictcoms.adjust_nick_array(str(bot.nick), 'sayings', botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), fulltext, botcom.dict["specified"])
-        elif botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "user":
-            SpiceBot.dictcoms.adjust_nick_array(str(trigger.nick), 'sayings', botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), fulltext, botcom.dict["specified"])
-
-        return bot.osd("The following was removed from the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
-
-    elif botcom.dict["specified"] and not botcom.dict["dict"][botcom.dict["responsekey"]]["selection_allowed"]:
-        return bot.osd("The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " response list cannot be specified.")
 
     botcom.dict["target"] = False
 
@@ -324,11 +213,7 @@ def bot_dictcom_reply_shared(bot, trigger, botcom):
 
             # display special options for this command
             if "$specialoptions" in rply:
-                nonstockoptions = []
-                for command in list(botcom.dict["dict"].keys()):
-                    if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath", "filename", "hardcoded_channel_block", "description", "exampleresponse", "example", "usage", "privs"]:
-                        nonstockoptions.append(command)
-                nonstockoptions = spicemanip(nonstockoptions, "andlist")
+                nonstockoptions = spicemanip(botcom.dict["dict"]["nonstockoptions"], "andlist")
                 rply = rply.replace("$specialoptions", nonstockoptions)
 
             # saying, or action?

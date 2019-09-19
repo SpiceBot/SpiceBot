@@ -8,6 +8,8 @@ import sopel_modules.SpiceBot as SpiceBot
 
 from sopel_modules.spicemanip import spicemanip
 
+from word2number import w2n
+
 # TODO split functionality for "no command"
 
 
@@ -106,11 +108,59 @@ def bot_command_rule_ai(bot, trigger):
         if trigger_command not in commands_list:
             if not SpiceBot.letters_in_string(trigger_command):
                 return
-            # invalid_display = ["I don't seem to have a command for " + str(trigger_command) + "!"]
-            # TODO
-            # invalid_display.append("If you have a suggestion for this command, you can run .feature ." + str(trigger_command))
-            # invalid_display.append("ADD DESCRIPTION HERE!")
-            # bot.osd(invalid_display, trigger.nick, 'notice')
+
+            invalid_display = ["I don't seem to have a command for " + str(trigger_command) + "!"]
+
+            # create list of valid commands
+            commands_list = dict()
+            for commandstype in list(SpiceBot.commands.dict['commands'].keys()):
+                if commandstype not in ['rule', 'nickname']:
+                    for com in list(SpiceBot.commands.dict['commands'][commandstype].keys()):
+                        if com not in list(commands_list.keys()):
+                            commands_list[com] = SpiceBot.commands.dict['commands'][commandstype][com]
+
+            # hyphen args handling
+            hyphen_args = []
+            argssplit = spicemanip(fulltrigger, "2+", 'list')
+            for worditem in argssplit:
+                if str(worditem).startswith("--"):
+                    clipped_word = str(worditem[2:]).lower()
+                    # valid arg above
+                    if clipped_word in SpiceBot.prerun_shared.valid_hyphen_args:
+                        hyphen_args.append(clipped_word)
+                    # numbered args
+                    elif str(clipped_word).isdigit():
+                        hyphen_args.append(int(clipped_word))
+                    elif clipped_word in list(SpiceBot.prerun_shared.numdict.keys()):
+                        hyphen_args.append(int(SpiceBot.prerun_shared.numdict[clipped_word]))
+                    else:
+                        # check if arg word is a number
+                        try:
+                            clipped_word = w2n.word_to_num(str(clipped_word))
+                            hyphen_args.append(int(clipped_word))
+                        # word is not a valid arg or number
+                        except ValueError:
+                            clipped_word = None
+            if len(hyphen_args):
+                hyphenarg = hyphen_args[0]
+                if hyphenarg:
+                    invalid_display.append("Hyphen Argument Not Valid.")
+
+            closestmatches = SpiceBot.similar_list(trigger_command, list(commands_list.keys()), 10, 'reverse')
+            if len(closestmatches) and len(hyphen_args):  # TODO
+                invalid_display.append("The following commands may match " + str(trigger_command) + ": " + spicemanip(closestmatches, 'andlist') + ".")
+
+            # there is simply no command
+            else:
+                # TODO check other commands spelling, maybe there is a similar command
+                # invalid_display = ["I don't seem to have a command for " + str(trigger_command) + "!"]
+                # TODO
+                # invalid_display.append("If you have a suggestion for this command, you can run .feature ." + str(trigger_command))
+                # invalid_display.append("ADD DESCRIPTION HERE!")
+                if not len(hyphen_args):
+                    invalid_display = []
+            if len(invalid_display):
+                bot.osd(invalid_display, trigger.nick, 'notice')
         return
 
     elif command_type == 'nickname':
@@ -221,11 +271,38 @@ def bot_command_rule_ai(bot, trigger):
         #    return
         # TODO
 
+        invalid_display = ["I don't know what you are asking me to do!"]
+
+        # hyphen args handling
+        hyphen_args = []
+        argssplit = spicemanip(fulltrigger, "2+", 'list')
+        for worditem in argssplit:
+            if str(worditem).startswith("--"):
+                clipped_word = str(worditem[2:]).lower()
+                # valid arg above
+                if clipped_word in SpiceBot.prerun_shared.valid_hyphen_args:
+                    hyphen_args.append(clipped_word)
+                # numbered args
+                elif str(clipped_word).isdigit():
+                    hyphen_args.append(int(clipped_word))
+                elif clipped_word in list(SpiceBot.prerun_shared.numdict.keys()):
+                    hyphen_args.append(int(SpiceBot.prerun_shared.numdict[clipped_word]))
+                else:
+                    # check if arg word is a number
+                    try:
+                        clipped_word = w2n.word_to_num(str(clipped_word))
+                        hyphen_args.append(int(clipped_word))
+                    # word is not a valid arg or number
+                    except ValueError:
+                        clipped_word = None
+        if len(hyphen_args):
+            hyphenarg = hyphen_args[0]
+            if hyphenarg:
+                invalid_display.append("Hyphen Argument Not Valid.")
+
         closestmatches = SpiceBot.similar_list(trigger_command, list(SpiceBot.commands.dict['commands']["nickname"].keys()), 3, 'reverse')
         if len(closestmatches):
             closestmatches = spicemanip(closestmatches, "andlist")
-            bot.osd("I don't know what you are asking me to do! Did you mean: " + str(closestmatches) + "?")
-            return
-        else:
-            bot.osd("I don't know what you are asking me to do!")
-            return
+            invalid_display.append("Did you mean: " + str(closestmatches) + "?")
+
+        bot.osd(invalid_display, trigger.nick, 'notice')
