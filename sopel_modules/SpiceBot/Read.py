@@ -232,7 +232,7 @@ class BotRead():
             dict_from_file["?default"]["responses"] = []
 
         dict_from_file["nonstockoptions"] = []
-        for command in list(dict_from_file["dict"].keys()):
+        for command in list(dict_from_file.keys()):
             if command not in prerun_shared.stockoptions:
                 dict_from_file["nonstockoptions"].append(command)
 
