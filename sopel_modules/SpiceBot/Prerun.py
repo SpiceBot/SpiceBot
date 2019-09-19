@@ -505,8 +505,12 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
     if not botcom.dict["hyphen_arg"]:
         return True
 
+    # include nonstock options here as well
+    elif str(botcom.dict["hyphen_arg"]).lower() in [command.lower() for command in botcom.dict["dict"]["nonstockoptions"]]:
+        return True
+
     # handle numbered args
-    if str(botcom.dict["hyphen_arg"]).isdigit() or botcom.dict["hyphen_arg"] in [-1, 'random']:
+    elif str(botcom.dict["hyphen_arg"]).isdigit() or botcom.dict["hyphen_arg"] in [-1, 'random']:
         return True
 
     elif botcom.dict["hyphen_arg"] in ['check']:
