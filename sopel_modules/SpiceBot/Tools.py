@@ -18,7 +18,6 @@ from sopel_modules.spicemanip import spicemanip
 
 from .Logs import logs
 from .Config import config as botconfig
-from .Users import users as botusers
 
 
 """Variable References"""
@@ -55,41 +54,6 @@ def bot_privs(privtype):
     if not isinstance(botpriveval, list):
         botpriveval = [botpriveval]
     return botpriveval
-
-
-def command_permissions_check(bot, trigger, privslist):
-
-    nick_id = botusers.whois_ident(trigger.nick)
-    if bot.config.SpiceBot_regnick.regnick:
-        if int(nick_id) not in botusers.dict["identified"]:
-            return False
-
-    commandrunconsensus = []
-
-    for botpriv in ["admins", "owner"]:
-        if botpriv in privslist:
-            botpriveval = bot_privs(botpriv)
-            if not inlist(trigger.nick, botpriveval):
-                commandrunconsensus.append('False')
-            else:
-                commandrunconsensus.append('True')
-
-    if not trigger.is_privmsg:
-        for chanpriv in ['OP', 'HOP', 'VOICE', 'OWNER', 'ADMIN']:
-            if chanpriv in privslist:
-                chanpriveval = channel_privs(bot, trigger.sender, chanpriv)
-                if not inlist(trigger.nick, chanpriveval):
-                    commandrunconsensus.append('False')
-                else:
-                    commandrunconsensus.append('True')
-
-    if not len(privslist):
-        commandrunconsensus.append('True')
-
-    if 'True' not in commandrunconsensus:
-        return False
-
-    return True
 
 
 """

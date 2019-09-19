@@ -13,7 +13,7 @@ from word2number import w2n
 
 from sopel_modules.spicemanip import spicemanip
 
-from .Tools import command_permissions_check, class_create
+from .Tools import class_create
 from .Commands import commands as botcommands
 from .Database import db as botdb
 from .Channels import channels as botchannels
@@ -282,7 +282,7 @@ def trigger_runstatus_query(bot, trigger, botcom):
 
     # Allow permissions for enabling and disabling commands via hyphenargs
     if botcom.dict["adminswitch"]:
-        if command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
+        if botusers.command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
             return True
         else:
             botmessagelog.messagelog_error(botcom.dict["log_id"], "The admin switch (-a) is for use by authorized nicks ONLY.")
@@ -348,7 +348,7 @@ def trigger_runstatus(bot, trigger, botcom):
 
     # Allow permissions for enabling and disabling commands via hyphenargs
     if botcom.dict["adminswitch"]:
-        if command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
+        if botusers.command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
             return True
         else:
             botmessagelog.messagelog_error(botcom.dict["log_id"], "The admin switch (-a) is for use by authorized nicks ONLY.")
@@ -430,7 +430,7 @@ def trigger_runstatus(bot, trigger, botcom):
 def trigger_cant_run(bot, trigger, botcom, message=None):
     if message:
         botmessagelog.messagelog_error(botcom.dict["log_id"], message)
-    if command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
+    if botusers.command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
         botmessagelog.messagelog_error(botcom.dict["log_id"], "You however are authorized to bypass this warning with the (-a) admin switch.")
     return False
 
@@ -532,7 +532,7 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
             botmessagelog.messagelog_error(botcom.dict["log_id"], "I don't know who/what " + str(target) + " is.")
             return False
 
-        if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
+        if not botusers.command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
             if target != trigger.nick:
                 if botcom.dict["hyphen_arg"] in ['enable', 'unblock', "activate", "on"]:
                     botmessagelog.messagelog_error(botcom.dict["log_id"], "I was unable to enable this command for " + str(target) + " due to privilege issues.")
@@ -583,7 +583,7 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
             botmessagelog.messagelog_error(botcom.dict["log_id"], "I don't know who/what " + str(target) + " is.")
             return False
 
-        if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
+        if not botusers.command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
             if target != trigger.nick:
                 if onoff in ['enable', 'unblock', "activate", "on"]:
                     botmessagelog.messagelog_error(botcom.dict["log_id"], "I was unable to enable multirun usage on " + str(botcom.dict["comtext"]) + " for " + str(target) + " due to privilege issues.")
