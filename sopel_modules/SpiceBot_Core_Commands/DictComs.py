@@ -23,6 +23,8 @@ def command_dictcom(bot, trigger, botcom):
         return
 
     bot_dictcom_process(bot, trigger, botcom)
+
+    #  import hack TODO
     return
     time.time()
 
