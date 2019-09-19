@@ -37,6 +37,8 @@ def bot_dictcom_process(bot, trigger, botcom):
         elif str(botcom.dict["hyphen_arg"]).lower() in ['add', 'del', 'remove']:
             botcom.dict["specified"] = botcom.dict["hyphen_arg"]
 
+    fulltext = spicemanip(botcom.dict['args'], 0)
+
     # commands that can be updated
     if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"]:
         if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "shared":
