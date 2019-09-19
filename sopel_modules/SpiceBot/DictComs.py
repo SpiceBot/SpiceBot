@@ -106,7 +106,7 @@ class BotDictCommands():
                 dict_from_file = self.dictcom_load_usecases(maincom, dict_from_file, otherkeys)
 
             dict_from_file["nonstockoptions"] = []
-            for command in list(dict_from_file["dict"].keys()):
+            for command in list(dict_from_file.keys()):
                 if command not in prerun_shared.stockoptions:
                     dict_from_file["nonstockoptions"].append(command)
 
