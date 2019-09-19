@@ -271,11 +271,38 @@ def bot_command_rule_ai(bot, trigger):
         #    return
         # TODO
 
+        invalid_display = ["I don't know what you are asking me to do!"]
+
+        # hyphen args handling
+        hyphen_args = []
+        argssplit = spicemanip(fulltrigger, "2+", 'list')
+        for worditem in argssplit:
+            if str(worditem).startswith("--"):
+                clipped_word = str(worditem[2:]).lower()
+                # valid arg above
+                if clipped_word in SpiceBot.prerun_shared.valid_hyphen_args:
+                    hyphen_args.append(clipped_word)
+                # numbered args
+                elif str(clipped_word).isdigit():
+                    hyphen_args.append(int(clipped_word))
+                elif clipped_word in list(SpiceBot.prerun_shared.numdict.keys()):
+                    hyphen_args.append(int(SpiceBot.prerun_shared.numdict[clipped_word]))
+                else:
+                    # check if arg word is a number
+                    try:
+                        clipped_word = w2n.word_to_num(str(clipped_word))
+                        hyphen_args.append(int(clipped_word))
+                    # word is not a valid arg or number
+                    except ValueError:
+                        clipped_word = None
+        if len(hyphen_args):
+            hyphenarg = hyphen_args[0]
+            if hyphenarg:
+                invalid_display.append("Hyphen Argument Not Valid.")
+
         closestmatches = SpiceBot.similar_list(trigger_command, list(SpiceBot.commands.dict['commands']["nickname"].keys()), 3, 'reverse')
         if len(closestmatches):
             closestmatches = spicemanip(closestmatches, "andlist")
-            bot.osd("I don't know what you are asking me to do! Did you mean: " + str(closestmatches) + "?")
-            return
-        else:
-            bot.osd("I don't know what you are asking me to do!")
-            return
+            invalid_display.append("Did you mean: " + str(closestmatches) + "?")
+
+        bot.osd(invalid_display, trigger.nick, 'notice')
