@@ -18,6 +18,7 @@ from sopel_modules.spicemanip import spicemanip
 
 from .Logs import logs
 from .Config import config as botconfig
+from .Users import users as botusers
 
 
 """Variable References"""
@@ -57,6 +58,11 @@ def bot_privs(privtype):
 
 
 def command_permissions_check(bot, trigger, privslist):
+
+    nick_id = botusers.whois_ident(trigger.nick)
+    if bot.config.SpiceBot_regnick.regnick:
+        if int(nick_id) not in botusers.dict["identified"]:
+            return False
 
     commandrunconsensus = []
 
