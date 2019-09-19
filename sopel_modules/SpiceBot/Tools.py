@@ -47,7 +47,7 @@ class Botprerun_shared():
         self.stockoptions = [
                             "?default", "validcoms", "contributors", "author", "type",
                             "filepath", "filename", "hardcoded_channel_block", "description",
-                            "exampleresponse", "example", "usage", "privs"
+                            "exampleresponse", "example", "usage", "privs", "nonstockoptions",
                             ]
 
 

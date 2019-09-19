@@ -38,7 +38,7 @@ class BotDictCommands():
                             "comtype", "type", "validcoms",
                             "author", "contributors",
                             "description", "exampleresponse", "example",
-                            "privs"
+                            "privs", "nonstockoptions",
                             ]
 
         self.dictcom_load()
