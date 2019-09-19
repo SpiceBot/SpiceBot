@@ -514,7 +514,10 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
         return False
 
     elif botcom.dict["hyphen_arg"] in ['special', 'options']:
-        bot.osd("The special options for " + str(botcom.dict["realcom"]) + " command include: " + spicemanip(botcom.dict["dict"]["nonstockoptions"], "andlist") + ".")
+        if not len(botcom.dict["dict"]["nonstockoptions"]):
+            bot.osd("There appear to be no special options for " + str(botcom.dict["realcom"]) + ".")
+        else:
+            bot.osd("The special options for " + str(botcom.dict["realcom"]) + " command include: " + spicemanip(botcom.dict["dict"]["nonstockoptions"], "andlist") + ".")
         return False
 
     elif botcom.dict["hyphen_arg"] in [
