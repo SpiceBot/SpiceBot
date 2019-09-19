@@ -104,12 +104,12 @@ def prerun(t_command_type='module', t_command_subtype=None):
 
                 botcom.dict["args"], botcom.dict["hyphen_arg"] = trigger_hyphen_args(botcom)
 
+                # special handling
+                botcom = special_handling(botcom)
+
                 args_pass = trigger_hyphen_arg_handler(bot, trigger, botcom)
 
                 if args_pass:
-
-                    # special handling
-                    botcom = special_handling(botcom)
 
                     if trigger_runstatus(bot, trigger, botcom):
                         function(bot, trigger, botcom, *args, **kwargs)
@@ -437,18 +437,13 @@ def trigger_cant_run(bot, trigger, botcom, message=None):
 def special_handling(botcom):
     botcom.dict["responsekey"] = "?default"
 
-    if str(botcom.dict["hyphen_arg"]).lower() in [command.lower() for command in botcom.dict["dict"]["nonstockoptions"]]:
-        botcom.dict["responsekey"] = str(botcom.dict["hyphen_arg"]).lower()
-
-    else:
-
-        # handling for special cases
-        posscom = spicemanip(botcom.dict['args'], 1)
-        if posscom.lower() in [command.lower() for command in botcom.dict["dict"]["nonstockoptions"]]:
-            for command in botcom.dict["dict"]["nonstockoptions"]:
-                if command.lower() == posscom.lower():
-                    posscom = command
-            botcom.dict["responsekey"] = posscom
+    # handling for special cases
+    posscom = spicemanip(botcom.dict['args'], 1)
+    if posscom.lower() in [command.lower() for command in botcom.dict["dict"]["nonstockoptions"]]:
+        for command in botcom.dict["dict"]["nonstockoptions"]:
+            if command.lower() == posscom.lower():
+                posscom = command
+        botcom.dict["responsekey"] = posscom
 
     return botcom
 
@@ -463,10 +458,6 @@ def trigger_hyphen_args(botcom):
 
             # valid arg above
             if clipped_word in prerun_shared.valid_hyphen_args:
-                hyphen_args.append(clipped_word)
-
-            # include nonstock options here as well
-            elif str(clipped_word).lower() in [command.lower() for command in botcom.dict["dict"]["nonstockoptions"]]:
                 hyphen_args.append(clipped_word)
 
             # numbered args
@@ -503,10 +494,6 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
     # TODO --check should work for commands that don't exist
 
     if not botcom.dict["hyphen_arg"]:
-        return True
-
-    # include nonstock options here as well
-    elif str(botcom.dict["hyphen_arg"]).lower() in [command.lower() for command in botcom.dict["dict"]["nonstockoptions"]]:
         return True
 
     # handle numbered args
