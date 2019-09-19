@@ -302,7 +302,7 @@ def stock_modules_begone():
     for pathname in os.listdir(modules_dir):
         path = os.path.join(modules_dir, pathname)
         if (os.path.isfile(path) and pathname.endswith('.py') and not pathname.startswith('_')):
-            if not pathname in ["__init__.py", "SpiceBot_dummycommand.py"]:
+            if pathname not in ["__init__.py", "SpiceBot_dummycommand.py"]:
                 os.system("sudo mv " + path + " " + stockdir)
 
 
@@ -320,7 +320,7 @@ def spicebot_update(deps=False):
 
     pipcommand = "sudo pip3 install --upgrade"
     if not deps:
-         pipcommand += " --no-deps"
+        pipcommand += " --no-deps"
     pipcommand += " --force-reinstall"
     # pipcommand += " git+" + str(botconfig.SpiceBot_Update.gitrepo) + "@" + str(botconfig.SpiceBot_Update.gitbranch)
     pipcommand += " /tmp/SpiceBot/"
