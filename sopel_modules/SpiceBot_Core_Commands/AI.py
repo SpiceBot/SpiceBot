@@ -157,7 +157,8 @@ def bot_command_rule_ai(bot, trigger):
                 # TODO
                 # invalid_display.append("If you have a suggestion for this command, you can run .feature ." + str(trigger_command))
                 # invalid_display.append("ADD DESCRIPTION HERE!")
-                invalid_display = []
+                if not len(hyphen_args):
+                    invalid_display = []
             if len(invalid_display):
                 bot.osd(invalid_display, trigger.nick, 'notice')
         return
