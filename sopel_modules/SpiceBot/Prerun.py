@@ -104,32 +104,19 @@ def prerun(t_command_type='module', t_command_subtype=None):
 
                 botcom.dict["args"], botcom.dict["hyphen_arg"] = trigger_hyphen_args(botcom.dict["args"])
 
-                # special handling
-                botcom = special_handling(botcom)
-
                 args_pass = trigger_hyphen_arg_handler(bot, trigger, botcom)
 
                 if args_pass:
+
+                    # special handling
+                    botcom = special_handling(botcom)
+
                     if trigger_runstatus(bot, trigger, botcom):
                         function(bot, trigger, botcom, *args, **kwargs)
             botmessagelog.messagelog_exit(bot, argsdict_default["log_id"])
 
         return internal_prerun
     return actual_decorator
-
-
-def special_handling(botcom):
-    botcom.dict["responsekey"] = "?default"
-
-    # handling for special cases
-    posscom = spicemanip(botcom.dict['args'], 1)
-    if posscom.lower() in [command.lower() for command in botcom.dict["dict"]["nonstockoptions"]]:
-        for command in botcom.dict["dict"]["nonstockoptions"]:
-            if command.lower() == posscom.lower():
-                posscom = command
-        botcom.dict["responsekey"] = posscom
-
-    return botcom
 
 
 def prerun_query(t_command_type='module', t_command_subtype=None):
@@ -447,6 +434,25 @@ def trigger_cant_run(bot, trigger, botcom, message=None):
     return False
 
 
+def special_handling(botcom):
+    botcom.dict["responsekey"] = "?default"
+
+    if str(botcom.dict["hyphen_arg"]).lower() in [command.lower() for command in botcom.dict["dict"]["nonstockoptions"]]:
+        botcom.dict["responsekey"] = str(botcom.dict["hyphen_arg"]).lower()
+
+    else:
+
+        # handling for special cases
+        posscom = spicemanip(botcom.dict['args'], 1)
+        if posscom.lower() in [command.lower() for command in botcom.dict["dict"]["nonstockoptions"]]:
+            for command in botcom.dict["dict"]["nonstockoptions"]:
+                if command.lower() == posscom.lower():
+                    posscom = command
+            botcom.dict["responsekey"] = posscom
+
+    return botcom
+
+
 def trigger_hyphen_args(trigger_args_part):
 
     hyphen_args = []
@@ -472,7 +478,7 @@ def trigger_hyphen_args(trigger_args_part):
                     clipped_word = w2n.word_to_num(str(clipped_word))
                     hyphen_args.append(int(clipped_word))
 
-        # word is not a valid arg or number
+                # word is not a valid arg or number
                 except ValueError:
                     trigger_args_unhyphend.append(worditem)
         else:

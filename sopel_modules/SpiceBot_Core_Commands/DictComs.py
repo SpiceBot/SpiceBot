@@ -11,7 +11,6 @@ import sopel_modules.SpiceBot as SpiceBot
 
 from sopel_modules.spicemanip import spicemanip
 
-from word2number import w2n
 from random import randint
 import time
 
@@ -35,25 +34,17 @@ def bot_dictcom_process(bot, trigger, botcom):
         botcom.dict['args'] = spicemanip(botcom.dict['args'], '2+', 'list')
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
-    validspecifides = ['last', 'random', 'add', 'del', 'remove']
-    botcom.dict["specified"] = None
-    argone = spicemanip(botcom.dict['args'], 1)
-    if str(argone).startswith("--") and len(str(argone)) > 2:
-        if str(argone[2:]).isdigit():
-            botcom.dict["specified"] = int(argone[2:])
-        elif SpiceBot.inlist(str(argone[2:]), validspecifides):
-            botcom.dict["specified"] = str(argone[2:]).lower()
-        elif SpiceBot.inlist(str(argone[2:]), botcom.dict["dict"]["nonstockoptions"]):
-            botcom.dict["specified"] = str(argone[2:]).lower()
-            botcom.dict["responsekey"] = botcom.dict["specified"]
-        else:
-            try:
-                botcom.dict["specified"] = w2n.word_to_num(str(argone[1:]))
-                botcom.dict["specified"] = int(botcom.dict["specified"])
-            except ValueError:
-                botcom.dict["specified"] = None
-        if botcom.dict["specified"]:
-            botcom.dict['args'] = spicemanip(botcom.dict['args'], '2+', 'list')
+    if botcom.dict["hyphen_arg"]:
+        botcom.dict["specified"] = botcom.dict["hyphen_arg"]
+    else:
+        validspecifides = ['last', 'random', 'add', 'del', 'remove']
+        botcom.dict["specified"] = None
+        argone = spicemanip(botcom.dict['args'], 1)
+        if str(argone).startswith("--") and len(str(argone)) > 2:
+            if SpiceBot.inlist(str(argone[2:]), validspecifides):
+                botcom.dict["specified"] = str(argone[2:]).lower()
+            if botcom.dict["specified"]:
+                botcom.dict['args'] = spicemanip(botcom.dict['args'], '2+', 'list')
 
     # commands that can be updated
     if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"]:
