@@ -35,7 +35,7 @@ def bot_dictcom_process(bot, trigger, botcom):
         botcom.dict['args'] = spicemanip(botcom.dict['args'], '2+', 'list')
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
-    validspecifides = ['last', 'random', 'count', 'add', 'del', 'remove']
+    validspecifides = ['last', 'random', 'add', 'del', 'remove']
     botcom.dict["specified"] = None
     argone = spicemanip(botcom.dict['args'], 1)
     if str(argone).startswith("--") and len(str(argone)) > 2:
