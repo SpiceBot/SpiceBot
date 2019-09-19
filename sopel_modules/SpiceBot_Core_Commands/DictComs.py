@@ -36,32 +36,6 @@ def bot_dictcom_process(bot, trigger, botcom):
         if str(botcom.dict["hyphen_arg"]).lower() in ['add', 'del', 'remove']:
             botcom.dict["specified"] = botcom.dict["hyphen_arg"]
 
-    fulltext = spicemanip(botcom.dict['args'], 0)
-
-    if botcom.dict["specified"] == 'add':
-
-        if fulltext in botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]:
-            return bot.osd("The following was already in the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
-
-        if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "shared":
-            SpiceBot.dictcoms.adjust_nick_array(str(bot.nick), 'sayings', botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), fulltext, botcom.dict["specified"])
-        elif botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "user":
-            SpiceBot.dictcoms.adjust_nick_array(str(trigger.nick), 'sayings', botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), fulltext, botcom.dict["specified"])
-
-        return bot.osd("The following was added to the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
-
-    elif botcom.dict["specified"] in ['del', 'remove']:
-
-        if fulltext not in botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]:
-            return bot.osd("The following was already not in the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
-
-        if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "shared":
-            SpiceBot.dictcoms.adjust_nick_array(str(bot.nick), 'sayings', botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), fulltext, botcom.dict["specified"])
-        elif botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "user":
-            SpiceBot.dictcoms.adjust_nick_array(str(trigger.nick), 'sayings', botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), fulltext, botcom.dict["specified"])
-
-        return bot.osd("The following was removed from the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
-
     botcom.dict["target"] = False
 
     botcom.dict["success"] = True

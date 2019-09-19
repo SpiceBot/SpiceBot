@@ -575,11 +575,42 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
             directionword = "remove"
         if not botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"]:
             botmessagelog.messagelog_error(botcom.dict["log_id"], "The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list cannot be updated.")
-        return False, botcom
+            return False, botcom
 
         fulltext = spicemanip(botcom.dict['args'], 0)
         if not fulltext:
             botmessagelog.messagelog_error(botcom.dict["log_id"], "What would you like to " + directionword + " from the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list?")
+        return False, botcom
+
+        if botcom.dict["hyphen_arg"] in ['add']:
+            if fulltext in botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]:
+                botmessagelog.messagelog_error(botcom.dict["log_id"], "The following was already in the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
+                return False, botcom
+
+            botcom.dict["dict"][botcom.dict["responsekey"]]["responses"].append(fulltext)
+
+            if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "shared":
+                botdb.set_nick_value(str(bot.nick), botcom.dict["dict"]["validcoms"][0] + "_" + str(botcom.dict["responsekey"]), botcom.dict["dict"][botcom.dict["responsekey"]]["responses"])
+            elif botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "user":
+                botdb.set_nick_value(str(trigger.nick), botcom.dict["dict"]["validcoms"][0] + "_" + str(botcom.dict["responsekey"]), botcom.dict["dict"][botcom.dict["responsekey"]]["responses"])
+
+            botmessagelog.messagelog(botcom.dict["log_id"], "The following was added to the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
+            return False, botcom
+
+        elif botcom.dict["hyphen_arg"] in ['del', 'remove']:
+            if fulltext not in botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]:
+                botmessagelog.messagelog_error(botcom.dict["log_id"], "The following was already not in the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
+                return False, botcom
+            botcom.dict["dict"][botcom.dict["responsekey"]]["responses"].remove(fulltext)
+
+            if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "shared":
+                botdb.set_nick_value(str(bot.nick), botcom.dict["dict"]["validcoms"][0] + "_" + str(botcom.dict["responsekey"]), botcom.dict["dict"][botcom.dict["responsekey"]]["responses"])
+            elif botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "user":
+                botdb.set_nick_value(str(trigger.nick), botcom.dict["dict"]["validcoms"][0] + "_" + str(botcom.dict["responsekey"]), botcom.dict["dict"][botcom.dict["responsekey"]]["responses"])
+
+            botmessagelog.messagelog(botcom.dict["log_id"], "The following was removed from the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
+            return False, botcom
+
         return False, botcom
 
     elif botcom.dict["hyphen_arg"] in [
