@@ -120,7 +120,7 @@ def bot_command_rule_ai(bot, trigger):
             invalid_display = []
             if len(hyphen_args):
                 hyphenarg = hyphen_args[0]
-                if hyphenarg in ['check']:
+                if hyphenarg in SpiceBot.prerun_shared.valid_hyphen_args:
                     invalid_display = ["I don't seem to have a command for " + str(trigger_command) + "!"]
             else:
                 invalid_display = []
