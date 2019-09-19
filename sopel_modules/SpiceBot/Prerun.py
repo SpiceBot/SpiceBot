@@ -580,7 +580,7 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
         fulltext = spicemanip(botcom.dict['args'], 0)
         if not fulltext:
             botmessagelog.messagelog_error(botcom.dict["log_id"], "What would you like to " + directionword + " from the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list?")
-        return False, botcom
+            return False, botcom
 
         if botcom.dict["hyphen_arg"] in ['add']:
             if fulltext in botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]:
