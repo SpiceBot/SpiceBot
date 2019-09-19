@@ -545,12 +545,12 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
             directionword = "remove"
         if not botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"]:
             botmessagelog.messagelog_error(botcom.dict["log_id"], "The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list cannot be updated.")
-        return True
+        return False
 
         fulltext = spicemanip(botcom.dict['args'], 0)
         if not fulltext:
-            botmessagelog.messagelog(botcom.dict["log_id"], "What would you like to " + directionword + " from the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list?")
-        return True
+            botmessagelog.messagelog_error(botcom.dict["log_id"], "What would you like to " + directionword + " from the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list?")
+        return False
 
     elif botcom.dict["hyphen_arg"] in [
                                         'enable', 'disable',
