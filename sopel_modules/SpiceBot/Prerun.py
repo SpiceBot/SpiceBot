@@ -506,7 +506,7 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
         botcom.dict["specified"] = botcom.dict["hyphen_arg"]
         return True, botcom
 
-    elif botcom.dict["hyphen_arg"] in ['check']:
+    elif botcom.dict["hyphen_arg"] in ['check', "test"]:
         if botcom.dict["com"].lower() != botcom.dict["realcom"]:
             botmessagelog.messagelog(botcom.dict["log_id"], botcom.dict["comtext"] + " is a valid alias command for " + botcom.dict["realcomtext"])
         else:
