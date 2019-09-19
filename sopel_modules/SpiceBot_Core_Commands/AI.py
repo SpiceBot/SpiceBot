@@ -108,6 +108,17 @@ def bot_command_rule_ai(bot, trigger):
         if trigger_command not in commands_list:
             if not SpiceBot.letters_in_string(trigger_command):
                 return
+
+            invalid_display = ["I don't seem to have a command for " + str(trigger_command) + "!"]
+
+            # create list of valid commands
+            commands_list = dict()
+            for commandstype in list(SpiceBot.commands.dict['commands'].keys()):
+                if commandstype not in ['rule', 'nickname']:
+                    for com in list(SpiceBot.commands.dict['commands'][commandstype].keys()):
+                        if com not in list(commands_list.keys()):
+                            commands_list[com] = SpiceBot.commands.dict['commands'][commandstype][com]
+
             # hyphen args handling
             hyphen_args = []
             argssplit = spicemanip(fulltrigger, "2+", 'list')
@@ -130,18 +141,23 @@ def bot_command_rule_ai(bot, trigger):
                         # word is not a valid arg or number
                         except ValueError:
                             clipped_word = None
-            # only one arg allowed
-            invalid_display = []
             if len(hyphen_args):
                 hyphenarg = hyphen_args[0]
-                if hyphenarg in SpiceBot.prerun_shared.valid_hyphen_args:
-                    invalid_display = ["I don't seem to have a command for " + str(trigger_command) + "!"]
+                if hyphenarg:
+                    invalid_display.append("Hyphen Argument Not Valid.")
+
+            closestmatches = SpiceBot.similar_list(trigger_command, list(commands_list.keys()), 10, 'reverse')
+            if len(closestmatches) and len(hyphen_args):  # TODO
+                invalid_display.append("The following commands may match " + str(trigger_command) + ": " + spicemanip(closestmatches, 'andlist') + ".")
+
+            # there is simply no command
             else:
-                invalid_display = []
+                # TODO check other commands spelling, maybe there is a similar command
                 # invalid_display = ["I don't seem to have a command for " + str(trigger_command) + "!"]
                 # TODO
                 # invalid_display.append("If you have a suggestion for this command, you can run .feature ." + str(trigger_command))
                 # invalid_display.append("ADD DESCRIPTION HERE!")
+                invalid_display = []
             if len(invalid_display):
                 bot.osd(invalid_display, trigger.nick, 'notice')
         return
