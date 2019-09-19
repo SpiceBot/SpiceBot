@@ -13,7 +13,7 @@ from word2number import w2n
 
 from sopel_modules.spicemanip import spicemanip
 
-from .Tools import command_permissions_check, class_create
+from .Tools import class_create
 from .Commands import commands as botcommands
 from .Database import db as botdb
 from .Channels import channels as botchannels
@@ -21,9 +21,7 @@ from .MessageLog import messagelog as botmessagelog
 from .Config import config as botconfig
 from .Users import users as botusers
 from .Events import events as botevents
-
-
-# TODO check identify for OPs and bot admins
+from .Tools import prerun_shared
 
 
 def prerun(t_command_type='module', t_command_subtype=None):
@@ -104,14 +102,16 @@ def prerun(t_command_type='module', t_command_subtype=None):
 
                 botcom.dict["runcount"] = runcount
 
-                botcom.dict["args"], botcom.dict["hyphen_arg"] = trigger_hyphen_args(botcom.dict["args"])
+                botcom.dict["args"], botcom.dict["hyphen_arg"] = trigger_hyphen_args(botcom)
 
                 # special handling
-                botcom.dict["responsekey"] = "?default"
+                botcom = special_handling(botcom)
+                botcom = updatable_content(bot, botcom, trigger)
 
-                args_pass = trigger_hyphen_arg_handler(bot, trigger, botcom)
+                args_pass, botcom = trigger_hyphen_arg_handler(bot, trigger, botcom)
 
                 if args_pass:
+
                     if trigger_runstatus(bot, trigger, botcom):
                         function(bot, trigger, botcom, *args, **kwargs)
             botmessagelog.messagelog_exit(bot, argsdict_default["log_id"])
@@ -282,7 +282,7 @@ def trigger_runstatus_query(bot, trigger, botcom):
 
     # Allow permissions for enabling and disabling commands via hyphenargs
     if botcom.dict["adminswitch"]:
-        if command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
+        if botusers.command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
             return True
         else:
             botmessagelog.messagelog_error(botcom.dict["log_id"], "The admin switch (-a) is for use by authorized nicks ONLY.")
@@ -348,7 +348,7 @@ def trigger_runstatus(bot, trigger, botcom):
 
     # Allow permissions for enabling and disabling commands via hyphenargs
     if botcom.dict["adminswitch"]:
-        if command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
+        if botusers.command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
             return True
         else:
             botmessagelog.messagelog_error(botcom.dict["log_id"], "The admin switch (-a) is for use by authorized nicks ONLY.")
@@ -430,46 +430,67 @@ def trigger_runstatus(bot, trigger, botcom):
 def trigger_cant_run(bot, trigger, botcom, message=None):
     if message:
         botmessagelog.messagelog_error(botcom.dict["log_id"], message)
-    if command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
+    if botusers.command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
         botmessagelog.messagelog_error(botcom.dict["log_id"], "You however are authorized to bypass this warning with the (-a) admin switch.")
     return False
 
 
-def trigger_hyphen_args(trigger_args_part):
-    valid_hyphen_args = [
-                        'check',
-                        'enable', 'disable',
-                        'block', 'unblock',
-                        "activate", "deactivate",
-                        "on", "off",
-                        'multirun', 'multiruns',
-                        'example', 'usage',
-                        'filename', 'filepath',
-                        'foldername', 'folderpath',
-                        "author",
-                        'contribs', 'contrib', "contributors",
-                        'alias', 'aliases',
-                        'random'
-                        ]
-    numdict = {
-                "last": -1
-                }
+def updatable_content(bot, botcom, trigger):
+    # commands that can be updated
+    if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"]:
+        customresponses = []
+        if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "shared":
+            customresponses = botdb.get_nick_value(str(bot.nick), botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), 'sayings') or []
+        elif botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "user":
+            customresponses = botdb.get_nick_value(str(trigger.nick), botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), 'sayings') or []
+        if not len(customresponses):
+            if len(botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]):
+                savevalues = botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]
+            else:
+                savevalues = ["Please use --add to add custom content!"]
+            if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "shared":
+                botdb.set_nick_value(str(bot.nick), botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), savevalues, 'sayings')
+            elif botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "user":
+                botdb.set_nick_value(str(trigger.nick), botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), savevalues, 'sayings')
+        else:
+            botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = customresponses
+    return botcom
+
+
+def special_handling(botcom):
+    botcom.dict["responsekey"] = "?default"
+
+    # handling for special cases
+    posscom = spicemanip(botcom.dict['args'], 1)
+    if posscom.lower() in [command.lower() for command in botcom.dict["dict"]["nonstockoptions"]]:
+        for command in botcom.dict["dict"]["nonstockoptions"]:
+            if command.lower() == posscom.lower():
+                posscom = command
+        botcom.dict["responsekey"] = posscom
+
+    if botcom.dict["responsekey"] != "?default":
+        botcom.dict['args'] = spicemanip(botcom.dict['args'], '2+', 'list')
+
+    return botcom
+
+
+def trigger_hyphen_args(botcom):
 
     hyphen_args = []
     trigger_args_unhyphend = []
-    for worditem in trigger_args_part:
+    for worditem in botcom.dict["args"]:
         if str(worditem).startswith("--"):
             clipped_word = str(worditem[2:]).lower()
 
             # valid arg above
-            if clipped_word in valid_hyphen_args:
+            if clipped_word in prerun_shared.valid_hyphen_args:
                 hyphen_args.append(clipped_word)
 
             # numbered args
             elif str(clipped_word).isdigit():
                 hyphen_args.append(int(clipped_word))
-            elif clipped_word in list(numdict.keys()):
-                hyphen_args.append(int(numdict[clipped_word]))
+            elif clipped_word in list(prerun_shared.numdict.keys()):
+                hyphen_args.append(int(prerun_shared.numdict[clipped_word]))
 
             else:
 
@@ -478,7 +499,7 @@ def trigger_hyphen_args(trigger_args_part):
                     clipped_word = w2n.word_to_num(str(clipped_word))
                     hyphen_args.append(int(clipped_word))
 
-        # word is not a valid arg or number
+                # word is not a valid arg or number
                 except ValueError:
                     trigger_args_unhyphend.append(worditem)
         else:
@@ -498,19 +519,104 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
     # Commands that cannot run via privmsg
     # TODO --check should work for commands that don't exist
 
+    botcom.dict["specified"] = None
+
     if not botcom.dict["hyphen_arg"]:
-        return True
+        return True, botcom
 
     # handle numbered args
-    if str(botcom.dict["hyphen_arg"]).isdigit() or botcom.dict["hyphen_arg"] in [-1, 'random']:
-        return True
+    elif str(botcom.dict["hyphen_arg"]).isdigit() or botcom.dict["hyphen_arg"] in [-1, 'random']:
+        botcom.dict["specified"] = botcom.dict["hyphen_arg"]
+        if not botcom.dict["dict"][botcom.dict["responsekey"]]["selection_allowed"]:
+            botmessagelog.messagelog_error(botcom.dict["log_id"], "The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " response list cannot be specified.")
+            return False, botcom
+        else:
+            return True, botcom
 
-    elif botcom.dict["hyphen_arg"] in ['check']:
+    elif botcom.dict["hyphen_arg"] in ['check', "test"]:
         if botcom.dict["com"].lower() != botcom.dict["realcom"]:
             botmessagelog.messagelog(botcom.dict["log_id"], botcom.dict["comtext"] + " is a valid alias command for " + botcom.dict["realcomtext"])
         else:
             botmessagelog.messagelog(botcom.dict["log_id"], botcom.dict["comtext"] + " is a valid command")
-        return False
+        return False, botcom
+
+    elif botcom.dict["hyphen_arg"] in ['view']:
+        if not len(botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]):
+            botmessagelog.messagelog(botcom.dict["log_id"], "The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " command appears to have no entries!")
+        else:
+            botmessagelog.messagelog_private(botcom.dict["log_id"], "The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " command contains:")
+            listnumb, relist = 0, []
+            for item in botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]:
+                listnumb += 1
+                if isinstance(item, dict):
+                    relist.append(str("[#" + str(listnumb) + "] COMPLEX dict Entry"))
+                elif isinstance(item, list):
+                    relist.append(str("[#" + str(listnumb) + "] COMPLEX list Entry"))
+                else:
+                    relist.append(str("[#" + str(listnumb) + "] " + str(item)))
+            botmessagelog.messagelog_private(botcom.dict["log_id"], relist)
+            return False, botcom
+
+    elif botcom.dict["hyphen_arg"] in ['count']:
+        botmessagelog.messagelog(botcom.dict["log_id"], "The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " command has " + str(len(botcom.dict["dict"][botcom.dict["responsekey"]]["responses"])) + " entries.")
+        return False, botcom
+
+    elif botcom.dict["hyphen_arg"] in ['special', 'options', 'list']:
+        if not len(botcom.dict["dict"]["nonstockoptions"]):
+            botmessagelog.messagelog(botcom.dict["log_id"], "There appear to be no special options for " + str(botcom.dict["realcom"]) + ".")
+        else:
+            botmessagelog.messagelog(botcom.dict["log_id"], "The special options for " + str(botcom.dict["realcom"]) + " command include: " + spicemanip(botcom.dict["dict"]["nonstockoptions"], "andlist") + ".")
+        return False, botcom
+
+    elif botcom.dict["hyphen_arg"] in ['add', 'del', 'remove']:
+        if botcom.dict["hyphen_arg"] in ['add', 'remove']:
+            directionword = botcom.dict["hyphen_arg"]
+        elif botcom.dict["hyphen_arg"] in ['del']:
+            directionword = "remove"
+        if not botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"]:
+            botmessagelog.messagelog_error(botcom.dict["log_id"], "The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list cannot be updated.")
+            return False, botcom
+
+        fulltext = spicemanip(botcom.dict['args'], 0)
+        if not fulltext:
+            botmessagelog.messagelog_error(botcom.dict["log_id"], "What would you like to " + directionword + " from the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list?")
+            return False, botcom
+
+        if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "shared":
+            customresponses = botdb.get_nick_value(str(bot.nick), botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), 'sayings') or []
+        elif botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "user":
+            customresponses = botdb.get_nick_value(str(trigger.nick), botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), 'sayings') or []
+
+        if botcom.dict["hyphen_arg"] in ['add']:
+            if fulltext in customresponses:
+                botmessagelog.messagelog_error(botcom.dict["log_id"], "The following was already in the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
+                return False, botcom
+
+            customresponses.append(fulltext)
+
+            if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "shared":
+                botdb.set_nick_value(str(bot.nick), botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), customresponses, 'sayings')
+            elif botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "user":
+                botdb.set_nick_value(str(trigger.nick), botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), customresponses, 'sayings')
+
+            botmessagelog.messagelog(botcom.dict["log_id"], "The following was added to the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
+            return False, botcom
+
+        elif botcom.dict["hyphen_arg"] in ['del', 'remove']:
+            if fulltext not in customresponses:
+                botmessagelog.messagelog_error(botcom.dict["log_id"], "The following was already not in the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
+                return False, botcom
+            customresponses.remove(fulltext)
+
+            if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "shared":
+                botdb.set_nick_value(str(bot.nick), botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), customresponses, 'sayings')
+            elif botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "user":
+                botdb.set_nick_value(str(trigger.nick), botcom.dict["realcom"] + "_" + str(botcom.dict["responsekey"]), customresponses, 'sayings')
+
+            botmessagelog.messagelog(botcom.dict["log_id"], "The following was removed from the " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " entry list: '" + str(fulltext) + "'")
+            return False, botcom
+
+        return False, botcom
 
     elif botcom.dict["hyphen_arg"] in [
                                         'enable', 'disable',
@@ -525,50 +631,50 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
                 botmessagelog.messagelog_error(botcom.dict["log_id"], "Who/Where am I enabling " + str(botcom.dict["comtext"]) + " usage for?")
             else:
                 botmessagelog.messagelog_error(botcom.dict["log_id"], "Who/Where am I disabling " + str(botcom.dict["comtext"]) + " usage for?")
-            return False
+            return False, botcom
         botcom.dict["args"] = spicemanip(botcom.dict["args"], "2+", "list")
 
         if not botdb.check_nick_id(target) and not botchannels.check_channel_bot(target, True):
             botmessagelog.messagelog_error(botcom.dict["log_id"], "I don't know who/what " + str(target) + " is.")
-            return False
+            return False, botcom
 
-        if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
+        if not botusers.command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
             if target != trigger.nick:
                 if botcom.dict["hyphen_arg"] in ['enable', 'unblock', "activate", "on"]:
                     botmessagelog.messagelog_error(botcom.dict["log_id"], "I was unable to enable this command for " + str(target) + " due to privilege issues.")
                 else:
                     botmessagelog.messagelog_error(botcom.dict["log_id"], "I was unable to disable this command for " + str(target) + " due to privilege issues.")
-                return False
+                return False, botcom
 
         if botcom.dict["hyphen_arg"] in ['enable', 'unblock', "activate", "on"]:
 
             if not botcommands.check_commands_disabled(botcom.dict["realcomref"], target):
                 botmessagelog.messagelog_error(botcom.dict["log_id"], botcom.dict["comtext"] + " is already enabled for " + str(target))
-                return False
+                return False, botcom
 
             botcommands.unset_command_disabled(botcom.dict["realcomref"], target)
             botmessagelog.messagelog(botcom.dict["log_id"], botcom.dict["comtext"] + " is now enabled for " + str(target))
-            return False
+            return False, botcom
 
         else:
 
             if botcommands.check_commands_disabled(botcom.dict["realcomref"], target):
                 botmessagelog.messagelog_error(botcom.dict["log_id"], botcom.dict["comtext"] + " is already disabled for " + str(target))
-                return False
+                return False, botcom
 
             trailingmessage = spicemanip(botcom.dict["args"], 0) or "No reason given."
             timestamp = str(datetime.datetime.utcnow())
 
             botcommands.set_command_disabled(botcom.dict["realcomref"], target, timestamp, trailingmessage, trigger.nick)
             botmessagelog.messagelog(botcom.dict["log_id"], botcom.dict["comtext"] + " is now disabled for " + str(target))
-            return False
+            return False, botcom
 
     if botcom.dict["hyphen_arg"] in ['multirun', 'multiruns']:
 
         onoff = spicemanip(botcom.dict["args"], 1) or None
         if not onoff or onoff not in ['enable', 'unblock', "activate", "on"]:
             botmessagelog.messagelog_error(botcom.dict["log_id"], "Do you want to enable or disable " + str(botcom.dict["comtext"]) + " multirun usage?")
-            return False
+            return False, botcom
 
         target = spicemanip(botcom.dict["args"], 1) or trigger.nick
         if not target:
@@ -576,66 +682,66 @@ def trigger_hyphen_arg_handler(bot, trigger, botcom):
                 botmessagelog.messagelog_error(botcom.dict["log_id"], "Who/Where am I enabling " + str(botcom.dict["comtext"]) + " multirun usage for?")
             else:
                 botmessagelog.messagelog_error(botcom.dict["log_id"], "Who/Where am I disabling " + str(botcom.dict["comtext"]) + " multirun usage for?")
-            return False
+            return False, botcom
         botcom.dict["args"] = spicemanip(botcom.dict["args"], "2+", "list")
 
         if not botdb.check_nick_id(target) and not botchannels.check_channel_bot(target, True):
             botmessagelog.messagelog_error(botcom.dict["log_id"], "I don't know who/what " + str(target) + " is.")
-            return False
+            return False, botcom
 
-        if not command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
+        if not botusers.command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
             if target != trigger.nick:
                 if onoff in ['enable', 'unblock', "activate", "on"]:
                     botmessagelog.messagelog_error(botcom.dict["log_id"], "I was unable to enable multirun usage on " + str(botcom.dict["comtext"]) + " for " + str(target) + " due to privilege issues.")
                 else:
                     botmessagelog.messagelog_error(botcom.dict["log_id"], "I was unable to enable multirun usage on " + str(botcom.dict["comtext"]) + " for " + str(target) + " due to privilege issues.")
-                return False
+                return False, botcom
 
         if onoff in ['enable', 'unblock', "activate", "on"]:
 
             if not botcommands.check_commands_disabled(botcom.dict["realcomref"], target, "multirun"):
                 botmessagelog.messagelog_error(botcom.dict["log_id"], botcom.dict["comtext"] + " multirun is already enabled for " + str(target))
-                return False
+                return False, botcom
 
             botcommands.unset_command_disabled(botcom.dict["realcomref"], target, "multirun")
             botmessagelog.messagelog(botcom.dict["log_id"], botcom.dict["comtext"] + " multirun is now enabled for " + str(target))
-            return False
+            return False, botcom
 
         else:
 
             if botcommands.check_commands_disabled(botcom.dict["realcomref"], target, "multirun"):
                 botmessagelog.messagelog_error(botcom.dict["log_id"], botcom.dict["comtext"] + " multirun is already disabled for " + str(target))
-                return False
+                return False, botcom
 
             trailingmessage = spicemanip(botcom.dict["args"], 0) or "No reason given."
             timestamp = str(datetime.datetime.utcnow())
 
             botcommands.set_command_disabled(botcom.dict["realcomref"], target, timestamp, trailingmessage, trigger.nick, "multirun")
             botmessagelog.messagelog(botcom.dict["log_id"], botcom.dict["comtext"] + " multirun is now disabled for " + str(target))
-            return False
+            return False, botcom
 
     elif botcom.dict["hyphen_arg"] in ['example', 'usage']:
         botmessagelog.messagelog(botcom.dict["log_id"], botcom.dict["comtext"] + ": " + str(botcom.dict["dict"]["example"]))
-        return False
+        return False, botcom
 
     elif botcom.dict["hyphen_arg"] in ['filename', 'filepath']:
         botmessagelog.messagelog(botcom.dict["log_id"], "The " + str(botcom.dict["comtext"]) + " file is located at " + str(botcom.dict["dict"][botcom.dict["hyphen_arg"]]))
-        return False
+        return False, botcom
 
     elif botcom.dict["hyphen_arg"] in ['foldername', 'folderpath']:
         botmessagelog.messagelog(botcom.dict["log_id"], "The " + str(botcom.dict["comtext"]) + " folder is located at " + str(botcom.dict["dict"][botcom.dict["hyphen_arg"]]))
-        return False
+        return False, botcom
 
     elif botcom.dict["hyphen_arg"] in ['author']:
         botmessagelog.messagelog(botcom.dict["log_id"], "The author of the " + str(botcom.dict["comtext"]) + " command is " + botcom.dict["dict"]["author"] + ".")
-        return False
+        return False, botcom
 
     elif botcom.dict["hyphen_arg"] in ['contribs', 'contrib', "contributors"]:
         botmessagelog.messagelog(botcom.dict["log_id"], "The contributors of the " + str(botcom.dict["comtext"]) + " command are " + spicemanip(botcom.dict["dict"]["contributors"], "andlist") + ".")
-        return False
+        return False, botcom
 
     elif botcom.dict["hyphen_arg"] in ['alias', 'aliases']:
         botmessagelog.messagelog(botcom.dict["log_id"], "The alaises of the " + str(botcom.dict["comtext"]) + " command are " + spicemanip(botcom.dict["dict"]["validcoms"], "andlist") + ".")
-        return False
+        return False, botcom
 
-    return False
+    return False, botcom

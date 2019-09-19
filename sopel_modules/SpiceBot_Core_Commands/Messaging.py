@@ -29,7 +29,7 @@ def bot_command_privmsg(bot, trigger, botcom):
 
 def bot_command_process(bot, trigger, botcom):
 
-    if not SpiceBot.command_permissions_check(bot, trigger, ['admins', 'owner']):
+    if not SpiceBot.users.command_permissions_check(bot, trigger, ['admins', 'owner']):
         SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "I was unable to process this Bot Nick command due to privilege issues.")
         return
 

@@ -16,7 +16,7 @@ import sopel_modules.SpiceBot as SpiceBot
 @sopel.module.nickname_commands('logs', 'debug')
 def bot_command_logs(bot, trigger, botcom):
 
-    if not SpiceBot.command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
+    if not SpiceBot.users.command_permissions_check(bot, trigger, ['admins', 'owner', 'OP', 'ADMIN', 'OWNER']):
         SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "I was unable to process this Bot Nick command due to privilege issues.")
         return
 

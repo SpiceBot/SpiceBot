@@ -12,6 +12,7 @@ from .Config import config as botconfig
 from .Read import read as botread
 from .Commands import commands as botcommands
 from .Database import db as botdb
+from .Tools import prerun_shared
 
 import os
 import copy
@@ -37,7 +38,7 @@ class BotDictCommands():
                             "comtype", "type", "validcoms",
                             "author", "contributors",
                             "description", "exampleresponse", "example",
-                            "privs"
+                            "privs", "nonstockoptions",
                             ]
 
         self.dictcom_load()
@@ -103,6 +104,11 @@ class BotDictCommands():
                     otherkeys.append(otherkey)
             if otherkeys != []:
                 dict_from_file = self.dictcom_load_usecases(maincom, dict_from_file, otherkeys)
+
+            dict_from_file["nonstockoptions"] = []
+            for command in list(dict_from_file.keys()):
+                if command not in prerun_shared.stockoptions:
+                    dict_from_file["nonstockoptions"].append(command)
 
             botcommands.register(dict_from_file)
 
