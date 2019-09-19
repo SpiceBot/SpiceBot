@@ -102,7 +102,7 @@ def prerun(t_command_type='module', t_command_subtype=None):
 
                 botcom.dict["runcount"] = runcount
 
-                botcom.dict["args"], botcom.dict["hyphen_arg"] = trigger_hyphen_args(botcom.dict["args"])
+                botcom.dict["args"], botcom.dict["hyphen_arg"] = trigger_hyphen_args(botcom)
 
                 args_pass = trigger_hyphen_arg_handler(bot, trigger, botcom)
 
@@ -453,16 +453,20 @@ def special_handling(botcom):
     return botcom
 
 
-def trigger_hyphen_args(trigger_args_part):
+def trigger_hyphen_args(botcom):
 
     hyphen_args = []
     trigger_args_unhyphend = []
-    for worditem in trigger_args_part:
+    for worditem in botcom.dict["args"]:
         if str(worditem).startswith("--"):
             clipped_word = str(worditem[2:]).lower()
 
             # valid arg above
             if clipped_word in prerun_shared.valid_hyphen_args:
+                hyphen_args.append(clipped_word)
+
+            # include nonstock options here as well
+            elif str(clipped_word).lower() in [command.lower() for command in botcom.dict["dict"]["nonstockoptions"]]:
                 hyphen_args.append(clipped_word)
 
             # numbered args
