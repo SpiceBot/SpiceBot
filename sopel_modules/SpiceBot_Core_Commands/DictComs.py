@@ -31,11 +31,6 @@ def command_dictcom(bot, trigger, botcom):
 
 def bot_dictcom_process(bot, trigger, botcom):
 
-    # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
-    if botcom.dict["hyphen_arg"]:
-        if str(botcom.dict["hyphen_arg"]).lower() in ['add', 'del', 'remove']:
-            botcom.dict["specified"] = botcom.dict["hyphen_arg"]
-
     botcom.dict["target"] = False
 
     botcom.dict["success"] = True
