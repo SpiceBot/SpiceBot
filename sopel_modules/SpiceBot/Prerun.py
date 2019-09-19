@@ -23,7 +23,32 @@ from .Users import users as botusers
 from .Events import events as botevents
 
 
-# TODO check identify for OPs and bot admins
+class Botprerun_shared():
+    def __init__(self):
+
+        self.valid_hyphen_args = [
+                            'check', 'view',
+                            'count',
+                            'enable', 'disable',
+                            'block', 'unblock',
+                            "activate", "deactivate",
+                            "on", "off",
+                            'multirun', 'multiruns',
+                            'example', 'usage',
+                            'filename', 'filepath',
+                            'foldername', 'folderpath',
+                            "author",
+                            'contribs', 'contrib', "contributors",
+                            'alias', 'aliases',
+                            'random'
+                            ]
+
+        self.numdict = {
+                    "last": -1
+                    }
+
+
+prerun_shared = Botprerun_shared()
 
 
 def prerun(t_command_type='module', t_command_subtype=None):
@@ -436,25 +461,6 @@ def trigger_cant_run(bot, trigger, botcom, message=None):
 
 
 def trigger_hyphen_args(trigger_args_part):
-    valid_hyphen_args = [
-                        'check', 'view',
-                        'count',
-                        'enable', 'disable',
-                        'block', 'unblock',
-                        "activate", "deactivate",
-                        "on", "off",
-                        'multirun', 'multiruns',
-                        'example', 'usage',
-                        'filename', 'filepath',
-                        'foldername', 'folderpath',
-                        "author",
-                        'contribs', 'contrib', "contributors",
-                        'alias', 'aliases',
-                        'random'
-                        ]
-    numdict = {
-                "last": -1
-                }
 
     hyphen_args = []
     trigger_args_unhyphend = []
@@ -463,14 +469,14 @@ def trigger_hyphen_args(trigger_args_part):
             clipped_word = str(worditem[2:]).lower()
 
             # valid arg above
-            if clipped_word in valid_hyphen_args:
+            if clipped_word in prerun_shared.valid_hyphen_args:
                 hyphen_args.append(clipped_word)
 
             # numbered args
             elif str(clipped_word).isdigit():
                 hyphen_args.append(int(clipped_word))
-            elif clipped_word in list(numdict.keys()):
-                hyphen_args.append(int(numdict[clipped_word]))
+            elif clipped_word in list(prerun_shared.numdict.keys()):
+                hyphen_args.append(int(prerun_shared.numdict[clipped_word]))
 
             else:
 

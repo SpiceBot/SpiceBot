@@ -82,9 +82,6 @@ def bot_dictcom_process(bot, trigger, botcom):
         nonstockoptions = spicemanip(botcom.dict["nonstockoptions"], "andlist")
         return bot.osd("The special options for " + str(botcom.dict["realcom"]) + " command include: " + str(nonstockoptions) + ".")
 
-    elif botcom.dict["specified"] == 'count':
-        return bot.osd("The " + str(botcom.dict["realcom"]) + " " + str(botcom.dict["responsekey"] or '') + " command has " + str(len(botcom.dict["dict"][botcom.dict["responsekey"]]["responses"])) + " entries.")
-
     elif botcom.dict["specified"] == 'add':
 
         if not botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"]:
