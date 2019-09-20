@@ -318,7 +318,7 @@ def bot_dictcom_search(bot, trigger, botcom):
             failmessage = botcom.dict["dict"][botcom.dict["responsekey"]]["search_fail"]
         botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = failmessage
     else:
-        botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = ["[Information search for '" + str(searchterm) + "']", str(searchreturn)]
+        botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = ["[Information search for '" + str(searchterm) + "']    " + str(searchreturn)]
 
     botcom.dict["specified"] = False
     bot_dictcom_reply_shared(bot, trigger, botcom)
