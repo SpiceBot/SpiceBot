@@ -246,6 +246,9 @@ class BotRead():
 
     def command_defaults(self, dict_from_file):
 
+        if "?default" not in list(dict_from_file.keys()):
+            dict_from_file["?default"] = {}
+
         # the command must have an author
         if "author" not in list(dict_from_file.keys()):
             dict_from_file["author"] = "deathbybandaid"
