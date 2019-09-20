@@ -485,6 +485,7 @@ def special_handling(botcom):
 
 
 def dictkey_defaults(botcom):
+    botcom.dict["dict"]["hardcoded_channel_block"] = []
     if botcom.dict["responsekey"] not in list(botcom.dict["dict"].keys()):
         botcom.dict["dict"][botcom.dict["responsekey"]] = {}
     if "selection_allowed" not in list(botcom.dict["dict"][botcom.dict["responsekey"]].keys()):
