@@ -298,7 +298,7 @@ def bot_dictcom_search(bot, trigger, botcom):
         botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = botcom.dict["dict"][botcom.dict["responsekey"]]["blank_fail"]
         return bot_dictcom_reply_shared(bot, trigger, botcom)
     elif botcom.dict["dict"][botcom.dict["responsekey"]]["blank_required"] and botcom.dict["completestring"]:
-        searchterm = [botcom.dict["completestring"]]
+        searchterm = botcom.dict["completestring"]
     else:
         searchterm = botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]
 
@@ -306,10 +306,10 @@ def bot_dictcom_search(bot, trigger, botcom):
 
     if not searchreturn:
         botcom.dict["success"] = False
-        falimessage = 'I cannot find anything about that'
+        failmessage = ['I cannot find anything about that']
         if botcom.dict["dict"][botcom.dict["responsekey"]]["search_fail"]:
-            falimessage = botcom.dict["dict"][botcom.dict["responsekey"]]["search_fail"]
-        botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = falimessage
+            failmessage = botcom.dict["dict"][botcom.dict["responsekey"]]["search_fail"]
+        botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = failmessage
     else:
         botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = ["[Information search for '" + str(searchterm) + "']", str(searchreturn)]
 
