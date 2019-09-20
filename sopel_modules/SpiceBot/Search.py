@@ -36,10 +36,6 @@ class Search():
             self.valid_api[search_api]["apikey"] = None
             self.valid_api[search_api]["cache"] = dict()
 
-            apikey = eval("botconfig." + search_api + ".apikey")
-            if apikey:
-                self.valid_api[search_api]["apikey"] = apikey
-
             self.valid_api[search_api]["comtype"] = "search_prefix"
             self.valid_api[search_api]["validcoms"] = [self.valid_api[search_api]["filename"]]
             botcommands.register(self.valid_api[search_api])
