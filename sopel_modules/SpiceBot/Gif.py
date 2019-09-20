@@ -58,6 +58,7 @@ class BotGif():
 
             self.valid_api[gif_api]["comtype"] = "gif_prefix"
             self.valid_api[gif_api]["validcoms"] = [self.valid_api[gif_api]["filename"]]
+            logs.log('SpiceBot_Gif', str(self.valid_api[gif_api]), True)
             botcommands.register(self.valid_api[gif_api])
 
     def setup_gif(self):
@@ -134,7 +135,6 @@ class BotGif():
                 self.valid_api[currentapi]["cache"][str(searchdict["searchquery"]).lower()] = []
                 # assemble url
                 url = self.gif_url_assemble(currentapi, str(searchdict["searchquery"]), str(searchdict["searchlimit"]), searchdict['nsfw'])
-                logs.log('SpiceBot_Gif', str(url), True)
                 # fetch results
                 self.fetch_gif_results(currentapi, str(searchdict["searchquery"]), url)
 
