@@ -283,12 +283,24 @@ class BotRead():
 
         # check that type is set, use cases will inherit this if not set
         if "type" not in list(dict_from_file.keys()):
-            dict_from_file["type"] = 'module'
+            dict_from_file["type"] = dict_from_file["foldername"]
 
         dict_from_file["nonstockoptions"] = ["?default"]
         for command in list(dict_from_file.keys()):
             if command not in prerun_shared.stockoptions:
                 dict_from_file["nonstockoptions"].append(command)
+
+        ignorelist = []
+        if dict_from_file["type"] == "SpiceBot_Gif":
+            ignorelist.extend(["url", "query", "limit", "id", "api_id", "key", "nsfw", "sfw", "sfw", "results", "cururl", "additional_url"])
+        elif dict_from_file["type"] == "SpiceBot_Search":
+            ignorelist.extend(["url", "query", "additional_url"])
+        elif dict_from_file["type"] == "SpiceBot_Sherlock":
+            ignorelist.extend(["url", "errorType", "errorMsg", "noPeriod", "errorUrl"])
+
+        for ignoreitem in ignorelist:
+            if ignoreitem in dict_from_file["nonstockoptions"]:
+                dict_from_file["nonstockoptions"].remove(ignoreitem)
 
         for specialcase in dict_from_file["nonstockoptions"]:
 
