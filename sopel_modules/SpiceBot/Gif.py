@@ -7,6 +7,7 @@ from sopel.config.types import StaticSection, ValidatedAttribute, ListAttribute
 from .Config import config as botconfig
 from .Read import read as botread
 from .Commands import commands as botcommands
+from .Logs import logs
 
 from sopel_modules.spicemanip import spicemanip
 
@@ -91,6 +92,7 @@ class BotGif():
 
         # Replace spaces in search query
         searchdict["searchquery"] = urllib.request.pathname2url(searchdict["query"])
+        logs.log('SpiceBot_Gif', searchdict["searchquery"], True)
 
         # set api usage
         if not isinstance(searchdict['gifsearch'], list):
