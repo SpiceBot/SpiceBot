@@ -25,7 +25,7 @@ def search_main(bot, trigger, botcom):
 
     searchreturn = SpiceBot.search.search(searchdict)
     if not searchreturn:
-        SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], 'I cannot find anything about that')
+        SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "[Information search for '" + str(searchterm) + "']    " + 'I cannot find anything about that')
     else:
         bot.osd(["[Information search for '" + str(searchterm) + "']", str(searchreturn)])
 
