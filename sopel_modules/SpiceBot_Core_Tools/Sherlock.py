@@ -25,7 +25,7 @@ def bot_command_sherlock(bot, trigger, botcom):
         checklist = [checklistname]
         username = spicemanip(botcom.dict["args"], 1) or trigger.nick
 
-    bot.osd("Checking username " + username + " in " + checklistname + " network.")
+    bot.osd(["Checking username " + username + " in " + checklistname + " network.", "This takes time, please be patient."])
 
     inlist, notinlist = [], []
 
