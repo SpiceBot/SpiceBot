@@ -240,7 +240,8 @@ class BotRead():
         else:
             dict_from_file = {}
 
-        dict_from_file = self.command_defaults(dict_from_file)
+        # if len(list(dict_from_file.keys())):
+            # dict_from_file = self.command_defaults(dict_from_file)
         return dict_from_file
 
     def command_defaults(self, dict_from_file):
