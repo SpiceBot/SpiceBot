@@ -87,7 +87,7 @@ class Search():
 
     def search_info_google(self, searchdict, retry=False):
         lookfor = searchdict["searchquery"]
-        if not botconfig.SpiceBot_Google.search_api or retry:
+        if not botconfig.SpiceBot_Search.search_api or retry:
             try:
                 var = requests.get(r'http://www.google.com/search?q=' + lookfor + '&btnI', headers=self.header)
             except Exception as e:
@@ -101,7 +101,7 @@ class Search():
 
     def search_maps_google(self, searchdict, retry=False):
         lookfor = searchdict["searchquery"]
-        if not botconfig.SpiceBot_Google.search_api or retry:
+        if not botconfig.SpiceBot_Search.search_api or retry:
             try:
                 var = requests.get(r'http://www.google.com/maps/place/' + lookfor, headers=self.header)
             except Exception as e:
@@ -115,7 +115,7 @@ class Search():
 
     def search_youtube(self, searchdict, retry=False):
         lookfor = searchdict["searchquery"]
-        if not botconfig.SpiceBot_Google.search_api or retry:
+        if not botconfig.SpiceBot_Search.search_api or retry:
             try:
                 var = requests.get(r'https://www.youtube.com/search?q=' + lookfor + '&btnI', headers=self.header)
             except Exception as e:
