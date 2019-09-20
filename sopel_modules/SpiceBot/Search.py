@@ -12,6 +12,8 @@ from .Config import config as botconfig
 from .Read import read as botread
 from .Commands import commands as botcommands
 
+from .Logs import logs
+
 # TODO add a cache flush
 
 
@@ -89,6 +91,7 @@ class Search():
         except Exception as e:
             var = e
             var = None
+            logs.log('SpiceBot_Search', str(e))
         if not var or not var.url:
             return None
         return var.url
