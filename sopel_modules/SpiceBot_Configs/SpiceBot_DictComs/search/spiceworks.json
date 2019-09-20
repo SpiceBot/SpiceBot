@@ -2,6 +2,8 @@
 "?default": {
               "type": "search",
               "responses": "spiceworks",
+              "blank_required": True,
+              "blank_fail": ["https://www.spiceworks.com/"],
               "search_fail": ["No Spiceworks forum posts found!"],
               },
 }

@@ -300,16 +300,9 @@ def bot_dictcom_search(bot, trigger, botcom):
     elif botcom.dict["dict"][botcom.dict["responsekey"]]["blank_required"] and botcom.dict["completestring"]:
         searchterm = [botcom.dict["dict"][botcom.dict["responsekey"]]["responses"][0] + " " + botcom.dict["completestring"]]
     else:
-        searchterm = botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]
+        searchterm = botcom.dict["dict"][botcom.dict["responsekey"]]["responses"][0]
 
-    if botcom.dict["specified"]:
-        if botcom.dict["specified"] > len(searchterm):
-            botcom.dict["specified"] = len(searchterm)
-        query = spicemanip(searchterm, botcom.dict["specified"], 'return')
-    else:
-        query = spicemanip(searchterm, 'random', 'return')
-
-    searchreturn = SpiceBot.google.search(query)
+    searchreturn = SpiceBot.google.search(searchterm)
 
     if not searchreturn:
         botcom.dict["success"] = False
