@@ -301,6 +301,7 @@ def bot_dictcom_search(bot, trigger, botcom):
         searchterm = [botcom.dict["dict"][botcom.dict["responsekey"]]["responses"][0] + " " + botcom.dict["completestring"]]
     else:
         searchterm = botcom.dict["dict"][botcom.dict["responsekey"]]["responses"][0]
+    bot.say(str(searchterm))
 
     searchreturn = SpiceBot.google.search(searchterm)
 
