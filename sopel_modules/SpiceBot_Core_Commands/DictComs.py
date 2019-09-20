@@ -310,12 +310,12 @@ def bot_dictcom_search(bot, trigger, botcom):
 
     if not searchreturn:
         botcom.dict["success"] = False
-        failmessage = ["[" + searchdict["query_type"].upper() + " search for '" + str(searchterm) + "']" + 'I cannot find anything about that']
+        failmessage = ["[" + searchdict["query_type"].title() + " search for '" + str(searchterm) + "']" + 'I cannot find anything about that']
         if botcom.dict["dict"][botcom.dict["responsekey"]]["search_fail"]:
             failmessage = botcom.dict["dict"][botcom.dict["responsekey"]]["search_fail"]
         botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = failmessage
     else:
-        botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = ["[Search for '" + str(searchterm) + "']    " + str(searchreturn)]
+        botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = ["[" + searchdict["query_type"].title() + " search for '" + str(searchterm) + "']    " + str(searchreturn)]
 
     botcom.dict["specified"] = False
     bot_dictcom_reply_shared(bot, trigger, botcom)

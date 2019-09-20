@@ -50,9 +50,9 @@ def gifapi_triggers(bot, trigger, botcom):
 
     searchreturn = SpiceBot.search.search(searchdict)
     if not searchreturn:
-        SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "[" + botcom.dict["realcom"].upper() + " search for '" + str(searchterm) + "']    " + 'I cannot find anything about that')
+        SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "[" + botcom.dict["realcom"].title() + " search for '" + str(searchterm) + "']    " + 'I cannot find anything about that')
     else:
-        bot.osd(["[" + botcom.dict["realcom"].upper() + " search for '" + str(searchterm) + "']", str(searchreturn)])
+        bot.osd(["[" + botcom.dict["realcom"].title() + " search for '" + str(searchterm) + "']", str(searchreturn)])
 
 
 @SpiceBot.prerun('module')
