@@ -176,7 +176,7 @@ def bot_command_rule_ai(bot, trigger):
             if searchterm:
                 if trigger_args[0].lower() == "where":
                     searchdict = {
-                                    "type": "maps",
+                                    "type": "gmaps",
                                     "query": searchterm,
                                     }
                     searchreturn = SpiceBot.search.search(searchdict)

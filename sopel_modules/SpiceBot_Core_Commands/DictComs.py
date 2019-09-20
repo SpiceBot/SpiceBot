@@ -298,12 +298,11 @@ def bot_dictcom_search(bot, trigger, botcom):
         botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = botcom.dict["dict"][botcom.dict["responsekey"]]["blank_fail"]
         return bot_dictcom_reply_shared(bot, trigger, botcom)
 
-    searchurl = botcom.dict["dict"][botcom.dict["responsekey"]]["responses"][0]
+    query_type = botcom.dict["dict"][botcom.dict["responsekey"]]["responses"][0]
     searchterm = botcom.dict["completestring"]
 
     searchdict = {
-                    "query_type": "custom",
-                    "query_url": searchurl,
+                    "query_type": query_type,
                     "query": searchterm,
                     }
 
