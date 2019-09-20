@@ -142,6 +142,63 @@ class BotRead():
 
         return configs_dict
 
+    def json_to_dict_simple(self, directories, configtypename="Config File", log_from='read_directory_json_to_dict', logging=True):
+
+        if not isinstance(directories, list):
+            directories = [directories]
+
+        configs_dict = {}
+        filesprocess, fileopenfail, filecount = [], 0, 0
+        for directory in directories:
+            if os.path.exists(directory) and os.path.isdir(directory):
+                if len(os.listdir(directory)) > 0:
+                    for file in os.listdir(directory):
+                        filepath = os.path.join(directory, file)
+                        if os.path.isfile(filepath) and filepath.endswith('.json'):
+                            filesprocess.append(filepath)
+
+        for filepath in filesprocess:
+
+            # Read dictionary from file, if not, enable an empty dict
+            filereadgood = True
+            try:
+                inf = codecs.open(filepath, "r", encoding='utf-8')
+                infread = inf.read()
+                # Close File
+                inf.close()
+                dict_from_file = eval(infread)
+            except Exception as e:
+                filereadgood = False
+                if logging:
+                    logs.log(log_from, "Error loading %s: %s (%s)" % (configtypename, e, filepath))
+                dict_from_file = dict()
+
+            # gather file stats
+            slashsplit = str(filepath).split("/")
+            filename = slashsplit[-1]
+            filename_base = os.path.basename(filename).rsplit('.', 1)[0]
+
+            if not filereadgood or not isinstance(dict_from_file, dict):
+                fileopenfail += 1
+            else:
+                filecount += 1
+                dict_from_file["filepath"] = str(filepath)
+                dict_from_file["filename"] = str(filename_base)
+                dict_from_file["folderpath"] = dict_from_file["filepath"].split("/" + dict_from_file["filename"])[0]
+                dict_from_file["foldername"] = str(dict_from_file["folderpath"]).split("/")[-1]
+                # dict_from_file = self.command_defaults(dict_from_file)
+                configs_dict[filename_base] = dict_from_file
+
+        if filecount:
+            if logging:
+                logs.log(log_from, 'Registered %d %s dict files,' % (filecount, configtypename))
+                logs.log(log_from, '%d %s dict files failed to load' % (fileopenfail, configtypename), True)
+        else:
+            if logging:
+                logs.log(log_from, "Warning: Couldn't load any %s dict files" % (configtypename))
+
+        return configs_dict
+
     def module_json_to_dict(self, filepath, logging=True):
 
         # gather file stats

@@ -25,7 +25,7 @@ class Sherlock():
 
         dir_to_scan = botread.get_config_dirs("SpiceBot_Sherlock")
 
-        valid_usernames_dict = botread.json_to_dict(dir_to_scan, "Sherlock", "SpiceBot_Sherlock")
+        valid_usernames_dict = botread.json_to_dict_simple(dir_to_scan, "Sherlock", "SpiceBot_Sherlock")
 
         for social_network in list(valid_usernames_dict.keys()):
             self.dict[social_network] = valid_usernames_dict[social_network]
