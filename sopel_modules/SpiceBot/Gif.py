@@ -130,12 +130,11 @@ class BotGif():
                             verifygoodlinks.append(gifresult)
                     self.valid_api[currentapi]["cache"][str(searchdict["searchquery"])] = verifygoodlinks
 
-            logs.log('SpiceBot_Gif', str(searchfor), True)
-
             if searchfor:
                 self.valid_api[currentapi]["cache"][str(searchdict["searchquery"]).lower()] = []
                 # assemble url
                 url = self.gif_url_assemble(currentapi, str(searchdict["searchquery"]), str(searchdict["searchlimit"]), searchdict['nsfw'])
+                logs.log('SpiceBot_Gif', str(url), True)
                 # fetch results
                 self.fetch_gif_results(currentapi, str(searchdict["searchquery"]), url)
 
