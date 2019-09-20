@@ -298,7 +298,7 @@ def bot_dictcom_search(bot, trigger, botcom):
         botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = botcom.dict["dict"][botcom.dict["responsekey"]]["blank_fail"]
         return bot_dictcom_reply_shared(bot, trigger, botcom)
     elif botcom.dict["dict"][botcom.dict["responsekey"]]["blank_required"] and botcom.dict["completestring"]:
-        searchterm = [botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] + " " + botcom.dict["completestring"]]
+        searchterm = [botcom.dict["dict"][botcom.dict["responsekey"]]["responses"][0] + " " + botcom.dict["completestring"]]
     else:
         searchterm = botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]
 
