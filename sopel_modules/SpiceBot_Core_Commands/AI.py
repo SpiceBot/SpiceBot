@@ -186,12 +186,11 @@ def bot_command_rule_ai(bot, trigger):
                                     }
                     searchreturn = SpiceBot.search.search(searchdict)
                 if not searchreturn:
-                    bot.osd('I cannot find anything about that')
+                    searchreturn = 'I cannot find anything about that'
+                if trigger_args[0].lower() == "where":
+                    bot.osd(["[Location search for " + str(searchterm) + "]", str(searchreturn)])
                 else:
-                    if trigger_args[0].lower() == "where":
-                        bot.osd(["[Location search for " + str(searchterm) + "]", str(searchreturn)])
-                    else:
-                        bot.osd(["[Information search for '" + str(searchterm) + "']", str(searchreturn)])
+                    bot.osd(["[Information search for '" + str(searchterm) + "']", str(searchreturn)])
             return
 
         elif trigger_args[0].lower() in ["can", "have"] and trigger_args[1].lower() in ["you"] and trigger_args[2].lower() in ["see", "seen"]:
