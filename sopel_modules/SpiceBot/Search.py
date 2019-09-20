@@ -100,7 +100,7 @@ class Search():
         # url base
         url = str(searchdict)
         # query
-        url += str(self.valid_api[searchdict["query_type"]]['query']) + str(searchdict["query"])
+        url += str(self.valid_api[searchdict["query_type"]]) + str(searchdict["query"])
         # nsfw search? TODO
         # additional parts
         if "additional_url" in list(self.valid_api[searchdict["query_type"]].keys()):
