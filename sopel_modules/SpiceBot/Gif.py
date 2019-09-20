@@ -7,7 +7,6 @@ from sopel.config.types import StaticSection, ValidatedAttribute, ListAttribute
 from .Config import config as botconfig
 from .Read import read as botread
 from .Commands import commands as botcommands
-from .Logs import logs
 
 from sopel_modules.spicemanip import spicemanip
 
@@ -38,7 +37,6 @@ class BotGif():
         self.dir_to_scan = botread.get_config_dirs("SpiceBot_Gif")
 
         valid_gif_api_dict = botread.json_to_dict_simple(self.dir_to_scan, "Gif API", "SpiceBot_Gif")
-        logs.log('SpiceBot_Gif', str(valid_gif_api_dict), True)
 
         """
         15:02 <+Exirel> `channel_section = getattr(bot.config, 'channel', None)`
