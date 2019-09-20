@@ -1,0 +1,7 @@
+{
+"?default": {
+              "type": "search",
+              "responses": "spiceworks",
+              "search_fail": ["No Spiceworks forum posts found!"],
+              },
+}

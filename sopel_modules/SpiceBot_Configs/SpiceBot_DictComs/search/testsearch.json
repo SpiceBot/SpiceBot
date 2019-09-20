@@ -1,7 +1,0 @@
-{
-"?default": {
-              "type": "search",
-              "responses": "test",
-              "search_fail": ["Test search failed"],
-              },
-}
