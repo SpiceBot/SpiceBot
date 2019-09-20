@@ -19,7 +19,11 @@ def search_main(bot, trigger, botcom):
         SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Not sure what you want me to look for.")
         return
 
-    searchreturn = SpiceBot.google.search(searchterm)
+    searchdict = {
+                    "query": searchterm,
+                    }
+
+    searchreturn = SpiceBot.search.search(searchdict)
     if not searchreturn:
         SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], 'I cannot find anything about that')
     else:
@@ -34,8 +38,12 @@ def search_where(bot, trigger, botcom):
     if not searchterm:
         SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Not sure what you want me to look for.")
         return
+    searchdict = {
+                    "query": searchterm,
+                    "query_type": "maps",
+                    }
 
-    searchreturn = SpiceBot.google.search(searchterm, 'maps')
+    searchreturn = SpiceBot.search.search(searchdict)
     if not searchreturn:
         SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], 'I cannot find anything about that')
     else:
@@ -50,8 +58,11 @@ def search_what(bot, trigger, botcom):
     if not searchterm:
         SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Not sure what you want me to look for.")
         return
+    searchdict = {
+                    "query": searchterm,
+                    }
 
-    searchreturn = SpiceBot.google.search(searchterm)
+    searchreturn = SpiceBot.search.search(searchdict)
     if not searchreturn:
         SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], 'I cannot find anything about that')
     else:
@@ -66,8 +77,12 @@ def search_video(bot, trigger, botcom):
     if not searchterm:
         SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Not sure what you want me to look for.")
         return
+    searchdict = {
+                    "query": searchterm,
+                    "query_type": "youtube",
+                    }
 
-    searchreturn = SpiceBot.google.search(searchterm, 'youtube')
+    searchreturn = SpiceBot.search.search(searchdict)
     if not searchreturn:
         SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], 'I cannot find anything about that')
     else:

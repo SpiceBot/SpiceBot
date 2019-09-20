@@ -110,6 +110,8 @@ def prerun(t_command_type='module', t_command_subtype=None):
 
                 args_pass, botcom = trigger_hyphen_arg_handler(bot, trigger, botcom)
 
+                botcom.dict["completestring"] = spicemanip(botcom.dict['args'], 0)
+
                 if args_pass:
 
                     if trigger_runstatus(bot, trigger, botcom):
