@@ -46,10 +46,11 @@ def gifapi_triggers(bot, trigger, botcom):
                     "query": searchterm,
                     "query_type": botcom.dict["realcom"],
                     }
+    bot.say(str(searchdict))
 
     searchreturn = SpiceBot.search.search(searchdict)
     if not searchreturn:
-        SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], 'I cannot find anything about that')
+        SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "[" + botcom.dict["realcom"].upper() + " search for '" + str(searchterm) + "']" + 'I cannot find anything about that')
     else:
         bot.osd(["[" + botcom.dict["realcom"].upper() + " search for '" + str(searchterm) + "']", str(searchreturn)])
 
@@ -69,7 +70,7 @@ def search_where(bot, trigger, botcom):
 
     searchreturn = SpiceBot.search.search(searchdict)
     if not searchreturn:
-        SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], 'I cannot find anything about that')
+        SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "[Location search for " + str(searchterm) + "]    " + 'I cannot find anything about that')
     else:
         bot.osd(["[Location search for " + str(searchterm) + "]", str(searchreturn)])
 
@@ -88,7 +89,7 @@ def search_what(bot, trigger, botcom):
 
     searchreturn = SpiceBot.search.search(searchdict)
     if not searchreturn:
-        SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], 'I cannot find anything about that')
+        SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "[Information search for '" + str(searchterm) + "']    " + 'I cannot find anything about that')
     else:
         bot.osd(["[Information search for '" + str(searchterm) + "']", str(searchreturn)])
 
@@ -108,6 +109,6 @@ def search_video(bot, trigger, botcom):
 
     searchreturn = SpiceBot.search.search(searchdict)
     if not searchreturn:
-        SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], 'I cannot find anything about that')
+        SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "[Youtube search for '" + str(searchterm) + "']    " + 'I cannot find anything about that')
     else:
         bot.osd(["[Youtube search for '" + str(searchterm) + "']", str(searchreturn)])
