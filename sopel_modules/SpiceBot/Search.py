@@ -24,6 +24,7 @@ class Search():
     def __init__(self):
         self.header = {'User-Agent': str(UserAgent().chrome)}
         self.setup_search()
+        self.dir_to_scan = botread.get_config_dirs("SpiceBot_Search")
         valid_search_api_dict = botread.json_to_dict_simple(self.dir_to_scan, "Search API", "SpiceBot_Search")
 
         self.cache = {}
