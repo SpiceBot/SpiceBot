@@ -34,7 +34,7 @@ def bot_dictcom_process(bot, trigger, botcom):
     botcom.dict["target"] = False
 
     botcom.dict["success"] = True
-    if botcom.dict["dict"][botcom.dict["responsekey"]]["type"] in ['simple', 'fillintheblank', "target", 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "translate", "responses"]:
+    if botcom.dict["dict"][botcom.dict["responsekey"]]["type"] in ['simple', 'fillintheblank', "target", 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "translate", "responses", "search"]:
         return bot_dictcom_responses(bot, trigger, botcom)
     else:
         command_function_run = str('bot_dictcom_' + botcom.dict["dict"][botcom.dict["responsekey"]]["type"] + '(bot, trigger, botcom)')
@@ -293,4 +293,18 @@ def bot_dictcom_feeds(bot, trigger, botcom):
 
 
 def bot_dictcom_search(bot, trigger, botcom):
-    bot.say("testing done")
+
+    if botcom.dict["dict"][botcom.dict["responsekey"]]["blank_required"] and not botcom.dict["completestring"]:
+        botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = botcom.dict["dict"][botcom.dict["responsekey"]]["blank_fail"]
+        return bot_dictcom_reply_shared(bot, trigger, botcom)
+    elif botcom.dict["dict"][botcom.dict["responsekey"]]["blank_required"] and botcom.dict["completestring"]:
+        searchterm = [botcom.dict["completestring"]]
+    else:
+        searchterm = botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]
+
+    if searchterm:
+        searchreturn = SpiceBot.google.search(searchterm)
+        if not searchreturn:
+            bot.osd('I cannot find anything about that')
+        else:
+            bot.osd(["[Information search for '" + str(searchterm) + "']", str(searchreturn)])
