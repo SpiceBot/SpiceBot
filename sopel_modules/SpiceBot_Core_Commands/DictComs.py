@@ -302,7 +302,7 @@ def bot_dictcom_search(bot, trigger, botcom):
     searchterm = botcom.dict["completestring"]
 
     searchdict = {
-                    "type": "custom",
+                    "query_type": "custom",
                     "query_url": searchurl,
                     "query": searchterm,
                     }
