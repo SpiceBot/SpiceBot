@@ -92,7 +92,6 @@ class BotGif():
 
         # Replace spaces in search query
         searchdict["searchquery"] = urllib.request.pathname2url(searchdict["query"])
-        logs.log('SpiceBot_Gif', searchdict["searchquery"], True)
 
         # set api usage
         if not isinstance(searchdict['gifsearch'], list):
@@ -130,6 +129,8 @@ class BotGif():
                         if gifresult["returnurl"] not in self.badlinks:
                             verifygoodlinks.append(gifresult)
                     self.valid_api[currentapi]["cache"][str(searchdict["searchquery"])] = verifygoodlinks
+
+            logs.log('SpiceBot_Gif', str(searchfor), True)
 
             if searchfor:
                 self.valid_api[currentapi]["cache"][str(searchdict["searchquery"]).lower()] = []
