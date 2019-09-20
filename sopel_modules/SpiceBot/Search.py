@@ -40,7 +40,7 @@ class Search():
             if apikey:
                 self.valid_api[search_api]["apikey"] = apikey
 
-            self.valid_api[search_api]["comtype"] = "gif_prefix"
+            self.valid_api[search_api]["comtype"] = "search_prefix"
             self.valid_api[search_api]["validcoms"] = [self.valid_api[search_api]["filename"]]
             botcommands.register(self.valid_api[search_api])
 

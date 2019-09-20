@@ -30,6 +30,30 @@ def search_main(bot, trigger, botcom):
         bot.osd(["[Information search for '" + str(searchterm) + "']", str(searchreturn)])
 
 
+@SpiceBot.prerun('module', "search_prefix")
+@sopel.module.commands('(.*)')
+def gifapi_triggers(bot, trigger, botcom):
+
+    if botcom.dict['com'] not in list(SpiceBot.search.valid_api.keys()):
+        return
+
+    searchterm = spicemanip(botcom.dict['args'], 0) or None
+    if not searchterm:
+        SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Not sure what you want me to look for.")
+        return
+
+    searchdict = {
+                    "query": searchterm,
+                    "query_type": botcom.dict["realcom"],
+                    }
+
+    searchreturn = SpiceBot.search.search(searchdict)
+    if not searchreturn:
+        SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], 'I cannot find anything about that')
+    else:
+        bot.osd(["[" + botcom.dict["realcom"].upper() + " search for '" + str(searchterm) + "']", str(searchreturn)])
+
+
 @SpiceBot.prerun('module')
 @sopel.module.commands("where", "whereis")
 def search_where(bot, trigger, botcom):
