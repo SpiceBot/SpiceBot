@@ -36,7 +36,7 @@ class BotGif():
 
         self.dir_to_scan = botread.get_config_dirs("SpiceBot_Gif")
 
-        valid_gif_api_dict = botread.json_to_dict(self.dir_to_scan, "Gif API", "SpiceBot_Gif")
+        valid_gif_api_dict = botread.json_to_dict_simple(self.dir_to_scan, "Gif API", "SpiceBot_Gif")
 
         """
         15:02 <+Exirel> `channel_section = getattr(bot.config, 'channel', None)`
