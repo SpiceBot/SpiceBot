@@ -294,15 +294,20 @@ def bot_dictcom_feeds(bot, trigger, botcom):
 
 def bot_dictcom_search(bot, trigger, botcom):
 
-    if botcom.dict["dict"][botcom.dict["responsekey"]]["blank_required"] and not botcom.dict["completestring"]:
+    if not botcom.dict["completestring"]:
         botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = botcom.dict["dict"][botcom.dict["responsekey"]]["blank_fail"]
         return bot_dictcom_reply_shared(bot, trigger, botcom)
-    elif botcom.dict["dict"][botcom.dict["responsekey"]]["blank_required"] and botcom.dict["completestring"]:
-        searchterm = botcom.dict["dict"][botcom.dict["responsekey"]]["responses"][0] + " " + botcom.dict["completestring"]
-    else:
-        searchterm = botcom.dict["dict"][botcom.dict["responsekey"]]["responses"][0]
 
-    searchreturn = SpiceBot.google.search(searchterm)
+    searchurl = botcom.dict["dict"][botcom.dict["responsekey"]]["responses"][0]
+    searchterm = botcom.dict["completestring"]
+
+    searchdict = {
+                    "type": "custom",
+                    "query_url": searchurl,
+                    "query": searchterm,
+                    }
+
+    searchreturn = SpiceBot.search.search(searchdict)
 
     if not searchreturn:
         botcom.dict["success"] = False
@@ -311,7 +316,7 @@ def bot_dictcom_search(bot, trigger, botcom):
             failmessage = botcom.dict["dict"][botcom.dict["responsekey"]]["search_fail"]
         botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = failmessage
     else:
-        botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = ["[Information search for '" + str(searchterm) + "']    " + str(searchreturn)]
+        botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = ["[Search for '" + str(searchterm) + "']    " + str(searchreturn)]
 
     botcom.dict["specified"] = False
     bot_dictcom_reply_shared(bot, trigger, botcom)
