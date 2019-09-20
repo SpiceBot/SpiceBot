@@ -1,0 +1,8 @@
+{
+"?default": {
+              "type": "search",
+              "responses": ["http://community.spiceworks.com/search?query="],
+              "blank_fail": ["https://www.spiceworks.com/"],
+              "search_fail": ["No Spiceworks forum posts found!"],
+              },
+}

@@ -4,7 +4,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 
 from .Channels import SpiceBot_Channels_MainSection
 from .Commands import SpiceBot_Commands_MainSection
-from .Google import SpiceBot_Google_MainSection
+from .Search import SpiceBot_Search_MainSection
 from .AI import SpiceBot_AI_MainSection
 from .Update import SpiceBot_Update_MainSection
 from .Gif import SpiceBot_Gif_MainSection
@@ -47,8 +47,8 @@ def configure(config):
     config.define_section("SpiceBot_Commands", SpiceBot_Commands_MainSection, validate=False)
     config.SpiceBot_Commands.configure_setting('query_prefix', 'query prefix')
 
-    config.define_section("SpiceBot_Google", SpiceBot_Google_MainSection, validate=False)
-    config.SpiceBot_Google.configure_setting('search_api', 'api key for google searching')
+    config.define_section("SpiceBot_Search", SpiceBot_Search_MainSection, validate=False)
+    config.SpiceBot_Search.configure_setting('search_api', 'api key for google searching')
 
     config.define_section("SpiceBot_Gif", SpiceBot_Gif_MainSection, validate=False)
     config.SpiceBot_Gif.configure_setting('extra', 'SpiceBot_Gif API Extra directory')

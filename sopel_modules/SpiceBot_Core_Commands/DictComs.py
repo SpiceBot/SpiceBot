@@ -293,4 +293,30 @@ def bot_dictcom_feeds(bot, trigger, botcom):
 
 
 def bot_dictcom_search(bot, trigger, botcom):
-    bot.say("testing done")
+
+    if not botcom.dict["completestring"]:
+        botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = botcom.dict["dict"][botcom.dict["responsekey"]]["blank_fail"]
+        return bot_dictcom_reply_shared(bot, trigger, botcom)
+
+    searchurl = botcom.dict["dict"][botcom.dict["responsekey"]]["responses"][0]
+    searchterm = botcom.dict["completestring"]
+
+    searchdict = {
+                    "query_type": "custom",
+                    "query_url": searchurl,
+                    "query": searchterm,
+                    }
+
+    searchreturn = SpiceBot.search.search(searchdict)
+
+    if not searchreturn:
+        botcom.dict["success"] = False
+        failmessage = ['I cannot find anything about that']
+        if botcom.dict["dict"][botcom.dict["responsekey"]]["search_fail"]:
+            failmessage = botcom.dict["dict"][botcom.dict["responsekey"]]["search_fail"]
+        botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = failmessage
+    else:
+        botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = ["[Search for '" + str(searchterm) + "']    " + str(searchreturn)]
+
+    botcom.dict["specified"] = False
+    bot_dictcom_reply_shared(bot, trigger, botcom)

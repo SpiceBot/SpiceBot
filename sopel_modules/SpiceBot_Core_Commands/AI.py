@@ -175,9 +175,16 @@ def bot_command_rule_ai(bot, trigger):
             searchterm = spicemanip(trigger_args, "3+") or None
             if searchterm:
                 if trigger_args[0].lower() == "where":
-                    searchreturn = SpiceBot.google.search(searchterm, 'maps')
+                    searchdict = {
+                                    "type": "maps",
+                                    "query": searchterm,
+                                    }
+                    searchreturn = SpiceBot.search.search(searchdict)
                 else:
-                    searchreturn = SpiceBot.google.search(searchterm)
+                    searchdict = {
+                                    "query": searchterm,
+                                    }
+                    searchreturn = SpiceBot.search.search(searchdict)
                 if not searchreturn:
                     bot.osd('I cannot find anything about that')
                 else:

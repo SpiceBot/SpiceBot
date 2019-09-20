@@ -30,7 +30,7 @@ from .Server import *
 from .Channels import *
 from .Users import *
 from .AI import *
-from .Google import *
+from .Search import *
 from .Gif import *
 from .Sherlock import *
 from .Reddit import *
