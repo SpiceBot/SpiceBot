@@ -462,6 +462,9 @@ def updatable_content(bot, botcom, trigger):
 def special_handling(botcom):
     botcom.dict["responsekey"] = "?default"
 
+    if "nonstockoptions" not in list(botcom.dict["dict"].keys()):
+        botcom.dict["dict"]["nonstockoptions"] = []
+
     # handling for special cases
     posscom = spicemanip(botcom.dict['args'], 1)
     if posscom.lower() in [command.lower() for command in botcom.dict["dict"]["nonstockoptions"]]:
