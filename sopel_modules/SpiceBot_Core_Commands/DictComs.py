@@ -302,9 +302,16 @@ def bot_dictcom_search(bot, trigger, botcom):
     else:
         searchterm = botcom.dict["dict"][botcom.dict["responsekey"]]["responses"]
 
-    if searchterm:
-        searchreturn = SpiceBot.google.search(searchterm)
-        if not searchreturn:
-            bot.osd('I cannot find anything about that')
-        else:
-            bot.osd(["[Information search for '" + str(searchterm) + "']", str(searchreturn)])
+    searchreturn = SpiceBot.google.search(searchterm)
+
+    if not searchreturn:
+        botcom.dict["success"] = False
+        falimessage = 'I cannot find anything about that'
+        if botcom.dict["dict"][botcom.dict["responsekey"]]["search_fail"]:
+            falimessage = botcom.dict["dict"][botcom.dict["responsekey"]]["search_fail"]
+        botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = falimessage
+    else:
+        botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = ["[Information search for '" + str(searchterm) + "']", str(searchreturn)]
+
+    botcom.dict["specified"] = False
+    bot_dictcom_reply_shared(bot, trigger, botcom)
