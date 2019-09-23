@@ -24,6 +24,7 @@ from .DictComs import *
 from .TODO import *
 from .Version import *
 from .RegNicks import *
+from .ReleaseNotes import *
 
 __author__ = 'Sam Zick'
 __email__ = 'sam@deathbybandaid.net'
