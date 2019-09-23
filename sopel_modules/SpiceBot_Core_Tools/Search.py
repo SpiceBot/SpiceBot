@@ -46,7 +46,6 @@ def gifapi_triggers(bot, trigger, botcom):
                     "query": searchterm,
                     "query_type": botcom.dict["realcom"],
                     }
-    bot.say(str(searchdict))
 
     searchreturn = SpiceBot.search.search(searchdict)
     if not searchreturn:
