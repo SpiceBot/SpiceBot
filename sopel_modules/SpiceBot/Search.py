@@ -12,8 +12,6 @@ from .Config import config as botconfig
 from .Read import read as botread
 from .Commands import commands as botcommands
 
-from .Logs import logs
-
 # TODO add a cache flush
 
 
@@ -62,6 +60,9 @@ class Search():
         for key in query_defaults:
             if key not in list(searchdict.keys()):
                 searchdict[key] = query_defaults[key]
+        for key in list(self.valid_api[searchdict["query_type"]].keys()):
+            if key not in list(searchdict.keys()):
+                searchdict[key] = self.valid_api[searchdict["query_type"]][key]
 
         # Replace spaces in search query
         searchdict["searchquery"] = urllib.request.pathname2url(searchdict["query"])
@@ -91,14 +92,13 @@ class Search():
         except Exception as e:
             var = e
             var = None
-            logs.log('SpiceBot_Search', str(e))
         if not var or not var.url:
             return None
         return var.url
 
     def search_url_assemble(self, searchdict):
         # url base
-        url = str(searchdict["searchurl"])
+        url = str(searchdict["url"])
         # query
         url += str(self.valid_api[searchdict["query_type"]]) + str(searchdict["query"])
         # nsfw search? TODO
