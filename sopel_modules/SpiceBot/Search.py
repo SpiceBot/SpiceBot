@@ -46,6 +46,7 @@ class Search():
             # check cache
             if search_api not in list(self.cache.keys()):
                 self.cache[search_api] = dict()
+        logs.log("SpiceBot_Search", "Found " + str(len(list(self.valid_api.keys()))) + " search APIs", True)
 
     def setup_search(self):
         botconfig.define_section("SpiceBot_Search", SpiceBot_Search_MainSection, validate=False)
@@ -122,7 +123,7 @@ class Search():
             data = requests.get(searchdict["searchurl"])
             data = json.loads(data.decode('utf-8'))
         except Exception as e:
-            logs.log(str(e), True)
+            logs.log("SpiceBot_Search", str(e), True)
             data = e
             return None
         if data['result_type'] == 'no_results':
