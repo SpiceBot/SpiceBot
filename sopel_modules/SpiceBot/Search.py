@@ -5,14 +5,13 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import requests
 import urllib
 from fake_useragent import UserAgent
+import json
 
 from sopel.config.types import StaticSection, ValidatedAttribute
 
 from .Config import config as botconfig
 from .Read import read as botread
 from .Commands import commands as botcommands
-
-from .Logs import logs
 
 # TODO add a cache flush
 
@@ -89,24 +88,10 @@ class Search():
         return returnurl
 
     def search_handler(self, searchdict):
-        try:
-            results = requests.get(searchdict["searchurl"], headers=self.header).text()
-        except Exception as e:
-            results = e
-            logs.log('SpiceBot_Search', str(e))
-            return None
-        logs.log('SpiceBot_Search', str(results))
-        return None
-
-    def search_handler_old(self, searchdict):
-        try:
-            var = requests.get(searchdict["searchurl"], headers=self.header)
-        except Exception as e:
-            var = e
-            var = None
-        if not var or not var.url:
-            return None
-        return var.url
+        if searchdict["query_type"] in ["urban"]:
+            return self.search_urban(searchdict)
+        else:
+            return self.search_url(searchdict)
 
     def search_url_assemble(self, searchdict):
         # url base
@@ -118,6 +103,30 @@ class Search():
         if "additional_url" in list(self.valid_api[searchdict["query_type"]].keys()):
             url += str(self.valid_api[searchdict["query_type"]]['additional_url'])
         return url
+
+    def search_url(self, searchdict):
+        try:
+            var = requests.get(searchdict["searchurl"], headers=self.header)
+        except Exception as e:
+            var = e
+            var = None
+        if not var or not var.url:
+            return None
+        return var.url
+
+    def search_urban(self, searchdict):
+        """Search Urban Dictionary."""
+        try:
+            data = requests.get(searchdict["searchurl"])
+            data = json.loads(data.decode('utf-8'))
+        except Exception as e:
+            data = e
+            return None
+        if data['result_type'] == 'no_results':
+            return None
+        result = data['list'][0]
+        response = "{0} - {1}".format(result['definition'].strip()[:256], searchdict["searchurl"])
+        return response
 
 
 search = Search()
