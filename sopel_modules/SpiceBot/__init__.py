@@ -39,6 +39,7 @@ from .Read import *
 from .Translate import *
 from .Version import *
 from .RegNicks import *
+from .ReleaseNotes import *
 
 
 __author__ = 'Sam Zick'
