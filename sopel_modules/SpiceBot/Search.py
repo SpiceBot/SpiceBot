@@ -5,15 +5,13 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import requests
 import urllib
 from fake_useragent import UserAgent
-import json
+import re
 
 from sopel.config.types import StaticSection, ValidatedAttribute
 
 from .Config import config as botconfig
 from .Read import read as botread
 from .Commands import commands as botcommands
-
-from .Logs import logs
 
 # TODO add a cache flush
 
@@ -46,7 +44,6 @@ class Search():
             # check cache
             if search_api not in list(self.cache.keys()):
                 self.cache[search_api] = dict()
-        logs.log("SpiceBot_Search", "Found " + str(len(list(self.valid_api.keys()))) + " search APIs", True)
 
     def setup_search(self):
         botconfig.define_section("SpiceBot_Search", SpiceBot_Search_MainSection, validate=False)
@@ -118,19 +115,15 @@ class Search():
         return var.url
 
     def search_urban(self, searchdict):
-        """Search Urban Dictionary."""
-        try:
-            data = requests.get(searchdict["searchurl"])
-            data = json.loads(data.decode('utf-8'))
-        except Exception as e:
-            logs.log("SpiceBot_Search", str(e), True)
-            data = e
-            return None
-        if data['result_type'] == 'no_results':
-            return None
-        result = data['list'][0]
-        response = "{0} - {1}".format(result['definition'].strip()[:256], searchdict["searchurl"])
-        return response
+        query = requests.get(searchdict["searchurl"]).json()
+        if query:
+            try:
+                _definition = query['list'][0]['definition'].strip().replace('  ', ' ')
+                definition = re.sub(r"\[*\]*", "", _definition)
+                return str(searchdict["query"]) + "    " + str(definition)
+            except Exception as e:
+                definition = e
+                return None
 
 
 search = Search()
