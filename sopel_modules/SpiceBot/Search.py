@@ -96,6 +96,7 @@ class Search():
             var = None
         if not var or not var.url:
             return None
+        logs.log('SpiceBot_Search', str(var))
         return var.url
 
     def search_url_assemble(self, searchdict):
@@ -107,7 +108,6 @@ class Search():
         # additional parts
         if "additional_url" in list(self.valid_api[searchdict["query_type"]].keys()):
             url += str(self.valid_api[searchdict["query_type"]]['additional_url'])
-        logs.log('SpiceBot_Search', str(url))
         return url
 
 
