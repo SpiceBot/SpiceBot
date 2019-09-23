@@ -439,6 +439,9 @@ def trigger_cant_run(bot, trigger, botcom, message=None):
 
 def updatable_content(bot, botcom, trigger):
     # commands that can be updated
+    if "updates_enabled" not in list(botcom.dict["dict"][botcom.dict["responsekey"]].keys()):
+        botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] = False
+
     if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"]:
         customresponses = []
         if botcom.dict["dict"][botcom.dict["responsekey"]]["updates_enabled"] == "shared":
@@ -462,6 +465,9 @@ def updatable_content(bot, botcom, trigger):
 def special_handling(botcom):
     botcom.dict["responsekey"] = "?default"
 
+    if "nonstockoptions" not in list(botcom.dict["dict"].keys()):
+        botcom.dict["dict"]["nonstockoptions"] = []
+
     # handling for special cases
     posscom = spicemanip(botcom.dict['args'], 1)
     if posscom.lower() in [command.lower() for command in botcom.dict["dict"]["nonstockoptions"]]:
@@ -470,9 +476,22 @@ def special_handling(botcom):
                 posscom = command
         botcom.dict["responsekey"] = posscom
 
+    botcom = dictkey_defaults(botcom)
+
     if botcom.dict["responsekey"] != "?default":
         botcom.dict['args'] = spicemanip(botcom.dict['args'], '2+', 'list')
 
+    return botcom
+
+
+def dictkey_defaults(botcom):
+    botcom.dict["dict"]["hardcoded_channel_block"] = []
+    if botcom.dict["responsekey"] not in list(botcom.dict["dict"].keys()):
+        botcom.dict["dict"][botcom.dict["responsekey"]] = {}
+    if "selection_allowed" not in list(botcom.dict["dict"][botcom.dict["responsekey"]].keys()):
+        botcom.dict["dict"][botcom.dict["responsekey"]]["selection_allowed"] = True
+    if "responses" not in list(botcom.dict["dict"][botcom.dict["responsekey"]].keys()):
+        botcom.dict["dict"][botcom.dict["responsekey"]]["responses"] = []
     return botcom
 
 

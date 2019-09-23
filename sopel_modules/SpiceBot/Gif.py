@@ -222,6 +222,9 @@ class BotGif():
             url += str(self.valid_api[currentapi]['sfw'])
         # api key
         url += str(self.valid_api[currentapi]['key']) + str(self.valid_api[currentapi]['apikey'])
+        # additional parts
+        if "additional_url" in list(self.valid_api[currentapi].keys()):
+            url += str(self.valid_api[currentapi]['additional_url'])
         return url
 
 

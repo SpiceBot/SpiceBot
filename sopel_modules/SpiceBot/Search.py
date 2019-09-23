@@ -5,10 +5,13 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 import requests
 import urllib
 from fake_useragent import UserAgent
+import re
 
 from sopel.config.types import StaticSection, ValidatedAttribute
 
 from .Config import config as botconfig
+from .Read import read as botread
+from .Commands import commands as botcommands
 
 # TODO add a cache flush
 
@@ -22,12 +25,25 @@ class Search():
     def __init__(self):
         self.header = {'User-Agent': str(UserAgent().chrome)}
         self.setup_search()
-        self.cache = {
-                    "info": {},
-                    "maps": {},
-                    "youtube": {},
-                    "spiceworks": {},
-                    }
+        self.dir_to_scan = botread.get_config_dirs("SpiceBot_Search")
+        valid_search_api_dict = botread.json_to_dict_simple(self.dir_to_scan, "Search API", "SpiceBot_Search")
+        self.valid_api = {}
+
+        self.cache = {}
+
+        for search_api in list(valid_search_api_dict.keys()):
+
+            self.valid_api[search_api] = valid_search_api_dict[search_api]
+            self.valid_api[search_api]["apikey"] = None
+            self.valid_api[search_api]["cache"] = dict()
+
+            self.valid_api[search_api]["comtype"] = "search_prefix"
+            self.valid_api[search_api]["validcoms"] = [self.valid_api[search_api]["filename"]]
+            botcommands.register(self.valid_api[search_api])
+
+            # check cache
+            if search_api not in list(self.cache.keys()):
+                self.cache[search_api] = dict()
 
     def setup_search(self):
         botconfig.define_section("SpiceBot_Search", SpiceBot_Search_MainSection, validate=False)
@@ -36,15 +52,18 @@ class Search():
 
         # list of defaults
         query_defaults = {
-                        "query": None,
-                        "query_type": "info",
-                        "query_url": None
+                        "query": '',
+                        "query_type": "google",
+                        "nsfw": False,
                         }
 
         # set defaults if they don't exist
         for key in query_defaults:
             if key not in list(searchdict.keys()):
                 searchdict[key] = query_defaults[key]
+        for key in list(self.valid_api[searchdict["query_type"]].keys()):
+            if key not in list(searchdict.keys()):
+                searchdict[key] = self.valid_api[searchdict["query_type"]][key]
 
         # Replace spaces in search query
         searchdict["searchquery"] = urllib.request.pathname2url(searchdict["query"])
@@ -56,28 +75,38 @@ class Search():
         # check cache
         if searchdict["query_type"] not in list(self.cache.keys()):
             self.cache[searchdict["query_type"]] = dict()
-        if searchdict["query_type"] != "custom":
-            if searchdict["query"].lower() in self.cache[searchdict["query_type"]]:
-                return self.cache[searchdict["query_type"]][searchdict["query"]]
 
-        if searchdict["query_type"] == 'maps':
-            returnurl = self.search_maps_google(searchdict)
-        elif searchdict["query_type"] == 'youtube':
-            returnurl = self.search_youtube(searchdict)
-        elif searchdict["query_type"] == 'custom':
-            returnurl = self.search_info_custom(searchdict)
-        else:
-            returnurl = self.search_info_google(searchdict)
+        if searchdict["query"].lower() in self.cache[searchdict["query_type"]]:
+            return self.cache[searchdict["query_type"]][searchdict["query"]]
 
-        if returnurl and searchdict["query_type"] != 'custom':
+        searchdict["searchurl"] = self.search_url_assemble(searchdict)
+        returnurl = self.search_handler(searchdict)
+
+        if returnurl:
             self.cache[searchdict["query_type"]][searchdict["query"].lower()] = str(returnurl)
 
         return returnurl
 
-    def search_info_custom(self, searchdict):
-        lookfor = searchdict["searchquery"]
+    def search_handler(self, searchdict):
+        if searchdict["query_type"] in ["urban"]:
+            return self.search_urban(searchdict)
+        else:
+            return self.search_url(searchdict)
+
+    def search_url_assemble(self, searchdict):
+        # url base
+        url = str(searchdict["url"])
+        # query
+        url += str(self.valid_api[searchdict["query_type"]]["query_param"]) + str(searchdict["query"])
+        # nsfw search? TODO
+        # additional parts
+        if "additional_url" in list(self.valid_api[searchdict["query_type"]].keys()):
+            url += str(self.valid_api[searchdict["query_type"]]['additional_url'])
+        return url
+
+    def search_url(self, searchdict):
         try:
-            var = requests.get(r'' + searchdict["query_url"] + lookfor, headers=self.header)
+            var = requests.get(searchdict["searchurl"], headers=self.header)
         except Exception as e:
             var = e
             var = None
@@ -85,47 +114,17 @@ class Search():
             return None
         return var.url
 
-    def search_info_google(self, searchdict, retry=False):
-        lookfor = searchdict["searchquery"]
-        if not botconfig.SpiceBot_Search.search_api or retry:
+    def search_urban(self, searchdict):
+        query = requests.get(searchdict["searchurl"]).json()
+        if query:
             try:
-                var = requests.get(r'http://www.google.com/search?q=' + lookfor + '&btnI', headers=self.header)
+                _definition = query['list'][0]['definition'].strip().replace('  ', ' ')
+                definition = re.sub(r"\[*\]*", "", _definition)
+                definition = re.findall('(\d\.[^\d]*)', definition)
+                return str(definition[0])
             except Exception as e:
-                var = e
-                var = None
-            if not var or not var.url:
+                definition = e
                 return None
-            return var.url
-        else:
-            return self.search_info_google(searchdict, retry=True)
-
-    def search_maps_google(self, searchdict, retry=False):
-        lookfor = searchdict["searchquery"]
-        if not botconfig.SpiceBot_Search.search_api or retry:
-            try:
-                var = requests.get(r'http://www.google.com/maps/place/' + lookfor, headers=self.header)
-            except Exception as e:
-                var = e
-                var = None
-            if not var or not var.url:
-                return None
-            return var.url
-        else:
-            return self.search_maps_google(searchdict, retry=True)
-
-    def search_youtube(self, searchdict, retry=False):
-        lookfor = searchdict["searchquery"]
-        if not botconfig.SpiceBot_Search.search_api or retry:
-            try:
-                var = requests.get(r'https://www.youtube.com/search?q=' + lookfor + '&btnI', headers=self.header)
-            except Exception as e:
-                var = e
-                var = None
-            if not var or not var.url:
-                return None
-            return var.url
-        else:
-            return self.search_youtube(searchdict, retry=True)
 
 
 search = Search()
