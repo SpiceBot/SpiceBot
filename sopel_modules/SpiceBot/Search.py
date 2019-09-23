@@ -13,6 +13,8 @@ from .Config import config as botconfig
 from .Read import read as botread
 from .Commands import commands as botcommands
 
+from .Logs import logs
+
 # TODO add a cache flush
 
 
@@ -120,6 +122,7 @@ class Search():
             data = requests.get(searchdict["searchurl"])
             data = json.loads(data.decode('utf-8'))
         except Exception as e:
+            logs.log(str(e), True)
             data = e
             return None
         if data['result_type'] == 'no_results':
