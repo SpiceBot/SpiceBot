@@ -12,8 +12,6 @@ from .Config import config as botconfig
 from .Read import read as botread
 from .Commands import commands as botcommands
 
-from .Logs import logs
-
 # TODO add a cache flush
 
 
@@ -107,7 +105,6 @@ class Search():
         # additional parts
         if "additional_url" in list(self.valid_api[searchdict["query_type"]].keys()):
             url += str(self.valid_api[searchdict["query_type"]]['additional_url'])
-        logs.log('SpiceBot_Search', str(url))
         return url
 
 
