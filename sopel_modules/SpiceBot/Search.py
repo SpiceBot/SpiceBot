@@ -90,13 +90,22 @@ class Search():
 
     def search_handler(self, searchdict):
         try:
+            results = requests.get(searchdict["searchurl"], headers=self.header).json()
+        except Exception as e:
+            results = e
+            logs.log('SpiceBot_Search', str(e))
+            return None
+        logs.log('SpiceBot_Search', str(results))
+        return None
+
+    def search_handler_old(self, searchdict):
+        try:
             var = requests.get(searchdict["searchurl"], headers=self.header)
         except Exception as e:
             var = e
             var = None
         if not var or not var.url:
             return None
-        logs.log('SpiceBot_Search', str(var.url))
         return var.url
 
     def search_url_assemble(self, searchdict):
