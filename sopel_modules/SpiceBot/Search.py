@@ -90,7 +90,7 @@ class Search():
 
     def search_handler(self, searchdict):
         try:
-            results = requests.get(searchdict["searchurl"], headers=self.header).json()
+            results = requests.get(searchdict["searchurl"], headers=self.header).text()
         except Exception as e:
             results = e
             logs.log('SpiceBot_Search', str(e))
