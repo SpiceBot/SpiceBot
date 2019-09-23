@@ -120,7 +120,8 @@ class Search():
             try:
                 _definition = query['list'][0]['definition'].strip().replace('  ', ' ')
                 definition = re.sub(r"\[*\]*", "", _definition)
-                return str(searchdict["query"]) + "    " + str(definition)
+                definition = re.findall('(\d\.[^\d]*)', definition)
+                return str(definition)
             except Exception as e:
                 definition = e
                 return None
