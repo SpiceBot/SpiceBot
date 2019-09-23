@@ -12,8 +12,6 @@ from .Config import config as botconfig
 from .Read import read as botread
 from .Commands import commands as botcommands
 
-from .Logs import logs
-
 # TODO add a cache flush
 
 
