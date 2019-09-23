@@ -1,5 +1,5 @@
 {
 "url": "http://www.youtube.com/search?",
-"query": 'q=',
+"query_param": 'q=',
 "additional_url": "&btnI",
 }
