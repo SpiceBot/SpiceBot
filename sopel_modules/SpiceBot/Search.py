@@ -98,7 +98,7 @@ class Search():
 
     def search_url_assemble(self, searchdict):
         # url base
-        url = str(searchdict)
+        url = str(searchdict["searchurl"])
         # query
         url += str(self.valid_api[searchdict["query_type"]]) + str(searchdict["query"])
         # nsfw search? TODO
