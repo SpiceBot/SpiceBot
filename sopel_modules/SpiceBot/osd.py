@@ -90,7 +90,11 @@ class ToolsOSD:
         """
 
         if text_method == 'ACTION':
-            text_method = "\x01ACTION \x01"
+            text_method_bytes = (len('PRIVMSG')
+                                 + len("\x01ACTION \x01")
+                                 )
+        else:
+            text_method_bytes = len(text_method)
 
         # available_bytes = 512
         # reserved_irc_bytes = 15
@@ -118,7 +122,7 @@ class ToolsOSD:
 
         allowedLength = (512
                          - len(':') - hostmaskbytes
-                         - len(' ' + text_method + ' ')
+                         - len(' ') - text_method_bytes - len(' ')
                          - max_recipients_bytes
                          - len(' :')
                          - len('\r\n')
