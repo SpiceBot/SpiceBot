@@ -77,7 +77,7 @@ class ToolsOSD:
 
         return recipientgroups
 
-    def get_available_message_bytes(bot, recipientgroups):
+    def get_available_message_bytes(bot, recipientgroups, text_method):
         """
         Get total available bytes for sending a message line
 
@@ -89,23 +89,46 @@ class ToolsOSD:
               sendable message length
         """
 
-        available_bytes = 512
-        reserved_irc_bytes = 15
-        available_bytes -= reserved_irc_bytes
+        if text_method == 'ACTION':
+            text_method_bytes = (len('PRIVMSG')
+                                 + len("\x01ACTION \x01")
+                                 )
+        else:
+            text_method_bytes = len(text_method)
+
+        # available_bytes = 512
+        # reserved_irc_bytes = 15
+        # available_bytes -= reserved_irc_bytes
         try:
             hostmaskbytes = len((bot.users.get(bot.nick).hostmask).encode('utf-8'))
         except AttributeError:
-            hostmaskbytes = len((bot.nick).encode('utf-8')) + 12 + 63
-        available_bytes -= hostmaskbytes
+            # hostmaskbytes = len((bot.nick).encode('utf-8')) + 12 + 63
+            hostmaskbytes = (len((bot.nick).encode('utf-8'))  # Bot's NICKLEN
+                             + 1  # (! separator)
+                             + len('~')  # (for the optional ~ in user)
+                             + 9  # max username length
+                             + 1  # (@ separator)
+                             + 63  # <hostname> has a maximum length of 63 characters.
+                             )
+        # available_bytes -= hostmaskbytes
 
+        # find the maximum target group length, and use the max
         groupbytes = []
         for recipients_part in recipientgroups:
             groupbytes.append(len((recipients_part).encode('utf-8')))
 
         max_recipients_bytes = max(groupbytes)
-        available_bytes -= max_recipients_bytes
+        # available_bytes -= max_recipients_bytes
 
-        return available_bytes
+        allowedLength = (512
+                         - len(':') - hostmaskbytes
+                         - len(' ') - text_method_bytes - len(' ')
+                         - max_recipients_bytes
+                         - len(' :')
+                         - len('\r\n')
+                         )
+
+        return allowedLength
 
     def get_sendable_message_list(messages, max_length=400):
         """Get a sendable ``text`` message list.
@@ -198,7 +221,7 @@ class SopelOSD:
             text_method = 'PRIVMSG'
 
         recipientgroups = tools.get_message_recipientgroups(self, recipients, text_method)
-        available_bytes = tools.get_available_message_bytes(self, recipientgroups)
+        available_bytes = tools.get_available_message_bytes(self, recipientgroups, text_method)
         messages_list = tools.get_sendable_message_list(messages, available_bytes)
 
         if max_messages >= 1:
