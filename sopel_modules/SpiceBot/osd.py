@@ -122,7 +122,7 @@ class ToolsOSD:
 
         allowedLength = (512
                          - len(':') - hostmaskbytes
-                         - len(' ') + text_method_bytes + len(' ')
+                         - len(' ') - text_method_bytes - len(' ')
                          - max_recipients_bytes
                          - len(' :')
                          - len('\r\n')
