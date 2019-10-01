@@ -89,6 +89,9 @@ class ToolsOSD:
               sendable message length
         """
 
+        if text_method == 'ACTION':
+            text_method = 'PRIVMSG'
+
         # available_bytes = 512
         # reserved_irc_bytes = 15
         # available_bytes -= reserved_irc_bytes
