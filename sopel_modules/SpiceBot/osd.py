@@ -92,12 +92,16 @@ class ToolsOSD:
         if text_method == 'ACTION':
             text_method = 'PRIVMSG'
 
-        # available_bytes = 512
-        # reserved_irc_bytes = 15
-        # available_bytes -= reserved_irc_bytes
+        available_bytes = 512
+        reserved_irc_bytes = 15
+        available_bytes -= reserved_irc_bytes
         try:
             hostmaskbytes = len((bot.users.get(bot.nick).hostmask).encode('utf-8'))
+            available_bytes -= hostmaskbytes
         except AttributeError:
+            # hostmaskbytes = len((bot.nick).encode('utf-8')) + 12 + 63
+            hostmaskbytes = len((bot.nick).encode('utf-8')) + 12 + 63
+            available_bytes -= hostmaskbytes
             hostmaskbytes = (len((bot.nick).encode('utf-8'))  # Bot's NICKLEN
                              + 1  # (! separator)
                              + len('~')  # (for the optional ~ in user)
@@ -113,7 +117,7 @@ class ToolsOSD:
             groupbytes.append(len((recipients_part).encode('utf-8')))
 
         max_recipients_bytes = max(groupbytes)
-        # available_bytes -= max_recipients_bytes
+        available_bytes -= max_recipients_bytes
 
         allowedLength = (512
                          - len(':') - hostmaskbytes
@@ -123,6 +127,8 @@ class ToolsOSD:
                          - len('\r\n')
                          )
 
+        bot.say("old length of " + text_method + " to " + str(recipientgroups) + " is " + str(allowedLength), "#deathbybandaid")
+        bot.say("new length of " + text_method + " to " + str(recipientgroups) + " is " + str(available_bytes), "#deathbybandaid")
         return allowedLength
 
     def get_sendable_message_list(messages, max_length=400):
