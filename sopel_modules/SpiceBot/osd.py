@@ -90,7 +90,7 @@ class ToolsOSD:
         """
 
         if text_method == 'ACTION':
-            text_method = 'PRIVMSG'
+            text_method = "\x01ACTION \x01"
 
         # available_bytes = 512
         # reserved_irc_bytes = 15
