@@ -102,7 +102,7 @@ class ToolsOSD:
             hostmaskbytes = (len((bot.nick).encode('utf-8'))  # Bot's NICKLEN
                              + 1  # (! separator)
                              + len('~')  # (for the optional ~ in user)
-                             + 9  # max username length (was 12)
+                             + 9  # max username length
                              + 1  # (@ separator)
                              + 63  # <hostname> has a maximum length of 63 characters.
                              )
