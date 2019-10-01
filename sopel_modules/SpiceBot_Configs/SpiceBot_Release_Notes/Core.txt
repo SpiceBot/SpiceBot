@@ -1,1 +1,2 @@
 First release of Release Notes
+OSD updated to more accurately reflect IRC 512 byte limit
