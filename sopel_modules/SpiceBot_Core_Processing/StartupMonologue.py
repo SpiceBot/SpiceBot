@@ -10,7 +10,7 @@ import sopel_modules.SpiceBot as SpiceBot
 import time
 
 
-@sopel.module.event(SpiceBot.events.BOT_CONNECTED)
+@sopel.module.event(SpiceBot.events.BOT_CHANNELS)
 @sopel.module.rule('.*')
 def bot_startup_monologue_start(bot, trigger):
     # Startup
