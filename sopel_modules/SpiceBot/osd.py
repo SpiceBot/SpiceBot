@@ -123,7 +123,6 @@ class ToolsOSD:
                          - len('\r\n')
                          )
 
-        bot.say("length of " + text_method + " to " + str(recipientgroups) + " is " + str(allowedLength), "#deathbybandaid")
         return allowedLength
 
     def get_sendable_message_list(messages, max_length=400):
