@@ -42,7 +42,7 @@ def bot_command_process(bot, trigger, botcom):
 
     target = spicemanip(botcom.dict['args'], 1)
     if (target not in ['allchans', 'allnicks']
-            and not SpiceBot.inlist(target.lower(), list(SpiceBot.channels.dict['list'].keys()))
+            and not SpiceBot.channels.ischannel(target)
             and not SpiceBot.inlist(target.lower(), bot.users)):
         SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Channel/nick name {} not valid.".format(target))
         return

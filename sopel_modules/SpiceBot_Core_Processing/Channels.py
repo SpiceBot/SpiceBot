@@ -31,21 +31,17 @@ def request_channels_list_initial(bot, trigger):
     starttime = time.time()
 
     # wait 60 seconds for initial population of information
-    while not SpiceBot.channels.dict['InitialProcess']:
+    while not SpiceBot.channels.InitialProcess:
         if time.time() - starttime >= 60:
             SpiceBot.logs.log('SpiceBot_Channels', "Initial Channel list populating Timed Out")
-            SpiceBot.channels.dict['InitialProcess'] = True
+            SpiceBot.channels.InitialProcess = True
         else:
             pass
 
-    foundchannelcount = len(list(SpiceBot.channels.dict['list'].keys()))
+    foundchannelcount = SpiceBot.channels.total_channels()
     SpiceBot.logs.log('SpiceBot_Channels', "Channel listing finished! " + str(foundchannelcount) + " channel(s) found.")
 
     SpiceBot.channels.join_all_channels(bot)
-    SpiceBot.channels.chanadmin_all_channels(bot)
-
-    if "*" in SpiceBot.channels.dict['list'].keys():
-        del SpiceBot.channels.dict['list']["*"]
 
     SpiceBot.channels.bot_part_empty(bot)
     SpiceBot.events.trigger(bot, SpiceBot.events.BOT_CHANNELS, "SpiceBot_Channels")
@@ -76,13 +72,17 @@ def trigger_channel_list_recurring(bot, trigger):
         time.sleep(1800)
         SpiceBot.channels.bot_part_empty(bot)
 
-        oldlist = list(SpiceBot.channels.dict['list'].keys())
+        oldlist = SpiceBot.channels.chanlist()
         SpiceBot.channels.channel_list_request(bot)
 
         while SpiceBot.channels.channel_lock:
             pass
 
-        newlist = [item.lower() for item in oldlist if item.lower() not in list(SpiceBot.channels.dict['list'].keys())]
+        currentlist = SpiceBot.channels.chanlist()
+        newlist = []
+        for channel in currentlist:
+            if channel not in oldlist:
+                newlist.append(channel)
         if "*" in newlist:
             newlist.remove("*")
         if len(newlist) and SpiceBot.config.SpiceBot_Channels.announcenew:
@@ -90,10 +90,6 @@ def trigger_channel_list_recurring(bot, trigger):
 
         SpiceBot.channels.join_all_channels(bot)
 
-        SpiceBot.channels.chanadmin_all_channels(bot)
-
-        if "*" in list(SpiceBot.channels.dict['list'].keys()):
-            del SpiceBot.channels.dict['list']["*"]
         SpiceBot.channels.bot_part_empty(bot)
 
 

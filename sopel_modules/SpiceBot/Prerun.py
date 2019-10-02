@@ -212,7 +212,7 @@ def verify_user(bot, trigger):
 
 
 def verify_channel(trigger):
-    botchannels.add_channel(trigger.sender)
+    botchannels.add_channel(trigger.sender, "check")
     # Identify
     nick_id = botchannels.whois_ident(trigger.nick)
     # Verify nick is in the channel list
