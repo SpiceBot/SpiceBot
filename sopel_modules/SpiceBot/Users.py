@@ -77,7 +77,7 @@ class BotUsers():
     def whois_ident(self, nick, usercreate=True):
         nick = Identifier(nick)
         try:
-            nick_id = self.get_nick_id(nick, create=usercreate)
+            nick_id = self.get_nick_id(nick, usercreate)
         except Exception as e:
             nick_id = e
             nick_id = None

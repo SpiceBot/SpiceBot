@@ -219,7 +219,7 @@ class BotChannels():
 
     def whois_ident(self, nick):
         nick = Identifier(nick)
-        nick_id = botusers.get_nick_id(nick, create=True)
+        nick_id = botusers.get_nick_id(nick, True)
         return nick_id
 
     def add_to_channel(self, channel, nick, nick_id=None):
