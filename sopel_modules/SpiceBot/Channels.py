@@ -12,6 +12,7 @@ import threading
 
 from .Config import config as botconfig
 from .Database import db as botdb
+from .Users import users as botusers
 
 
 class SpiceBot_Channels_MainSection(StaticSection):
@@ -218,7 +219,7 @@ class BotChannels():
 
     def whois_ident(self, nick):
         nick = Identifier(nick)
-        nick_id = botdb.db.get_nick_id(nick, create=True)
+        nick_id = botusers.get_nick_id(nick, create=True)
         return nick_id
 
     def add_to_channel(self, channel, nick, nick_id=None):

@@ -65,10 +65,19 @@ class BotUsers():
             nick_id = self.whois_ident(nickinput)
             return int(nick_id)
 
+    def get_nick_id(self, nick, usercreate=True):
+        try:
+            nick_id = botdb.db.get_nick_id(nick, create=usercreate)
+        except Exception as e:
+            nick_id = e
+            nick_id = None
+            return None
+        return nick_id
+
     def whois_ident(self, nick, usercreate=True):
         nick = Identifier(nick)
         try:
-            nick_id = botdb.db.get_nick_id(nick, create=usercreate)
+            nick_id = self.get_nick_id(nick, create=usercreate)
         except Exception as e:
             nick_id = e
             nick_id = None
