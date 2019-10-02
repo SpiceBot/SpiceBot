@@ -159,8 +159,8 @@ class BotChannels():
             self.channeldict_append(channel)
 
         self.lock.acquire()
+        self.chandict[channel]["joined"] = True
         if reason != "check":
-            self.chandict[channel]["joined"] = True
             self.chandict[channel]["reason"] = reason
         self.lock.release()
 
@@ -174,8 +174,8 @@ class BotChannels():
             self.channeldict_append(channel)
 
         self.lock.acquire()
+        self.chandict[channel]["joined"] = False
         if reason != "check":
-            self.chandict[channel]["joined"] = False
             self.chandict[channel]["reason"] = reason
         self.lock.release()
 
@@ -352,7 +352,7 @@ class BotChannels():
         if not channels:
             return
         channel = Identifier(channels.group(1))
-        self.add_channel(channel)
+        self.add_channel(channel, " check")
 
         mapping = {'+': sopel.module.VOICE,
                    '%': sopel.module.HALFOP,
