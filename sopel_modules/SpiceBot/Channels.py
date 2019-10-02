@@ -45,14 +45,6 @@ class BotChannels():
 
         self.who_reqs = {}
 
-    def __getattr__(self, name):
-        ''' will only get called for undefined attributes '''
-        """We will try to find a dict value, or return None"""
-        if name.lower() in list(self.dict.keys()):
-            return self.dict[str(name).lower()]
-        else:
-            raise Exception('Channel dict does not contain a function or key ' + str(name.lower()))
-
     def total_channels(self):
         totalcount = len(list(self.chandict.keys()))
         return totalcount
