@@ -267,6 +267,7 @@ class BotUsers():
     def nick(self, bot, trigger):
         oldnick = trigger.nick
         old_nick_id = self.whois_ident(oldnick)
+        self.whois_identify_forget(old_nick_id)
         newnick = Identifier(trigger)
         if oldnick == bot.nick or newnick == bot.nick:
             return
@@ -283,11 +284,11 @@ class BotUsers():
         # mark user as online
         self.mark_user_online(old_nick_id)
         # alias the nick
-        try:
-            botdb.alias_nick(oldnick, newnick)
-        except Exception as e:
-            old_nick_id = e
-            return
+        # try:
+        #    botdb.alias_nick(oldnick, newnick)
+        # except Exception as e:
+        #    old_nick_id = e
+        #    return
 
     def mode(self, bot, trigger):
         return
