@@ -40,6 +40,7 @@ from .Translate import *
 from .Version import *
 from .RegNicks import *
 from .ReleaseNotes import *
+from .HTTP_Codes import *
 
 
 __author__ = 'Sam Zick'
