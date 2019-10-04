@@ -65,10 +65,19 @@ class BotUsers():
             nick_id = self.whois_ident(nickinput)
             return int(nick_id)
 
+    def get_nick_id(self, nick, usercreate=True):
+        try:
+            nick_id = botdb.db.get_nick_id(nick, create=usercreate)
+        except Exception as e:
+            nick_id = e
+            nick_id = None
+            return None
+        return nick_id
+
     def whois_ident(self, nick, usercreate=True):
         nick = Identifier(nick)
         try:
-            nick_id = botdb.db.get_nick_id(nick, create=usercreate)
+            nick_id = self.get_nick_id(nick, usercreate)
         except Exception as e:
             nick_id = e
             nick_id = None
@@ -267,6 +276,7 @@ class BotUsers():
     def nick(self, bot, trigger):
         oldnick = trigger.nick
         old_nick_id = self.whois_ident(oldnick)
+        self.whois_identify_forget(old_nick_id)
         newnick = Identifier(trigger)
         if oldnick == bot.nick or newnick == bot.nick:
             return
@@ -283,11 +293,11 @@ class BotUsers():
         # mark user as online
         self.mark_user_online(old_nick_id)
         # alias the nick
-        try:
-            botdb.alias_nick(oldnick, newnick)
-        except Exception as e:
-            old_nick_id = e
-            return
+        # try:
+        #    botdb.alias_nick(oldnick, newnick)
+        # except Exception as e:
+        #    old_nick_id = e
+        #    return
 
     def mode(self, bot, trigger):
         return

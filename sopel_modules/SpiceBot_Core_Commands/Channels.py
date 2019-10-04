@@ -22,23 +22,23 @@ def nickname_comand_channels(bot, trigger, botcom):
     botcom.dict['args'] = spicemanip(botcom.dict['args'], '2+', 'list')
 
     if commandused == 'list':
-        botcount = len(list(bot.channels.keys()))
-        servercount = len(list(SpiceBot.channels.dict['list'].keys()))
+        botcount = SpiceBot.channels.total_bot_channels()
+        servercount = SpiceBot.channels.total_channels()
         displayval = "I am in " + str(botcount) + " of " + str(servercount) + " channel(s) available on this server."
-        chanlist = spicemanip(list(bot.channels.keys()), 'andlist')
+        chanlist = spicemanip(SpiceBot.channels.chanlist_bot(), 'andlist')
         bot.osd([displayval, "You can find me in " + chanlist])
         return
 
     elif commandused == 'total':
-        botcount = len(list(bot.channels.keys()))
-        servercount = len(list(SpiceBot.channels.dict['list'].keys()))
+        botcount = SpiceBot.channels.total_bot_channels()
+        servercount = SpiceBot.channels.total_channels()
         bot.osd("I am in " + str(botcount) + " of " + str(servercount) + " channel(s) available on this server.")
         return
 
     elif commandused == 'random':
-        channel = spicemanip(SpiceBot.channels.dict['list'], 'random')
-        topic = SpiceBot.channels.dict['list'][channel]['topic']
-        msg = ["Random channel for you: {}.".format(SpiceBot.channels.dict['list'][channel]['name'])]
+        channel = spicemanip(list(SpiceBot.channels.chandict), 'random')
+        topic = SpiceBot.channels.chandict[channel]['topic']
+        msg = ["Random channel for you: {}.".format(SpiceBot.channels.chandict[channel]['name'])]
         if topic and not topic.isspace():
             msg.append("The topic is: {}".format(topic))
         else:
@@ -47,7 +47,7 @@ def nickname_comand_channels(bot, trigger, botcom):
         return
 
     elif commandused == 'update':
-        if not trigger.admin:
+        if not trigger.admin:  # TODO
             SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "You do not have permission to update the channel listing.")
             return
         SpiceBot.channels.bot_part_empty(bot)
@@ -56,7 +56,7 @@ def nickname_comand_channels(bot, trigger, botcom):
         while SpiceBot.channels.channel_lock:
             pass
         SpiceBot.channels.join_all_channels(bot)
-        foundchannelcount = len(list(SpiceBot.channels.dict['list'].keys()))
+        foundchannelcount = len(list(SpiceBot.channels.chandict.keys()))
         bot.osd("[SpiceBot_Channels]", "Channel listing finished!", str(foundchannelcount) + " channel(s) found.")
         SpiceBot.channels.bot_part_empty(bot)
         return
@@ -66,12 +66,13 @@ def nickname_comand_channels(bot, trigger, botcom):
             SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Channel name input missing.")
             return
         channel = spicemanip(botcom.dict['args'], 1)
-        if not SpiceBot.inlist(channel.lower(), list(SpiceBot.channels.dict['list'].keys())):
+        if not SpiceBot.inlist(channel.lower(), list(SpiceBot.channels.chandict.keys())):
             SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Channel name {} not valid.".format(channel))
             return
-        topic = SpiceBot.channels.dict['list'][channel.lower()]['topic']
-        channel = SpiceBot.channels.dict['list'][channel.lower()]['name']
-        bot.osd("Topic for {}: {}".format(channel, topic))
+        channel = str(channel).lower()
+        topic = SpiceBot.channels.chandict[channel]['topic']
+        channelname = SpiceBot.channels.chandict[channel]['name']
+        bot.osd("Topic for {}: {}".format(channelname, topic))
         return
 
     if commandused.upper() in ['OP', 'HOP', 'VOICE', 'OWNER', 'ADMIN']:
@@ -83,7 +84,7 @@ def nickname_comand_channels(bot, trigger, botcom):
                 channel = trigger.sender
         else:
             channel = spicemanip(botcom.dict['args'], 1)
-            if not SpiceBot.inlist(channel.lower(), list(SpiceBot.channels.dict['list'].keys())):
+            if not SpiceBot.inlist(channel.lower(), list(SpiceBot.channels.chandict.keys())):
                 SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Channel name {} not valid.".format(channel))
                 return
             if not SpiceBot.inlist(channel.lower(), list(bot.channels.keys())):
@@ -103,7 +104,7 @@ def nickname_comand_channels(bot, trigger, botcom):
     # Users List
     if commandused == 'users':
         channel = spicemanip(botcom.dict['args'], 1)
-        if not SpiceBot.inlist(channel.lower(), list(SpiceBot.channels.dict['list'].keys())):
+        if not SpiceBot.inlist(channel.lower(), list(SpiceBot.channels.chandict.keys())):
             SpiceBot.messagelog.messagelog_error(botcom.dict["log_id"], "Channel name {} not valid.".format(channel))
             return
         if not SpiceBot.inlist(channel.lower(), list(bot.channels.keys())):

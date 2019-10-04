@@ -30,8 +30,8 @@ def bot_startup_monologue_sopel_version(bot, trigger):
 @sopel.module.event(SpiceBot.events.BOT_CHANNELS)
 @sopel.module.rule('.*')
 def bot_startup_monologue_channels(bot, trigger):
-    botcount = len(list(bot.channels.keys()))
-    servercount = len(list(SpiceBot.channels.dict['list'].keys()))
+    botcount = SpiceBot.channels.total_bot_channels()
+    servercount = SpiceBot.channels.total_channels()
     displayval = "I am in " + str(botcount) + " of " + str(servercount) + " channel(s) available on this server."
     SpiceBot.startupmonologue.dict["channels"] = displayval
     SpiceBot.logs.log('SpiceBot_StartupMonologue', displayval)

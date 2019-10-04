@@ -6,6 +6,7 @@ from .Gif import *
 from .Sherlock import *
 from .Reddit import *
 from .Search import *
+from .HTTP_Codes import *
 
 __author__ = 'Sam Zick'
 __email__ = 'sam@deathbybandaid.net'
