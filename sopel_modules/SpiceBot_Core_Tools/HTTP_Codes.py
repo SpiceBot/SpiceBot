@@ -13,6 +13,8 @@ import requests
 import bleach
 from lxml import etree
 
+from lxml import html
+
 api_url = 'https://httpstatuses.com/'
 
 
@@ -48,6 +50,25 @@ def fetch_result(query):
     except requests.exceptions.HTTPError as e:
         return "HTTP error: " + e.message
     return "testing"
+
+    tree = html.fromstring(r.content)
+
+    try:
+        title = tree.xpath(('/html/body/article/p[1]')[0])
+        # if isinstance(title, list):
+        #    title = title[0]
+        # title = str(title)
+        # for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
+        #    title = title.replace(*r)
+        # title = unicode_string_cleanup(title)
+    except Exception as e:
+        title = None
+    if title:
+        return title
+    else:
+        return "An Error Occured"
+
+    return
 
     page = etree.HTML(r.content)
     title = bleach.clean(etree.tostring(page.xpath('/html/body/article/h1[1]')[0]), tags=[], strip=True)
