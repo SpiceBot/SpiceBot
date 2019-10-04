@@ -15,38 +15,70 @@ class Bothttpcodes():
         self.api_url = 'https://httpstatuses.com/'
         self.basic_xpath = "/html/body/article/h1[1]/text()"
         self.explain_xpath = "/html/body/article/p[1]/text()"
+        self.cache = {}
 
     def fetch_result(self, query):
+
+        query = str(query)
+
+        if not query:
+            return {
+                    "query": "",
+                    "basic": "An Error Occured",
+                    "explanation": "You must provide a HTTP status code to look up.",
+                    "error": True
+                    }
+
+        # check cache
+        cached = self.check_cache(query)
+        if cached:
+            return cached
+
         returndict = {
+                        "query": query,
                         "basic": "",
                         "explanation": "",
+                        "error": False
                         }
+
         if not re.match('^[1-5]\d{2}$', query):
-            returndict["basic"] = "Invalid HTTP status code:"
-            returndict["explanation"] = str(query)
+            returndict["error"] = True
+            returndict["basic"] = "An Error Occured"
+            returndict["explanation"] = "Invalid HTTP status code: %s" % query
+            self.add_to_cache(returndict)
             return returndict
 
         url = self.api_url + query
         try:
             r = requests.get(url=url, timeout=(10.0, 4.0))
         except requests.exceptions.ConnectTimeout:
-            returndict["basic"] = "Connection timed out."
+            returndict["error"] = True
+            returndict["basic"] = "An Error Occured"
+            returndict["explanation"] = "Connection timed out."
             return returndict
         except requests.exceptions.ConnectionError:
-            returndict["basic"] = "Couldn't connect to server."
+            returndict["error"] = True
+            returndict["basic"] = "An Error Occured"
+            returndict["explanation"] = "Couldn't connect to server."
             return returndict
         except requests.exceptions.ReadTimeout:
-            returndict["basic"] = "Server took too long to send data."
+            returndict["error"] = True
+            returndict["basic"] = "An Error Occured"
+            returndict["explanation"] = "Server took too long to send data."
             return returndict
         if r.status_code == 404:
-            returndict["basic"] = "Unknown HTTP status code:"
-            returndict["explanation"] = str(query)
+            returndict["error"] = True
+            returndict["basic"] = "An Error Occured"
+            returndict["explanation"] = "Unknown HTTP status code: %s" % query
+            self.add_to_cache(returndict)
             return returndict
         try:
             r.raise_for_status()
         except requests.exceptions.HTTPError as e:
-            returndict["basic"] = "HTTP error:"
-            returndict["explanation"] = str(e.message)
+            returndict["error"] = True
+            returndict["basic"] = "An Error Occured"
+            returndict["basic"] = "HTTP error: %s" % str(e.message)
+            self.add_to_cache(returndict)
             return returndict
 
         tree = html.fromstring(r.content)
@@ -59,7 +91,8 @@ class Bothttpcodes():
         if title:
             returndict["basic"] = str(title)
         else:
-            returndict["basic"] = "An Error Occured:"
+            returndict["error"] = True
+            returndict["basic"] = "An Error Occured"
             returndict["explanation"] = "Xpath for basic yeilded no information"
             return returndict
 
@@ -74,7 +107,21 @@ class Bothttpcodes():
         else:
             returndict["explanation"] = "Xpath for explanation yeilded no information"
 
+        self.add_to_cache(returndict)
         return returndict
+
+    def add_to_cache(self, cachedict):
+        if cachedict["query"] not in list(self.cache.keys()):
+            self.cache[cachedict["query"]] = {
+                                                "query": cachedict["query"],
+                                                "basic": cachedict["basic"],
+                                                "explanation": cachedict["explanation"],
+                                                }
+
+    def check_cache(self, query):
+        if query not in list(self.cache.keys()):
+            return None
+        return self.cache[query]
 
 
 httpcodes = Bothttpcodes()
