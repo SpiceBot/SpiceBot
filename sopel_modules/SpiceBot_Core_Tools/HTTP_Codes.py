@@ -14,22 +14,22 @@ from lxml import html
 
 api_url = 'https://httpstatuses.com/'
 basic_xpath = "/html/body/article/h1[1]/text()"
+explain_xpath = "/html/body/article/p[1]/text()"
 
 
 @SpiceBot.prerun('module')
 @sopel.module.commands('httpcode')
 def bot_command_http_codes(bot, trigger, botcom):
-
     query = spicemanip(botcom.dict["args"], 1) or None
     if not query:
         return bot.osd("You must provide a HTTP status code to look up.")
+    message = ["[HTTP code search for " + str(query) + "]"]
     result = fetch_result(str(query))
-
-    bot.osd(["[HTTP code search for " + str(query) + "]", result])
+    message.extend(result)
+    bot.osd(message)
 
 
 def fetch_result(query):
-
     if not re.match('^[1-5]\d{2}$', query):
         return "Invalid HTTP status code: %s" % query
     url = api_url + query
@@ -49,18 +49,26 @@ def fetch_result(query):
         return "HTTP error: " + e.message
 
     tree = html.fromstring(r.content)
-
+    dispmsg = []
     try:
         title = tree.xpath((basic_xpath))
         if isinstance(title, list):
             title = title[0]
-        # title = str(title)
-        # for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
-        #    title = title.replace(*r)
-        # title = unicode_string_cleanup(title)
     except Exception as e:
         title = None
     if title:
-        return str(title)
-    else:
-        return "An Error Occured"
+        dispmsg.append(str(title))
+
+    try:
+        explanation = tree.xpath((explain_xpath))
+        if isinstance(explanation, list):
+            explanation = explanation[0]
+    except Exception as e:
+        explanation = None
+    if explanation:
+        dispmsg.append(str(explanation))
+
+    if not len(dispmsg):
+        dispmsg.append("An Error Occured Finding This Information")
+
+    return dispmsg
