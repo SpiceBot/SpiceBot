@@ -10,9 +10,6 @@ import sopel_modules.SpiceBot as SpiceBot
 
 import re
 import requests
-import bleach
-from lxml import etree
-
 from lxml import html
 
 api_url = 'https://httpstatuses.com/'
