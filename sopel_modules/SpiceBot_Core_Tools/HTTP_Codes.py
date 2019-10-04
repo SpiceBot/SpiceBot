@@ -25,9 +25,7 @@ def bot_command_http_codes(bot, trigger, botcom):
         return bot.osd("You must provide a HTTP status code to look up.")
     message = ["[HTTP code search for " + str(query) + "]"]
     result = SpiceBot.httpcodes.fetch_result(str(query))
-    bot.say(result["basic"])
-    bot.say(result["explanation"])
-    message.append([result["basic"], result["explanation"]])
+    message.extend([result["basic"], result["explanation"]])
     bot.osd(message)
 
 
