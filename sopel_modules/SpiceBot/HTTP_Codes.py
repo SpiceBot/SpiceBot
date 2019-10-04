@@ -116,6 +116,7 @@ class Bothttpcodes():
                                                 "query": cachedict["query"],
                                                 "basic": cachedict["basic"],
                                                 "explanation": cachedict["explanation"],
+                                                "error": False
                                                 }
 
     def check_cache(self, query):
