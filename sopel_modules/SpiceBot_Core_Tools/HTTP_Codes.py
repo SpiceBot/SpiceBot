@@ -47,6 +47,7 @@ def fetch_result(query):
         r.raise_for_status()
     except requests.exceptions.HTTPError as e:
         return "HTTP error: " + e.message
+    return "testing"
 
     page = etree.HTML(r.content)
     title = bleach.clean(etree.tostring(page.xpath('/html/body/article/h1[1]')[0]), tags=[], strip=True)
