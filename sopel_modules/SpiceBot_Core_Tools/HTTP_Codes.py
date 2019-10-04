@@ -23,8 +23,7 @@ def bot_command_http_codes(bot, trigger, botcom):
     query = spicemanip(botcom.dict["args"], 1) or None
     if not query:
         return bot.osd("You must provide a HTTP status code to look up.")
-    bot.say(str(query))
-    result = fetch_result(query)
+    result = fetch_result(str(query))
 
     bot.osd(["[HTTP code search for " + str(query) + "]", result])
 
