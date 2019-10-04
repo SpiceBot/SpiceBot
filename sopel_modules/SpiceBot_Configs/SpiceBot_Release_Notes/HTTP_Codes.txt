@@ -1,2 +1,3 @@
 Added Tool to check HTTP code meanings, accessible via `.httpcodes` command
 Migrated Functionality into a SpiceBot class for other tools to use
+update error handling and add cache
