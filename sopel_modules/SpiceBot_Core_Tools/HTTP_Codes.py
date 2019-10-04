@@ -13,7 +13,7 @@ import requests
 import bleach
 from lxml import etree
 
-api_url = 'https://httpstatuses.com/%s'
+api_url = 'https://httpstatuses.com/'
 
 
 @SpiceBot.prerun('module')
@@ -32,7 +32,7 @@ def fetch_result(query):
 
     if not re.match('^[1-5]\d{2}$', query):
         return "Invalid HTTP status code: %s" % query
-    url = api_url % query
+    url = api_url + query
     try:
         r = requests.get(url=url, timeout=(10.0, 4.0))
     except requests.exceptions.ConnectTimeout:
