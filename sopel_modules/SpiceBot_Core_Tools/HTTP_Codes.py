@@ -16,6 +16,7 @@ from lxml import etree
 from lxml import html
 
 api_url = 'https://httpstatuses.com/'
+basic_xpath = "/html/body/article/h1[1]/text()"
 
 
 @SpiceBot.prerun('module')
@@ -52,8 +53,11 @@ def fetch_result(query):
 
     tree = html.fromstring(r.content)
 
+    title = tree.xpath((basic_xpath))
+    return str(title)
+
     try:
-        title = tree.xpath(('/html/body/article/p[1]')[0])
+        title = tree.xpath((basic_xpath))
         # if isinstance(title, list):
         #    title = title[0]
         # title = str(title)
@@ -63,15 +67,6 @@ def fetch_result(query):
     except Exception as e:
         title = None
     if title:
-        return title
+        return str(title)
     else:
         return "An Error Occured"
-
-    return
-
-    page = etree.HTML(r.content)
-    title = bleach.clean(etree.tostring(page.xpath('/html/body/article/h1[1]')[0]), tags=[], strip=True)
-    summary = bleach.clean(
-        re.sub('<a href="#ref-\d+">.*?<\/a>', '', etree.tostring(page.xpath('/html/body/article/p[1]')[0])), tags=[],
-        strip=True)
-    return "{title}: {summary} — {link}".format(title=title, summary=summary, link=url)
