@@ -32,4 +32,7 @@ def bot_command_http_codes(bot, trigger, botcom):
     elif query == "69":
         message.extend(["Oral Fixation", "Round and Round they go, where they stop: nobody knows"])
 
+    else:
+        message.extend([result["basic"], result["explanation"]])
+
     bot.osd(message)
