@@ -53,13 +53,10 @@ def fetch_result(query):
 
     tree = html.fromstring(r.content)
 
-    title = tree.xpath((basic_xpath))
-    return str(title)
-
     try:
         title = tree.xpath((basic_xpath))
-        # if isinstance(title, list):
-        #    title = title[0]
+        if isinstance(title, list):
+            title = title[0]
         # title = str(title)
         # for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
         #    title = title.replace(*r)
