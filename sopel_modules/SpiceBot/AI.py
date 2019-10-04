@@ -14,6 +14,7 @@ import aiml
 from .Database import db as botdb
 from .Config import config as botconfig
 from .Read import read as botread
+from .Users import users as botusers
 
 from sopel_modules.spicemanip import spicemanip
 
@@ -116,7 +117,7 @@ class SpiceBot_AI():
 
     def on_message(self, bot, trigger, message):
         nick = Identifier(trigger.nick)
-        nick_id = botdb.get_nick_id(nick, create=True)
+        nick_id = botusers.get_nick_id(nick, True)
         self.check_user_import(nick, nick_id)
 
         message = self.bot_message_precipher(bot, trigger, message)
@@ -207,13 +208,13 @@ class SpiceBot_AI():
     def getPredicate(self, predicate, nick, nick_id=None):
         if not nick_id:
             nick = Identifier(nick)
-            nick_id = botdb.get_nick_id(nick, create=True)
+            nick_id = botusers.get_nick_id(nick, True)
         self.aiml_kernel.getPredicate(predicate, nick_id)
 
     def check_user_import(self, nick, nick_id=None):
         if not nick_id:
             nick = Identifier(nick)
-            nick_id = botdb.get_nick_id(nick, create=True)
+            nick_id = botusers.get_nick_id(nick, True)
         if nick_id not in list(self.dict["sessioncache"].keys()):
             self.dict["sessioncache"][nick_id] = botdb.get_nick_value(nick, 'botai') or {}
             for predicate in list(self.dict["sessioncache"][nick_id].keys()):
@@ -228,7 +229,7 @@ class SpiceBot_AI():
     def save_nick_session(self, nick, nick_id=None):
         if not nick_id:
             nick = Identifier(nick)
-            nick_id = botdb.get_nick_id(nick, create=True)
+            nick_id = botusers.get_nick_id(nick, True)
         sessionData = self.aiml_kernel.getSessionData(nick_id)
         botdb.set_nick_value(nick, 'botai', sessionData)
 
