@@ -178,35 +178,38 @@ class BotGif():
             page = e
             page = None
         if page and not str(page.status_code).startswith(tuple(["4", "5"])):
-            data = json.loads(urllib.request.urlopen(url).read().decode('utf-8'))
-            results = data[self.valid_api[currentapi]['results']]
-            resultsarray = []
-            for result in results:
-                appendresult = False
-                cururl = result[self.valid_api[currentapi]['cururl']]
-                slashsplit = str(cururl).split("/")
-                fileextension = slashsplit[-1]
-                if not fileextension or fileextension == '':
-                    appendresult = True
-                elif str(fileextension).endswith(".gif"):
-                    appendresult = True
-                elif "." not in str(fileextension):
-                    appendresult = True
-                if appendresult:
-                    resultsarray.append(cururl)
-            # make sure there are results
-            if len(resultsarray):
-                # Create Temp dict for every result
-                tempresultnum = 0
-                for tempresult in resultsarray:
-                    if tempresult not in self.badlinks:
-                        tempresultnum += 1
-                        tempdict = {
-                                    "returnnum": tempresultnum,
-                                    "returnurl": tempresult,
-                                    "gifapi": currentapi,
-                                    }
-                        self.valid_api[currentapi]["cache"][str(searchquery).lower()].append(tempdict)
+            try:
+                data = json.loads(urllib.request.urlopen(url).read().decode('utf-8'))
+                results = data[self.valid_api[currentapi]['results']]
+                resultsarray = []
+                for result in results:
+                    appendresult = False
+                    cururl = result[self.valid_api[currentapi]['cururl']]
+                    slashsplit = str(cururl).split("/")
+                    fileextension = slashsplit[-1]
+                    if not fileextension or fileextension == '':
+                        appendresult = True
+                    elif str(fileextension).endswith(".gif"):
+                        appendresult = True
+                    elif "." not in str(fileextension):
+                        appendresult = True
+                    if appendresult:
+                        resultsarray.append(cururl)
+                # make sure there are results
+                if len(resultsarray):
+                    # Create Temp dict for every result
+                    tempresultnum = 0
+                    for tempresult in resultsarray:
+                        if tempresult not in self.badlinks:
+                            tempresultnum += 1
+                            tempdict = {
+                                        "returnnum": tempresultnum,
+                                        "returnurl": tempresult,
+                                        "gifapi": currentapi,
+                                        }
+                            self.valid_api[currentapi]["cache"][str(searchquery).lower()].append(tempdict)
+            except urllib.error.HTTPError:
+                return
 
     def gif_url_assemble(self, currentapi, searchquery, searchlimit, searchnsfw):
         # url base
