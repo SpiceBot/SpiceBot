@@ -4,6 +4,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 This is the SpiceBot Logs system.
 """
 import sopel
+from threading import Thread
 
 import sopel_modules.SpiceBot as SpiceBot
 
@@ -18,10 +19,13 @@ def join_log_channel(bot, trigger):
             bot.write(('JOIN', bot.nick, channel))
         if channel not in list(bot.channels.keys()) and bot.config.SpiceBot_Channels.operadmin:
             bot.write(('SAJOIN', bot.nick, channel))
-
-        while True:
-            if len(SpiceBot.logs.dict["queue"]):
-                bot.osd(str(SpiceBot.logs.dict["queue"][0]), channel)
-                del SpiceBot.logs.dict["queue"][0]
+        Thread(target=logs_thread, args=(bot, channel,)).start()
     else:
         SpiceBot.logs.dict["queue"] = []
+
+
+def logs_thread(bot, channel):
+    while True:
+        if len(SpiceBot.logs.dict["queue"]):
+            bot.osd(str(SpiceBot.logs.dict["queue"][0]), channel)
+            del SpiceBot.logs.dict["queue"][0]

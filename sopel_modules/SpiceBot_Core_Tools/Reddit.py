@@ -7,6 +7,9 @@ import sopel.module
 import sopel_modules.SpiceBot as SpiceBot
 
 
+# @rule(r"^(r|u)\/([^\s/]+)") TODO
+
+
 @SpiceBot.events.check_ready([SpiceBot.events.BOT_LOADED])
 @sopel.module.rule(r"""(?:)u/
           (

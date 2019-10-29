@@ -6,6 +6,7 @@ This is the SpiceBot Channels system.
 import sopel
 
 import time
+from threading import Thread
 
 from sopel_modules.spicemanip import spicemanip
 
@@ -68,6 +69,10 @@ def watch_chanlist_complete(bot, trigger):
 @sopel.module.event(SpiceBot.events.BOT_CHANNELS)
 @sopel.module.rule('.*')
 def trigger_channel_list_recurring(bot, trigger):
+    Thread(target=channels_thread, args=(bot,)).start()
+
+
+def channels_thread(bot):
     while True:
         time.sleep(1800)
         SpiceBot.channels.bot_part_empty(bot)
