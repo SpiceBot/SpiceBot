@@ -4,6 +4,7 @@ from __future__ import unicode_literals, absolute_import, division, print_functi
 This is the SpiceBot Events system.
 """
 import sopel
+from threading import Thread
 
 import sopel_modules.SpiceBot as SpiceBot
 
@@ -27,6 +28,10 @@ def bot_events_connected(bot, trigger):
         SpiceBot.events.trigger(bot, SpiceBot.events.BOT_WELCOME, "Welcome to the SpiceBot Events System")
 
     """For items tossed in a queue, this will trigger them accordingly"""
+    Thread(target=events_thread, args=(bot,)).start()
+
+
+def events_thread(bot):
     while True:
         if len(SpiceBot.events.dict["trigger_queue"]):
             pretriggerdict = SpiceBot.events.dict["trigger_queue"][0]
