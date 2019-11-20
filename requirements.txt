@@ -1,4 +1,4 @@
-spicemanip>=0.1.6
+spicemanip>=0.1.7
 gitpython
 pygit2
 fake-useragent

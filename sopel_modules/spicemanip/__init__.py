@@ -270,8 +270,6 @@ class Spicemanip():
     def number(self, inputs, outputtask, mainoutputtask, suboutputtask):
         if not len(inputs):
             return ''
-        elif len(inputs) == 1:
-            return inputs[0]
         elif int(mainoutputtask) > len(inputs) or int(mainoutputtask) < 0:
             return ''
         else:
@@ -608,8 +606,6 @@ def spicemanip_string(inputs, outputtask, mainoutputtask, suboutputtask):
 def spicemanip_number(inputs, outputtask, mainoutputtask, suboutputtask):
     if not len(inputs):
         return ''
-    elif len(inputs) == 1:
-        return inputs[0]
     elif int(mainoutputtask) > len(inputs) or int(mainoutputtask) < 0:
         return ''
     else:
