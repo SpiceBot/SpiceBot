@@ -479,7 +479,7 @@ class BotUsers():
                             sim_user.append(nick)
                             sim_num.append(similarlevel)
                 if sim_user != [] and sim_num != []:
-                    sim_num, sim_user = array_arrangesort(bot, sim_num, sim_user)
+                    sim_num, sim_user = array_arrangesort(sim_num, sim_user)
                     closestmatch = spicemanip(sim_user, 'reverse', "list")
                     listnumb, relist = 1, []
                     for item in closestmatch:
